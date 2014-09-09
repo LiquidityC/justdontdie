@@ -2,6 +2,8 @@
 #include <SDL2/SDL.h>
 
 #include "timer.h"
+#include "character.h"
+#include "objectcontainer.h"
 
 const int SCREEN_WIDTH 				= 800;
 const int SCREEN_HEIGHT 			= 600;
@@ -40,18 +42,36 @@ int main( int argc, char* args[] )
 
 	Timer fpsCapTimer;
 
+	Character* character = new Character(200, 200);
+	ObjectContainer& objectContainer = ObjectContainer::getInstance();
+	objectContainer.registerRenderable(character);
+	objectContainer.registerEventHandler(character);
+
 	// Main loop
 	while (!quit) {
 
 		fpsCapTimer.start();
 		
 		// Handle events
+		objectContainer.preHandle();
 		while (SDL_PollEvent (&e) != 0) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 				break;
 			}
+			objectContainer.handle(e);
 		}
+		objectContainer.postHandle();
+
+		// Color surface black, temporary until more is rendered.
+		SDL_Rect fillRect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+		SDL_FillRect(screenSurface, &fillRect,
+					SDL_MapRGB(screenSurface->format, 0x00, 0x00, 0x00));
+
+		// Render
+		objectContainer.preRender();
+		objectContainer.render(*screenSurface);
+		objectContainer.postRender();
 
 		// Update the screen
 		SDL_UpdateWindowSurface( window );
