@@ -9,7 +9,6 @@
 class ObjectContainer : public Renderable, public EventHandler
 {
 	private:
-		ObjectContainer() { }; 
 		ObjectContainer(const ObjectContainer&); // Don't implement
 		void operator=(const ObjectContainer&); // Don't implement
 
@@ -39,12 +38,12 @@ class ObjectContainer : public Renderable, public EventHandler
 				assert (!ptrExistsIn(ptr, ptrs));
 			}
 
-		template <class T>
-			bool ptrExistsIn(T* ptr, std::vector<T*>& list)
+		template <class T, class K>
+			bool ptrExistsIn(T* ptr, std::vector<K*>& list)
 			{
 				auto it = list.begin();
 				while (it != list.end()) {
-					if (*it == ptr) {
+					if ((*it) == ptr) {
 						return true;
 					}
 					it++;
@@ -54,12 +53,7 @@ class ObjectContainer : public Renderable, public EventHandler
 
 	public:
 
-		static ObjectContainer& getInstance()
-		{
-			static ObjectContainer instance;
-			return instance;
-		}
-
+		ObjectContainer() { }; 
 		~ObjectContainer();
 
 		void registerRenderable(Renderable*);
@@ -78,6 +72,7 @@ class ObjectContainer : public Renderable, public EventHandler
 		void render(SDL_Surface&) const;
 		void postRender();
 
+		size_t getObjectCount();
 		size_t getRenderableCount();
 		size_t getEventHandlerCount();
 };

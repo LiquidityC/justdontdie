@@ -22,7 +22,11 @@ void ObjectContainer::registerObject(Object* object)
 
 void ObjectContainer::unregisterObject(Object* object)
 {
-	removePtrFrom(object, objects);
+	if (!ptrExistsIn(object, renderables)
+			&& !ptrExistsIn(object, eventHandlers)) 
+	{
+		removePtrFrom(object, objects);
+	}
 }
 
 void ObjectContainer::registerRenderable(Renderable* renderable)
@@ -30,12 +34,14 @@ void ObjectContainer::registerRenderable(Renderable* renderable)
 	if (ptrExistsIn(renderable, renderables)) {
 		return;
 	}
+	registerObject(renderable);
 	renderables.push_back(renderable);
 }
 
 void ObjectContainer::unregisterRenderable(Renderable* renderable)
 {
 	removePtrFrom(renderable, renderables);
+	unregisterObject(renderable);
 }
 
 void ObjectContainer::registerEventHandler(EventHandler* handler)
@@ -43,12 +49,14 @@ void ObjectContainer::registerEventHandler(EventHandler* handler)
 	if (ptrExistsIn(handler, eventHandlers)) {
 		return;
 	}
+	registerObject(handler);
 	eventHandlers.push_back(handler);
 }
 
 void ObjectContainer::unregisterEventHandler(EventHandler* handler)
 {
 	removePtrFrom(handler, eventHandlers);
+	unregisterObject(handler);
 }
 
 void ObjectContainer::preHandle()
@@ -91,6 +99,10 @@ void ObjectContainer::postRender()
 	for (size_t i = 0; i < eventHandlers.size(); i++) {
 		renderables[i]->postRender();
 	}
+}
+
+size_t ObjectContainer::getObjectCount() {
+	return objects.size();
 }
 
 size_t ObjectContainer::getRenderableCount() {

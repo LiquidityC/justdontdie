@@ -4,8 +4,8 @@ else
 CC			= g++
 endif
 
-CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual \
-			  -std=c++11 -include /usr/include/CppUTest/MemoryLeakDetectorNewMacros.h
+CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 
+INCLUDE		= -include /usr/include/CppUTest/MemoryLeakDetectorNewMacros.h
 LD			= g++
 LDFLAGS 	= 
 AR			= ar
@@ -16,7 +16,7 @@ ECHO		= echo -e
 SHELL		= /bin/sh
 CTAGS		= ctags
 
-LIBS 				= -lSDL2
+LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt
 
 OBJDIR				= obj
 DEPS				= 
@@ -33,22 +33,22 @@ default: $(EXECUTABLE)
 all: $(EXECUTABLE) $(TEST)
 
 $(EXECUTABLE): $(PROG_OBJECTS) $(DEPS)
-	$(LD) $(LDFLAGS) $(LIBS) -o $@ $^
+	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 
 check: $(TEST)
-	./$(TEST) -v -c -r
+	./$(TEST) -v -c
 
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
 $(TEST): $(TEST_OBJECTS) $(DEPS)
-	$(LD) $(LDFLAGS) $(TEST_OBJECTS) -lCppUTest -lCppUTestExt $(LIBS) -o $@
+	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 
 $(OBJDIR)/%.o: src/%.cpp
-	$(CC) $(INCLUDE) $(CFLAGS) -o $@ $<
+	$(CC) $(INCLUDE) $(CFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: testsrc/%.cpp
-	$(CC) $(INCLUDE) $(CFLAGS) -o $@ $<
+	$(CC) $(INCLUDE) $(CFLAGS) $< -o $@
 
 #$(PROG_OBJECTS): $(OBJDIR)
 #
