@@ -1,28 +1,49 @@
-#include "objectcontainertest.h"
-
+#include <CppUTest/TestHarness.h>
 #include "../src/objectcontainer.h"
 #include "../src/character.h"
 
-CPPUNIT_TEST_SUITE_REGISTRATION( ObjectContainerTest );
-
-void ObjectContainerTest::test_container()
+TEST_GROUP( ObjectContainerTests )
 {
-	Character* c = new Character(200, 200);
+	void setup()
+	{
+		ObjectContainer::getInstance();
+	}
+
+	void teardown()
+	{
+	}
+};
+
+TEST( ObjectContainerTests, TestRenderableRegister )
+{
+	Character* c = new Character(100, 100);
+
 	ObjectContainer& container = ObjectContainer::getInstance();
 
-	CPPUNIT_ASSERT( container.getRenderableCount() == 0 );
+	CHECK( container.getRenderableCount() == 0 );
 	container.registerRenderable(c);
-	CPPUNIT_ASSERT( container.getRenderableCount() == 1 );
+	CHECK( container.getRenderableCount() == 1 );
 	container.registerRenderable(c);
-	CPPUNIT_ASSERT( container.getRenderableCount() == 1 );
+	CHECK( container.getRenderableCount() == 1 );
 	container.unregisterRenderable(c);
-	CPPUNIT_ASSERT( container.getRenderableCount() == 0 );
+	CHECK( container.getRenderableCount() == 0 );
 
-	CPPUNIT_ASSERT( container.getEventHandlerCount() == 0 );
+	delete c;
+}
+
+TEST( ObjectContainerTests, TestEventHandlerRegister )
+{
+	Character* c = new Character(100, 100);
+
+	ObjectContainer& container = ObjectContainer::getInstance();
+
+	CHECK( container.getEventHandlerCount() == 0 );
 	container.registerEventHandler(c);
-	CPPUNIT_ASSERT( container.getEventHandlerCount() == 1 );
+	CHECK( container.getEventHandlerCount() == 1 );
 	container.registerEventHandler(c);
-	CPPUNIT_ASSERT( container.getEventHandlerCount() == 1 );
+	CHECK( container.getEventHandlerCount() == 1 );
 	container.unregisterEventHandler(c);
-	CPPUNIT_ASSERT( container.getEventHandlerCount() == 0 );
+	CHECK( container.getEventHandlerCount() == 0 );
+
+	delete c;
 }

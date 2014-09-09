@@ -5,7 +5,7 @@ CC			= g++
 endif
 
 CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual \
-			  -std=c++11
+			  -std=c++11 -include /usr/include/CppUTest/MemoryLeakDetectorNewMacros.h
 LD			= g++
 LDFLAGS 	= 
 AR			= ar
@@ -36,13 +36,13 @@ $(EXECUTABLE): $(PROG_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(LIBS) -o $@ $^
 
 check: $(TEST)
-	./$(TEST)
+	./$(TEST) -v -c -r
 
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
 $(TEST): $(TEST_OBJECTS) $(DEPS)
-	$(LD) $(LDFLAGS) -lcppunit $(LIBS) -o $@ $(TEST_OBJECTS)
+	$(LD) $(LDFLAGS) $(TEST_OBJECTS) -lCppUTest -lCppUTestExt $(LIBS) -o $@
 
 $(OBJDIR)/%.o: src/%.cpp
 	$(CC) $(INCLUDE) $(CFLAGS) -o $@ $<
