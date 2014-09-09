@@ -77,6 +77,9 @@ class ObjectContainer : public Renderable, public EventHandler
 		void preRender();
 		void render(SDL_Surface&) const;
 		void postRender();
+
+		size_t getRenderableCount();
+		size_t getEventHandlerCount();
 };
 
 #endif

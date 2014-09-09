@@ -1,4 +1,4 @@
-#include <cassert>
+#include <iostream>
 #include "objectcontainer.h"
 
 ObjectContainer::~ObjectContainer()
@@ -27,7 +27,9 @@ void ObjectContainer::unregisterObject(Object* object)
 
 void ObjectContainer::registerRenderable(Renderable* renderable)
 {
-	assert (!ptrExistsIn(renderable, renderables));
+	if (ptrExistsIn(renderable, renderables)) {
+		return;
+	}
 	renderables.push_back(renderable);
 }
 
@@ -38,7 +40,9 @@ void ObjectContainer::unregisterRenderable(Renderable* renderable)
 
 void ObjectContainer::registerEventHandler(EventHandler* handler)
 {
-	assert (!ptrExistsIn(handler, eventHandlers));
+	if (ptrExistsIn(handler, eventHandlers)) {
+		return;
+	}
 	eventHandlers.push_back(handler);
 }
 
@@ -87,4 +91,12 @@ void ObjectContainer::postRender()
 	for (size_t i = 0; i < eventHandlers.size(); i++) {
 		renderables[i]->postRender();
 	}
+}
+
+size_t ObjectContainer::getRenderableCount() {
+	return renderables.size();
+}
+
+size_t ObjectContainer::getEventHandlerCount() {
+	return eventHandlers.size();
 }
