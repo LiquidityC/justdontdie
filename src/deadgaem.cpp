@@ -43,9 +43,9 @@ int main( int argc, char* args[] )
 	Timer fpsCapTimer;
 
 	Character* character = new Character(200, 200);
+
 	ObjectContainer objectContainer;
-	objectContainer.registerRenderable(character);
-	objectContainer.registerEventHandler(character);
+	objectContainer.registerObject(character);
 
 	// Main loop
 	while (!quit) {

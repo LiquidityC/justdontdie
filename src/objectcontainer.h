@@ -1,80 +1,39 @@
 #ifndef _OBJECT_CONTAINER_H
 #define _OBJECT_CONTAINER_H
 
-#include <vector>
-#include <cassert>
-#include "renderable.h"
-#include "eventhandler.h"
+#include <iostream>
+#include <map>
 
-class ObjectContainer : public Renderable, public EventHandler
+#include "gameobject.h"
+
+class ObjectContainer : public GameObject
 {
+	private:
+		std::map<std::string, GameObject*> objects;
+
 	private:
 		ObjectContainer(const ObjectContainer&); // Don't implement
 		void operator=(const ObjectContainer&); // Don't implement
-
-		std::vector<Object*> objects;
-		std::vector<Renderable*> renderables;
-		std::vector<EventHandler*> eventHandlers;
-
-		void registerObject(Object*);
-		void unregisterObject(Object*);
-
-		template <class T>
-			void removePtrFrom(T* ptr, std::vector<T*>& ptrs)
-			{
-				if (!ptrExistsIn(ptr, ptrs)) {
-					return;
-				}
-
-				auto it = ptrs.begin();
-				while (it != ptrs.end()) {
-					if (*it == ptr) {
-						ptrs.erase(it);
-						break;
-					}
-					it++;
-				}
-
-				assert (!ptrExistsIn(ptr, ptrs));
-			}
-
-		template <class T, class K>
-			bool ptrExistsIn(T* ptr, std::vector<K*>& list)
-			{
-				auto it = list.begin();
-				while (it != list.end()) {
-					if ((*it) == ptr) {
-						return true;
-					}
-					it++;
-				}
-				return false;
-			}
 
 	public:
 
 		ObjectContainer() { }; 
 		~ObjectContainer();
 
-		void registerRenderable(Renderable*);
-		void unregisterRenderable(Renderable*);
+		void registerObject(GameObject*);
+		void unregisterObject(GameObject*);
 
-		void registerEventHandler(EventHandler*);
-		void unregisterEventHandler(EventHandler*);
+		size_t getObjectCount();
 
 		// Eventhandler override
 		void preHandle();
-		void handle(SDL_Event&);
+		void handle(const SDL_Event&);
 		void postHandle();
 
 		// Renderable override
 		void preRender();
 		void render(SDL_Surface&) const;
 		void postRender();
-
-		size_t getObjectCount();
-		size_t getRenderableCount();
-		size_t getEventHandlerCount();
 };
 
 #endif

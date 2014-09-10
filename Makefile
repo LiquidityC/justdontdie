@@ -4,8 +4,8 @@ else
 CC			= g++
 endif
 
-CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 
-INCLUDE		= -include /usr/include/CppUTest/MemoryLeakDetectorNewMacros.h
+CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
+			  -include src/NewMacro.h
 LD			= g++
 LDFLAGS 	= 
 AR			= ar
@@ -45,10 +45,10 @@ $(TEST): $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
 
 $(OBJDIR)/%.o: src/%.cpp
-	$(CC) $(INCLUDE) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: testsrc/%.cpp
-	$(CC) $(INCLUDE) $(CFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $< -o $@
 
 #$(PROG_OBJECTS): $(OBJDIR)
 #

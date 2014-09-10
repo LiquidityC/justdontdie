@@ -1,114 +1,70 @@
-#include <iostream>
 #include "objectcontainer.h"
 
 ObjectContainer::~ObjectContainer()
 {
-	while (!objects.empty()) {
-		delete objects.back();
-		objects.pop_back();
+	auto it = objects.begin();
+	while (it != objects.end()) {
+		delete it->second;
+		it++;
 	}
-
-	renderables.clear();
-	eventHandlers.clear();
+	objects.clear();
 }
 
-void ObjectContainer::registerObject(Object* object)
+void ObjectContainer::registerObject(GameObject* object)
 {
-	if (ptrExistsIn(object, objects)) {
+	if (objects.find(object->getStringId()) != objects.end()) {
 		return;
 	}
-	objects.push_back(object);
+	objects[object->getStringId()] = object;
 }
 
-void ObjectContainer::unregisterObject(Object* object)
+void ObjectContainer::unregisterObject(GameObject* object)
 {
-	if (!ptrExistsIn(object, renderables)
-			&& !ptrExistsIn(object, eventHandlers)) 
-	{
-		removePtrFrom(object, objects);
-	}
-}
-
-void ObjectContainer::registerRenderable(Renderable* renderable)
-{
-	if (ptrExistsIn(renderable, renderables)) {
-		return;
-	}
-	registerObject(renderable);
-	renderables.push_back(renderable);
-}
-
-void ObjectContainer::unregisterRenderable(Renderable* renderable)
-{
-	removePtrFrom(renderable, renderables);
-	unregisterObject(renderable);
-}
-
-void ObjectContainer::registerEventHandler(EventHandler* handler)
-{
-	if (ptrExistsIn(handler, eventHandlers)) {
-		return;
-	}
-	registerObject(handler);
-	eventHandlers.push_back(handler);
-}
-
-void ObjectContainer::unregisterEventHandler(EventHandler* handler)
-{
-	removePtrFrom(handler, eventHandlers);
-	unregisterObject(handler);
+	objects.erase(object->getStringId());
 }
 
 void ObjectContainer::preHandle()
 {
-	for (size_t i = 0; i < eventHandlers.size(); i++) {
-		eventHandlers[i]->preHandle();
+	for (auto it = objects.begin(); it != objects.end(); it++) {
+		it->second->preHandle();
 	}
 }
 
-void ObjectContainer::handle(SDL_Event& event)
+void ObjectContainer::handle(const SDL_Event& event)
 {
-	for (size_t i = 0; i < eventHandlers.size(); i++) {
-		eventHandlers[i]->handle(event);
+	for (auto it = objects.begin(); it != objects.end(); it++) {
+		it->second->handle(event);
 	}
 }
 
 void ObjectContainer::postHandle()
 {
-	for (size_t i = 0; i < eventHandlers.size(); i++) {
-		eventHandlers[i]->postHandle();
+	for (auto it = objects.begin(); it != objects.end(); it++) {
+		it->second->postHandle();
 	}
 }
 
 void ObjectContainer::preRender() 
 {
-	for (size_t i = 0; i < eventHandlers.size(); i++) {
-		renderables[i]->preRender();
+	for (auto it = objects.begin(); it != objects.end(); it++) {
+		it->second->preRender();
 	}
 }
 
 void ObjectContainer::render(SDL_Surface& surface) const
 {
-	for (size_t i = 0; i < eventHandlers.size(); i++) {
-		renderables[i]->render(surface);
+	for (auto it = objects.begin(); it != objects.end(); it++) {
+		it->second->render(surface);
 	}
 }
 
 void ObjectContainer::postRender() 
 {
-	for (size_t i = 0; i < eventHandlers.size(); i++) {
-		renderables[i]->postRender();
+	for (auto it = objects.begin(); it != objects.end(); it++) {
+		it->second->postRender();
 	}
 }
 
 size_t ObjectContainer::getObjectCount() {
 	return objects.size();
-}
-
-size_t ObjectContainer::getRenderableCount() {
-	return renderables.size();
-}
-
-size_t ObjectContainer::getEventHandlerCount() {
-	return eventHandlers.size();
 }

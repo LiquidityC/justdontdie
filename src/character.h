@@ -1,10 +1,9 @@
 #ifndef _CHARACTER_H
 #define _CHARACTER_H
 
-#include "eventhandler.h"
-#include "renderable.h"
+#include "gameobject.h"
 
-class Character : public Renderable, public EventHandler
+class Character : public GameObject
 {
 	private:
 		static const unsigned int WIDTH = 10;
@@ -13,17 +12,15 @@ class Character : public Renderable, public EventHandler
 		int xpos, ypos;
 
 	public:
+		Character(unsigned int x, unsigned int y) : xpos(x), ypos(y) { };
 
-		Character(int x, int y) : xpos(x), ypos(y) { };
-
-		void handle(SDL_Event& event) { }; // Do nothing @Override
-		void preHandle() { }; // Do nothing @Override
-
+		void preHandle() { }; // Do nothing, override
+		void handle(const SDL_Event& event) { } // Do nothing, override
 		void postHandle();
 
+		void preRender() { }; // Do nothing, override
 		void render(SDL_Surface& surface) const;
-		void preRender() { }; // Do nothing @Override
-		void postRender() { }; // Do nothing @Override
+		void postRender() { }; // Do nothing, override
 };
 
 #endif
