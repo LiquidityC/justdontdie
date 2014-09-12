@@ -1,9 +1,10 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
+#include "CompContainer.h"
+#include "objectcontainer.h"
 #include "timer.h"
 #include "character.h"
-#include "objectcontainer.h"
 
 const int SCREEN_WIDTH 				= 800;
 const int SCREEN_HEIGHT 			= 600;
@@ -44,7 +45,7 @@ int main( int argc, char* args[] )
 
 	Character* character = new Character(200, 200);
 
-	ObjectContainer objectContainer;
+	ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
 	objectContainer.registerObject(character);
 
 	// Main loop
