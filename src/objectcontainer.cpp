@@ -2,10 +2,8 @@
 
 ObjectContainer::~ObjectContainer()
 {
-	auto it = objects.begin();
-	while (it != objects.end()) {
+	for (auto it = objects.begin(); it != objects.end(); it++) {
 		delete it->second;
-		it++;
 	}
 	objects.clear();
 }
