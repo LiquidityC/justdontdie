@@ -21,6 +21,9 @@ class Character : public GameObject
 		void preRender() { }; // Do nothing, override
 		void render(SDL_Surface& surface) const;
 		void postRender() { }; // Do nothing, override
+
+		bool isCollider();
+		SDL_Rect getBoundingBox();
 };
 
 #endif

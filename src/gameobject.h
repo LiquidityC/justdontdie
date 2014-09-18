@@ -13,17 +13,32 @@ class GameObject
 		boost::uuids::uuid id;
 
 	public:
+
+		/* Constructors and destructors */
 		GameObject() {
 
 			/* Not providing ran creates valgrind warnings */
 			static boost::mt19937 ran;
 			id = boost::uuids::random_generator(ran)();
 		};
-
 		GameObject(const GameObject& o)	: id(o.id) { };
-
 		virtual ~GameObject() { };
 
+		/* Operators */
+		virtual bool operator==(const GameObject& o) const {
+			return id == o.id;
+		};
+
+		virtual GameObject& operator=(const GameObject& o) {
+			id = o.id;
+			return *this;
+		};
+
+		virtual std::string getStringId() const {
+			return boost::lexical_cast<std::string>(id);
+		};
+
+		/* Abstract methods */
 		virtual void preHandle() = 0;
 		virtual void handle(const SDL_Event& event) = 0;
 		virtual void postHandle() = 0;
@@ -32,18 +47,11 @@ class GameObject
 		virtual void render(SDL_Surface& surface) const = 0;
 		virtual void postRender() = 0;
 
-		bool operator==(const GameObject& o) const {
-			return id == o.id;
-		};
-
-		GameObject& operator=(const GameObject& o) {
-			id = o.id;
-			return *this;
-		};
-
-		std::string getStringId() const {
-			return boost::lexical_cast<std::string>(id);
-		};
+		virtual bool isCollider() { return false; };
+		virtual SDL_Rect getBoundingBox() {
+			SDL_Rect box = { 0, 0, 0, 0 };
+			return box;
+		}
 };
 
 #endif
