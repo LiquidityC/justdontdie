@@ -23,12 +23,12 @@ void Character::render(SDL_Surface& surface) const
 	SDL_FillRect(&surface, &box, SDL_MapRGB(surface.format, 0xFF, 0xFF, 0xFF));
 }
 
-bool Character::isCollider()
+bool Character::isCollider() const
 {
 	return true;
 }
 
-SDL_Rect Character::getBoundingBox()
+SDL_Rect Character::getBoundingBox() const
 {
 	SDL_Rect box = { xpos, ypos, WIDTH, HEIGHT };
 	return box;

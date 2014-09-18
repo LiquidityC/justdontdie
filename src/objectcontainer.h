@@ -34,6 +34,17 @@ class ObjectContainer : public GameObject
 		void preRender();
 		void render(SDL_Surface&) const;
 		void postRender();
+
+		template <class Func>
+			bool checkAllObjects(Func func) const
+			{
+				for (auto it = objects.begin(); it != objects.end(); it++) {
+					if (func(it->second)) {
+						return true;
+					}
+				}
+				return false;
+			}
 };
 
 #endif

@@ -47,8 +47,8 @@ class GameObject
 		virtual void render(SDL_Surface& surface) const = 0;
 		virtual void postRender() = 0;
 
-		virtual bool isCollider() { return false; };
-		virtual SDL_Rect getBoundingBox() {
+		virtual bool isCollider() const { return false; };
+		virtual SDL_Rect getBoundingBox() const {
 			SDL_Rect box = { 0, 0, 0, 0 };
 			return box;
 		}
