@@ -1,6 +1,6 @@
-#include "character.h"
+#include "Ship.h"
 
-void Character::postHandle()
+void Ship::postHandle()
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 	if (currentKeyStates[SDL_SCANCODE_UP]) {
@@ -17,19 +17,14 @@ void Character::postHandle()
 	}
 }
 
-void Character::render(SDL_Surface& surface) const
+void Ship::render(SDL_Surface& surface) const
 {
 	SDL_Rect box = { xpos, ypos, WIDTH, HEIGHT };
-	SDL_FillRect(&surface, &box, SDL_MapRGB(surface.format, 0xFF, 0xFF, 0xFF));
+	SDL_FillRect(&surface, &box, SDL_MapRGB(surface.format, 0x00, 0xCC, 0x00));
 }
 
-bool Character::isCollider() const
+SDL_Rect Ship::getBoundingBox() const
 {
-	return true;
-}
-
-SDL_Rect Character::getBoundingBox() const
-{
-	SDL_Rect box = { xpos, ypos, WIDTH, HEIGHT };
-	return box;
+	SDL_Rect rect = { xpos, ypos, WIDTH, HEIGHT };
+	return rect;
 }

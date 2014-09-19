@@ -3,7 +3,7 @@
 
 #include "gameobject.h"
 
-class Character : public GameObject
+class Block : public GameObject
 {
 	private:
 		static const unsigned int WIDTH = 10;
@@ -12,11 +12,11 @@ class Character : public GameObject
 		int xpos, ypos;
 
 	public:
-		Character(unsigned int x, unsigned int y) : xpos(x), ypos(y) { };
+		Block(unsigned int x, unsigned int y) : xpos(x), ypos(y) { };
 
-		void preHandle() { }; // Do nothing, override
+		void preHandle(); // Do nothing, override
 		void handle(const SDL_Event& event) { } // Do nothing, override
-		void postHandle();
+		void postHandle() { }; // Do nothing, override
 
 		void preRender() { }; // Do nothing, override
 		void render(SDL_Surface& surface) const;

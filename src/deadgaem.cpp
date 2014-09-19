@@ -4,11 +4,11 @@
 #include "CompContainer.h"
 #include "objectcontainer.h"
 #include "timer.h"
-#include "character.h"
+#include "Ship.h"
 
 const int SCREEN_WIDTH 				= 800;
 const int SCREEN_HEIGHT 			= 600;
-const int SCREEN_FPS 				= 20;
+const int SCREEN_FPS 				= 60;
 const int SCREEN_TICKS_PER_FRAME 	= 1000 / SCREEN_FPS;
 
 int main( int argc, char* args[] )
@@ -43,10 +43,9 @@ int main( int argc, char* args[] )
 
 	Timer fpsCapTimer;
 
-	Character* character = new Character(200, 200);
-
+	Ship* ship = new Ship(200, 200);
 	ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
-	objectContainer.registerObject(character);
+	objectContainer.registerObject(ship);
 
 	// Main loop
 	while (!quit) {
@@ -76,6 +75,13 @@ int main( int argc, char* args[] )
 
 		// Update the screen
 		SDL_UpdateWindowSurface( window );
+
+		if (CompContainer::getInstance().getCollisionDetector().checkForCollisions(ship)) {
+			break;
+		}
+
+		CompContainer::getInstance().getPathGenerator().generatePath(SCREEN_WIDTH, SCREEN_HEIGHT);
+		objectContainer.cleanNonVisibleObjects(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		// Cap the frame rate
 		int frameTicks = fpsCapTimer.getTicks();

@@ -35,6 +35,8 @@ class ObjectContainer : public GameObject
 		void render(SDL_Surface&) const;
 		void postRender();
 
+		void cleanNonVisibleObjects(int, int);
+
 		template <class Func>
 			bool checkAllObjects(Func func) const
 			{
