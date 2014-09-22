@@ -5,21 +5,16 @@ CC			= g++
 endif
 
 CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
-			  -include src/NewMacro.h
+			  -I./flat-2d/include -include src/NewMacro.h
 LD			= g++
-LDFLAGS 	= 
-AR			= ar
-ARFLAGS		= rcs
+LDFLAGS 	= -L./flat-2d/lib/
 RM			= rm
-CP			= cp
-ECHO		= echo -e
-SHELL		= /bin/sh
-CTAGS		= ctags
+ECHO		= echo
 
-LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt
+LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt -lflat-2d
 
 OBJDIR				= obj
-DEPS				= 
+DEPS				= $(wildcard src/*.h)
 EXECUTABLE 			= deadgaem
 PROG_SOURCES 		= $(wildcard src/*.cpp)
 PROG_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(PROG_SOURCES:.cpp=.o)))
@@ -28,12 +23,16 @@ TEST				= test
 TEST_SOURCES 		= $(filter-out src/deadgaem.cpp,$(wildcard src/*.cpp)) $(wildcard testsrc/*.cpp)
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
+LIBRARIES			= flat-2d
+
+.PHONY: $(LIBRARIES) clean
+
 default: $(EXECUTABLE)
 
 all: $(EXECUTABLE) $(TEST)
 
-$(EXECUTABLE): $(PROG_OBJECTS) $(DEPS)
-	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
+$(EXECUTABLE): $(LIBRARIES) $(PROG_OBJECTS) $(DEPS)
+	$(LD) $(LDFLAGS) $(PROG_OBJECTS) $(LIBS) -o $@ 
 
 check: $(TEST)
 	./$(TEST) -v -c
@@ -41,8 +40,8 @@ check: $(TEST)
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
 
-$(TEST): $(TEST_OBJECTS) $(DEPS)
-	$(LD) $(LDFLAGS) $^ $(LIBS) -o $@
+$(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
+	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
 
 $(OBJDIR)/%.o: src/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
@@ -50,10 +49,9 @@ $(OBJDIR)/%.o: src/%.cpp
 $(OBJDIR)/%.o: testsrc/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
-#$(PROG_OBJECTS): $(OBJDIR)
-#
-#$(OBJDIR):
-#	mkdir $(OBJDIR)
+$(LIBRARIES):
+	$(MAKE) -C $@ 
 
 clean:
 	$(RM) -f $(EXECUTABLE) $(TEST) $(PROG_OBJECTS) $(TEST_OBJECTS)
+	for d in $(LIBRARIES); do (cd $$d; $(MAKE) clean ); done

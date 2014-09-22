@@ -1,9 +1,9 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <flat-2d/Timer.h>
 
 #include "CompContainer.h"
 #include "ObjectContainer.h"
-#include "Timer.h"
 #include "Ship.h"
 
 const int SCREEN_WIDTH 				= 800;

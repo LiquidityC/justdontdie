@@ -1,7 +1,7 @@
 #ifndef _CHARACTER_H
 #define _CHARACTER_H
 
-#include "GameObject.h"
+#include <flat-2d/GameObject.h>
 
 class Block : public GameObject
 {

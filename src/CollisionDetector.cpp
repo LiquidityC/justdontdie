@@ -1,6 +1,7 @@
+#include <flat-2d/GameObject.h>
+
 #include "CollisionDetector.h"
 #include "ObjectContainer.h"
-#include "GameObject.h"
 
 CollisionDetector::CollisionDetector(ObjectContainer* objectContainer) {
 	this->objectContainer = objectContainer;

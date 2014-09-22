@@ -1,6 +1,8 @@
 #ifndef _PATH_GENERATOR_H
 #define _PATH_GENERATOR_H
 
+#include <cstdio>
+
 class ObjectContainer;
 class Block;
 
