@@ -4,7 +4,7 @@
 #include <iostream>
 #include <map>
 
-#include "gameobject.h"
+#include "GameObject.h"
 
 class ObjectContainer : public GameObject
 {

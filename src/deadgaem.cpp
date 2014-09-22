@@ -2,8 +2,8 @@
 #include <SDL2/SDL.h>
 
 #include "CompContainer.h"
-#include "objectcontainer.h"
-#include "timer.h"
+#include "ObjectContainer.h"
+#include "Timer.h"
 #include "Ship.h"
 
 const int SCREEN_WIDTH 				= 800;

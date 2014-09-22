@@ -1,7 +1,7 @@
 #ifndef _CHARACTER_H
 #define _CHARACTER_H
 
-#include "gameobject.h"
+#include "GameObject.h"
 
 class Block : public GameObject
 {

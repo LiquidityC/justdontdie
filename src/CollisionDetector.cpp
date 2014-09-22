@@ -1,6 +1,6 @@
 #include "CollisionDetector.h"
-#include "objectcontainer.h"
-#include "gameobject.h"
+#include "ObjectContainer.h"
+#include "GameObject.h"
 
 CollisionDetector::CollisionDetector(ObjectContainer* objectContainer) {
 	this->objectContainer = objectContainer;

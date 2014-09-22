@@ -1,7 +1,7 @@
 #ifndef _COMP_CONTAINER_H
 #define _COMP_CONTAINER_H
 
-#include "objectcontainer.h"
+#include "ObjectContainer.h"
 #include "CollisionDetector.h"
 #include "PathGenerator.h"
 

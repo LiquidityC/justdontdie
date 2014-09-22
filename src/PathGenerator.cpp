@@ -2,7 +2,7 @@
 #include <cstdlib>
 
 #include "PathGenerator.h"
-#include "objectcontainer.h"
+#include "ObjectContainer.h"
 #include "Block.h"
 
 void PathGenerator::generatePath(int screenWidth, int screenHeight)

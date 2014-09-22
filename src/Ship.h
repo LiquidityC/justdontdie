@@ -1,7 +1,7 @@
 #ifndef _SHIP_H
 #define _SHIP_H
 
-#include "gameobject.h"
+#include "GameObject.h"
 
 class Ship : public GameObject
 {

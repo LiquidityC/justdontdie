@@ -1,6 +1,6 @@
 #include <CppUTest/TestHarness.h>
 #include "../src/CollisionDetector.h"
-#include "../src/objectcontainer.h"
+#include "../src/ObjectContainer.h"
 #include "../src/Block.h"
 
 TEST_GROUP( CollisionDetectorTests )
