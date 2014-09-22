@@ -25,13 +25,13 @@ TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 LIBRARIES			= flat-2d
 
-.PHONY: $(LIBRARIES) clean
+.PHONY: $(LIBRARIES) $(OBJDIR) clean
 
 default: $(EXECUTABLE)
 
 all: $(EXECUTABLE) $(TEST)
 
-$(EXECUTABLE): $(LIBRARIES) $(PROG_OBJECTS) $(DEPS)
+$(EXECUTABLE): $(LIBRARIES) $(OBJDIR) $(PROG_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(PROG_OBJECTS) $(LIBS) -o $@ 
 
 check: $(TEST)
@@ -43,6 +43,9 @@ run: $(EXECUTABLE)
 $(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
 
+$(OBJDIR):
+	@if [ ! -d "$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
+
 $(OBJDIR)/%.o: src/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
@@ -53,5 +56,6 @@ $(LIBRARIES):
 	$(MAKE) -C $@ 
 
 clean:
-	$(RM) -f $(EXECUTABLE) $(TEST) $(PROG_OBJECTS) $(TEST_OBJECTS)
-	for d in $(LIBRARIES); do (cd $$d; $(MAKE) clean ); done
+	@$(ECHO) Cleaning project
+	@$(RM) -f $(EXECUTABLE) $(TEST) $(PROG_OBJECTS) $(TEST_OBJECTS)
+	@for d in $(LIBRARIES); do (cd $$d; $(MAKE) clean ); done

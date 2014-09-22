@@ -35,10 +35,11 @@ $(LIBRARY): $(LIB_OBJECTS) $(DEPS) $(LIB_INCLUDES)
 	$(AR) $(ARFLAGS) $@ $(LIB_OBJECTS)
 
 $(LIB_INCLUDE_DIR)/%.h: src/%.h
-	$(CP) $< $@
+	@$(CP) $< $@
 
 $(OBJDIR)/%.o: src/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
-	$(RM) -f $(LIBRARY) $(LIB_OBJECTS) $(LIB_INCLUDES)
+	@$(ECHO) Cleaning project
+	@$(RM) -f $(LIBRARY) $(LIB_OBJECTS) $(LIB_INCLUDES)
