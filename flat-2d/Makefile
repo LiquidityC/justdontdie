@@ -31,11 +31,14 @@ default: $(LIBRARY)
 
 all: $(LIBRARY) $(TEST)
 
-$(LIBRARY): $(LIB_OBJECTS) $(DEPS) $(LIB_INCLUDES)
+$(LIBRARY): $(OBJDIR) $(LIB_OBJECTS) $(DEPS) $(LIB_INCLUDES)
 	$(AR) $(ARFLAGS) $@ $(LIB_OBJECTS)
 
 $(LIB_INCLUDE_DIR)/%.h: src/%.h
 	@$(CP) $< $@
+
+$(OBJDIR):
+	@if [ ! -d "$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
 
 $(OBJDIR)/%.o: src/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
