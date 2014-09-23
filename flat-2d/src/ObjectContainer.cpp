@@ -74,6 +74,10 @@ void ObjectContainer::cleanNonVisibleObjects(int screenWidth, int screenHeight)
 	std::vector<std::string> itemsToErase;
 
 	for (auto it = objects.begin(); it != objects.end(); it++) {
+		if (!it->second->isCollider()) {
+			continue;
+		}
+
 		SDL_Rect box = it->second->getBoundingBox();
 		if (box.x + box.w > 0 && box.x < screenWidth) {
 			continue;

@@ -11,12 +11,13 @@ namespace flat2d
 		{
 			private:
 				int xpos, ypos;
-				unsigned int width, height;
+				int width, height;
 				std::function<void ()> onClick;
+				bool mouseIsOver = false;
 
 			public:
 				Button(int x, int y, unsigned int w, unsigned int h, std::function<void ()> click) 
-					: xpos(x), ypos(y), width(w), height(h), onClick(click) { };
+					: GameObject(), xpos(x), ypos(y), width(w), height(h), onClick(click) { };
 
 				~Button() { };
 

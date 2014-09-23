@@ -13,7 +13,7 @@ class Ship : public flat2d::GameObject
 
 	public:
 
-		Ship(unsigned int x, unsigned int y) : xpos(x), ypos(y) { };
+		Ship(unsigned int x, unsigned int y) : GameObject(), xpos(x), ypos(y) { };
 
 		void preHandle() { }; // Do nothing, override
 		void handle(const SDL_Event& event) { } // Do nothing, override

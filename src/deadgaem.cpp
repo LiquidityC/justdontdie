@@ -35,7 +35,7 @@ int main( int argc, char* args[] )
 		return -1;
 	}
 
-	SDL_ShowCursor(0);
+	//SDL_ShowCursor(0);
 	renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
 	if (renderer == NULL) {
 		std::cerr << "Renderer could not be created: " << SDL_GetError() << std::endl;
@@ -47,6 +47,7 @@ int main( int argc, char* args[] )
 	flat2d::Timer fpsCapTimer;
 
 	flat2d::GameObject* ship = new Ship(200, 200);
+
 	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
 	objectContainer.registerObject(ship);
 

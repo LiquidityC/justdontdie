@@ -11,7 +11,7 @@ LDFLAGS 	= -L./flat-2d/lib/
 RM			= rm
 ECHO		= echo
 
-LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt -lflat-2d -lflat-2d-ui
+LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt -lflat-2d
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h)
@@ -27,7 +27,7 @@ LIBRARIES			= flat-2d
 
 .PHONY: $(LIBRARIES) $(OBJDIR)
 
-default: $(EXECUTABLE)
+default: libs $(EXECUTABLE)
 
 dirs: $(OBJDIR)
 
@@ -44,10 +44,10 @@ check: $(TEST)
 checkall: check
 	@for d in $(LIBRARIES); do (cd $$d; $(MAKE) check ); done
 
-$(EXECUTABLE): $(PROG_OBJECTS) $(DEPS)
+$(EXECUTABLE): $(LIBRARIES) $(PROG_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(PROG_OBJECTS) $(LIBS) -o $@ 
 
-$(TEST): $(TEST_OBJECTS) $(DEPS)
+$(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
 
 $(OBJDIR):
