@@ -56,7 +56,7 @@ $(OBJDIR)/%.o: testsrc/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
 $(LIBRARIES):
-	$(MAKE) -C $@ 
+	@$(MAKE) -C $@ 
 
 clean:
 	@$(ECHO) Cleaning project

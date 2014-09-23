@@ -19,13 +19,14 @@ CTAGS		= ctags
 LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt
 
 DEPS				= $(wildcard src/*.h) $(wildcard uisrc/*.h)
-OBJDIR			= obj
+OBJDIR				= obj
+LIBDIR				= lib
 
-LIBRARY_MAIN 		= lib/libflat-2d.a
+LIBRARY_MAIN 		= $(LIBDIR)/libflat-2d.a
 LIB_MAIN_SOURCES	= $(wildcard src/*.cpp)
 LIB_MAIN_OBJECTS	= $(addprefix $(OBJDIR)/,$(notdir $(LIB_MAIN_SOURCES:.cpp=.o)))
 
-LIBRARY_UI 			= lib/libflat-2d-ui.a
+LIBRARY_UI 			= $(LIBDIR)/libflat-2d-ui.a
 LIB_UI_SOURCES 		= $(wildcard uisrc/*.cpp)
 LIB_UI_OBJECTS		= $(addprefix $(OBJDIR)/,$(notdir $(LIB_UI_SOURCES:.cpp=.o)))
 
@@ -37,7 +38,7 @@ TEST				= test
 TEST_SOURCES 		= $(wildcard src/*.cpp) $(wildcard testsrc/*.cpp) $(wildcard uisrc/*.cpp)
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
-.PHONY: $(OBJDIR) $(OBJDIR)
+.PHONY: $(OBJDIR) $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR)
 
 default: $(LIBRARY_MAIN) $(LIBRARY_UI)
 
@@ -55,14 +56,20 @@ $(LIB_INCLUDE_DIR)/%.h: uisrc/%.h
 $(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
 
-$(LIBRARY_MAIN): $(OBJDIR) $(LIB_MAIN_OBJECTS) $(DEPS) $(LIB_INCLUDES)
+$(LIBRARY_MAIN): $(OBJDIR) $(LIB_MAIN_OBJECTS) $(DEPS) $(LIB_INCLUDE_DIR) $(LIB_INCLUDES) $(LIBDIR)
 	$(AR) $(ARFLAGS) $@ $(LIB_MAIN_OBJECTS)
 
-$(LIBRARY_UI): $(OBJDIR) $(LIB_UI_OBJECTS) $(DEPS) $(LIB_INCLUDES)
+$(LIBRARY_UI): $(OBJDIR) $(LIB_UI_OBJECTS) $(DEPS) $(LIB_INCLUDE_DIR) $(LIB_INCLUDES) $(LIBDIR)
 	$(AR) $(ARFLAGS) $@ $(LIB_UI_OBJECTS)
 
 $(OBJDIR):
 	@if [ ! -d "$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
+
+$(LIBDIR):
+	@if [ ! -d "$(LIBDIR)" ]; then mkdir $(LIBDIR); fi
+
+$(LIB_INCLUDE_DIR):
+	@if [ ! -d "$(LIB_INCLUDE_DIR)" ]; then mkdir -p $(LIB_INCLUDE_DIR); fi
 
 $(OBJDIR)/%.o: src/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
