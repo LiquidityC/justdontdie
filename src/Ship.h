@@ -20,7 +20,7 @@ class Ship : public GameObject
 		void postHandle();
 
 		void preRender() { }; // Do nothing, override
-		void render(SDL_Surface& surface) const;
+		void render(SDL_Renderer*) const;
 		void postRender() { }; // Do nothing, override
 
 		bool isCollider() const { return true; }

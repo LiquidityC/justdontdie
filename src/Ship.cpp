@@ -17,10 +17,11 @@ void Ship::postHandle()
 	}
 }
 
-void Ship::render(SDL_Surface& surface) const
+void Ship::render(SDL_Renderer* renderer) const
 {
+	SDL_SetRenderDrawColor( renderer, 0x00, 0xCC, 0x00, 0xFF );
 	SDL_Rect box = { xpos, ypos, WIDTH, HEIGHT };
-	SDL_FillRect(&surface, &box, SDL_MapRGB(surface.format, 0x00, 0xCC, 0x00));
+	SDL_RenderFillRect(renderer, &box);
 }
 
 SDL_Rect Ship::getBoundingBox() const

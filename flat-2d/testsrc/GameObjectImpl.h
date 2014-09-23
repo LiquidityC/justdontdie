@@ -14,12 +14,12 @@ class GameObjectImpl : public GameObject
 	public:
 		GameObjectImpl(unsigned int x, unsigned int y) : xpos(x), ypos(y) { };
 
-		void preHandle(); // Do nothing, override
+		void preHandle() { }; // Do nothing, override
 		void handle(const SDL_Event& event) { } // Do nothing, override
 		void postHandle() { }; // Do nothing, override
 
 		void preRender() { }; // Do nothing, override
-		void render(SDL_Surface& surface) const;
+		void render(SDL_Renderer* renderer) const { }; // Nothing, we don't render in test
 		void postRender() { }; // Do nothing, override
 
 		bool isCollider() const;

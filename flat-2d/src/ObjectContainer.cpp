@@ -49,10 +49,10 @@ void ObjectContainer::preRender()
 	}
 }
 
-void ObjectContainer::render(SDL_Surface& surface) const
+void ObjectContainer::render(SDL_Renderer* renderer) const
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
-		it->second->render(surface);
+		it->second->render(renderer);
 	}
 }
 

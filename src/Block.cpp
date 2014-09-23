@@ -5,10 +5,11 @@ void Block::preHandle()
 	ypos -= 5;
 }
 
-void Block::render(SDL_Surface& surface) const
+void Block::render(SDL_Renderer* renderer) const
 {
+	SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
 	SDL_Rect box = { xpos, ypos, WIDTH, HEIGHT };
-	SDL_FillRect(&surface, &box, SDL_MapRGB(surface.format, 0xFF, 0xFF, 0xFF));
+	SDL_RenderFillRect(renderer, &box);
 }
 
 bool Block::isCollider() const

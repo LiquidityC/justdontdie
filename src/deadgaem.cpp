@@ -14,7 +14,7 @@ const int SCREEN_TICKS_PER_FRAME 	= 1000 / SCREEN_FPS;
 int main( int argc, char* args[] )
 {
 	SDL_Window* window = NULL;
-	SDL_Surface* screenSurface = NULL;
+	SDL_Renderer* renderer = NULL;
 
 	if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
 		std::cerr << "Failed to init video: " 
@@ -36,14 +36,17 @@ int main( int argc, char* args[] )
 	}
 
 	SDL_ShowCursor(0);
-	screenSurface = SDL_GetWindowSurface( window );
+	renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
+	if (renderer == NULL) {
+		std::cerr << "Renderer could not be created: " << SDL_GetError() << std::endl;
+	}
 
 	bool quit = false;
 	SDL_Event e;
 
 	Timer fpsCapTimer;
 
-	Ship* ship = new Ship(200, 200);
+	GameObject* ship = new Ship(200, 200);
 	ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
 	objectContainer.registerObject(ship);
 
@@ -63,18 +66,17 @@ int main( int argc, char* args[] )
 		}
 		objectContainer.postHandle();
 
-		// Color surface black, temporary until more is rendered.
-		SDL_Rect fillRect = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
-		SDL_FillRect(screenSurface, &fillRect,
-					SDL_MapRGB(screenSurface->format, 0x00, 0x00, 0x00));
+		// Clear screen to black
+		SDL_SetRenderDrawColor( renderer, 0x0, 0x0, 0x0, 0xFF );
+		SDL_RenderClear( renderer );
 
 		// Render
 		objectContainer.preRender();
-		objectContainer.render(*screenSurface);
+		objectContainer.render(renderer);
 		objectContainer.postRender();
 
 		// Update the screen
-		SDL_UpdateWindowSurface( window );
+		SDL_RenderPresent( renderer );
 
 		if (CompContainer::getInstance().getCollisionDetector().checkForCollisions(ship)) {
 			break;

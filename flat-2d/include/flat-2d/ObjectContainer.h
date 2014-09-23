@@ -32,7 +32,7 @@ class ObjectContainer : public GameObject
 
 		// Renderable override
 		void preRender();
-		void render(SDL_Surface&) const;
+		void render(SDL_Renderer*) const;
 		void postRender();
 
 		void cleanNonVisibleObjects(int, int);

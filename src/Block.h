@@ -1,5 +1,5 @@
-#ifndef _CHARACTER_H
-#define _CHARACTER_H
+#ifndef _BLOCK_H
+#define _BLOCK_H
 
 #include <flat-2d/GameObject.h>
 
@@ -19,7 +19,7 @@ class Block : public GameObject
 		void postHandle() { }; // Do nothing, override
 
 		void preRender() { }; // Do nothing, override
-		void render(SDL_Surface& surface) const;
+		void render(SDL_Renderer* renderer) const;
 		void postRender() { }; // Do nothing, override
 
 		bool isCollider() const;
