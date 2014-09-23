@@ -1,5 +1,4 @@
-#include <flat-2d/GameObject.h>
-
+#include "GameObject.h"
 #include "CollisionDetector.h"
 #include "ObjectContainer.h"
 

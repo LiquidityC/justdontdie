@@ -1,27 +1,27 @@
 #include <CppUTest/TestHarness.h>
+#include "GameObjectImpl.h"
 #include "../src/CollisionDetector.h"
 #include "../src/ObjectContainer.h"
-#include "../src/Block.h"
 
 TEST_GROUP( CollisionDetectorTests )
 {
 	ObjectContainer* container;
 	CollisionDetector* detector;
 
-		Block* c1;
-		Block* c2;
-		Block* c3;
-		Block* c4;
+		GameObject* c1;
+		GameObject* c2;
+		GameObject* c3;
+		GameObject* c4;
 
 	void setup()
 	{
 		container = new ObjectContainer();
 		detector = new CollisionDetector(container);
 
-		c1 = new Block(100, 100);
-		c2 = new Block(200, 100);
-		c3 = new Block(200, 200);
-		c4 = new Block(105, 105);
+		c1 = new GameObjectImpl(100, 100);
+		c2 = new GameObjectImpl(200, 100);
+		c3 = new GameObjectImpl(200, 200);
+		c4 = new GameObjectImpl(105, 105);
 
 		container->registerObject(c1);
 		container->registerObject(c2);

@@ -1,6 +1,6 @@
 #include <CppUTest/TestHarness.h>
+#include "GameObjectImpl.h"
 #include "../src/ObjectContainer.h"
-#include "../src/Block.h"
 
 TEST_GROUP( ObjectContainerTests )
 {
@@ -8,7 +8,7 @@ TEST_GROUP( ObjectContainerTests )
 
 TEST( ObjectContainerTests, TestObjectRegister )
 {
-	Block* c = new Block(100, 100);
+	GameObject* c = new GameObjectImpl(100, 100);
 	ObjectContainer container;
 
 	CHECK_EQUAL( 0, container.getObjectCount() );
@@ -24,7 +24,7 @@ TEST( ObjectContainerTests, TestObjectRegister )
 
 TEST( ObjectContainerTests, TestObjectContainerDestructor )
 {
-	Block* c = new Block(100, 100);
+	GameObject* c = new GameObjectImpl(100, 100);
 	ObjectContainer* container = new ObjectContainer();
 
 	CHECK_EQUAL( 0, container->getObjectCount() );
@@ -42,7 +42,7 @@ TEST( ObjectContainerTests, TestObjectContainerDestructor )
 
 TEST( ObjectContainerTests, TestObjectContainerUnregister )
 {
-	Block* c = new Block(100, 100);
+	GameObject* c = new GameObjectImpl(100, 100);
 	ObjectContainer container;
 
 	container.unregisterObject(c);
@@ -55,14 +55,14 @@ TEST (ObjectContainerTests, TestSelfCleaning )
 	ObjectContainer container;
 
 	// Should not be cleared
-	container.registerObject(new Block(-5, -5));
-	container.registerObject(new Block(95, 95));
-	container.registerObject(new Block(50, 50));
+	container.registerObject(new GameObjectImpl(-5, -5));
+	container.registerObject(new GameObjectImpl(95, 95));
+	container.registerObject(new GameObjectImpl(50, 50));
 
 	// Chould be cleared
-	container.registerObject(new Block(101, 101));
-	container.registerObject(new Block(-100, -100));
-	container.registerObject(new Block(105, 105));
+	container.registerObject(new GameObjectImpl(101, 101));
+	container.registerObject(new GameObjectImpl(-100, -100));
+	container.registerObject(new GameObjectImpl(105, 105));
 
 	CHECK_EQUAL( 6, container.getObjectCount() );
 

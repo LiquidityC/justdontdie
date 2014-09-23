@@ -1,8 +1,9 @@
 #ifndef _COMP_CONTAINER_H
 #define _COMP_CONTAINER_H
 
-#include "ObjectContainer.h"
-#include "CollisionDetector.h"
+#include <flat-2d/ObjectContainer.h>
+#include <flat-2d/CollisionDetector.h>
+
 #include "PathGenerator.h"
 
 class CompContainer

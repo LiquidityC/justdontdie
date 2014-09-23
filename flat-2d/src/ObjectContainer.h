@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include <map>
-#include <flat-2d/GameObject.h>
+
+#include "GameObject.h"
 
 class ObjectContainer : public GameObject
 {

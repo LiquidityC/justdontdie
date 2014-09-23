@@ -4,7 +4,8 @@ else
 CC			= g++
 endif
 
-CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11
+CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
+			  -include src/NewMacro.h
 LD			= g++
 LDFLAGS 	= 
 AR			= ar
@@ -27,9 +28,16 @@ LIB_INCLUDE_DIR		= include/flat-2d
 LIB_INCLUDE_SOURCES	= $(wildcard src/*.h)
 LIB_INCLUDES		= $(addprefix $(LIB_INCLUDE_DIR)/,$(notdir $(LIB_INCLUDE_SOURCES:.cpp=.o)))
 
+TEST				= test
+TEST_SOURCES 		= $(wildcard src/*.cpp) $(wildcard testsrc/*.cpp)
+TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
+
 default: $(LIBRARY)
 
 all: $(LIBRARY) $(TEST)
+
+check: $(TEST)
+	./$(TEST) -v -c
 
 $(LIBRARY): $(OBJDIR) $(LIB_OBJECTS) $(DEPS) $(LIB_INCLUDES)
 	$(AR) $(ARFLAGS) $@ $(LIB_OBJECTS)
@@ -37,10 +45,16 @@ $(LIBRARY): $(OBJDIR) $(LIB_OBJECTS) $(DEPS) $(LIB_INCLUDES)
 $(LIB_INCLUDE_DIR)/%.h: src/%.h
 	@$(CP) $< $@
 
+$(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
+	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
+
 $(OBJDIR):
 	@if [ ! -d "$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
 
 $(OBJDIR)/%.o: src/%.cpp
+	$(CC) $(CFLAGS) $< -o $@
+
+$(OBJDIR)/%.o: testsrc/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
