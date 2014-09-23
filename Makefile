@@ -11,7 +11,7 @@ LDFLAGS 	= -L./flat-2d/lib/
 RM			= rm
 ECHO		= echo
 
-LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt -lflat-2d
+LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt -lflat-2d -lflat-2d-ui
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h)

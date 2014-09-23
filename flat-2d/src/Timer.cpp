@@ -1,6 +1,8 @@
 #include <SDL2/SDL.h>
 #include "Timer.h"
 
+using namespace flat2d;
+
 Timer::Timer()
 {
 	started = false;

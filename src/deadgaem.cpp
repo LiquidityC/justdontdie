@@ -44,7 +44,7 @@ int main( int argc, char* args[] )
 	bool quit = false;
 	SDL_Event e;
 
-	Timer fpsCapTimer;
+	flat2d::Timer fpsCapTimer;
 
 	flat2d::GameObject* ship = new Ship(200, 200);
 	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();

@@ -1,26 +1,29 @@
 #ifndef _TIMER_H
 #define _TIMER_H
 
-class Timer
+namespace flat2d 
 {
-	public:
-		Timer();
+	class Timer
+	{
+		public:
+			Timer();
 
-		void start();
-		void stop();
-		void pause();
-		void unpause();
+			void start();
+			void stop();
+			void pause();
+			void unpause();
 
-		Uint32 getTicks();
+			Uint32 getTicks();
 
-		bool isStarted();
-		bool isPaused();
+			bool isStarted();
+			bool isPaused();
 
-	private:
+		private:
 
-		Uint32 startTicks, pausedTicks;
+			Uint32 startTicks, pausedTicks;
 
-		bool paused, started;
-};
+			bool paused, started;
+	};
+}
 
 #endif

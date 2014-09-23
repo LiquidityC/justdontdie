@@ -18,35 +18,48 @@ CTAGS		= ctags
 
 LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt
 
-OBJDIR				= obj
-DEPS				= $(wildcard src/*.h)
-LIB_SOURCES 		= $(wildcard src/*.cpp)
-LIB_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(LIB_SOURCES:.cpp=.o)))
+DEPS				= $(wildcard src/*.h) $(wildcard uisrc/*.h)
+OBJDIR			= obj
 
-LIBRARY 			= lib/libflat-2d.a
+LIBRARY_MAIN 		= lib/libflat-2d.a
+LIB_MAIN_SOURCES	= $(wildcard src/*.cpp)
+LIB_MAIN_OBJECTS	= $(addprefix $(OBJDIR)/,$(notdir $(LIB_MAIN_SOURCES:.cpp=.o)))
+
+LIBRARY_UI 			= lib/libflat-2d-ui.a
+LIB_UI_SOURCES 		= $(wildcard uisrc/*.cpp)
+LIB_UI_OBJECTS		= $(addprefix $(OBJDIR)/,$(notdir $(LIB_UI_SOURCES:.cpp=.o)))
+
 LIB_INCLUDE_DIR		= include/flat-2d
-LIB_INCLUDE_SOURCES	= $(wildcard src/*.h)
-LIB_INCLUDES		= $(addprefix $(LIB_INCLUDE_DIR)/,$(notdir $(LIB_INCLUDE_SOURCES:.cpp=.o)))
+LIB_INCLUDE_SOURCES	= $(wildcard src/*.h) $(wildcard uisrc/*.h)
+LIB_INCLUDES		= $(addprefix $(LIB_INCLUDE_DIR)/,$(notdir $(LIB_INCLUDE_SOURCES)))
 
 TEST				= test
-TEST_SOURCES 		= $(wildcard src/*.cpp) $(wildcard testsrc/*.cpp)
+TEST_SOURCES 		= $(wildcard src/*.cpp) $(wildcard testsrc/*.cpp) $(wildcard uisrc/*.cpp)
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
-default: $(LIBRARY)
+.PHONY: $(OBJDIR) $(OBJDIR)
 
-all: $(LIBRARY) $(TEST)
+default: $(LIBRARY_MAIN) $(LIBRARY_UI)
+
+all: $(LIBRARY_MAIN) $(LIBRARY_UI) $(TEST)
 
 check: $(TEST)
 	./$(TEST) -v -c
 
-$(LIBRARY): $(OBJDIR) $(LIB_OBJECTS) $(DEPS) $(LIB_INCLUDES)
-	$(AR) $(ARFLAGS) $@ $(LIB_OBJECTS)
-
 $(LIB_INCLUDE_DIR)/%.h: src/%.h
+	@$(CP) $< $@
+
+$(LIB_INCLUDE_DIR)/%.h: uisrc/%.h
 	@$(CP) $< $@
 
 $(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
+
+$(LIBRARY_MAIN): $(OBJDIR) $(LIB_MAIN_OBJECTS) $(DEPS) $(LIB_INCLUDES)
+	$(AR) $(ARFLAGS) $@ $(LIB_MAIN_OBJECTS)
+
+$(LIBRARY_UI): $(OBJDIR) $(LIB_UI_OBJECTS) $(DEPS) $(LIB_INCLUDES)
+	$(AR) $(ARFLAGS) $@ $(LIB_UI_OBJECTS)
 
 $(OBJDIR):
 	@if [ ! -d "$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
@@ -54,9 +67,12 @@ $(OBJDIR):
 $(OBJDIR)/%.o: src/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
+$(OBJDIR)/%.o: uisrc/%.cpp
+	$(CC) $(CFLAGS) $< -o $@
+
 $(OBJDIR)/%.o: testsrc/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
 clean:
 	@$(ECHO) Cleaning project
-	@$(RM) -f $(LIBRARY) $(LIB_OBJECTS) $(LIB_INCLUDES)
+	@$(RM) -f $(LIBRARY_MAIN) $(LIBRARY_UI) $(LIB_MAIN_OBJECTS) $(LIB_UI_OBJECTS) $(LIB_INCLUDES)
