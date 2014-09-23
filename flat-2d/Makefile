@@ -38,9 +38,11 @@ TEST				= test
 TEST_SOURCES 		= $(wildcard src/*.cpp) $(wildcard testsrc/*.cpp) $(wildcard uisrc/*.cpp)
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
-.PHONY: $(OBJDIR) $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR)
+.PHONY: $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR)
 
-default: $(LIBRARY_MAIN) $(LIBRARY_UI)
+default: $(LIBRARY_MAIN) $(LIBRARY_UI) $(LIB_INCLUDES)
+
+dirs: $(OBJDIR) $(LIB_INCLUDE_DIR) $(LIBDIR)
 
 all: $(LIBRARY_MAIN) $(LIBRARY_UI) $(TEST)
 
@@ -56,10 +58,10 @@ $(LIB_INCLUDE_DIR)/%.h: uisrc/%.h
 $(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
 
-$(LIBRARY_MAIN): $(OBJDIR) $(LIB_MAIN_OBJECTS) $(DEPS) $(LIB_INCLUDE_DIR) $(LIB_INCLUDES) $(LIBDIR)
+$(LIBRARY_MAIN): $(LIB_MAIN_OBJECTS) $(DEPS)
 	$(AR) $(ARFLAGS) $@ $(LIB_MAIN_OBJECTS)
 
-$(LIBRARY_UI): $(OBJDIR) $(LIB_UI_OBJECTS) $(DEPS) $(LIB_INCLUDE_DIR) $(LIB_INCLUDES) $(LIBDIR)
+$(LIBRARY_UI): $(LIB_UI_OBJECTS) $(DEPS)
 	$(AR) $(ARFLAGS) $@ $(LIB_UI_OBJECTS)
 
 $(OBJDIR):

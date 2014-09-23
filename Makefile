@@ -25,11 +25,15 @@ TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 LIBRARIES			= flat-2d
 
-.PHONY: $(LIBRARIES) $(OBJDIR) cleanall clean default all check checkall
+.PHONY: $(LIBRARIES) $(OBJDIR)
 
 default: $(EXECUTABLE)
 
-all: $(EXECUTABLE) $(TEST)
+dirs: $(OBJDIR)
+
+libs: $(LIBRARIES)
+
+all: dirs libs default checkall
 
 run: $(EXECUTABLE)
 	./$(EXECUTABLE)
@@ -40,10 +44,10 @@ check: $(TEST)
 checkall: check
 	@for d in $(LIBRARIES); do (cd $$d; $(MAKE) check ); done
 
-$(EXECUTABLE): $(LIBRARIES) $(OBJDIR) $(PROG_OBJECTS) $(DEPS)
+$(EXECUTABLE): $(PROG_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(PROG_OBJECTS) $(LIBS) -o $@ 
 
-$(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
+$(TEST): $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
 
 $(OBJDIR):
