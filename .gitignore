@@ -1,5 +1,5 @@
 *.o
-flat-2d/include/flat-2d/*.a
-flat-2d/lib/*.a
+/flat-2d/include
+/flat-2d/lib
 deadgaem
 test
