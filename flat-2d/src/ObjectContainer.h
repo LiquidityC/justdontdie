@@ -6,47 +6,51 @@
 
 #include "GameObject.h"
 
-class ObjectContainer : public GameObject
+namespace flat2d
 {
-	private:
-		std::map<std::string, GameObject*> objects;
 
-	private:
-		ObjectContainer(const ObjectContainer&); // Don't implement
-		void operator=(const ObjectContainer&); // Don't implement
+	class ObjectContainer : public GameObject
+	{
+		private:
+			std::map<std::string, GameObject*> objects;
 
-	public:
+		private:
+			ObjectContainer(const ObjectContainer&); // Don't implement
+			void operator=(const ObjectContainer&); // Don't implement
 
-		ObjectContainer() { }; 
-		~ObjectContainer();
+		public:
 
-		void registerObject(GameObject*);
-		void unregisterObject(GameObject*);
+			ObjectContainer() { }; 
+			~ObjectContainer();
 
-		size_t getObjectCount();
+			void registerObject(GameObject*);
+			void unregisterObject(GameObject*);
 
-		// Eventhandler override
-		void preHandle();
-		void handle(const SDL_Event&);
-		void postHandle();
+			size_t getObjectCount();
 
-		// Renderable override
-		void preRender();
-		void render(SDL_Renderer*) const;
-		void postRender();
+			// Eventhandler override
+			void preHandle();
+			void handle(const SDL_Event&);
+			void postHandle();
 
-		void cleanNonVisibleObjects(int, int);
+			// Renderable override
+			void preRender();
+			void render(SDL_Renderer*) const;
+			void postRender();
 
-		template <class Func>
-			bool checkAllObjects(Func func) const
-			{
-				for (auto it = objects.begin(); it != objects.end(); it++) {
-					if (func(it->second)) {
-						return true;
+			void cleanNonVisibleObjects(int, int);
+
+			template <class Func>
+				bool checkAllObjects(Func func) const
+				{
+					for (auto it = objects.begin(); it != objects.end(); it++) {
+						if (func(it->second)) {
+							return true;
+						}
 					}
+					return false;
 				}
-				return false;
-			}
-};
+	};
+}
 
 #endif

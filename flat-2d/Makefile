@@ -19,7 +19,7 @@ CTAGS		= ctags
 LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt
 
 OBJDIR				= obj
-DEPS				= 
+DEPS				= $(wildcard src/*.h)
 LIB_SOURCES 		= $(wildcard src/*.cpp)
 LIB_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(LIB_SOURCES:.cpp=.o)))
 

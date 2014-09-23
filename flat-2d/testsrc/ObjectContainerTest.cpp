@@ -8,8 +8,8 @@ TEST_GROUP( ObjectContainerTests )
 
 TEST( ObjectContainerTests, TestObjectRegister )
 {
-	GameObject* c = new GameObjectImpl(100, 100);
-	ObjectContainer container;
+	flat2d::GameObject* c = new GameObjectImpl(100, 100);
+	flat2d::ObjectContainer container;
 
 	CHECK_EQUAL( 0, container.getObjectCount() );
 	container.registerObject(c);
@@ -24,8 +24,8 @@ TEST( ObjectContainerTests, TestObjectRegister )
 
 TEST( ObjectContainerTests, TestObjectContainerDestructor )
 {
-	GameObject* c = new GameObjectImpl(100, 100);
-	ObjectContainer* container = new ObjectContainer();
+	flat2d::GameObject* c = new GameObjectImpl(100, 100);
+	flat2d::ObjectContainer* container = new flat2d::ObjectContainer();
 
 	CHECK_EQUAL( 0, container->getObjectCount() );
 
@@ -42,8 +42,8 @@ TEST( ObjectContainerTests, TestObjectContainerDestructor )
 
 TEST( ObjectContainerTests, TestObjectContainerUnregister )
 {
-	GameObject* c = new GameObjectImpl(100, 100);
-	ObjectContainer container;
+	flat2d::GameObject* c = new GameObjectImpl(100, 100);
+	flat2d::ObjectContainer container;
 
 	container.unregisterObject(c);
 
@@ -52,7 +52,7 @@ TEST( ObjectContainerTests, TestObjectContainerUnregister )
 
 TEST (ObjectContainerTests, TestSelfCleaning ) 
 {
-	ObjectContainer container;
+	flat2d::ObjectContainer container;
 
 	// Should not be cleared
 	container.registerObject(new GameObjectImpl(-5, -5));

@@ -2,7 +2,10 @@
 #include "CollisionDetector.h"
 #include "ObjectContainer.h"
 
-CollisionDetector::CollisionDetector(ObjectContainer* objectContainer) {
+using namespace flat2d;
+
+CollisionDetector::CollisionDetector(ObjectContainer* objectContainer) 
+{
 	this->objectContainer = objectContainer;
 }
 

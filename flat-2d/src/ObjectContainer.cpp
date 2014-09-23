@@ -1,5 +1,7 @@
 #include "ObjectContainer.h"
 
+using namespace flat2d;
+
 ObjectContainer::~ObjectContainer()
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {

@@ -1,24 +1,27 @@
 #ifndef _COLLISION_DETECTOR_H
 #define _COLLISION_DETECTOR_H
 
-class ObjectContainer;
-class GameObject;
-
-class CollisionDetector
+namespace flat2d 
 {
+	class ObjectContainer;
+	class GameObject;
 
-	private:
-		ObjectContainer* objectContainer;
+	class CollisionDetector
+	{
 
-	public:
-		CollisionDetector(ObjectContainer* objectContainer);
+		private:
+			ObjectContainer* objectContainer;
 
-		bool checkForCollisions(const GameObject*) const;
-		bool hasCollided(const GameObject*, const GameObject*) const;
+		public:
+			CollisionDetector(ObjectContainer* objectContainer);
 
-	private:
-		CollisionDetector(const CollisionDetector&); // Don't implement, single instance
-		const CollisionDetector& operator=(const CollisionDetector& c); // Don't use, single instance
-};
+			bool checkForCollisions(const GameObject*) const;
+			bool hasCollided(const GameObject*, const GameObject*) const;
+
+		private:
+			CollisionDetector(const CollisionDetector&); // Don't implement, single instance
+			const CollisionDetector& operator=(const CollisionDetector& c); // Don't use, single instance
+	};
+}
 
 #endif

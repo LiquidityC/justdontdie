@@ -3,19 +3,22 @@
 
 #include <cstdio>
 
-class ObjectContainer;
+namespace flat2d
+{
+	class ObjectContainer;
+}
 class Block;
 
 class PathGenerator
 {
 	private:
-		ObjectContainer* objectContainer;
+		flat2d::ObjectContainer* objectContainer;
 		unsigned int pathWidth, pathGoalWidth, pathMaxWidth, turningRatio;
 		Block* leftBlock;
 		Block* rightBlock;
 
 	public:
-		PathGenerator(ObjectContainer* objectContainer) : pathWidth(100), pathGoalWidth(200), turningRatio(0) {
+		PathGenerator(flat2d::ObjectContainer* objectContainer) : pathWidth(100), pathGoalWidth(200), turningRatio(0) {
 			this->objectContainer = objectContainer;
 			leftBlock = NULL;
 			rightBlock = NULL;

@@ -3,7 +3,7 @@
 
 #include "../src/GameObject.h"
 
-class GameObjectImpl : public GameObject
+class GameObjectImpl : public flat2d::GameObject
 {
 	private:
 		static const unsigned int WIDTH = 10;

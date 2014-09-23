@@ -7,51 +7,55 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-class GameObject
+namespace flat2d 
 {
-	private:
-		boost::uuids::uuid id;
 
-	public:
+	class GameObject
+	{
+		private:
+			boost::uuids::uuid id;
 
-		/* Constructors and destructors */
-		GameObject() {
+		public:
 
-			/* Not providing ran creates valgrind warnings */
-			static boost::mt19937 ran;
-			id = boost::uuids::random_generator(ran)();
-		};
-		GameObject(const GameObject& o)	: id(o.id) { };
-		virtual ~GameObject() { };
+			/* Constructors and destructors */
+			GameObject() {
 
-		/* Operators */
-		virtual bool operator==(const GameObject& o) const {
-			return id == o.id;
-		};
+				/* Not providing ran creates valgrind warnings */
+				static boost::mt19937 ran;
+				id = boost::uuids::random_generator(ran)();
+			};
+			GameObject(const GameObject& o)	: id(o.id) { };
+			virtual ~GameObject() { };
 
-		virtual GameObject& operator=(const GameObject& o) {
-			id = o.id;
-			return *this;
-		};
+			/* Operators */
+			virtual bool operator==(const GameObject& o) const {
+				return id == o.id;
+			};
 
-		virtual std::string getStringId() const {
-			return boost::lexical_cast<std::string>(id);
-		};
+			virtual GameObject& operator=(const GameObject& o) {
+				id = o.id;
+				return *this;
+			};
 
-		/* Abstract methods */
-		virtual void preHandle() = 0;
-		virtual void handle(const SDL_Event& event) = 0;
-		virtual void postHandle() = 0;
+			virtual std::string getStringId() const {
+				return boost::lexical_cast<std::string>(id);
+			};
 
-		virtual void preRender() = 0;
-		virtual void render(SDL_Renderer* renderer) const = 0;
-		virtual void postRender() = 0;
+			/* Abstract methods */
+			virtual void preHandle() = 0;
+			virtual void handle(const SDL_Event& event) = 0;
+			virtual void postHandle() = 0;
 
-		virtual bool isCollider() const { return false; };
-		virtual SDL_Rect getBoundingBox() const {
-			SDL_Rect box = { 0, 0, 0, 0 };
-			return box;
-		}
-};
+			virtual void preRender() = 0;
+			virtual void render(SDL_Renderer* renderer) const = 0;
+			virtual void postRender() = 0;
+
+			virtual bool isCollider() const { return false; };
+			virtual SDL_Rect getBoundingBox() const {
+				SDL_Rect box = { 0, 0, 0, 0 };
+				return box;
+			}
+	};
+}
 
 #endif

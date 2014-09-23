@@ -9,8 +9,8 @@
 class CompContainer
 {
 	private:
-		ObjectContainer objectContainer;
-		CollisionDetector collisionDetector;
+		flat2d::ObjectContainer objectContainer;
+		flat2d::CollisionDetector collisionDetector;
 		PathGenerator pathGenerator;
 
 	private:
@@ -32,8 +32,8 @@ class CompContainer
 			return instance;
 		}
 
-		ObjectContainer& getObjectContainer() { return objectContainer; };
-		CollisionDetector& getCollisionDetector() { return collisionDetector; };
+		flat2d::ObjectContainer& getObjectContainer() { return objectContainer; };
+		flat2d::CollisionDetector& getCollisionDetector() { return collisionDetector; };
 		PathGenerator& getPathGenerator() { return pathGenerator; };
 };
 

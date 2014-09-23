@@ -3,7 +3,7 @@
 
 #include <flat-2d/GameObject.h>
 
-class Block : public GameObject
+class Block : public flat2d::GameObject
 {
 	private:
 		static const unsigned int WIDTH = 10;

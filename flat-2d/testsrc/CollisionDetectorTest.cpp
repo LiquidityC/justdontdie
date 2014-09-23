@@ -5,18 +5,18 @@
 
 TEST_GROUP( CollisionDetectorTests )
 {
-	ObjectContainer* container;
-	CollisionDetector* detector;
+	flat2d::ObjectContainer* container;
+	flat2d::CollisionDetector* detector;
 
-		GameObject* c1;
-		GameObject* c2;
-		GameObject* c3;
-		GameObject* c4;
+	flat2d::GameObject* c1;
+	flat2d::GameObject* c2;
+	flat2d::GameObject* c3;
+	flat2d::GameObject* c4;
 
 	void setup()
 	{
-		container = new ObjectContainer();
-		detector = new CollisionDetector(container);
+		container = new flat2d::ObjectContainer();
+		detector = new flat2d::CollisionDetector(container);
 
 		c1 = new GameObjectImpl(100, 100);
 		c2 = new GameObjectImpl(200, 100);

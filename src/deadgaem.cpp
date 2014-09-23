@@ -46,8 +46,8 @@ int main( int argc, char* args[] )
 
 	Timer fpsCapTimer;
 
-	GameObject* ship = new Ship(200, 200);
-	ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
+	flat2d::GameObject* ship = new Ship(200, 200);
+	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
 	objectContainer.registerObject(ship);
 
 	// Main loop
