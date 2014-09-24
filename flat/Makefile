@@ -4,19 +4,22 @@ else
 CC			= g++
 endif
 
-CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
-			  -include src/NewMacro.h
-LD			= g++
-LDFLAGS		=
-AR			= ar
-ARFLAGS		= rcs
-RM			= rm
-CP			= cp
-ECHO		= echo -e
-SHELL		= /bin/sh
-CTAGS		= ctags
+SDL2_LDFLAGS		:= $(shell sdl2-config --static-libs)
+SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
 
-LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt
+CFLAGS				= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
+					  -include src/NewMacro.h $(SDL2_CFLAGS)
+LD					= g++
+LDFLAGS				=
+AR					= ar
+ARFLAGS				= rcs
+RM					= rm
+CP					= cp
+ECHO				= echo -e
+SHELL				= /bin/sh
+CTAGS				= ctags
+
+LIBS 				= $(SDL2_LDFLAGS) -lCppUTest -lCppUTestExt
 
 DEPS				= $(wildcard src/*.h)
 OBJDIR				= obj

@@ -4,14 +4,16 @@ else
 CC			= g++
 endif
 
+SDL2_LDFLAGS		:= $(shell sdl2-config --static-libs)
+SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
+
 CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
-			  -I./flat/include -include src/NewMacro.h
+			  -I./flat/include -include src/NewMacro.h $(SDL2_CFLAGS)
 LD			= g++
 LDFLAGS 	= -L./flat/lib/
 RM			= rm
 ECHO		= echo
-
-LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt -lflat
+LIBS 				= $(SDL2_LDFLAGS) -lCppUTest -lCppUTestExt -lflat
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h)
