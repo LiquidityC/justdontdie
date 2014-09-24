@@ -74,4 +74,4 @@ $(OBJDIR)/%.o: testsrc/%.cpp
 
 clean:
 	@$(ECHO) Cleaning project
-	@$(RM) -f $(LIBRARY) $(LIBRARY_UI) $(LIB_OBJECTS) $(LIB_UI_OBJECTS) $(LIB_INCLUDES)
+	@$(RM) -f $(LIBRARY) $(TEST_OBJECTS) $(LIBRARY_UI) $(LIB_OBJECTS) $(LIB_UI_OBJECTS) $(LIB_INCLUDES)
