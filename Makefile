@@ -13,7 +13,9 @@ LD			= g++
 LDFLAGS 	= -L./flat/lib/
 RM			= rm
 ECHO		= echo
-LIBS 				= $(SDL2_LDFLAGS) -lCppUTest -lCppUTestExt -lflat
+CP			= cp
+MV			= mv
+LIBS 		= $(SDL2_LDFLAGS) -lCppUTest -lCppUTestExt -lflat
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h)
@@ -27,7 +29,7 @@ TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 LIBRARIES			= flat
 
-.PHONY: $(LIBRARIES) $(OBJDIR)
+.PHONY: $(LIBRARIES) $(OBJDIR) dist
 
 default: libs $(EXECUTABLE)
 
@@ -43,6 +45,9 @@ check: $(TEST)
 
 checkall: check
 	@for d in $(LIBRARIES); do (cd $$d; $(MAKE) check ); done
+
+dist: $(LIBRARIES) $(PROG_OBJECTS) $(DEPS)
+	$(LD) $(LDFLAGS) -Wl,-rpath,'.:lib/.' $(PROG_OBJECTS) $(LIBS) -o dist/$(EXECUTABLE)
 
 $(EXECUTABLE): $(LIBRARIES) $(PROG_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(PROG_OBJECTS) $(LIBS) -o $@ 
