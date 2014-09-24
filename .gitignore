@@ -1,4 +1,4 @@
-/flat/include/*.h
+/flat/include/flat/*.h
 /flat/lib/*.a
 /flat/obj/*.o
 /obj/*.o
