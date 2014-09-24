@@ -31,8 +31,6 @@ LIBRARIES			= flat
 
 default: libs $(EXECUTABLE)
 
-dirs: $(OBJDIR)
-
 libs: $(LIBRARIES)
 
 all: dirs libs default checkall
@@ -51,9 +49,6 @@ $(EXECUTABLE): $(LIBRARIES) $(PROG_OBJECTS) $(DEPS)
 
 $(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
-
-$(OBJDIR):
-	@if [ ! -d "$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
 
 $(OBJDIR)/%.o: src/%.cpp
 	$(CC) $(CFLAGS) $< -o $@

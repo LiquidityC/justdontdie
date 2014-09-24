@@ -41,8 +41,6 @@ TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 default: $(LIBRARY) $(LIB_INCLUDES)
 
-dirs: $(OBJDIR) $(LIB_INCLUDE_DIR) $(LIBDIR)
-
 all: $(LIBRARY) $(LIBRARY_UI) $(TEST)
 
 check: $(TEST)
@@ -57,15 +55,6 @@ $(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
 $(LIBRARY): $(LIB_OBJECTS) $(DEPS)
 	$(AR) $(ARFLAGS) $@ $(LIB_OBJECTS)
 
-$(OBJDIR):
-	@if [ ! -d "$(OBJDIR)" ]; then mkdir $(OBJDIR); fi
-
-$(LIBDIR):
-	@if [ ! -d "$(LIBDIR)" ]; then mkdir $(LIBDIR); fi
-
-$(LIB_INCLUDE_DIR):
-	@if [ ! -d "$(LIB_INCLUDE_DIR)" ]; then mkdir -p $(LIB_INCLUDE_DIR); fi
-
 $(OBJDIR)/%.o: src/%.cpp
 	$(CC) $(CFLAGS) $< -o $@
 
@@ -74,4 +63,4 @@ $(OBJDIR)/%.o: testsrc/%.cpp
 
 clean:
 	@$(ECHO) Cleaning project
-	@$(RM) -f $(LIBRARY) $(TEST_OBJECTS) $(LIBRARY_UI) $(LIB_OBJECTS) $(LIB_UI_OBJECTS) $(LIB_INCLUDES)
+	@$(RM) -f $(TEST) $(LIBRARY) $(TEST_OBJECTS) $(LIBRARY_UI) $(LIB_OBJECTS) $(LIB_UI_OBJECTS) $(LIB_INCLUDES)
