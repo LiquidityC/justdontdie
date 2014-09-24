@@ -5,13 +5,13 @@ CC			= g++
 endif
 
 CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
-			  -I./flat-2d/include -include src/NewMacro.h
+			  -I./flat/include -include src/NewMacro.h
 LD			= g++
-LDFLAGS 	= -L./flat-2d/lib/
+LDFLAGS 	= -L./flat/lib/
 RM			= rm
 ECHO		= echo
 
-LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt -lflat-2d
+LIBS 				= -lSDL2 -lCppUTest -lCppUTestExt -lflat
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h)
@@ -23,7 +23,7 @@ TEST				= test
 TEST_SOURCES 		= $(filter-out src/deadgaem.cpp,$(wildcard src/*.cpp)) $(wildcard testsrc/*.cpp)
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
-LIBRARIES			= flat-2d
+LIBRARIES			= flat
 
 .PHONY: $(LIBRARIES) $(OBJDIR)
 

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <flat-2d/ObjectContainer.h>
+#include <flat/ObjectContainer.h>
 
 #include "PathGenerator.h"
 #include "Block.h"

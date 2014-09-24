@@ -1,7 +1,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
-#include <flat-2d/Timer.h>
-#include <flat-2d/ObjectContainer.h>
+#include <flat/Timer.h>
+#include <flat/ObjectContainer.h>
 
 #include "CompContainer.h"
 #include "Ship.h"

@@ -1,6 +1,6 @@
 #include <CppUTest/TestHarness.h>
 #include "GameObjectImpl.h"
-#include "../uisrc/Button.h"
+#include "../src/Button.h"
 
 TEST_GROUP ( ButtonTests )
 {

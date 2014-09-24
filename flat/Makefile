@@ -7,7 +7,7 @@ endif
 CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
 			  -include src/NewMacro.h
 LD			= g++
-LDFLAGS 	= 
+LDFLAGS		=
 AR			= ar
 ARFLAGS		= rcs
 RM			= rm
@@ -22,11 +22,11 @@ DEPS				= $(wildcard src/*.h)
 OBJDIR				= obj
 LIBDIR				= lib
 
-LIBRARY 			= $(LIBDIR)/libflat-2d.a
+LIBRARY 			= $(LIBDIR)/libflat.a
 LIB_SOURCES			= $(wildcard src/*.cpp)
 LIB_OBJECTS			= $(addprefix $(OBJDIR)/,$(notdir $(LIB_SOURCES:.cpp=.o)))
 
-LIB_INCLUDE_DIR		= include/flat-2d
+LIB_INCLUDE_DIR		= include/flat
 LIB_INCLUDE_SOURCES	= $(wildcard src/*.h)
 LIB_INCLUDES		= $(addprefix $(LIB_INCLUDE_DIR)/,$(notdir $(LIB_INCLUDE_SOURCES)))
 

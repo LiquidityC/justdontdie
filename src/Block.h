@@ -1,7 +1,7 @@
 #ifndef _BLOCK_H
 #define _BLOCK_H
 
-#include <flat-2d/GameObject.h>
+#include <flat/GameObject.h>
 
 class Block : public flat2d::GameObject
 {

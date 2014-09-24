@@ -1,7 +1,7 @@
 #ifndef _SHIP_H
 #define _SHIP_H
 
-#include <flat-2d/GameObject.h>
+#include <flat/GameObject.h>
 
 class Ship : public flat2d::GameObject
 {
