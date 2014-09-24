@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <flat/Timer.h>
 #include <flat/ObjectContainer.h>
+#include <flat/Window.h>
 
 #include "CompContainer.h"
 #include "Ship.h"
@@ -13,8 +14,6 @@ const int SCREEN_TICKS_PER_FRAME 	= 1000 / SCREEN_FPS;
 
 int main( int argc, char* args[] )
 {
-	SDL_Window* window = NULL;
-	SDL_Renderer* renderer = NULL;
 
 	if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
 		std::cerr << "Failed to init video: " 
@@ -22,38 +21,24 @@ int main( int argc, char* args[] )
 		return -1;
 	}
 
-	window = SDL_CreateWindow( "DeadGaem", 
-			SDL_WINDOWPOS_UNDEFINED, 
-			SDL_WINDOWPOS_UNDEFINED, 
-			SCREEN_WIDTH, 
-			SCREEN_HEIGHT, 
-			SDL_WINDOW_SHOWN );
-
-	if (window == NULL) {
-		std::cerr << "Window could not be created: " 
-			<< SDL_GetError() << std::endl;
+	flat::Window window(SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (!window.init()) {
 		return -1;
 	}
 
-	//SDL_ShowCursor(0);
-	renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
-	if (renderer == NULL) {
-		std::cerr << "Renderer could not be created: " << SDL_GetError() << std::endl;
-	}
-
-	bool quit = false;
-	SDL_Event e;
-
-	flat2d::Timer fpsCapTimer;
-
+	// Prototype stuff, shouldn't be here in the future
 	flat2d::GameObject* ship = new Ship(200, 200);
-
 	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
 	objectContainer.registerObject(ship);
 
+	// Loop stuff
+	flat2d::Timer fpsCapTimer;
+	SDL_Renderer* renderer = window.getRenderer();
+	SDL_Event e;
+	bool quit = false;
+
 	// Main loop
 	while (!quit) {
-
 		fpsCapTimer.start();
 		
 		// Handle events
@@ -79,12 +64,13 @@ int main( int argc, char* args[] )
 		// Update the screen
 		SDL_RenderPresent( renderer );
 
-		if (CompContainer::getInstance().getCollisionDetector().checkForCollisions(ship)) {
-			break;
+		{ // Prototype stuff, this shouldn't be here either
+			if (CompContainer::getInstance().getCollisionDetector().checkForCollisions(ship)) {
+				break;
+			}
+			CompContainer::getInstance().getPathGenerator().generatePath(SCREEN_WIDTH, SCREEN_HEIGHT);
+			objectContainer.cleanNonVisibleObjects(SCREEN_WIDTH, SCREEN_HEIGHT);
 		}
-
-		CompContainer::getInstance().getPathGenerator().generatePath(SCREEN_WIDTH, SCREEN_HEIGHT);
-		objectContainer.cleanNonVisibleObjects(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		// Cap the frame rate
 		int frameTicks = fpsCapTimer.getTicks();
@@ -93,8 +79,6 @@ int main( int argc, char* args[] )
 		}
 		fpsCapTimer.stop();
 	}
-
-	SDL_DestroyWindow( window );
 
 	SDL_Quit();
 
