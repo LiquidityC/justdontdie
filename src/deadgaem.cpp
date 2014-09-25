@@ -1,8 +1,10 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <flat/Timer.h>
 #include <flat/ObjectContainer.h>
 #include <flat/Window.h>
+#include <flat/MediaUtil.h>
 
 #include "CompContainer.h"
 #include "Ship.h"
@@ -26,14 +28,23 @@ int main( int argc, char* args[] )
 		return -1;
 	}
 
+	int imgFlags = IMG_INIT_PNG;
+	if (!(IMG_Init( imgFlags ) & imgFlags )) {
+		std::cerr << "Unable to initialize SDL_image: " << IMG_GetError() << std::endl;
+		return -1;
+	}
+
 	// Prototype stuff, shouldn't be here in the future
 	flat2d::GameObject* ship = new Ship(200, 200);
 	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
 	objectContainer.registerObject(ship);
 
+	SDL_Rect backgroundBounds = { 0, 0, 1920, 1080 };
+	SDL_Renderer* renderer = window.getRenderer();
+	SDL_Texture* bgTexture = flat2d::MediaUtil::loadTexture("resources/background.png", renderer);
+
 	// Loop stuff
 	flat2d::Timer fpsCapTimer;
-	SDL_Renderer* renderer = window.getRenderer();
 	SDL_Event e;
 	bool quit = false;
 
@@ -55,6 +66,7 @@ int main( int argc, char* args[] )
 		// Clear screen to black
 		SDL_SetRenderDrawColor( renderer, 0x0, 0x0, 0x0, 0xFF );
 		SDL_RenderClear( renderer );
+		SDL_RenderCopy(renderer, bgTexture, NULL, &backgroundBounds);
 
 		// Render
 		objectContainer.preRender();
@@ -80,6 +92,7 @@ int main( int argc, char* args[] )
 		fpsCapTimer.stop();
 	}
 
+	IMG_Quit();
 	SDL_Quit();
 
 	return 0;
