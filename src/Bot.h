@@ -23,7 +23,6 @@ class Bot : public flat2d::GameObject
 			{ 	37,	 0 }
 		};
 
-		bool grounded = false;
 		SDL_Texture* botTexture = NULL;
 
 	public:

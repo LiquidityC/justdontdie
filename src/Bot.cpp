@@ -14,9 +14,8 @@ void Bot::handle(const SDL_Event& e)
 		return;
 	}
 
-	if (e.key.keysym.sym == SDLK_SPACE && yvel == 0) {
+	if (e.key.keysym.sym == SDLK_SPACE && yvel > -5 && yvel < 5) {
 		yvel = -20;
-		grounded = false;
 	}
 }
 
@@ -36,13 +35,35 @@ void Bot::postHandle()
 
 void Bot::preRender()
 {
+	flat2d::CollisionDetector& colDetector = CompContainer::getInstance().getCollisionDetector();
 	// Gravity
-	if (yvel < 10 && !grounded) {
+	if (yvel < 10) {
 		yvel += 1;
 	}
 
 	xpos += xvel;
+	if (colDetector.checkForCollisions(this)) {
+		xpos -= xvel;
+
+		// Completly reach the obstruction
+		while (!colDetector.checkForCollisions(this)) {
+			xpos += xvel > 0 ? 1 : -1;
+		}
+		xpos += xvel > 0 ? -1 : 1;
+		xvel = 0;
+	}
+
 	ypos += yvel;
+	if (colDetector.checkForCollisions(this)) {
+		ypos -= yvel;
+
+		// Completly ground the bot
+		while (!colDetector.checkForCollisions(this)) {
+			ypos += yvel > 0 ? 1 : -1;
+		}
+		ypos += yvel > 0 ? -1 : 1;
+		yvel = 0;
+	}
 
 	if (xvel > 0) {
 		clipIndex = 0;
@@ -50,15 +71,6 @@ void Bot::preRender()
 		clipIndex = 1;
 	}
 
-	flat2d::CollisionDetector& colDetector = CompContainer::getInstance().getCollisionDetector();
-	if (colDetector.checkForCollisions(this)) {
-		using namespace std;
-		cout << "Collided!" << endl;
-		xpos -= xvel;
-		ypos -= yvel;
-		yvel = 0;
-		xvel = 0;
-	}
 
 	CompContainer::getInstance().getCamera().centerOn(xpos + (WIDTH/2), ypos + (HEIGHT/2));
 }

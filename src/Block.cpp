@@ -1,8 +1,10 @@
+#include <flat/MediaUtil.h>
 #include "Block.h"
 #include "CompContainer.h"
 
-void Block::preHandle()
+void Block::init(SDL_Renderer* renderer)
 {
+	texture = flat2d::MediaUtil::loadTexture("resources/brick.png", renderer);
 }
 
 void Block::render(SDL_Renderer* renderer) const
@@ -15,7 +17,7 @@ void Block::render(SDL_Renderer* renderer) const
 		return;
 	}
 	SDL_Rect box = { cam.getScreenXposFor(xpos), cam.getScreenYposFor(ypos), WIDTH, HEIGHT };
-	SDL_RenderFillRect(renderer, &box);
+	SDL_RenderCopy(renderer, texture, NULL, &box);
 }
 
 bool Block::isCollider() const

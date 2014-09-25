@@ -31,23 +31,36 @@ int main( int argc, char* args[] )
 		return -1;
 	}
 
-	// Prototype stuff, shouldn't be here in the future
 	SDL_Renderer* renderer = window.getRenderer();
+	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
+
+	// Prototype stuff, shouldn't be here in the future
+	// {{{
 	flat2d::GameObject* bot = new Bot(200, 200);
 	bot->init(renderer);
-	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
 	objectContainer.registerObject(bot);
 
-	// Make a proto floor
 	for (int i = 0; i < MAP_WIDTH; i+=10) {
-		objectContainer.registerObject(new Block(i, MAP_HEIGHT - 10));
+		Block* b = new Block(i, MAP_HEIGHT - 10);
+		b->init(renderer);
+		objectContainer.registerObject(b);
+
+		b = new Block(i, 0);
+		b->init(renderer);
+		objectContainer.registerObject(b);
 	}
 	for (int i = 0; i < MAP_HEIGHT; i+=10) {
-		objectContainer.registerObject(new Block(0, i));
-		objectContainer.registerObject(new Block(MAP_WIDTH - 10, i));
+		Block* b = new Block(0, i);
+		b->init(renderer);
+		objectContainer.registerObject(b);
+
+		b = new Block(MAP_WIDTH - 10, i);
+		b->init(renderer);
+		objectContainer.registerObject(b);
 	}
 
 	SDL_Texture* bgTexture = flat2d::MediaUtil::loadTexture("resources/background.png", renderer);
+	// }}}
 
 	// Loop stuff
 	flat2d::Timer fpsCapTimer;
@@ -58,7 +71,7 @@ int main( int argc, char* args[] )
 	// Main loop
 	while (!quit) {
 		fpsCapTimer.start();
-		
+
 		// Handle events
 		objectContainer.preHandle();
 		while (SDL_PollEvent (&e) != 0) {
@@ -73,8 +86,12 @@ int main( int argc, char* args[] )
 		// Clear screen to black
 		SDL_SetRenderDrawColor( renderer, 0x0, 0x0, 0x0, 0xFF );
 		SDL_RenderClear( renderer );
+
 		SDL_Rect cameraBox = camera.getBox();
-		SDL_RenderCopy(renderer, bgTexture, &cameraBox, NULL);
+		SDL_Rect gameBox = { 0, 0, MAP_WIDTH, MAP_HEIGHT };
+		gameBox.x -= cameraBox.x;
+		gameBox.y -= cameraBox.y;
+		SDL_RenderCopy(renderer, bgTexture, NULL, &gameBox);
 
 		// Render
 		objectContainer.preRender();
