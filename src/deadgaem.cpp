@@ -10,6 +10,7 @@
 #include "Bot.h"
 #include "Block.h"
 #include "GameSettings.h"
+#include "MapParser.h"
 
 int main( int argc, char* args[] )
 {
@@ -58,6 +59,9 @@ int main( int argc, char* args[] )
 		b->init(renderer);
 		objectContainer.registerObject(b);
 	}
+
+	MapParser parser;
+	parser.createMapFrom("resources/map1/map1.tmx", objectContainer);
 
 	SDL_Texture* bgTexture = flat2d::MediaUtil::loadTexture("resources/background.png", renderer);
 	// }}}
