@@ -4,16 +4,10 @@
 void Ship::postHandle()
 {
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-	if (currentKeyStates[SDL_SCANCODE_UP]) {
-		ypos -= 3;
-	}
-	if (currentKeyStates[SDL_SCANCODE_DOWN]) {
-		ypos += 3;
-	}
-	if (currentKeyStates[SDL_SCANCODE_LEFT]) {
+	if (currentKeyStates[SDL_SCANCODE_A]) {
 		xpos -= 3;
 	}
-	if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
+	if (currentKeyStates[SDL_SCANCODE_D]) {
 		xpos += 3;
 	}
 

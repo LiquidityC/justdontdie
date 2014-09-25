@@ -1,14 +1,20 @@
 #include "Block.h"
+#include "CompContainer.h"
 
 void Block::preHandle()
 {
-	ypos -= 5;
 }
 
 void Block::render(SDL_Renderer* renderer) const
 {
-	SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
-	SDL_Rect box = { xpos, ypos, WIDTH, HEIGHT };
+	SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0x00, 0xFF );
+
+	Camera cam = CompContainer::getInstance().getCamera();
+	SDL_Rect boundingBox = getBoundingBox();
+	if (!cam.isVisibleOnCamera(boundingBox)) {
+		return;
+	}
+	SDL_Rect box = { cam.getScreenXposFor(xpos), cam.getScreenYposFor(ypos), WIDTH, HEIGHT };
 	SDL_RenderFillRect(renderer, &box);
 }
 

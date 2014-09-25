@@ -42,6 +42,7 @@ namespace flat2d
 			};
 
 			/* Abstract methods */
+			virtual void init(SDL_Renderer*) { };
 			virtual void preHandle() = 0;
 			virtual void handle(const SDL_Event& event) = 0;
 			virtual void postHandle() = 0;

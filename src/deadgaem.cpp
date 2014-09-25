@@ -7,7 +7,8 @@
 #include <flat/MediaUtil.h>
 
 #include "CompContainer.h"
-#include "Ship.h"
+#include "Bot.h"
+#include "Block.h"
 #include "GameSettings.h"
 
 int main( int argc, char* args[] )
@@ -31,11 +32,21 @@ int main( int argc, char* args[] )
 	}
 
 	// Prototype stuff, shouldn't be here in the future
-	flat2d::GameObject* ship = new Ship(200, 200);
-	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
-	objectContainer.registerObject(ship);
-
 	SDL_Renderer* renderer = window.getRenderer();
+	flat2d::GameObject* bot = new Bot(200, 200);
+	bot->init(renderer);
+	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
+	objectContainer.registerObject(bot);
+
+	// Make a proto floor
+	for (int i = 0; i < MAP_WIDTH; i+=10) {
+		objectContainer.registerObject(new Block(i, MAP_HEIGHT - 10));
+	}
+	for (int i = 0; i < MAP_HEIGHT; i+=10) {
+		objectContainer.registerObject(new Block(0, i));
+		objectContainer.registerObject(new Block(MAP_WIDTH - 10, i));
+	}
+
 	SDL_Texture* bgTexture = flat2d::MediaUtil::loadTexture("resources/background.png", renderer);
 
 	// Loop stuff
@@ -80,6 +91,8 @@ int main( int argc, char* args[] )
 		}
 		fpsCapTimer.stop();
 	}
+
+	SDL_DestroyTexture( bgTexture );
 
 	IMG_Quit();
 	SDL_Quit();
