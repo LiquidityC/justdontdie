@@ -2,15 +2,20 @@
 #define _CAMERA_H
 
 #include <SDL2/SDL.h>
-#include "GameSettings.h"
 
 class Camera
 {
 	private:
-		int xpos, ypos, width, height;
+		int xpos, ypos, width, height, mapWidth, mapHeight;
 
 	public:
-		Camera() : xpos(0), ypos(0), width(SCREEN_WIDTH), height(SCREEN_HEIGHT) { };
+		Camera(int x, int y, int w, int h, int mw, int mh) :
+			xpos(x), 
+			ypos(y), 
+			width(w), 
+			height(h),
+			mapWidth(mw), 
+			mapHeight(mh) { };
 
 		int getXpos();
 		int getYpos();

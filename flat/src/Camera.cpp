@@ -30,13 +30,13 @@ void Camera::centerOn(int x, int y) {
 	xpos = x - (width/2);
 	ypos = y - (height/2);
 
-	if (xpos > MAP_WIDTH - width) {
-		xpos = MAP_WIDTH - width;
+	if (xpos > mapWidth - width) {
+		xpos = mapWidth - width;
 	} else if (xpos < 0) {
 		xpos = 0;
 	}
-	if (ypos > MAP_HEIGHT - height) {
-		ypos = MAP_HEIGHT - height;
+	if (ypos > mapHeight - height) {
+		ypos = mapHeight - height;
 	} else if (ypos < 0) {
 		ypos = 0;
 	}

@@ -3,9 +3,9 @@
 
 #include <flat/ObjectContainer.h>
 #include <flat/CollisionDetector.h>
+#include <flat/Camera.h>
 
 #include "GameSettings.h"
-#include "Camera.h"
 
 class CompContainer
 {
@@ -19,7 +19,8 @@ class CompContainer
 		// Don't implement, singleton
 		CompContainer() : 
 			objectContainer(), 
-			collisionDetector(&objectContainer) { };
+			collisionDetector(&objectContainer),
+			camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, MAP_WIDTH, MAP_HEIGHT) { };
 
 		CompContainer(const CompContainer&);
 		CompContainer& operator=(const CompContainer&);
