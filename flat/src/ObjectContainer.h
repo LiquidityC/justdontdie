@@ -38,8 +38,6 @@ namespace flat2d
 			void render(SDL_Renderer*) const;
 			void postRender();
 
-			void cleanNonVisibleObjects(int, int);
-
 			template <class Func>
 				bool checkAllObjects(Func func) const
 				{

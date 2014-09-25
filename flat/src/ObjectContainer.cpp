@@ -68,29 +68,3 @@ void ObjectContainer::postRender()
 size_t ObjectContainer::getObjectCount() {
 	return objects.size();
 }
-
-void ObjectContainer::cleanNonVisibleObjects(int screenWidth, int screenHeight) 
-{
-	std::vector<std::string> itemsToErase;
-
-	for (auto it = objects.begin(); it != objects.end(); it++) {
-		if (!it->second->isCollider()) {
-			continue;
-		}
-
-		SDL_Rect box = it->second->getBoundingBox();
-		if (box.x + box.w > 0 && box.x < screenWidth) {
-			continue;
-		} else if (box.y + box.h > 0 && box.y < screenHeight) {
-			continue;
-		}
-		delete it->second;
-		it->second = NULL;
-
-		itemsToErase.push_back(it->first);
-	}
-
-	for (auto it = itemsToErase.begin(); it != itemsToErase.end(); it++) {
-		objects.erase(*it);
-	}
-}

@@ -8,11 +8,7 @@
 
 #include "CompContainer.h"
 #include "Ship.h"
-
-const int SCREEN_WIDTH 				= 800;
-const int SCREEN_HEIGHT 			= 600;
-const int SCREEN_FPS 				= 60;
-const int SCREEN_TICKS_PER_FRAME 	= 1000 / SCREEN_FPS;
+#include "GameSettings.h"
 
 int main( int argc, char* args[] )
 {
@@ -39,7 +35,6 @@ int main( int argc, char* args[] )
 	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
 	objectContainer.registerObject(ship);
 
-	SDL_Rect backgroundBounds = { 0, 0, 1920, 1080 };
 	SDL_Renderer* renderer = window.getRenderer();
 	SDL_Texture* bgTexture = flat2d::MediaUtil::loadTexture("resources/background.png", renderer);
 
@@ -47,6 +42,7 @@ int main( int argc, char* args[] )
 	flat2d::Timer fpsCapTimer;
 	SDL_Event e;
 	bool quit = false;
+	Camera& camera = CompContainer::getInstance().getCamera();
 
 	// Main loop
 	while (!quit) {
@@ -66,7 +62,8 @@ int main( int argc, char* args[] )
 		// Clear screen to black
 		SDL_SetRenderDrawColor( renderer, 0x0, 0x0, 0x0, 0xFF );
 		SDL_RenderClear( renderer );
-		SDL_RenderCopy(renderer, bgTexture, NULL, &backgroundBounds);
+		SDL_Rect cameraBox = camera.getBox();
+		SDL_RenderCopy(renderer, bgTexture, &cameraBox, NULL);
 
 		// Render
 		objectContainer.preRender();
@@ -75,14 +72,6 @@ int main( int argc, char* args[] )
 
 		// Update the screen
 		SDL_RenderPresent( renderer );
-
-		{ // Prototype stuff, this shouldn't be here either
-			if (CompContainer::getInstance().getCollisionDetector().checkForCollisions(ship)) {
-				break;
-			}
-			CompContainer::getInstance().getPathGenerator().generatePath(SCREEN_WIDTH, SCREEN_HEIGHT);
-			objectContainer.cleanNonVisibleObjects(SCREEN_WIDTH, SCREEN_HEIGHT);
-		}
 
 		// Cap the frame rate
 		int frameTicks = fpsCapTimer.getTicks();

@@ -4,22 +4,22 @@
 #include <flat/ObjectContainer.h>
 #include <flat/CollisionDetector.h>
 
-#include "PathGenerator.h"
+#include "GameSettings.h"
+#include "Camera.h"
 
 class CompContainer
 {
 	private:
 		flat2d::ObjectContainer objectContainer;
 		flat2d::CollisionDetector collisionDetector;
-		PathGenerator pathGenerator;
+		Camera camera;
 
 	private:
 
 		// Don't implement, singleton
 		CompContainer() : 
 			objectContainer(), 
-			collisionDetector(&objectContainer),
-			pathGenerator(&objectContainer) { };
+			collisionDetector(&objectContainer) { };
 
 		CompContainer(const CompContainer&);
 		CompContainer& operator=(const CompContainer&);
@@ -34,7 +34,7 @@ class CompContainer
 
 		flat2d::ObjectContainer& getObjectContainer() { return objectContainer; };
 		flat2d::CollisionDetector& getCollisionDetector() { return collisionDetector; };
-		PathGenerator& getPathGenerator() { return pathGenerator; };
+		Camera& getCamera() { return camera; }
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include "Ship.h"
+#include "CompContainer.h"
 
 void Ship::postHandle()
 {
@@ -15,12 +16,16 @@ void Ship::postHandle()
 	if (currentKeyStates[SDL_SCANCODE_RIGHT]) {
 		xpos += 3;
 	}
+
+	CompContainer::getInstance().getCamera().centerOn(xpos + (WIDTH/2), ypos + (HEIGHT/2));
 }
 
 void Ship::render(SDL_Renderer* renderer) const
 {
 	SDL_SetRenderDrawColor( renderer, 0x00, 0xCC, 0x00, 0xFF );
-	SDL_Rect box = { xpos, ypos, WIDTH, HEIGHT };
+
+	Camera cam = CompContainer::getInstance().getCamera();
+	SDL_Rect box = { cam.getScreenXposFor(xpos), cam.getScreenYposFor(ypos), WIDTH, HEIGHT };
 	SDL_RenderFillRect(renderer, &box);
 }
 

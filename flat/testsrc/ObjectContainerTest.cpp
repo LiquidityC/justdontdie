@@ -49,24 +49,3 @@ TEST( ObjectContainerTests, TestObjectContainerUnregister )
 
 	delete c;
 }
-
-TEST (ObjectContainerTests, TestSelfCleaning ) 
-{
-	flat2d::ObjectContainer container;
-
-	// Should not be cleared
-	container.registerObject(new GameObjectImpl(-5, -5));
-	container.registerObject(new GameObjectImpl(95, 95));
-	container.registerObject(new GameObjectImpl(50, 50));
-
-	// Chould be cleared
-	container.registerObject(new GameObjectImpl(101, 101));
-	container.registerObject(new GameObjectImpl(-100, -100));
-	container.registerObject(new GameObjectImpl(105, 105));
-
-	CHECK_EQUAL( 6, container.getObjectCount() );
-
-	container.cleanNonVisibleObjects(100, 100);
-
-	CHECK_EQUAL( 3, container.getObjectCount() );
-}
