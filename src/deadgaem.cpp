@@ -61,7 +61,7 @@ int main( int argc, char* args[] )
 	}
 
 	MapParser parser;
-	parser.createMapFrom("resources/map1/map1.tmx", objectContainer);
+	parser.createMapFrom("resources/map1/", "map1.tmx", objectContainer);
 
 	SDL_Texture* bgTexture = flat2d::MediaUtil::loadTexture("resources/background.png", renderer);
 	// }}}
