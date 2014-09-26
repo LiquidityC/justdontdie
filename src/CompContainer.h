@@ -5,6 +5,7 @@
 #include <flat/CollisionDetector.h>
 #include <flat/Camera.h>
 
+#include "ResourceContainer.h"
 #include "GameSettings.h"
 
 class CompContainer
@@ -13,6 +14,7 @@ class CompContainer
 		flat2d::ObjectContainer objectContainer;
 		flat2d::CollisionDetector collisionDetector;
 		Camera camera;
+		ResourceContainer resourceContainer;
 
 	private:
 
@@ -20,7 +22,8 @@ class CompContainer
 		CompContainer() : 
 			objectContainer(), 
 			collisionDetector(&objectContainer),
-			camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, MAP_WIDTH, MAP_HEIGHT) { };
+			camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
+			resourceContainer() { };
 
 		CompContainer(const CompContainer&);
 		CompContainer& operator=(const CompContainer&);
@@ -36,6 +39,7 @@ class CompContainer
 		flat2d::ObjectContainer& getObjectContainer() { return objectContainer; };
 		flat2d::CollisionDetector& getCollisionDetector() { return collisionDetector; };
 		Camera& getCamera() { return camera; }
+		ResourceContainer& getResourceContainer() { return resourceContainer; }
 };
 
 #endif

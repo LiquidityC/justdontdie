@@ -1,9 +1,6 @@
 #ifndef _GAME_SETTINGS_H
 #define _GAME_SETTINGS_H
 
-const int MAP_WIDTH					= 1024;
-const int MAP_HEIGHT				= 768;
-
 const int SCREEN_WIDTH 				= 800;
 const int SCREEN_HEIGHT 			= 600;
 

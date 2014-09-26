@@ -1,12 +1,16 @@
 #include <iostream>
 #include <cstdlib>
 
+#include <flat/MediaUtil.h>
+
 #include "MapParser.h"
+#include "GenericGameObject.h"
+#include "CompContainer.h"
 
 using namespace rapidxml;
 using namespace std;
 
-bool MapParser::createMapFrom(std::string dir, std::string filename, flat2d::ObjectContainer& objectContainer)
+bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Renderer* renderer)
 {
 
 	file<> xmlFile((dir + filename).c_str());
@@ -35,26 +39,72 @@ bool MapParser::createMapFrom(std::string dir, std::string filename, flat2d::Obj
 	}
 
 	// Find the Layer node
-	while ( strcmp(node->name(), "layer") != 0 && node ) {
+	node = node->first_node();
+	while ( node && strcmp(node->name(), "layer") != 0 ) {
 		node = node->next_sibling();
 	}
 
 	if ( !node ) {
+		cerr << "Failed to load layers" << endl;
 		return false;
 	}
 
 	
+	CompContainer::getInstance().getCamera().setMapDimensions(map.width * map.tileWidth, map.height * map.tileHeight);
+	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
+	ResourceContainer& resourceContainer = CompContainer::getInstance().getResourceContainer();
+
+
 	// Parse all the layers (might need to add layers in ObjectContainer)
-	while ( strcmp(node->name(), "layer") == 0) {
+	while ( node && strcmp(node->name(), "layer") == 0) {
 		xml_node<> *data = node->first_node();
-		for (xml_node<> *tile = data->first_node(); tile; tile = tile->next_sibling()) {
-			// TODO:
-			// xml_attribute<> *gid = tile->first_attribute();
-			//
-			// Create a generic game object with the given Texture and clip data
-			// Need to create a generic GamObject that takes a texture and size params.
-			// Also need a ResourceContainer that handles deletion of all textures used in the map
-			// Generic GameObjects can't handle deletion of textures since they are shared.
+
+		int row = 0;
+		int col = 0;
+		for (xml_node<> *tileNode = data->first_node(); tileNode; tileNode = tileNode->next_sibling()) {
+			xml_attribute<> *gidAttr = tileNode->first_attribute();
+			int gid = atoi(gidAttr->value());
+
+			Tileset *tileset = NULL;
+			for (auto it = map.tilesets.begin(); it != map.tilesets.end(); it++) {
+				if (it->first == gid) {
+					tileset = &(it->second);
+					break;
+				} else if (it->first > gid) {
+					break;
+				}
+				tileset = &(it->second);
+			}
+
+			if (tileset == NULL) {
+				cerr << "Major parse fail" << endl;
+				return false;
+			}
+
+			if (tileset->texture == NULL) {
+				SDL_Texture* texture = flat2d::MediaUtil::loadTexture(dir + tileset->sourcePath, renderer);
+				tileset->texture = texture;
+				resourceContainer.addTexture(texture);
+			}
+
+			Tile *tile = &(tileset->tiles[gid]);
+			if (!tile) {
+				cerr << "Unable to locate correct tile" << endl;
+				return false;
+			}
+
+
+			GenericGameObject* tileObj = new GenericGameObject(col * map.tileWidth, row * map.tileHeight, 
+					tileset->tileWidth, tileset->tileHeight, tileset->texture);
+			tileObj->setCollidable(tile->collidable);
+			tileObj->setClipCoordinates((tile->id * tileset->tileWidth) % tileset->width, 0);
+			objectContainer.registerObject(tileObj);
+
+			col++;
+			if (col >= map.width) {
+				col = 0;
+				row++;
+			}
 		}
 		node = node->next_sibling();
 	}
@@ -70,6 +120,7 @@ bool MapParser::parseTileset(xml_node<> *node)
 	}
 
 	Tileset tileset;
+	tileset.texture = NULL;
 	for(xml_attribute<> *attr = node->first_attribute(); attr; attr = attr->next_attribute()) {
 		if ( strcmp(attr->name(), "firstgid") == 0) {
 			tileset.firstgid = atoi(attr->value());
@@ -98,6 +149,7 @@ bool MapParser::parseTileset(xml_node<> *node)
 		}
 	}
 
+	int gid = tileset.firstgid;
 	for (xml_node<> *tileNode = imageNode->next_sibling(); tileNode; tileNode = tileNode->next_sibling()) {
 		Tile tile;
 		if ( strcmp(tileNode->name(), "tile") != 0) {
@@ -107,10 +159,12 @@ bool MapParser::parseTileset(xml_node<> *node)
 
 		tile.id = atoi(tileNode->first_attribute()->value());
 		xml_node<> *property = tileNode->first_node()->first_node();
-		xml_attribute<> *collidableAttr = property->first_attribute();
-		tile.collidable = strcmp(collidableAttr->name(), "collidable") == 0 && strcmp(collidableAttr->value(), "true") == 0;
+		xml_attribute<> *nameAttr = property->first_attribute();
+		xml_attribute<> *valueAttr = nameAttr->next_attribute();
+		tile.collidable = strcmp(nameAttr->value(), "collidable") == 0 && strcmp(valueAttr->value(), "true") == 0;
 
-		tileset.tiles[tile.id] = tile;
+		tileset.tiles[gid] = tile;
+		gid++;
 	}
 
 	map.tilesets[tileset.firstgid] = tileset;

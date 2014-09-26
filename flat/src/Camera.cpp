@@ -20,6 +20,12 @@ int Camera::getHeight()
 	return height;
 }
 
+void Camera::setMapDimensions(int w, int h)
+{
+	mapWidth = w;
+	mapHeight = h;
+}
+
 SDL_Rect Camera::getBox()
 {
 	SDL_Rect box = { xpos, ypos, width, height };

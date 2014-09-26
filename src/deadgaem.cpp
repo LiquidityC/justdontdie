@@ -37,40 +37,18 @@ int main( int argc, char* args[] )
 
 	// Prototype stuff, shouldn't be here in the future
 	// {{{
+	MapParser parser;
+	parser.createMapFrom("resources/map1/", "map1.tmx", renderer);
+	
 	flat2d::GameObject* bot = new Bot(200, 200);
 	bot->init(renderer);
 	objectContainer.registerObject(bot);
-
-	for (int i = 0; i < MAP_WIDTH; i+=10) {
-		Block* b = new Block(i, MAP_HEIGHT - 10);
-		b->init(renderer);
-		objectContainer.registerObject(b);
-
-		b = new Block(i, 0);
-		b->init(renderer);
-		objectContainer.registerObject(b);
-	}
-	for (int i = 0; i < MAP_HEIGHT; i+=10) {
-		Block* b = new Block(0, i);
-		b->init(renderer);
-		objectContainer.registerObject(b);
-
-		b = new Block(MAP_WIDTH - 10, i);
-		b->init(renderer);
-		objectContainer.registerObject(b);
-	}
-
-	MapParser parser;
-	parser.createMapFrom("resources/map1/", "map1.tmx", objectContainer);
-
-	SDL_Texture* bgTexture = flat2d::MediaUtil::loadTexture("resources/background.png", renderer);
 	// }}}
 
 	// Loop stuff
 	flat2d::Timer fpsCapTimer;
 	SDL_Event e;
 	bool quit = false;
-	Camera& camera = CompContainer::getInstance().getCamera();
 
 	// Main loop
 	while (!quit) {
@@ -91,12 +69,6 @@ int main( int argc, char* args[] )
 		SDL_SetRenderDrawColor( renderer, 0x0, 0x0, 0x0, 0xFF );
 		SDL_RenderClear( renderer );
 
-		SDL_Rect cameraBox = camera.getBox();
-		SDL_Rect gameBox = { 0, 0, MAP_WIDTH, MAP_HEIGHT };
-		gameBox.x -= cameraBox.x;
-		gameBox.y -= cameraBox.y;
-		SDL_RenderCopy(renderer, bgTexture, NULL, &gameBox);
-
 		// Render
 		objectContainer.preRender();
 		objectContainer.render(renderer);
@@ -112,8 +84,6 @@ int main( int argc, char* args[] )
 		}
 		fpsCapTimer.stop();
 	}
-
-	SDL_DestroyTexture( bgTexture );
 
 	IMG_Quit();
 	SDL_Quit();

@@ -22,6 +22,7 @@ class MapParser
 		int width;
 		int height;
 		std::map<int, Tile> tiles;
+		SDL_Texture* texture;
 	} Tileset;
 
 	typedef struct {
@@ -39,7 +40,7 @@ class MapParser
 		Map map;
 
 	public:
-		bool createMapFrom(std::string, std::string, flat2d::ObjectContainer&);
+		bool createMapFrom(std::string, std::string, SDL_Renderer*);
 
 	private:
 		bool parseMapAttributes(rapidxml::xml_node<> *node);

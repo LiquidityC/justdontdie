@@ -9,18 +9,20 @@ class Camera
 		int xpos, ypos, width, height, mapWidth, mapHeight;
 
 	public:
-		Camera(int x, int y, int w, int h, int mw, int mh) :
+		Camera(int x, int y, int w, int h) :
 			xpos(x), 
 			ypos(y), 
 			width(w), 
 			height(h),
-			mapWidth(mw), 
-			mapHeight(mh) { };
+			mapWidth(1920), 
+			mapHeight(1080) { };
 
 		int getXpos();
 		int getYpos();
 		int getWidth();
 		int getHeight();
+
+		void setMapDimensions(int, int);
 
 		SDL_Rect getBox();
 
