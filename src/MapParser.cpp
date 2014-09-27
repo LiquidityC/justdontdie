@@ -98,8 +98,9 @@ bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Rendere
 					tileset->tileWidth, tileset->tileHeight, tileset->texture);
 			tileObj->setCollidable(tile->collidable);
 
-			int xclip = (tile->id * tileset->tileWidth) % tileset->width;
-			int yclip = tileset->tileHeight * ((xclip - (xclip % tileset->width)) / tileset->tileWidth);
+			int xoffset = tile->id * tileset->tileWidth;
+			int xclip = xoffset % tileset->width;
+			nt yclip = tileset->tileHeight * ((xoffset - xclip) / tileset->width);
 			tileObj->setClipCoordinates(xclip, yclip);
 			objectContainer.registerObject(tileObj, Layers::BACK);
 

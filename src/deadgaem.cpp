@@ -38,7 +38,7 @@ int main( int argc, char* args[] )
 	// Prototype stuff, shouldn't be here in the future
 	// {{{
 	MapParser parser;
-	parser.createMapFrom("resources/map1/", "map1.tmx", renderer);
+	parser.createMapFrom("resources/map2/", "map2.tmx", renderer);
 	
 	flat2d::GameObject* bot = new Bot(200, 200);
 	bot->init(renderer);
