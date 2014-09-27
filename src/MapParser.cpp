@@ -98,7 +98,7 @@ bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Rendere
 					tileset->tileWidth, tileset->tileHeight, tileset->texture);
 			tileObj->setCollidable(tile->collidable);
 			tileObj->setClipCoordinates((tile->id * tileset->tileWidth) % tileset->width, 0);
-			objectContainer.registerObject(tileObj);
+			objectContainer.registerObject(tileObj, CompContainer::MAP_LAYER);
 
 			col++;
 			if (col >= map.width) {

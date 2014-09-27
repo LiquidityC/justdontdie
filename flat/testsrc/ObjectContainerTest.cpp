@@ -49,3 +49,40 @@ TEST( ObjectContainerTests, TestObjectContainerUnregister )
 
 	delete c;
 }
+
+TEST( ObjectContainerTests, TestObjectContainerLayers )
+{
+	flat2d::GameObject* c1 = new GameObjectImpl(100, 100);
+	flat2d::GameObject* c2 = new GameObjectImpl(100, 100);
+	flat2d::GameObject* c3 = new GameObjectImpl(100, 100);
+	flat2d::ObjectContainer container;
+	
+	CHECK_EQUAL( 0, container.getObjectCount(0) );
+
+	container.addLayer(0);
+	container.addLayer(1);
+
+	container.registerObject(c1);
+
+	CHECK_EQUAL( 1, container.getObjectCount() );
+	CHECK_EQUAL( 1, container.getObjectCount(flat2d::ObjectContainer::DEFAULT_LAYER) );
+
+	container.registerObject(c2, 0);
+	container.registerObject(c2, 1);
+
+	CHECK_EQUAL( 2, container.getObjectCount() );
+	CHECK_EQUAL( 1, container.getObjectCount(0) );
+	CHECK_EQUAL( 0, container.getObjectCount(1) );
+
+	container.registerObject(c3, 1);
+
+	CHECK_EQUAL( 1, container.getObjectCount(1) );
+	CHECK_EQUAL( 3, container.getObjectCount() );
+
+	container.unregisterObject(c2);
+
+	CHECK_EQUAL( 0, container.getObjectCount(0) );
+	CHECK_EQUAL( 2, container.getObjectCount() );
+
+	delete c2;
+}

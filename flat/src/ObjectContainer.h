@@ -9,24 +9,35 @@
 namespace flat2d
 {
 
+	typedef int Layer;
+	typedef std::map<std::string, GameObject*> ObjectList;
+
 	class ObjectContainer : public GameObject
 	{
 		private:
-			std::map<std::string, GameObject*> objects;
+			ObjectList objects;
+			std::map<Layer, ObjectList> layeredObjects;
 
 		private:
 			ObjectContainer(const ObjectContainer&); // Don't implement
 			void operator=(const ObjectContainer&); // Don't implement
 
 		public:
+			static const int DEFAULT_LAYER = -1;
 
-			ObjectContainer() { }; 
+			ObjectContainer() { 
+				ObjectList list;
+				layeredObjects[-1] = list;
+			}; 
+
 			~ObjectContainer();
 
-			void registerObject(GameObject*);
+			void addLayer(unsigned int);
+
+			void registerObject(GameObject*, int = DEFAULT_LAYER);
 			void unregisterObject(GameObject*);
 
-			size_t getObjectCount();
+			size_t getObjectCount(Layer = -2);
 
 			// Eventhandler override
 			void preHandle();

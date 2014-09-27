@@ -23,12 +23,18 @@ class CompContainer
 			objectContainer(), 
 			collisionDetector(&objectContainer),
 			camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
-			resourceContainer() { };
+			resourceContainer() { 
+				objectContainer.addLayer(MAP_LAYER);
+				objectContainer.addLayer(GAME_LAYER);
+			};
 
 		CompContainer(const CompContainer&);
 		CompContainer& operator=(const CompContainer&);
 
 	public:
+
+		static const unsigned int MAP_LAYER = 0;
+		static const unsigned int GAME_LAYER = 1;
 
 		static CompContainer& getInstance()
 		{

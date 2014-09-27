@@ -42,7 +42,7 @@ int main( int argc, char* args[] )
 	
 	flat2d::GameObject* bot = new Bot(200, 200);
 	bot->init(renderer);
-	objectContainer.registerObject(bot);
+	objectContainer.registerObject(bot, CompContainer::GAME_LAYER);
 	// }}}
 
 	// Loop stuff
