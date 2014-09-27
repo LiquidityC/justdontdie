@@ -97,7 +97,10 @@ bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Rendere
 			GenericGameObject* tileObj = new GenericGameObject(col * map.tileWidth, row * map.tileHeight, 
 					tileset->tileWidth, tileset->tileHeight, tileset->texture);
 			tileObj->setCollidable(tile->collidable);
-			tileObj->setClipCoordinates((tile->id * tileset->tileWidth) % tileset->width, 0);
+
+			int xclip = (tile->id * tileset->tileWidth) % tileset->width;
+			int yclip = tileset->tileHeight * ((xclip - (xclip % tileset->width)) / tileset->tileWidth);
+			tileObj->setClipCoordinates(xclip, yclip);
 			objectContainer.registerObject(tileObj, Layers::BACK);
 
 			col++;

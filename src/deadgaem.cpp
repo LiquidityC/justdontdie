@@ -21,14 +21,14 @@ int main( int argc, char* args[] )
 		return -1;
 	}
 
-	flat::Window window(GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT);
-	if (!window.init()) {
-		return -1;
-	}
-
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init( imgFlags ) & imgFlags )) {
 		std::cerr << "Unable to initialize SDL_image: " << IMG_GetError() << std::endl;
+		return -1;
+	}
+
+	flat::Window window(GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT);
+	if (!window.init()) {
 		return -1;
 	}
 
