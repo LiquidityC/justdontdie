@@ -7,6 +7,7 @@
 
 #include "ResourceContainer.h"
 #include "GameSettings.h"
+#include "Layers.h"
 
 class CompContainer
 {
@@ -22,19 +23,17 @@ class CompContainer
 		CompContainer() : 
 			objectContainer(), 
 			collisionDetector(&objectContainer),
-			camera(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT),
+			camera(0, 0, GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT),
 			resourceContainer() { 
-				objectContainer.addLayer(MAP_LAYER);
-				objectContainer.addLayer(GAME_LAYER);
+				objectContainer.addLayer(Layers::BACK);
+				objectContainer.addLayer(Layers::MID);
+				objectContainer.addLayer(Layers::FRONT);
 			};
 
 		CompContainer(const CompContainer&);
 		CompContainer& operator=(const CompContainer&);
 
 	public:
-
-		static const unsigned int MAP_LAYER = 0;
-		static const unsigned int GAME_LAYER = 1;
 
 		static CompContainer& getInstance()
 		{

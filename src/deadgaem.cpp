@@ -21,7 +21,7 @@ int main( int argc, char* args[] )
 		return -1;
 	}
 
-	flat::Window window(SCREEN_WIDTH, SCREEN_HEIGHT);
+	flat::Window window(GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT);
 	if (!window.init()) {
 		return -1;
 	}
@@ -42,7 +42,7 @@ int main( int argc, char* args[] )
 	
 	flat2d::GameObject* bot = new Bot(200, 200);
 	bot->init(renderer);
-	objectContainer.registerObject(bot, CompContainer::GAME_LAYER);
+	objectContainer.registerObject(bot, Layers::MID);
 	// }}}
 
 	// Loop stuff
@@ -79,8 +79,8 @@ int main( int argc, char* args[] )
 
 		// Cap the frame rate
 		int frameTicks = fpsCapTimer.getTicks();
-		if (frameTicks < SCREEN_TICKS_PER_FRAME) {
-			SDL_Delay( SCREEN_TICKS_PER_FRAME - frameTicks );
+		if (frameTicks < GameSettings::SCREEN_TICKS_PER_FRAME) {
+			SDL_Delay( GameSettings::SCREEN_TICKS_PER_FRAME - frameTicks );
 		}
 		fpsCapTimer.stop();
 	}
