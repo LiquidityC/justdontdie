@@ -5,11 +5,7 @@ using namespace flat2d;
 
 ObjectContainer::~ObjectContainer()
 {
-	for (auto it = objects.begin(); it != objects.end(); it++) {
-		delete it->second;
-	}
-	objects.clear();
-	layeredObjects.clear();
+	unregisterAllObjects();
 }
 
 void ObjectContainer::addLayer(unsigned int layer)
@@ -43,6 +39,32 @@ void ObjectContainer::unregisterObject(GameObject* object)
 	for (auto it = layeredObjects.begin(); it != layeredObjects.end(); it++) {
 		it->second.erase(objId);
 	}
+}
+
+void ObjectContainer::unregisterAllObjects()
+{
+	for(auto it = objects.begin(); it != objects.end(); it++) {
+		delete it->second;
+	}
+	objects.clear();
+	for (auto it = layeredObjects.begin(); it != layeredObjects.end(); it++) {
+		it->second.clear();
+	}
+}
+
+void ObjectContainer::unregisterAllObjectsFor(Layer layer)
+{
+	if (layeredObjects.find(layer) == layeredObjects.end()) {
+		return;
+	}
+
+	for (auto it = layeredObjects[layer].begin(); it != layeredObjects[layer].end(); it++) {
+		std::string objId = it->second->getStringId();
+		objects.erase(objId);
+		delete it->second;
+	}
+
+	layeredObjects[layer].clear();
 }
 
 void ObjectContainer::preHandle()
@@ -89,12 +111,13 @@ void ObjectContainer::postRender()
 	}
 }
 
-size_t ObjectContainer::getObjectCount(Layer layer) 
+size_t ObjectContainer::getObjectCount() 
 {
-	if (layer < DEFAULT_LAYER) {
-		return objects.size();
-	}
+	return objects.size();
+}
 
+size_t ObjectContainer::getObjectCountFor(Layer layer) 
+{
 	if (layeredObjects.find(layer) == layeredObjects.end()) {
 		return 0;
 	}

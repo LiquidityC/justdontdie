@@ -12,7 +12,7 @@ class GameObjectImpl : public flat2d::GameObject
 		int xpos, ypos;
 
 	public:
-		GameObjectImpl(unsigned int x, unsigned int y) : xpos(x), ypos(y) { };
+		GameObjectImpl(unsigned int x, unsigned int y) : GameObject(), xpos(x), ypos(y) { };
 
 		void preHandle() { }; // Do nothing, override
 		void handle(const SDL_Event& event) { } // Do nothing, override

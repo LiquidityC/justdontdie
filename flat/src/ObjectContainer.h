@@ -34,10 +34,14 @@ namespace flat2d
 
 			void addLayer(unsigned int);
 
-			void registerObject(GameObject*, int = DEFAULT_LAYER);
+			void registerObject(GameObject*, Layer = DEFAULT_LAYER);
 			void unregisterObject(GameObject*);
 
-			size_t getObjectCount(Layer = -2);
+			void unregisterAllObjects();
+			void unregisterAllObjectsFor(Layer);
+
+			size_t getObjectCount();
+			size_t getObjectCountFor(Layer);
 
 			// Eventhandler override
 			void preHandle();
