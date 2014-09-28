@@ -100,7 +100,7 @@ bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Rendere
 
 			int xoffset = tile->id * tileset->tileWidth;
 			int xclip = xoffset % tileset->width;
-			nt yclip = tileset->tileHeight * ((xoffset - xclip) / tileset->width);
+			int yclip = tileset->tileHeight * ((xoffset - xclip) / tileset->width);
 			tileObj->setClipCoordinates(xclip, yclip);
 			objectContainer.registerObject(tileObj, Layers::BACK);
 
