@@ -44,6 +44,9 @@ TEST( CollisionDetectorTests, TestSingleCollision )
 
 TEST( CollisionDetectorTests, TestMultiCollisions )
 {
-	CHECK( detector->checkForCollisions( c4 ) );
+	flat2d::GameObject* o = detector->checkForCollisions( c4 );
+	CHECK( o );
+	CHECK( *c1 == *o );
+
 	CHECK( !detector->checkForCollisions( c2 ) );
 }

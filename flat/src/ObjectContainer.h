@@ -54,14 +54,14 @@ namespace flat2d
 			void postRender();
 
 			template <class Func>
-				bool checkAllObjects(Func func) const
+				GameObject* checkAllObjects(Func func) const
 				{
 					for (auto it = objects.begin(); it != objects.end(); it++) {
 						if (func(it->second)) {
-							return true;
+							return it->second;
 						}
 					}
-					return false;
+					return NULL;
 				}
 	};
 }

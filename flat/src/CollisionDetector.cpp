@@ -9,7 +9,7 @@ CollisionDetector::CollisionDetector(ObjectContainer* objectContainer)
 	this->objectContainer = objectContainer;
 }
 
-bool CollisionDetector::checkForCollisions(const GameObject* o1) const
+GameObject* CollisionDetector::checkForCollisions(const GameObject* o1) const
 {
 	return objectContainer->checkAllObjects(
 			[&](const GameObject* o2)

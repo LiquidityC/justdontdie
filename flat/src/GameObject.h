@@ -32,6 +32,10 @@ namespace flat2d
 				return id == o.id;
 			};
 
+			virtual bool operator!=(const GameObject& o) const {
+				return id != o.id;
+			};
+
 			virtual GameObject& operator=(const GameObject& o) {
 				id = o.id;
 				return *this;

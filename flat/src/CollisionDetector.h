@@ -15,7 +15,7 @@ namespace flat2d
 		public:
 			CollisionDetector(ObjectContainer* objectContainer);
 
-			bool checkForCollisions(const GameObject*) const;
+			GameObject* checkForCollisions(const GameObject*) const;
 			bool hasCollided(const GameObject*, const GameObject*) const;
 
 		private:

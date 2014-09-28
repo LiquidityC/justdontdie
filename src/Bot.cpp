@@ -42,27 +42,30 @@ void Bot::preRender()
 	}
 
 	xpos += xvel;
-	if (colDetector.checkForCollisions(this)) {
+	GameObject *object;
+	if ((object = colDetector.checkForCollisions(this)) != NULL) {
 		xpos -= xvel;
 
 		// Completly reach the obstruction
-		while (!colDetector.checkForCollisions(this)) {
+		while (!colDetector.hasCollided(this, object)) {
 			xpos += xvel > 0 ? 1 : -1;
 		}
 		xpos += xvel > 0 ? -1 : 1;
 		xvel = 0;
+		object = NULL;
 	}
 
 	ypos += yvel;
-	if (colDetector.checkForCollisions(this)) {
+	if ((object = colDetector.checkForCollisions(this)) != NULL) {
 		ypos -= yvel;
 
 		// Completly ground the bot
-		while (!colDetector.checkForCollisions(this)) {
+		while (!colDetector.hasCollided(this, object)) {
 			ypos += yvel > 0 ? 1 : -1;
 		}
 		ypos += yvel > 0 ? -1 : 1;
 		yvel = 0;
+		object = NULL;
 	}
 
 	if (xvel > 0) {
