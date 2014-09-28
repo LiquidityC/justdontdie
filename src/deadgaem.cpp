@@ -8,7 +8,6 @@
 
 #include "CompContainer.h"
 #include "Bot.h"
-#include "Block.h"
 #include "GameSettings.h"
 #include "MapParser.h"
 

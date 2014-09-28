@@ -18,8 +18,6 @@ class GenericGameObject : public flat2d::GameObject
 	public:
 		GenericGameObject(int x, int y, int w, int h, SDL_Texture* t) 
 			: GameObject(), xpos(x), ypos(y), width(w), height(h) { 
-				using namespace std;
-				//cout << "Tile: " << x << "x" << y << ", " << w << "x" << h << " ... " << t << endl;
 				texture = t;
 				clipX = 0;
 				clipY = 0;
