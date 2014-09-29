@@ -16,6 +16,7 @@ namespace flat2d
 	{
 		private:
 			ObjectList objects;
+			ObjectList collidableObjects;
 			std::map<Layer, ObjectList> layeredObjects;
 
 		private:
@@ -52,6 +53,17 @@ namespace flat2d
 			void preRender();
 			void render(SDL_Renderer*) const;
 			void postRender();
+
+			template <class Func>
+				GameObject* checkAllCollidableObjects(Func func) const
+				{
+					for (auto it = collidableObjects.begin(); it != collidableObjects.end(); it++) {
+						if (func(it->second)) {
+							return it->second;
+						}
+					}
+					return NULL;
+				}
 
 			template <class Func>
 				GameObject* checkAllObjects(Func func) const

@@ -26,16 +26,24 @@ void ObjectContainer::registerObject(GameObject* object, Layer layer)
 	}
 
 	// Make sure this layer exists
-	assert (layeredObjects.find(layer) != layeredObjects.end());
+	if (layeredObjects.find(layer) == layeredObjects.end()) {
+		return;
+	}
 
 	objects[objId] = object;
 	layeredObjects[layer][objId] = object;
+	if (object->isCollider()) {
+		collidableObjects[objId] = object;
+	}
 }
 
 void ObjectContainer::unregisterObject(GameObject* object)
 {
 	std::string objId = object->getStringId();
 	objects.erase(objId);
+	if (object->isCollider()) {
+		collidableObjects.erase(objId);
+	}
 	for (auto it = layeredObjects.begin(); it != layeredObjects.end(); it++) {
 		it->second.erase(objId);
 	}
@@ -47,6 +55,7 @@ void ObjectContainer::unregisterAllObjects()
 		delete it->second;
 	}
 	objects.clear();
+	collidableObjects.clear();
 	for (auto it = layeredObjects.begin(); it != layeredObjects.end(); it++) {
 		it->second.clear();
 	}
@@ -61,6 +70,9 @@ void ObjectContainer::unregisterAllObjectsFor(Layer layer)
 	for (auto it = layeredObjects[layer].begin(); it != layeredObjects[layer].end(); it++) {
 		std::string objId = it->second->getStringId();
 		objects.erase(objId);
+		if (it->second->isCollider()) {
+			collidableObjects.erase(objId);
+		}
 		delete it->second;
 	}
 
