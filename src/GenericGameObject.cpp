@@ -4,7 +4,7 @@
 
 void GenericGameObject::render(SDL_Renderer* renderer) const
 {
-	Camera& cam = CompContainer::getInstance().getCamera();
+	flat2d::Camera& cam = CompContainer::getInstance().getCamera();
 
 	SDL_Rect srcBox = { clipX, clipY, width, height };
 	SDL_Rect destBox = { cam.getScreenXposFor(xpos), cam.getScreenYposFor(ypos), width, height };

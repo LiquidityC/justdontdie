@@ -6,7 +6,8 @@
 class Particle : public flat2d::GameObject
 {
 	private:
-		int xpos, ypos, xvel, yvel;
+		int xpos, ypos;
+		float xvel, yvel;
 		flat2d::Timer timer;
 
 	public:

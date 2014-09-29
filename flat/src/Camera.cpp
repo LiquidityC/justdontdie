@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+using namespace flat2d;
+
 int Camera::getXpos()
 {
 	return xpos;
@@ -70,4 +72,21 @@ int Camera::getScreenXposFor(int x)
 int Camera::getScreenYposFor(int y)
 {
 	return y - ypos;
+}
+
+void Camera::updateDeltaTime()
+{
+	if (currentTime == 0) {
+		currentTime = SDL_GetTicks();
+		return;
+	}
+
+	oldTime = currentTime;
+	currentTime = SDL_GetTicks();
+	deltaTime = (currentTime - oldTime) / 1000.0f;
+}
+
+float Camera::getDeltaTime()
+{
+	return deltaTime;
 }

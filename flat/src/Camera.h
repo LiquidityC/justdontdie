@@ -3,35 +3,45 @@
 
 #include <SDL2/SDL.h>
 
-class Camera
+namespace flat2d
 {
-	private:
-		int xpos, ypos, width, height, mapWidth, mapHeight;
+	class Camera
+	{
+		private:
+			int xpos, ypos, width, height, mapWidth, mapHeight;
+			int currentTime = 0;
+			int oldTime = 0;
+			float deltaTime = 1.0;
 
-	public:
-		Camera(int x, int y, int w, int h) :
-			xpos(x), 
-			ypos(y), 
-			width(w), 
-			height(h),
-			mapWidth(1920), 
-			mapHeight(1080) { };
+		public:
+			Camera(int x, int y, int w, int h) :
+				xpos(x), 
+				ypos(y), 
+				width(w), 
+				height(h),
+				mapWidth(1920), 
+				mapHeight(1080) { };
 
-		int getXpos();
-		int getYpos();
-		int getWidth();
-		int getHeight();
+			int getXpos();
+			int getYpos();
+			int getWidth();
+			int getHeight();
 
-		void setMapDimensions(int, int);
+			void setMapDimensions(int, int);
 
-		SDL_Rect getBox();
+			SDL_Rect getBox();
 
-		void centerOn(int x, int y);
+			void centerOn(int x, int y);
 
-		bool isVisibleOnCamera(SDL_Rect& box);
+			bool isVisibleOnCamera(SDL_Rect& box);
 
-		int getScreenXposFor(int x);
-		int getScreenYposFor(int y);
-};
+			int getScreenXposFor(int x);
+			int getScreenYposFor(int y);
+
+			void updateDeltaTime();
+
+			float getDeltaTime();
+	};
+}
 
 #endif

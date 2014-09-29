@@ -47,7 +47,9 @@ int main( int argc, char* args[] )
 	bool quit = false;
 
 	// Main loop
+	CompContainer::getInstance().getCamera().updateDeltaTime();
 	while (!quit) {
+		CompContainer::getInstance().getCamera().updateDeltaTime();
 		fpsCapTimer.start();
 
 		// Handle events

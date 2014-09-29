@@ -12,7 +12,7 @@ class CompContainer
 	private:
 		flat2d::ObjectContainer objectContainer;
 		flat2d::CollisionDetector collisionDetector;
-		Camera camera;
+		flat2d::Camera camera;
 		ResourceContainer resourceContainer;
 
 	private:
@@ -41,7 +41,7 @@ class CompContainer
 
 		flat2d::ObjectContainer& getObjectContainer() { return objectContainer; };
 		flat2d::CollisionDetector& getCollisionDetector() { return collisionDetector; };
-		Camera& getCamera() { return camera; }
+		flat2d::Camera& getCamera() { return camera; }
 		ResourceContainer& getResourceContainer() { return resourceContainer; }
 };
 

@@ -13,9 +13,11 @@ class Bot : public flat2d::GameObject
 		static const unsigned int WIDTH 	= 37;
 		static const unsigned int HEIGHT 	= 48;
 
+		bool grounded = false;
+
 		int xpos, ypos;
-		int xvel = 0;
-		int yvel = 0;
+		float xvel = 0;
+		float yvel = 0;
 
 		int clipIndex;
 		Clip clips[2] = {
