@@ -30,18 +30,23 @@ void Particle::render(SDL_Renderer* renderer) const
 {
 	flat2d::Camera& cam = CompContainer::getInstance().getCamera();
 
-	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-	SDL_Rect box = { cam.getScreenXposFor(xpos), cam.getScreenYposFor(ypos), 2, 2 };
+	setRenderDrawColor(renderer);
+	SDL_Rect box = { cam.getScreenXposFor(xpos), cam.getScreenYposFor(ypos), width, height };
 	SDL_RenderFillRect( renderer, &box );
 }
 
 SDL_Rect Particle::getBoundingBox() const
 {
-	SDL_Rect box = { xpos, ypos, 1, 1 };
+	SDL_Rect box = { xpos, ypos, width, height };
 	return box;
+}
+
+void Particle::setDead(bool dead)
+{
+ 	this->dead = dead;
 }
 
 bool Particle::isDead() const
 {
-	return timer.getTicks() > 10000;
+	return dead;
 }

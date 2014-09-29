@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "Bot.h"
 #include "CompContainer.h"
-#include "Particle.h"
+#include "BloodParticle.h"
 #include "Layers.h"
 
 void Bot::init(SDL_Renderer* renderer)
@@ -24,7 +24,7 @@ void Bot::handle(const SDL_Event& e)
 	} else if (e.key.keysym.sym == SDLK_h) {
 		Particle *p;
 		for (auto i = 0; i < 100; i++) {
-			p = new Particle( 
+			p = new BloodParticle( 
 					xpos + WIDTH + 5, 
 					ypos - 10, 100 + (rand() % 1000), 
 					100 + (rand() % 1000) * (rand() % 2 == 1 ? -1 : 1) );
@@ -54,7 +54,7 @@ void Bot::preRender()
 	float deltaTime = camera.getDeltaTime();
 
 	// Gravity
-	if (yvel < 800 && !grounded) {
+	if (yvel < 800) {
 		yvel += std::min(3600 * deltaTime, 800 - yvel);
 	}
 

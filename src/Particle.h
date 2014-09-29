@@ -5,29 +5,38 @@
 
 class Particle : public flat2d::GameObject
 {
-	private:
-		int xpos, ypos;
+	protected:
+		int xpos, ypos, width, height;
 		float xvel, yvel;
-		flat2d::Timer timer;
+		bool dead;
 
 	public:
-		Particle(int x, int y, int xv, int yv) 
-			: GameObject(), xpos(x), ypos(y), xvel(xv), yvel(yv)  { 
-				timer.start();
-			}
+		Particle(int x, int y, int w, int h, int xv, int yv) :
+			GameObject(),
+			xpos(x),
+			ypos(y),
+			width(w),
+			height(h),
+			xvel(xv),
+			yvel(yv),
+			dead(false) { };
 
-		void preHandle(); // Do nothing, override
-		void handle(const SDL_Event& event) { };
-		void postHandle() { };
+		virtual void preHandle();
+		virtual void handle(const SDL_Event& event) { };
+		virtual void postHandle() { };
 
-		void preRender() { };
-		void render(SDL_Renderer*) const;
-		void postRender() { }; // Do nothing, override
+		virtual void preRender() { };
+		virtual void render(SDL_Renderer*) const;
+		virtual void postRender() { }; // Do nothing, override
 
-		bool isCollider() const { return false; }
-		SDL_Rect getBoundingBox() const;
+		virtual bool isCollider() const { return false; }
+		virtual SDL_Rect getBoundingBox() const;
 
 		bool isDead() const;
+
+	protected:
+		void setDead(bool);
+		virtual void setRenderDrawColor(SDL_Renderer*) const = 0;
 };
 
 #endif
