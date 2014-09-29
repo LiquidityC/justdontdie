@@ -11,6 +11,8 @@ class GameObjectImpl : public flat2d::GameObject
 
 		int xpos, ypos;
 
+		bool dead = false;
+
 	public:
 		GameObjectImpl(unsigned int x, unsigned int y) : GameObject(), xpos(x), ypos(y) { };
 
@@ -24,6 +26,9 @@ class GameObjectImpl : public flat2d::GameObject
 
 		bool isCollider() const;
 		SDL_Rect getBoundingBox() const;
+
+		void setDead(bool b) { dead = b; };
+		bool isDead() const { return dead; };
 };
 
 #endif

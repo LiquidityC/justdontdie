@@ -121,3 +121,21 @@ TEST( ObjectContainerTests, TestObjectContainerClearLayers )
 	CHECK_EQUAL ( 0, container.getObjectCountFor(frontLayer) );
 	CHECK_EQUAL ( 3, container.getObjectCountFor(backLayer) );
 }
+
+TEST( ObjectContainerTests, TestObjectAutoclean )
+{
+	flat2d::GameObject* c1 = new GameObjectImpl(100, 100);
+	GameObjectImpl* c2 = new GameObjectImpl(100, 100);
+
+	flat2d::ObjectContainer container;
+
+	container.registerObject(c1);
+	container.registerObject(c2);
+
+	CHECK_EQUAL ( 2, container.getObjectCount() );
+
+	c2->setDead(true);
+	container.preHandle();
+
+	CHECK_EQUAL ( 1, container.getObjectCount() );
+}

@@ -24,10 +24,6 @@ bool CollisionDetector::hasCollided(const GameObject* o1, const GameObject* o2) 
 		return false;
 	}
 
-	if (!o1->isCollider() || !o2->isCollider()) {
-		return false;
-	}
-
 	SDL_Rect b1 = o1->getBoundingBox();
 	SDL_Rect b2 = o2->getBoundingBox();
 

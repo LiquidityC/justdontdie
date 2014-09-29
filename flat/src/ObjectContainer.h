@@ -23,6 +23,8 @@ namespace flat2d
 			ObjectContainer(const ObjectContainer&); // Don't implement
 			void operator=(const ObjectContainer&); // Don't implement
 
+			void clearDeadObjects();
+
 		public:
 			static const int DEFAULT_LAYER = -1;
 

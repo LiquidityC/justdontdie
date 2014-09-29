@@ -45,6 +45,8 @@ namespace flat2d
 				return boost::lexical_cast<std::string>(id);
 			};
 
+			virtual bool isDead() const { return false; };
+
 			/* Abstract methods */
 			virtual void init(SDL_Renderer*) { };
 			virtual void preHandle() = 0;

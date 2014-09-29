@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Bot.h"
 #include "CompContainer.h"
+#include "Particle.h"
+#include "Layers.h"
 
 void Bot::init(SDL_Renderer* renderer)
 {
@@ -15,6 +17,12 @@ void Bot::handle(const SDL_Event& e)
 
 	if (e.key.keysym.sym == SDLK_SPACE && yvel > -5 && yvel < 5) {
 		yvel = -20;
+	} else if (e.key.keysym.sym == SDLK_h) {
+		Particle *p;
+		for (auto i = 0; i < 100; i++) {
+			p = new Particle( xpos + WIDTH + 5, ypos - 10, rand() % 10, (rand() % 10) * (rand() % 2 == 1 ? -1 : 1) );
+			CompContainer::getInstance().getObjectContainer().registerObject(p, Layers::FRONT);
+		}
 	}
 }
 

@@ -81,6 +81,7 @@ void ObjectContainer::unregisterAllObjectsFor(Layer layer)
 
 void ObjectContainer::preHandle()
 {
+	clearDeadObjects();
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->preHandle();
 	}
@@ -135,4 +136,25 @@ size_t ObjectContainer::getObjectCountFor(Layer layer)
 	}
 
 	return layeredObjects[layer].size();
+}
+
+void ObjectContainer::clearDeadObjects()
+{
+	std::vector<std::string> objectsToErase;
+	for (auto it = objects.begin(); it != objects.end(); it++) {
+		if (!it->second->isDead()) {
+			continue;
+		}
+		std::string objId = it->first;
+		collidableObjects.erase(objId);
+		for (auto layerIt = layeredObjects.begin(); layerIt != layeredObjects.end(); layerIt++) {
+			layerIt->second.erase(objId);
+		}
+		objectsToErase.push_back(objId);
+		delete it->second;
+	}
+
+	for (auto it = objectsToErase.begin(); it != objectsToErase.end(); it++) {
+		objects.erase(*it);
+	}
 }
