@@ -39,15 +39,18 @@ TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 .PHONY: $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR)
 
-default: $(LIBRARY) $(LIB_INCLUDES)
+default: $(LIBRARY) $(LIB_INCLUDES) unified-header
 
-all: $(LIBRARY) $(LIBRARY_UI) $(TEST)
+all: $(LIBRARY) $(LIBRARY_UI) $(TEST) unified-header
 
 check: $(TEST)
 	./$(TEST) -v -c
 
 $(LIB_INCLUDE_DIR)/%.h: src/%.h
 	@$(CP) $< $@
+
+unified-header:
+	@for header in $(shell ls include/flat/*.h | xargs basename -a); do echo "#include <flat/$$header>"; done > $(LIB_INCLUDE_DIR)/flat.h
 
 $(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
