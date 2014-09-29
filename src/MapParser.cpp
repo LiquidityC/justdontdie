@@ -153,8 +153,14 @@ bool MapParser::parseTileset(xml_node<> *node)
 		}
 	}
 
+	// Skip terrain tags
+	xml_node<> *firstTileNode = imageNode->next_sibling();
+	while ( strcmp(firstTileNode->name(), "tile") != 0) {
+		firstTileNode = firstTileNode->next_sibling();
+	}
+
 	int gid = tileset.firstgid;
-	for (xml_node<> *tileNode = imageNode->next_sibling(); tileNode; tileNode = tileNode->next_sibling()) {
+	for (xml_node<> *tileNode = firstTileNode; tileNode; tileNode = tileNode->next_sibling()) {
 		Tile tile;
 		if ( strcmp(tileNode->name(), "tile") != 0) {
 			cout << "Node not named 'tile' parse failed: '" << node->name() << "'" << endl;
