@@ -1,7 +1,7 @@
 #ifndef _BOT_H
 #define _BOT_H
 
-#include <flat/GameObject.h>
+#include <flat/flat.h>
 
 class Bot : public flat2d::GameObject
 {

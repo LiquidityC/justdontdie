@@ -1,7 +1,7 @@
 #ifndef _MAP_PARSER_H
 #define _MAP_PARSER_H
 
-#include <flat/ObjectContainer.h>
+#include <flat/flat.h>
 #include <string>
 
 #include "NewMacro.h"

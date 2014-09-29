@@ -1,9 +1,7 @@
 #ifndef _COMP_CONTAINER_H
 #define _COMP_CONTAINER_H
 
-#include <flat/ObjectContainer.h>
-#include <flat/CollisionDetector.h>
-#include <flat/Camera.h>
+#include <flat/flat.h>
 
 #include "ResourceContainer.h"
 #include "GameSettings.h"

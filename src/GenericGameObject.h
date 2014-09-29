@@ -2,7 +2,7 @@
 #define _GENERIC_GAME_OBJECT_H
 
 #include <iostream>
-#include <flat/GameObject.h>
+#include <flat/flat.h>
 
 class GenericGameObject : public flat2d::GameObject
 {

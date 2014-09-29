@@ -1,10 +1,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <flat/Timer.h>
-#include <flat/ObjectContainer.h>
-#include <flat/Window.h>
-#include <flat/MediaUtil.h>
+#include <flat/flat.h>
 
 #include "CompContainer.h"
 #include "Bot.h"

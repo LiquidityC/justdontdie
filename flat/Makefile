@@ -30,6 +30,7 @@ LIB_SOURCES			= $(wildcard src/*.cpp)
 LIB_OBJECTS			= $(addprefix $(OBJDIR)/,$(notdir $(LIB_SOURCES:.cpp=.o)))
 
 LIB_INCLUDE_DIR		= include/flat
+LIB_UNIFIED_INCLUDE	= $(LIB_INCLUDE_DIR)/flat.h
 LIB_INCLUDE_SOURCES	= $(wildcard src/*.h)
 LIB_INCLUDES		= $(addprefix $(LIB_INCLUDE_DIR)/,$(notdir $(LIB_INCLUDE_SOURCES)))
 
@@ -37,11 +38,11 @@ TEST				= test
 TEST_SOURCES 		= $(wildcard src/*.cpp) $(wildcard testsrc/*.cpp)
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
-.PHONY: $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR)
+.PHONY: $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR) $(LIB_UNIFIED_INCLUDE)
 
-default: $(LIBRARY) $(LIB_INCLUDES) unified-header
+default: $(LIBRARY) $(LIB_INCLUDES) $(LIB_UNIFIED_INCLUDE)
 
-all: $(LIBRARY) $(LIBRARY_UI) $(TEST) unified-header
+all: $(LIBRARY) $(LIBRARY_UI) $(TEST) $(LIB_UNIFIED_INCLUDE)
 
 check: $(TEST)
 	./$(TEST) -v -c
@@ -49,8 +50,13 @@ check: $(TEST)
 $(LIB_INCLUDE_DIR)/%.h: src/%.h
 	@$(CP) $< $@
 
-unified-header:
-	@for header in $(shell ls include/flat/*.h | xargs basename -a); do echo "#include <flat/$$header>"; done > $(LIB_INCLUDE_DIR)/flat.h
+$(LIB_UNIFIED_INCLUDE): $(LIB_INCLUDES)
+	@$(ECHO) "#ifndef _FLAT_H" > $(LIB_INCLUDE_DIR)/flat.h
+	@$(ECHO) "#define _FLAT_H" >> $(LIB_INCLUDE_DIR)/flat.h
+	@$(ECHO) "" >> $(LIB_INCLUDE_DIR)/flat.h
+	@for header in $(shell ls include/flat/*.h | xargs basename -a); do $(ECHO) "#include <flat/$$header>"; done >> $(LIB_INCLUDE_DIR)/flat.h
+	@$(ECHO) "" >> $(LIB_INCLUDE_DIR)/flat.h
+	@$(ECHO) "#endif" >> $(LIB_INCLUDE_DIR)/flat.h
 
 $(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
