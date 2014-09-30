@@ -3,16 +3,15 @@
 
 #include <iostream>
 #include <map>
-
 #include "GameObject.h"
+
 
 namespace flat2d
 {
-
 	typedef int Layer;
 	typedef std::map<std::string, GameObject*> ObjectList;
 
-	class ObjectContainer : public GameObject
+	class ObjectContainer 
 	{
 		private:
 			ObjectList objects;
@@ -46,15 +45,13 @@ namespace flat2d
 			size_t getObjectCount();
 			size_t getObjectCountFor(Layer);
 
-			// Eventhandler override
-			void preHandle();
-			void handle(const SDL_Event&);
-			void postHandle();
+			void preHandleObjects();
+			void handleObjects(const SDL_Event&);
+			void postHandleObjects();
 
-			// Renderable override
-			void preRender();
-			void render(SDL_Renderer*) const;
-			void postRender();
+			void preRenderObjects();
+			void renderObjects(SDL_Renderer*) const;
+			void postRenderObjects();
 
 			template <class Func>
 				GameObject* checkAllCollidableObjects(Func func) const

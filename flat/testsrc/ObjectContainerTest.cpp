@@ -135,7 +135,7 @@ TEST( ObjectContainerTests, TestObjectAutoclean )
 	CHECK_EQUAL ( 2, container.getObjectCount() );
 
 	c2->setDead(true);
-	container.preHandle();
+	container.preHandleObjects();
 
 	CHECK_EQUAL ( 1, container.getObjectCount() );
 }

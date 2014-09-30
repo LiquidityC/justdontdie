@@ -79,7 +79,7 @@ void ObjectContainer::unregisterAllObjectsFor(Layer layer)
 	layeredObjects[layer].clear();
 }
 
-void ObjectContainer::preHandle()
+void ObjectContainer::preHandleObjects()
 {
 	clearDeadObjects();
 	for (auto it = objects.begin(); it != objects.end(); it++) {
@@ -87,28 +87,28 @@ void ObjectContainer::preHandle()
 	}
 }
 
-void ObjectContainer::handle(const SDL_Event& event)
+void ObjectContainer::handleObjects(const SDL_Event& event)
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->handle(event);
 	}
 }
 
-void ObjectContainer::postHandle()
+void ObjectContainer::postHandleObjects()
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->postHandle();
 	}
 }
 
-void ObjectContainer::preRender() 
+void ObjectContainer::preRenderObjects() 
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->preRender();
 	}
 }
 
-void ObjectContainer::render(SDL_Renderer* renderer) const
+void ObjectContainer::renderObjects(SDL_Renderer* renderer) const
 {
 	for (auto it1 = layeredObjects.begin(); it1 != layeredObjects.end(); it1++) {
 		for (auto it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
@@ -117,7 +117,7 @@ void ObjectContainer::render(SDL_Renderer* renderer) const
 	}
 }
 
-void ObjectContainer::postRender() 
+void ObjectContainer::postRenderObjects() 
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->postRender();

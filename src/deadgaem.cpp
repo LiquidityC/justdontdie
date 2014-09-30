@@ -53,24 +53,24 @@ int main( int argc, char* args[] )
 		fpsCapTimer.start();
 
 		// Handle events
-		objectContainer.preHandle();
+		objectContainer.preHandleObjects();
 		while (SDL_PollEvent (&e) != 0) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 				break;
 			}
-			objectContainer.handle(e);
+			objectContainer.handleObjects(e);
 		}
-		objectContainer.postHandle();
+		objectContainer.postHandleObjects();
 
 		// Clear screen to black
 		SDL_SetRenderDrawColor( renderer, 0x0, 0x0, 0x0, 0xFF );
 		SDL_RenderClear( renderer );
 
 		// Render
-		objectContainer.preRender();
-		objectContainer.render(renderer);
-		objectContainer.postRender();
+		objectContainer.preRenderObjects();
+		objectContainer.renderObjects(renderer);
+		objectContainer.postRenderObjects();
 
 		// Update the screen
 		SDL_RenderPresent( renderer );
