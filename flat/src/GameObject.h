@@ -45,10 +45,10 @@ namespace flat2d
 				return boost::lexical_cast<std::string>(id);
 			};
 
-			virtual bool isDead() const { return false; };
-
 			/* Abstract methods */
-			virtual void init(SDL_Renderer*) { };
+			virtual bool isDead() const = 0;
+
+			virtual void init(SDL_Renderer*) = 0;
 			virtual void preHandle() = 0;
 			virtual void handle(const SDL_Event& event) = 0;
 			virtual void postHandle() = 0;
@@ -57,11 +57,8 @@ namespace flat2d
 			virtual void render(SDL_Renderer* renderer) const = 0;
 			virtual void postRender() = 0;
 
-			virtual bool isCollider() const { return false; };
-			virtual SDL_Rect getBoundingBox() const {
-				SDL_Rect box = { 0, 0, 0, 0 };
-				return box;
-			}
+			virtual bool isCollider() const = 0;
+			virtual SDL_Rect getBoundingBox() const = 0;
 	};
 }
 

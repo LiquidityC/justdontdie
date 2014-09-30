@@ -32,6 +32,10 @@ namespace flat2d
 				virtual void handle(const SDL_Event&);
 				virtual void postHandle() { };
 
+				void init(SDL_Renderer* renderer) { };
+				bool isDead() const { return false; };
+				bool isCollider() const { return false; };
+				SDL_Rect getBoundingBox() const { SDL_Rect box = { xpos, ypos, width, height }; return box; };
 		};
 
 	}

@@ -27,8 +27,9 @@ class GameObjectImpl : public flat2d::GameObject
 		bool isCollider() const;
 		SDL_Rect getBoundingBox() const;
 
-		void setDead(bool b) { dead = b; };
-		bool isDead() const { return dead; };
+		void init(SDL_Renderer* renderer) { };
+		void setDead(bool b);
+		bool isDead() const;
 };
 
 #endif
