@@ -16,8 +16,6 @@ class Particle : public flat2d::RenderedGameObject
 				setDead(false);
 			};
 
-		void init(SDL_Renderer* rendere, flat2d::Camera *camera);
-
 		virtual void preRender();
 		virtual void render(SDL_Renderer*) const;
 

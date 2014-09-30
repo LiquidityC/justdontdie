@@ -3,6 +3,11 @@
 
 using namespace flat2d;
 
+void RenderedGameObject::init(SDL_Renderer *renderer, Camera *camera)
+{
+	this->camera = camera;
+}
+
 void RenderedGameObject::setDead(bool dead)
 {
 	this->dead = dead;

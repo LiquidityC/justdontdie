@@ -24,7 +24,7 @@ void Bot::handle(const SDL_Event& e)
 			grounded = false;
 		}
 	} else if (e.key.keysym.sym == SDLK_h) {
-		// Gonna test particles here
+		CompContainer::getInstance().getParticleEngine().createBloodSprayAt(xpos-10, ypos-10);
 	}
 }
 

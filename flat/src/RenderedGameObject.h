@@ -39,6 +39,7 @@ namespace flat2d
 			void setCollidable(bool);
 
 			/* Implemented override methods */
+			virtual void init(SDL_Renderer*, Camera*);
 			virtual bool isDead() const;
 			virtual void render(SDL_Renderer* renderer) const;
 			virtual bool isCollider() const;
@@ -47,7 +48,6 @@ namespace flat2d
 			virtual void setTexture(SDL_Texture*);
 
 			/* Empty methods */
-			virtual void init(SDL_Renderer*, Camera*) { };
 			virtual void preHandle() { };
 			virtual void handle(const SDL_Event& event) { };
 			virtual void postHandle() { };

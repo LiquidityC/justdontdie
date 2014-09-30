@@ -3,11 +3,6 @@
 #include "Particle.h"
 #include "CompContainer.h"
 
-void Particle::init(SDL_Renderer *renderer, flat2d::Camera *camera)
-{
-	setCamera(camera);
-}
-
 void Particle::preRender()
 {
 	flat2d::Camera& cam = CompContainer::getInstance().getCamera();

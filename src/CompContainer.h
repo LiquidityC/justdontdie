@@ -6,6 +6,7 @@
 #include "ResourceContainer.h"
 #include "GameSettings.h"
 #include "Layers.h"
+#include "ParticleEngine.h"
 
 class CompContainer
 {
@@ -14,6 +15,7 @@ class CompContainer
 		flat2d::CollisionDetector collisionDetector;
 		flat2d::Camera camera;
 		ResourceContainer resourceContainer;
+		ParticleEngine particleEngine;
 
 	private:
 
@@ -43,6 +45,7 @@ class CompContainer
 		flat2d::CollisionDetector& getCollisionDetector() { return collisionDetector; };
 		flat2d::Camera& getCamera() { return camera; }
 		ResourceContainer& getResourceContainer() { return resourceContainer; }
+		ParticleEngine& getParticleEngine() { return particleEngine; }
 };
 
 #endif
