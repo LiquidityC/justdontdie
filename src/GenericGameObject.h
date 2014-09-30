@@ -4,41 +4,15 @@
 #include <iostream>
 #include <flat/flat.h>
 
-class GenericGameObject : public flat2d::GameObject
+class GenericGameObject : public flat2d::RenderedGameObject
 {
-	private:
-		int xpos, ypos;
-		int width, height;
-
-		SDL_Texture* texture = NULL;
-		int clipX;
-		int clipY;
-		bool collider;
-
 	public:
 		GenericGameObject(int x, int y, int w, int h, SDL_Texture* t) 
-			: GameObject(), xpos(x), ypos(y), width(w), height(h) { 
-				texture = t;
-				clipX = 0;
-				clipY = 0;
-				collider = false;
+			: RenderedGameObject(x, y, w, h) { 
+				setTexture(t);
 			};
 
-		void setCollidable(bool);
-		bool isCollider() const;
-
-		void setClipCoordinates(int x, int y);
-
-		SDL_Rect getBoundingBox() const;
-		void render(SDL_Renderer*) const;
-
-		void preHandle() { }; // Do nothing, override
-		void handle(const SDL_Event& event) { }; // Do nothing
-		void postHandle() { }; // Do nothing
-
-		void preRender() { }; // Do nothing
-		void postRender() { }; // Do nothing, override
+		void init(SDL_Renderer*, flat2d::Camera*);
 };
-
 
 #endif

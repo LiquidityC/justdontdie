@@ -16,6 +16,8 @@ class GameObjectImpl : public flat2d::GameObject
 	public:
 		GameObjectImpl(unsigned int x, unsigned int y) : GameObject(), xpos(x), ypos(y) { };
 
+		void init(SDL_Renderer* renderer, flat2d::Camera *camera) { };
+
 		void preHandle() { }; // Do nothing, override
 		void handle(const SDL_Event& event) { } // Do nothing, override
 		void postHandle() { }; // Do nothing, override
@@ -30,6 +32,9 @@ class GameObjectImpl : public flat2d::GameObject
 		void init(SDL_Renderer* renderer) { };
 		void setDead(bool b);
 		bool isDead() const;
+
+		const SDL_Texture* getTexture() const { return NULL; };
+		void setTexture(SDL_Texture* texture) { };
 };
 
 #endif

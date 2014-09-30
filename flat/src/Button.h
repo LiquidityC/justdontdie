@@ -21,6 +21,8 @@ namespace flat2d
 
 				~Button() { };
 
+				void init(SDL_Renderer *rendere, Camera *camera) { };
+
 				void setOnClick(std::function<void ()> click);
 				void triggerClick();
 
@@ -36,6 +38,9 @@ namespace flat2d
 				bool isDead() const { return false; };
 				bool isCollider() const { return false; };
 				SDL_Rect getBoundingBox() const { SDL_Rect box = { xpos, ypos, width, height }; return box; };
+
+				void setTexture(SDL_Texture *texture) { };
+				const SDL_Texture* getTexture() const { return NULL; };
 		};
 
 	}

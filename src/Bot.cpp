@@ -5,9 +5,11 @@
 #include "BloodParticle.h"
 #include "Layers.h"
 
-void Bot::init(SDL_Renderer* renderer)
+void Bot::init(SDL_Renderer* renderer, flat2d::Camera* camera)
 {
-	botTexture = flat2d::MediaUtil::loadTexture("resources/bot.png", renderer);
+	setCamera(camera);
+	setTexture(flat2d::MediaUtil::loadTexture("resources/bot.png", renderer));
+	setClip(clips[0]);
 }
 
 void Bot::handle(const SDL_Event& e)
@@ -22,14 +24,7 @@ void Bot::handle(const SDL_Event& e)
 			grounded = false;
 		}
 	} else if (e.key.keysym.sym == SDLK_h) {
-		Particle *p;
-		for (auto i = 0; i < 100; i++) {
-			p = new BloodParticle( 
-					xpos + WIDTH + 5, 
-					ypos - 10, 100 + (rand() % 1000), 
-					100 + (rand() % 1000) * (rand() % 2 == 1 ? -1 : 1) );
-			CompContainer::getInstance().getObjectContainer().registerObject(p, Layers::FRONT);
-		}
+		// Gonna test particles here
 	}
 }
 
@@ -50,8 +45,7 @@ void Bot::postHandle()
 void Bot::preRender()
 {
 	flat2d::CollisionDetector& colDetector = CompContainer::getInstance().getCollisionDetector();
-	flat2d::Camera& camera = CompContainer::getInstance().getCamera();
-	float deltaTime = camera.getDeltaTime();
+	float deltaTime = camera->getDeltaTime();
 
 	// Gravity
 	if (yvel < 800) {
@@ -89,27 +83,12 @@ void Bot::preRender()
 	}
 
 	if (xvel > 0) {
-		clipIndex = 0;
+		setClip(clips[0]);
 	} else if (xvel < 0) {
-		clipIndex = 1;
+		setClip(clips[1]);
 	}
 
 
-	camera.centerOn(xpos + (WIDTH/2), ypos + (HEIGHT/2));
+	camera->centerOn(xpos + (width/2), ypos + (height/2));
 }
 
-void Bot::render(SDL_Renderer* renderer) const
-{
-	SDL_SetRenderDrawColor( renderer, 0xFF, 0xFF, 0xFF, 0xFF );
-
-	flat2d::Camera cam = CompContainer::getInstance().getCamera();
-	SDL_Rect box = { cam.getScreenXposFor(xpos), cam.getScreenYposFor(ypos), WIDTH, HEIGHT };
-	SDL_Rect clip = { clips[clipIndex].x, clips[clipIndex].y, WIDTH, HEIGHT };
-	SDL_RenderCopy(renderer, botTexture, &clip, &box);
-}
-
-SDL_Rect Bot::getBoundingBox() const
-{
-	SDL_Rect rect = { xpos, ypos, WIDTH, HEIGHT };
-	return rect;
-}

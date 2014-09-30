@@ -3,7 +3,12 @@
 #include "Particle.h"
 #include "CompContainer.h"
 
-void Particle::preHandle()
+void Particle::init(SDL_Renderer *renderer, flat2d::Camera *camera)
+{
+	setCamera(camera);
+}
+
+void Particle::preRender()
 {
 	flat2d::Camera& cam = CompContainer::getInstance().getCamera();
 	float deltaTime = cam.getDeltaTime();
@@ -33,20 +38,4 @@ void Particle::render(SDL_Renderer* renderer) const
 	setRenderDrawColor(renderer);
 	SDL_Rect box = { cam.getScreenXposFor(xpos), cam.getScreenYposFor(ypos), width, height };
 	SDL_RenderFillRect( renderer, &box );
-}
-
-SDL_Rect Particle::getBoundingBox() const
-{
-	SDL_Rect box = { xpos, ypos, width, height };
-	return box;
-}
-
-void Particle::setDead(bool dead)
-{
- 	this->dead = dead;
-}
-
-bool Particle::isDead() const
-{
-	return dead;
 }

@@ -3,53 +3,42 @@
 
 #include <flat/flat.h>
 
-class Bot : public flat2d::GameObject
+class Bot : public flat2d::RenderedGameObject
 {
 	typedef struct {
 		int x, y;
 	} Clip;
 
 	private:
-		static const unsigned int WIDTH 	= 37;
-		static const unsigned int HEIGHT 	= 48;
-
 		bool grounded = false;
 
-		int xpos, ypos;
 		float xvel = 0;
 		float yvel = 0;
 
-		int clipIndex;
-		Clip clips[2] = {
-			{ 	0,	 0 },
-			{ 	37,	 0 }
+		SDL_Rect clips[2] = {
+			{ 	0,	 0, 37, 48 },
+			{ 	37,	 0, 37, 48}
 		};
 
 		SDL_Texture* botTexture = NULL;
 
 	public:
 
-		Bot(unsigned int x, unsigned int y) : GameObject(), xpos(x), ypos(y), clipIndex(0) { };
+		Bot(unsigned int x, unsigned int y) : RenderedGameObject(x, y, 37, 48) { };
 
 		~Bot() {
-			if (botTexture != NULL) {
+			if (texture != NULL) {
 				SDL_DestroyTexture(botTexture);
 				botTexture = NULL;
 			}
 		};
 
-		void init(SDL_Renderer*);
+		void init(SDL_Renderer*, flat2d::Camera*);
 
-		void preHandle() { }; // Do nothing, override
 		void handle(const SDL_Event& event);
 		void postHandle();
 
 		void preRender();
-		void render(SDL_Renderer*) const;
-		void postRender() { }; // Do nothing, override
-
-		bool isCollider() const { return true; }
-		SDL_Rect getBoundingBox() const;
 };
 
 #endif

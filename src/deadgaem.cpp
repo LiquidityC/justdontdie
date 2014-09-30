@@ -30,6 +30,7 @@ int main( int argc, char* args[] )
 
 	SDL_Renderer* renderer = window.getRenderer();
 	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
+	flat2d::Camera& camera = CompContainer::getInstance().getCamera();
 
 	// Prototype stuff, shouldn't be here in the future
 	// {{{
@@ -37,7 +38,7 @@ int main( int argc, char* args[] )
 	parser.createMapFrom("resources/map2/", "map2.tmx", renderer);
 	
 	flat2d::GameObject* bot = new Bot(200, 200);
-	bot->init(renderer);
+	bot->init(renderer, &camera);
 	objectContainer.registerObject(bot, Layers::MID);
 	// }}}
 
@@ -47,9 +48,9 @@ int main( int argc, char* args[] )
 	bool quit = false;
 
 	// Main loop
-	CompContainer::getInstance().getCamera().updateDeltaTime();
+	camera.updateDeltaTime();
 	while (!quit) {
-		CompContainer::getInstance().getCamera().updateDeltaTime();
+		camera.updateDeltaTime();
 		fpsCapTimer.start();
 
 		// Handle events
