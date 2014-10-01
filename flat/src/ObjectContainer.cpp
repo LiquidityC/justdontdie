@@ -1,5 +1,6 @@
 #include <cassert>
 #include "ObjectContainer.h"
+#include "RenderData.h"
 
 using namespace flat2d;
 
@@ -101,26 +102,26 @@ void ObjectContainer::postHandleObjects()
 	}
 }
 
-void ObjectContainer::preRenderObjects() 
+void ObjectContainer::preRenderObjects(const RenderData* data) 
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
-		it->second->preRender();
+		it->second->preRender(data);
 	}
 }
 
-void ObjectContainer::renderObjects(SDL_Renderer* renderer) const
+void ObjectContainer::renderObjects(const RenderData* data) const
 {
 	for (auto it1 = layeredObjects.begin(); it1 != layeredObjects.end(); it1++) {
 		for (auto it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
-			it2->second->render(renderer);
+			it2->second->render(data);
 		}
 	}
 }
 
-void ObjectContainer::postRenderObjects() 
+void ObjectContainer::postRenderObjects(const RenderData* data) 
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
-		it->second->postRender();
+		it->second->postRender(data);
 	}
 }
 

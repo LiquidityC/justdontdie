@@ -3,10 +3,9 @@
 #include "Particle.h"
 #include "CompContainer.h"
 
-void Particle::preRender()
+void Particle::preRender(const flat2d::RenderData* data)
 {
-	flat2d::Camera& cam = CompContainer::getInstance().getCamera();
-	float deltaTime = cam.getDeltaTime();
+	float deltaTime = data->getCamera()->getDeltaTime();
 	if (xvel == 0 && yvel == 0) {
 		return;
 	}
@@ -26,11 +25,12 @@ void Particle::preRender()
 	}
 }
 
-void Particle::render(SDL_Renderer* renderer) const
+void Particle::render(const flat2d::RenderData* data) const
 {
-	flat2d::Camera& cam = CompContainer::getInstance().getCamera();
+	flat2d::Camera *cam = data->getCamera();
 
+	SDL_Renderer *renderer = data->getRenderer();
 	setRenderDrawColor(renderer);
-	SDL_Rect box = { cam.getScreenXposFor(xpos), cam.getScreenYposFor(ypos), width, height };
+	SDL_Rect box = { cam->getScreenXposFor(xpos), cam->getScreenYposFor(ypos), width, height };
 	SDL_RenderFillRect( renderer, &box );
 }

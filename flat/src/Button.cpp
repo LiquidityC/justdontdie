@@ -1,4 +1,5 @@
 #include "Button.h"
+#include "RenderData.h"
 
 using namespace flat2d::ui;
 
@@ -27,9 +28,10 @@ void Button::handle(const SDL_Event& e)
 	}
 }
 
-void Button::render(SDL_Renderer* renderer) const
+void Button::render(const RenderData* data) const
 {
 	// Draw the box
+	SDL_Renderer *renderer = data->getRenderer();
 	SDL_SetRenderDrawColor(renderer, 0x99, 0x99, 0x99, 0xFF);
 	SDL_Rect rect = { xpos, ypos, width, height };
 	SDL_RenderFillRect(renderer, &rect);

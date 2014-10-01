@@ -1,12 +1,8 @@
 #include "RenderedGameObject.h"
 #include "Camera.h"
+#include "RenderData.h"
 
 using namespace flat2d;
-
-void RenderedGameObject::init(SDL_Renderer *renderer, Camera *camera)
-{
-	this->camera = camera;
-}
 
 void RenderedGameObject::setDead(bool dead)
 {
@@ -23,17 +19,12 @@ bool RenderedGameObject::isDead() const
 	return dead;
 }
 
-void RenderedGameObject::setCamera(Camera *camera)
-{
-	this->camera = camera;
-}
-
 void RenderedGameObject::setCollidable(bool collidable)
 {
 	this->collidable = collidable;
 }
 
-void RenderedGameObject::render(SDL_Renderer* renderer) const
+void RenderedGameObject::render(const RenderData *data) const
 {
 	if (texture == NULL) {
 		return;
@@ -42,13 +33,14 @@ void RenderedGameObject::render(SDL_Renderer* renderer) const
 	int x = xpos;
 	int y = ypos;
 
-	if (camera != NULL) {
+	if (data->getCamera() != NULL) {
+		Camera* camera = data->getCamera();
 		x = camera->getScreenXposFor(x);
 		y = camera->getScreenYposFor(y);
 	}
 
 	SDL_Rect box = { x, y, width, height };
-	SDL_RenderCopy(renderer, texture, &clip, &box);
+	SDL_RenderCopy(data->getRenderer(), texture, &clip, &box);
 
 #ifdef DEBUG
 	if (isCollider()) {

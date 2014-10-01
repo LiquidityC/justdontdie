@@ -11,8 +11,6 @@ class GenericGameObject : public flat2d::RenderedGameObject
 			: RenderedGameObject(x, y, w, h) { 
 				setTexture(t);
 			};
-
-		void init(SDL_Renderer*, flat2d::Camera*);
 };
 
 #endif

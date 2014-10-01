@@ -64,12 +64,12 @@ bool Camera::isVisibleOnCamera(SDL_Rect& box)
 	return true;
 }
 
-int Camera::getScreenXposFor(int x)
+int Camera::getScreenXposFor(int x) const
 {
 	return x - xpos;
 }
 
-int Camera::getScreenYposFor(int y)
+int Camera::getScreenYposFor(int y) const
 {
 	return y - ypos;
 }
@@ -86,7 +86,7 @@ void Camera::updateDeltaTime()
 	deltaTime = (currentTime - oldTime) / 1000.0f;
 }
 
-float Camera::getDeltaTime()
+float Camera::getDeltaTime() const
 {
 	return deltaTime;
 }

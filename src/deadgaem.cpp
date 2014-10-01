@@ -31,6 +31,7 @@ int main( int argc, char* args[] )
 	SDL_Renderer* renderer = window.getRenderer();
 	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
 	flat2d::Camera& camera = CompContainer::getInstance().getCamera();
+	flat2d::RenderData renderData(renderer, &camera);
 
 	// Prototype stuff, shouldn't be here in the future
 	// {{{
@@ -38,12 +39,11 @@ int main( int argc, char* args[] )
 	parser.createMapFrom("resources/map2/", "map2.tmx", renderer);
 	
 	flat2d::GameObject* bot = new Bot(200, 200);
-	bot->init(renderer, &camera);
+	bot->init(&renderData);
 	objectContainer.registerObject(bot, Layers::MID);
 	// }}}
 
 	// Loop stuff
-	flat2d::Timer fpsCapTimer;
 	SDL_Event e;
 	bool quit = false;
 
@@ -51,7 +51,6 @@ int main( int argc, char* args[] )
 	camera.updateDeltaTime();
 	while (!quit) {
 		camera.updateDeltaTime();
-		fpsCapTimer.start();
 
 		// Handle events
 		objectContainer.preHandleObjects();
@@ -69,19 +68,12 @@ int main( int argc, char* args[] )
 		SDL_RenderClear( renderer );
 
 		// Render
-		objectContainer.preRenderObjects();
-		objectContainer.renderObjects(renderer);
-		objectContainer.postRenderObjects();
+		objectContainer.preRenderObjects(&renderData);
+		objectContainer.renderObjects(&renderData);
+		objectContainer.postRenderObjects(&renderData);
 
 		// Update the screen
 		SDL_RenderPresent( renderer );
-
-		// Cap the frame rate
-		int frameTicks = fpsCapTimer.getTicks();
-		if (frameTicks < GameSettings::SCREEN_TICKS_PER_FRAME) {
-			SDL_Delay( GameSettings::SCREEN_TICKS_PER_FRAME - frameTicks );
-		}
-		fpsCapTimer.stop();
 	}
 
 	IMG_Quit();

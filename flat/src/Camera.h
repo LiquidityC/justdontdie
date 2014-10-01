@@ -35,12 +35,12 @@ namespace flat2d
 
 			bool isVisibleOnCamera(SDL_Rect& box);
 
-			int getScreenXposFor(int x);
-			int getScreenYposFor(int y);
+			int getScreenXposFor(int x) const;
+			int getScreenYposFor(int y) const;
 
 			void updateDeltaTime();
 
-			float getDeltaTime();
+			float getDeltaTime() const;
 	};
 }
 

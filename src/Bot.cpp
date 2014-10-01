@@ -5,10 +5,9 @@
 #include "BloodParticle.h"
 #include "Layers.h"
 
-void Bot::init(SDL_Renderer* renderer, flat2d::Camera* camera)
+void Bot::init(const flat2d::RenderData *data)
 {
-	setCamera(camera);
-	setTexture(flat2d::MediaUtil::loadTexture("resources/bot.png", renderer));
+	setTexture(flat2d::MediaUtil::loadTexture("resources/bot.png", data->getRenderer()));
 	setClip(clips[0]);
 }
 
@@ -42,10 +41,10 @@ void Bot::postHandle()
 
 }
 
-void Bot::preRender()
+void Bot::preRender(const flat2d::RenderData *data)
 {
 	flat2d::CollisionDetector& colDetector = CompContainer::getInstance().getCollisionDetector();
-	float deltaTime = camera->getDeltaTime();
+	float deltaTime = data->getCamera()->getDeltaTime();
 
 	// Gravity
 	if (yvel < 800) {
@@ -89,6 +88,6 @@ void Bot::preRender()
 	}
 
 
-	camera->centerOn(xpos + (width/2), ypos + (height/2));
+	data->getCamera()->centerOn(xpos + (width/2), ypos + (height/2));
 }
 

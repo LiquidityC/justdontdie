@@ -33,12 +33,12 @@ class Bot : public flat2d::RenderedGameObject
 			}
 		};
 
-		void init(SDL_Renderer*, flat2d::Camera*);
+		void init(const flat2d::RenderData*);
 
 		void handle(const SDL_Event& event);
 		void postHandle();
 
-		void preRender();
+		void preRender(const flat2d::RenderData*);
 };
 
 #endif

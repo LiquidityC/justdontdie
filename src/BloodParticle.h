@@ -12,11 +12,9 @@ class BloodParticle : public Particle
 
 	public:
 		BloodParticle(int x, int y, int xvel, int yvel) 
-			: Particle(x, y, 2, 2, xvel, yvel) { 
-				timer.start();
-			};
+			: Particle(x, y, 2, 2, xvel, yvel) { };
 
-		void postRender();
+		void postRender(const flat2d::RenderData*);
 
 	private:
 		void setRenderDrawColor(SDL_Renderer* renderer) const;

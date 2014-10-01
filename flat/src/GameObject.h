@@ -10,6 +10,7 @@
 namespace flat2d 
 {
 	class Camera;
+	class RenderData;
 
 	class GameObject
 	{
@@ -49,14 +50,14 @@ namespace flat2d
 			/* Abstract methods */
 			virtual bool isDead() const = 0;
 
-			virtual void init(SDL_Renderer*, Camera*) = 0;
+			virtual void init(const RenderData*) = 0;
 			virtual void preHandle() = 0;
 			virtual void handle(const SDL_Event& event) = 0;
 			virtual void postHandle() = 0;
 
-			virtual void preRender() = 0;
-			virtual void render(SDL_Renderer* renderer) const = 0;
-			virtual void postRender() = 0;
+			virtual void preRender(const RenderData*) = 0;
+			virtual void render(const RenderData*) const = 0;
+			virtual void postRender(const RenderData*) = 0;
 
 			virtual bool isCollider() const = 0;
 			virtual SDL_Rect getBoundingBox() const = 0;

@@ -8,6 +8,8 @@
 
 namespace flat2d
 {
+	class RenderData;
+
 	typedef int Layer;
 	typedef std::map<std::string, GameObject*> ObjectList;
 
@@ -49,9 +51,9 @@ namespace flat2d
 			void handleObjects(const SDL_Event&);
 			void postHandleObjects();
 
-			void preRenderObjects();
-			void renderObjects(SDL_Renderer*) const;
-			void postRenderObjects();
+			void preRenderObjects(const RenderData*);
+			void renderObjects(const RenderData*) const;
+			void postRenderObjects(const RenderData*);
 
 			template <class Func>
 				GameObject* checkAllCollidableObjects(Func func) const

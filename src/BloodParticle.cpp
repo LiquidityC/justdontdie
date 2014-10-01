@@ -3,8 +3,11 @@
 #include "BloodParticle.h"
 #include "CompContainer.h"
 
-void BloodParticle::postRender()
+void BloodParticle::postRender(const flat2d::RenderData *data)
 {
+	if (!timer.isStarted()) {
+		timer.start();
+	}
 	if (timer.getTicks() > 5000) {
 		setDead(true);
 	}

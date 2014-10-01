@@ -6,15 +6,14 @@
 void ParticleEngine::createBloodSprayAt(int x, int y)
 {
 	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
-	flat2d::Camera& camera = CompContainer::getInstance().getCamera();
 
 	Particle *p;
-	for (auto i = 0; i < 100; i++) {
-		int neg = rand() % 2 > 0 ? 1 : -1;
-		int xvel = 100 + (rand() % 1000) * neg;
-		int yvel = 100 + (rand() % 1000) * neg;
+	for (auto i = 0; i < 500; i++) {
+		int xneg = rand() % 2 > 0 ? 1 : -1;
+		int yneg = rand() % 2 > 0 ? 1 : -1;
+		int xvel = (rand() % 1000) * xneg;
+		int yvel = (rand() % 1000) * yneg;
 		p = new BloodParticle(x, y, xvel, yvel);
-		p->init(NULL, &camera);
 		objectContainer.registerObject(p, Layers::FRONT);
 	}
 }
