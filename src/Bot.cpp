@@ -88,39 +88,66 @@ void Bot::preRender(const flat2d::RenderData *data)
 
 void Bot::calculateCurrentClip()
 {
-	static int clipCount = 0;
-
 	if (xvel != 0) {
-		clipCount++;
-
 		if (xvel > 0
+				&& currentClip != ClipIndex::RIGHT
 				&& currentClip != ClipIndex::WALK_RIGHT_1
 				&& currentClip != ClipIndex::WALK_RIGHT_2)
 		{
 			currentClip = ClipIndex::WALK_RIGHT_1;
 		} else if (xvel < 0
+				&& currentClip != ClipIndex::LEFT
 				&& currentClip != ClipIndex::WALK_LEFT_1
 				&& currentClip != ClipIndex::WALK_LEFT_2)
 		{
 			currentClip = ClipIndex::WALK_LEFT_1;
 		}
-	}
 
-	if (xvel > 0) {
-		if (currentClip == ClipIndex::WALK_RIGHT_1 && clipCount > 6) {
-			currentClip = ClipIndex::WALK_RIGHT_2;
-			clipCount = 0;
-		} else if (currentClip == ClipIndex::WALK_RIGHT_2 && clipCount > 6) {
-			currentClip = ClipIndex::WALK_RIGHT_1;
-			clipCount = 0;
-		}
-	} else if (xvel < 0) {
-		if (currentClip == ClipIndex::WALK_LEFT_1 && clipCount > 6) {
-			currentClip = ClipIndex::WALK_LEFT_2;
-			clipCount = 0;
-		} else if (currentClip == ClipIndex::WALK_LEFT_2 && clipCount > 6) {
-			currentClip = ClipIndex::WALK_LEFT_1;
-			clipCount = 0;
+		if (xvel > 0) {
+			static int rightClipCount = 0;
+			static int rightClipIndex = 0;
+
+			ClipIndex walkRightClips[4] = { 
+				ClipIndex::WALK_RIGHT_1,
+				ClipIndex::RIGHT,
+				ClipIndex::WALK_RIGHT_2,
+				ClipIndex::RIGHT
+			};
+
+			if (rightClipCount > 4) {
+				rightClipCount = 0;
+
+				currentClip = walkRightClips[rightClipIndex];
+
+				++rightClipIndex;
+				if (rightClipIndex > 3) {
+					rightClipIndex = 0;
+				}
+			}
+			++rightClipCount;
+
+		} else if (xvel < 0) {
+			static int leftClipCount = 0;
+			static int leftClipIndex = 0;
+
+			ClipIndex walkLeftClips[4] = { 
+				ClipIndex::WALK_LEFT_1,
+				ClipIndex::LEFT,
+				ClipIndex::WALK_LEFT_2,
+				ClipIndex::LEFT
+			};
+
+			if (leftClipCount > 4) {
+				leftClipCount = 0;
+
+				currentClip = walkLeftClips[leftClipIndex];
+
+				++leftClipIndex;
+				if (leftClipIndex > 3) {
+					leftClipIndex = 0;
+				}
+			}
+			++leftClipCount;
 		}
 	}
 
