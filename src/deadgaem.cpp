@@ -76,6 +76,8 @@ int main( int argc, char* args[] )
 		SDL_RenderPresent( renderer );
 	}
 
+	objectContainer.unregisterAllObjects();
+	CompContainer::getInstance().getResourceContainer().clearTextures();
 	IMG_Quit();
 	SDL_Quit();
 
