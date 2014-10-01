@@ -57,12 +57,14 @@ int main( int argc, char* args[] )
 	// }}}
 
 	// Loop stuff
+	flat2d::Timer fpsCapTimer;;
 	SDL_Event e;
 	bool quit = false;
 
 	// Main loop
 	camera.updateDeltaTime();
 	while (!quit) {
+		fpsCapTimer.start();
 		camera.updateDeltaTime();
 
 		// Handle events
@@ -87,6 +89,10 @@ int main( int argc, char* args[] )
 
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 
+		// Update the screen
+		SDL_RenderPresent( renderer );
+
+#ifdef DEBUG
 		countedFrames++;
 		float avgFps = countedFrames / (fpsTimer.getTicks() / 1000.f);
 		if (avgFps > 20000) {
@@ -99,9 +105,11 @@ int main( int argc, char* args[] )
 			drawFpsTimer.stop();
 			drawFpsTimer.start();
 		}
-
-		// Update the screen
-		SDL_RenderPresent( renderer );
+#endif
+		int tickCount = fpsCapTimer.getTicks();
+		if (tickCount < GameSettings::SCREEN_TICKS_PER_FRAME) {
+			SDL_Delay(GameSettings::SCREEN_TICKS_PER_FRAME - tickCount);
+		}
 	}
 
 	objectContainer.unregisterAllObjects();

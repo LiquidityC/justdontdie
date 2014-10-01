@@ -8,7 +8,7 @@
 void Bot::init(const flat2d::RenderData *data)
 {
 	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/bot.png", data->getRenderer()));
-	setClip(clips[0]);
+	setClip(clips[currentClip]);
 }
 
 void Bot::handle(const SDL_Event& e)
@@ -81,13 +81,71 @@ void Bot::preRender(const flat2d::RenderData *data)
 		object = NULL;
 	}
 
-	if (xvel > 0) {
-		setClip(clips[0]);
-	} else if (xvel < 0) {
-		setClip(clips[1]);
-	}
-
+	calculateCurrentClip();
 
 	data->getCamera()->centerOn(xpos + (width/2), ypos + (height/2));
+}
+
+void Bot::calculateCurrentClip()
+{
+	static int clipCount = 0;
+
+	if (xvel != 0) {
+		clipCount++;
+
+		if (xvel > 0
+				&& currentClip != ClipIndex::WALK_RIGHT_1
+				&& currentClip != ClipIndex::WALK_RIGHT_2)
+		{
+			currentClip = ClipIndex::WALK_RIGHT_1;
+		} else if (xvel < 0
+				&& currentClip != ClipIndex::WALK_LEFT_1
+				&& currentClip != ClipIndex::WALK_LEFT_2)
+		{
+			currentClip = ClipIndex::WALK_LEFT_1;
+		}
+	}
+
+	if (xvel > 0) {
+		if (currentClip == ClipIndex::WALK_RIGHT_1 && clipCount > 6) {
+			currentClip = ClipIndex::WALK_RIGHT_2;
+			clipCount = 0;
+		} else if (currentClip == ClipIndex::WALK_RIGHT_2 && clipCount > 6) {
+			currentClip = ClipIndex::WALK_RIGHT_1;
+			clipCount = 0;
+		}
+	} else if (xvel < 0) {
+		if (currentClip == ClipIndex::WALK_LEFT_1 && clipCount > 6) {
+			currentClip = ClipIndex::WALK_LEFT_2;
+			clipCount = 0;
+		} else if (currentClip == ClipIndex::WALK_LEFT_2 && clipCount > 6) {
+			currentClip = ClipIndex::WALK_LEFT_1;
+			clipCount = 0;
+		}
+	}
+
+	if (!grounded) {
+		if (currentClip == ClipIndex::GHOST_RIGHT) {
+			currentClip = ClipIndex::RIGHT;
+		} else if (currentClip == ClipIndex::GHOST_LEFT) {
+			currentClip = ClipIndex::LEFT;
+		}
+	}
+
+	if (xvel == 0 && yvel == 0 && grounded) {
+		if (currentClip == ClipIndex::WALK_RIGHT_1
+				|| currentClip == ClipIndex::WALK_RIGHT_2
+				|| currentClip == ClipIndex::RIGHT)
+		{
+			currentClip = ClipIndex::GHOST_RIGHT;
+		} else if (currentClip == ClipIndex::WALK_LEFT_1
+				|| currentClip == ClipIndex::WALK_LEFT_2
+				|| currentClip == ClipIndex::LEFT)
+		{
+			currentClip = ClipIndex::GHOST_LEFT;
+		}
+	}
+
+	setClip(clips[currentClip]);
 }
 

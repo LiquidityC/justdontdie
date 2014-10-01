@@ -8,7 +8,7 @@ SDL2_LDFLAGS		:= $(shell sdl2-config --static-libs)
 SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
 
 CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
-			  -I./flat/include -include src/NewMacro.h $(SDL2_CFLAGS)
+			  -I./flat/include -include src/NewMacro.h $(SDL2_CFLAGS) -DDEBUG
 LD			= g++
 LDFLAGS 	= -L./flat/lib/
 RM			= rm
