@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <flat/flat.h>
 
 #include "CompContainer.h"
@@ -23,6 +24,11 @@ int main( int argc, char* args[] )
 		return -1;
 	}
 
+	if (TTF_Init() == -1) {
+		std::cerr << "Unable to initiate SDL2_ttf: " << TTF_GetError() << std::endl;
+		return -1;
+	}
+
 	flat::Window window(GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT);
 	if (!window.init()) {
 		return -1;
@@ -41,6 +47,13 @@ int main( int argc, char* args[] )
 	flat2d::GameObject* bot = new Bot(200, 200);
 	bot->init(&renderData);
 	objectContainer.registerObject(bot, Layers::MID);
+
+	std::stringstream timeText;
+	flat2d::Timer fpsTimer;
+	flat2d::Timer drawFpsTimer;
+	int countedFrames = 0;
+	fpsTimer.start();
+	drawFpsTimer.start();
 	// }}}
 
 	// Loop stuff
@@ -71,6 +84,21 @@ int main( int argc, char* args[] )
 		objectContainer.preRenderObjects(&renderData);
 		objectContainer.renderObjects(&renderData);
 		objectContainer.postRenderObjects(&renderData);
+
+		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+
+		countedFrames++;
+		float avgFps = countedFrames / (fpsTimer.getTicks() / 1000.f);
+		if (avgFps > 20000) {
+			avgFps = 0;
+		}
+		timeText.str("");
+		timeText << "FPS: " << avgFps;
+		if (static_cast<int>((drawFpsTimer.getTicks() / 1000.f)) > 1) {
+			std::cout << timeText.str() << std::endl;
+			drawFpsTimer.stop();
+			drawFpsTimer.start();
+		}
 
 		// Update the screen
 		SDL_RenderPresent( renderer );

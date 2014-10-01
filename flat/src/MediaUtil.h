@@ -14,6 +14,7 @@ namespace flat2d
 
 		public: 
 			static SDL_Texture* loadTexture(std::string, SDL_Renderer*);
+			static SDL_Texture* loadTextTexture(std::string, std::string, SDL_Renderer*);
 	};
 }
 #endif

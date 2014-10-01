@@ -7,7 +7,7 @@
 
 void Bot::init(const flat2d::RenderData *data)
 {
-	setTexture(flat2d::MediaUtil::loadTexture("resources/bot.png", data->getRenderer()));
+	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/bot.png", data->getRenderer()));
 	setClip(clips[0]);
 }
 
