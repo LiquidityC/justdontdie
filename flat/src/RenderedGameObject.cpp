@@ -50,10 +50,12 @@ void RenderedGameObject::render(SDL_Renderer* renderer) const
 	SDL_Rect box = { x, y, width, height };
 	SDL_RenderCopy(renderer, texture, &clip, &box);
 
+#ifdef DEBUG
 	if (isCollider()) {
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF );
 		SDL_RenderDrawRect( renderer, &box );
 	}
+#endif
 }
 
 bool RenderedGameObject::isCollider() const
