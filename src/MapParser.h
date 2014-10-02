@@ -1,16 +1,15 @@
 #ifndef _MAP_PARSER_H
 #define _MAP_PARSER_H
 
+#include "NewMacro.h"
 #include <flat/flat.h>
 #include <string>
-
-#include "NewMacro.h"
 
 class MapParser
 {
 	typedef struct {
 		int id;
-		bool collidable;
+		std::map<std::string, bool> properties;
 	} Tile;
 
 	typedef struct {
@@ -45,6 +44,7 @@ class MapParser
 	private:
 		bool parseMapAttributes(rapidxml::xml_node<> *node);
 		bool parseTileset(rapidxml::xml_node<> *node);
+		void parseTileProperties(Tile&, rapidxml::xml_node<>*);
 };
 
 #endif

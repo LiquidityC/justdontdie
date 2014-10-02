@@ -2,7 +2,7 @@
 #include <cstdlib>
 
 #include "MapParser.h"
-#include "GenericGameObject.h"
+#include "MapTileObject.h"
 #include "CompContainer.h"
 
 using namespace rapidxml;
@@ -62,6 +62,14 @@ bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Rendere
 		for (xml_node<> *tileNode = data->first_node(); tileNode; tileNode = tileNode->next_sibling()) {
 			xml_attribute<> *gidAttr = tileNode->first_attribute();
 			int gid = atoi(gidAttr->value());
+			if (gid == 0) {
+				col++;
+				if (col >= map.width) {
+					col = 0;
+					row++;
+				}
+				continue;
+			}
 
 			Tileset *tileset = NULL;
 			for (auto it = map.tilesets.begin(); it != map.tilesets.end(); it++) {
@@ -92,9 +100,14 @@ bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Rendere
 			}
 
 
-			GenericGameObject* tileObj = new GenericGameObject(col * map.tileWidth, row * map.tileHeight, 
+			// Create til obj
+			MapTileObject* tileObj = new MapTileObject(col * map.tileWidth, row * map.tileHeight, 
 					tileset->tileWidth, tileset->tileHeight, tileset->texture);
-			tileObj->setCollidable(tile->collidable);
+
+			// Set properties
+			for (auto it = tile->properties.begin(); it != tile->properties.end(); it++) {
+				tileObj->setProperty(it->first, it->second);
+			}
 
 			int xoffset = tile->id * tileset->tileWidth;
 			int xclip = xoffset % tileset->width;
@@ -168,10 +181,7 @@ bool MapParser::parseTileset(xml_node<> *node)
 		}
 
 		tile.id = atoi(tileNode->first_attribute()->value());
-		xml_node<> *property = tileNode->first_node()->first_node();
-		xml_attribute<> *nameAttr = property->first_attribute();
-		xml_attribute<> *valueAttr = nameAttr->next_attribute();
-		tile.collidable = strcmp(nameAttr->value(), "collidable") == 0 && strcmp(valueAttr->value(), "true") == 0;
+		parseTileProperties(tile, tileNode->first_node());
 
 		tileset.tiles[gid] = tile;
 		gid++;
@@ -180,6 +190,21 @@ bool MapParser::parseTileset(xml_node<> *node)
 	map.tilesets[tileset.firstgid] = tileset;
 
 	return true;
+}
+
+void MapParser::parseTileProperties(Tile& tile, xml_node<> *properties)
+{
+	if (!properties) {
+		return;
+	}
+
+	xml_node<> *property = properties->first_node();
+	while (property) {
+		xml_attribute<> *nameAttr = property->first_attribute();
+		xml_attribute<> *valueAttr = nameAttr->next_attribute();
+		tile.properties[nameAttr->value()] = strcmp( valueAttr->value(), "true") == 0;
+		property = property->next_sibling();
+	}
 }
 
 bool MapParser::parseMapAttributes(xml_node<> *node)
