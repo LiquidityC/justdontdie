@@ -114,7 +114,7 @@ void Bot::calculateCurrentClip()
 				ClipIndex::RIGHT
 			};
 
-			if (rightClipCount > 4) {
+			if (rightClipCount > 2) {
 				rightClipCount = 0;
 
 				currentClip = walkRightClips[rightClipIndex];
@@ -137,7 +137,7 @@ void Bot::calculateCurrentClip()
 				ClipIndex::LEFT
 			};
 
-			if (leftClipCount > 4) {
+			if (leftClipCount > 2) {
 				leftClipCount = 0;
 
 				currentClip = walkLeftClips[leftClipIndex];
