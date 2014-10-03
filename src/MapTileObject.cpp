@@ -1,4 +1,6 @@
 #include "MapTileObject.h"
+#include "Rocket.h"
+#include "Layers.h"
 
 void MapTileObject::setCollidable(bool collidable)
 {
@@ -24,9 +26,12 @@ bool MapTileObject::hasProperty(std::string prop) const
 	return pair->second;
 }
 
-void MapTileObject::preHandle(const flat2d::GameData *gameData)
+void MapTileObject::preRender(const flat2d::RenderData *renderData)
 {
-	if (hasProperty("rocketLauncher")) {
-
+	if (hasProperty("rocketLauncher") && (!launchTimer.isStarted() || launchTimer.getTicks() > 2000)) {
+		launchTimer.start();
+		Rocket *rocket = new Rocket(xpos, ypos);
+		rocket->init(renderData);
+		renderData->getObjectContainer()->registerObject(rocket, Layers::FRONT);
 	}
 }

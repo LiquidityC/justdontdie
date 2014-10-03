@@ -20,8 +20,9 @@ void Bot::handle(const SDL_Event& e)
 	}
 
 	if (e.key.keysym.sym == SDLK_SPACE) {
-		if( yvel > -300 && yvel < 300) {
+		if( grounded || !doubleJumped ) {
 			yvel = -1000;
+			doubleJumped = grounded ? false : true;
 			grounded = false;
 		}
 	}
@@ -82,6 +83,7 @@ void Bot::preRender(const flat2d::RenderData *data)
 		ypos += yvel > 0 ? -1 : 1;
 		if (yvel > 0) {
 			grounded = true;
+			doubleJumped = false;
 		}
 		yvel = 0;
 		object = NULL;
@@ -217,13 +219,15 @@ bool Bot::handleTileCollision(MapTileObject *o, const flat2d::RenderData* data)
 
 bool Bot::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 {
-	if (o->isGhost() && grounded && xvel == 0) {
+	bool ghost = grounded && xvel == 0;
+	if (o->isGhost() && ghost) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		wasKilled();
-	} else if (!o->isGhost() && (!grounded || xpos != 0)) {
+	} else if (!o->isGhost() && !ghost) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		wasKilled();
 	}
+
 
 	return true;
 }
@@ -239,4 +243,6 @@ void Bot::restoreAtCheckpoint()
 	killed = false;
 	xpos = checkPointX;
 	ypos = checkPointY;
+	xvel = 0;
+	yvel = 0;
 }

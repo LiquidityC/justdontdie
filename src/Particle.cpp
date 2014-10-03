@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include "Particle.h"
+#include "GameObjectType.h"
 
 void Particle::preRender(const flat2d::RenderData* data)
 {
@@ -18,7 +19,8 @@ void Particle::preRender(const flat2d::RenderData* data)
 	xpos += (xvel * deltaTime);
 	ypos += (yvel * deltaTime);
 
-	if (colDetector->checkForCollisions(this)) {
+	GameObject *object = colDetector->checkForCollisions(this);
+	if (object && object->getType() != GameObjectType::ROCKET) {
 		xvel = 0;
 		yvel = 0;
 	}

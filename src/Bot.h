@@ -22,6 +22,8 @@ class Bot : public flat2d::RenderedGameObject
 		float yvel = 0;
 
 		bool killed = false;
+		bool doubleJumped = true;
+
 		flat2d::Timer deathTimer;
 
 		int checkPointX, checkPointY;

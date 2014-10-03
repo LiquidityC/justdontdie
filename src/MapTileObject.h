@@ -9,11 +9,12 @@
 class MapTileObject : public flat2d::RenderedGameObject
 {
 	private:
+		flat2d::Timer launchTimer;
 		std::map<std::string, bool> properties;
 
 	public:
 		MapTileObject(int x, int y, int w, int h, SDL_Texture* t) 
-			: RenderedGameObject(x, y, w, h) { 
+			: RenderedGameObject(x, y, w, h), launchTimer() { 
 				setTexture(t);
 			};
 
@@ -21,7 +22,7 @@ class MapTileObject : public flat2d::RenderedGameObject
 			return GameObjectType::TILE;
 		}
 
-		void preHandle(const flat2d::GameData*);
+		void preRender(const flat2d::RenderData*);
 
 		void setCollidable(bool);
 		bool isCollider() const;
