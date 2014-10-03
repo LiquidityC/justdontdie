@@ -47,6 +47,10 @@ namespace flat2d
 				return boost::lexical_cast<std::string>(id);
 			};
 
+			virtual int getType() {
+				return -1;
+			};
+
 			/* Abstract methods */
 			virtual bool isDead() const = 0;
 

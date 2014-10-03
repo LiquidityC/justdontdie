@@ -4,6 +4,7 @@
 #include "NewMacro.h"
 #include <iostream>
 #include <flat/flat.h>
+#include "GameObjectType.h"
 
 class MapTileObject : public flat2d::RenderedGameObject
 {
@@ -15,6 +16,10 @@ class MapTileObject : public flat2d::RenderedGameObject
 			: RenderedGameObject(x, y, w, h) { 
 				setTexture(t);
 			};
+
+		int getType() {
+			return GameObjectType::TILE;
+		}
 
 		void setCollidable(bool);
 		bool isCollider() const;

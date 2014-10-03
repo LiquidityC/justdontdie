@@ -2,6 +2,7 @@
 #define _ROCKET_H
 
 #include <flat/flat.h>
+#include "GameObjectType.h"
 
 class Rocket : public flat2d::RenderedGameObject
 {
@@ -23,7 +24,13 @@ class Rocket : public flat2d::RenderedGameObject
 				setClip(clip);
 			};
 
+		int getType() {
+			return GameObjectType::ROCKET;
+		};
+
 		void preRender(const flat2d::RenderData*);
+
+		bool isGhost() const;
 };
 
 #endif

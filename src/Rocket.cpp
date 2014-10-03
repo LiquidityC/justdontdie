@@ -11,3 +11,8 @@ void Rocket::preRender(const flat2d::RenderData *data)
 
 	xpos += (xvel * cam->getDeltaTime());
 }
+
+bool Rocket::isGhost() const
+{
+	return ghostMode;
+}

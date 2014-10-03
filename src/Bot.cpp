@@ -4,6 +4,8 @@
 #include "CompContainer.h"
 #include "BloodParticle.h"
 #include "Layers.h"
+#include "MapTileObject.h"
+#include "Rocket.h"
 
 void Bot::init(const flat2d::RenderData *data)
 {
@@ -22,8 +24,6 @@ void Bot::handle(const SDL_Event& e)
 			yvel = -1000;
 			grounded = false;
 		}
-	} else if (e.key.keysym.sym == SDLK_h) {
-		CompContainer::getInstance().getParticleEngine().createBloodSprayAt(xpos-10, ypos-10);
 	}
 }
 
@@ -43,6 +43,12 @@ void Bot::postHandle()
 
 void Bot::preRender(const flat2d::RenderData *data)
 {
+	if (killed && deathTimer.getTicks() < 3000) {
+		return;
+	} else if (killed) {
+		restoreAtCheckpoint();
+	}
+
 	flat2d::CollisionDetector& colDetector = CompContainer::getInstance().getCollisionDetector();
 	float deltaTime = data->getCamera()->getDeltaTime();
 
@@ -53,7 +59,7 @@ void Bot::preRender(const flat2d::RenderData *data)
 
 	xpos += (xvel * deltaTime);
 	GameObject *object;
-	if ((object = colDetector.checkForCollisions(this)) != NULL) {
+	if ((object = colDetector.checkForCollisions(this)) != NULL && !handleCollision(object, data)) {
 		xpos -= (xvel * deltaTime);
 
 		// Completly reach the obstruction
@@ -66,7 +72,7 @@ void Bot::preRender(const flat2d::RenderData *data)
 	}
 
 	ypos += (yvel * deltaTime);
-	if ((object = colDetector.checkForCollisions(this)) != NULL) {
+	if ((object = colDetector.checkForCollisions(this)) != NULL && !handleCollision(object, data)) {
 		ypos -= (yvel * deltaTime);
 
 		// Completly ground the bot
@@ -84,6 +90,14 @@ void Bot::preRender(const flat2d::RenderData *data)
 	calculateCurrentClip();
 
 	data->getCamera()->centerOn(xpos + (width/2), ypos + (height/2));
+}
+
+void Bot::render(const flat2d::RenderData* data) const
+{
+	if (killed) {
+		return;
+	}
+	RenderedGameObject::render(data);
 }
 
 void Bot::calculateCurrentClip()
@@ -176,3 +190,56 @@ void Bot::calculateCurrentClip()
 	setClip(clips[currentClip]);
 }
 
+bool Bot::handleCollision(flat2d::GameObject *o, const flat2d::RenderData* data)
+{
+	switch (o->getType()) {
+		case GameObjectType::TILE:
+			return handleTileCollision(static_cast<MapTileObject*>(o), data);
+			break;
+		case GameObjectType::ROCKET:
+			return handleRocketCollision(static_cast<Rocket*>(o), data);
+			break;
+		default:
+			break;
+	}
+	return false;
+}
+
+bool Bot::handleTileCollision(MapTileObject *o, const flat2d::RenderData* data)
+{
+	if (o->hasProperty("deadly")) {
+		CompContainer::getInstance().getParticleEngine().createBloodSprayAt(
+				xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		wasKilled();
+		return true;
+	}
+	return false;
+}
+
+bool Bot::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
+{
+	if (o->isGhost() && grounded && xvel == 0) {
+		CompContainer::getInstance().getParticleEngine().createBloodSprayAt(
+				xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		wasKilled();
+	} else if (!o->isGhost() && (!grounded || xpos != 0)) {
+		CompContainer::getInstance().getParticleEngine().createBloodSprayAt(
+				xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		wasKilled();
+	}
+
+	return true;
+}
+
+void Bot::wasKilled()
+{
+	killed = true;
+	deathTimer.start();
+}
+
+void Bot::restoreAtCheckpoint()
+{
+	killed = false;
+	xpos = checkPointX;
+	ypos = checkPointY;
+}

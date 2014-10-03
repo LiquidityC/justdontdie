@@ -2,6 +2,10 @@
 #define _BOT_H
 
 #include <flat/flat.h>
+#include "GameObjectType.h"
+
+class MapTileObject;
+class Rocket;
 
 class Bot : public flat2d::RenderedGameObject
 {
@@ -15,6 +19,11 @@ class Bot : public flat2d::RenderedGameObject
 
 		float xvel = 0;
 		float yvel = 0;
+
+		bool killed = false;
+		flat2d::Timer deathTimer;
+
+		int checkPointX, checkPointY;
 
 		enum ClipIndex { RIGHT,
 			LEFT,
@@ -42,9 +51,16 @@ class Bot : public flat2d::RenderedGameObject
 
 		void calculateCurrentClip();
 
+		bool handleCollision(flat2d::GameObject*, const flat2d::RenderData*);
+		bool handleTileCollision(MapTileObject*, const flat2d::RenderData*);
+		bool handleRocketCollision(Rocket*, const flat2d::RenderData*);
+
+		void wasKilled();
+		void restoreAtCheckpoint();
+
 	public:
 
-		Bot(unsigned int x, unsigned int y) : RenderedGameObject(x, y, 37, 48) { };
+		Bot(unsigned int x, unsigned int y) : RenderedGameObject(x, y, 37, 48), checkPointX(x), checkPointY(y) { };
 
 		~Bot() {
 			if (texture != NULL) {
@@ -53,12 +69,17 @@ class Bot : public flat2d::RenderedGameObject
 			}
 		};
 
+		int getType() {
+			return GameObjectType::BOT;
+		};
+
 		void init(const flat2d::RenderData*);
 
 		void handle(const SDL_Event& event);
 		void postHandle();
 
 		void preRender(const flat2d::RenderData*);
+		void render(const flat2d::RenderData*) const;
 };
 
 #endif
