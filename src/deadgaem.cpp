@@ -4,49 +4,43 @@
 #include <SDL2/SDL_ttf.h>
 #include <flat/flat.h>
 
-#include "CompContainer.h"
 #include "Bot.h"
+#include "ParticleEngine.h"
+#include "ResourceContainer.h"
 #include "GameSettings.h"
 #include "MapParser.h"
+#include "Layers.h"
 
 int main( int argc, char* args[] )
 {
-
-	if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
-		std::cerr << "Failed to init video: " 
-			<< SDL_GetError() << std::endl;
+	flat2d::FlatBuilder *flat = new flat2d::FlatBuilder;
+	if (!flat->initSDL("DeadGaem", GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT)) {
+		return -1;
+	}
+	if (!flat->initContainers()) {
 		return -1;
 	}
 
-	int imgFlags = IMG_INIT_PNG;
-	if (!(IMG_Init( imgFlags ) & imgFlags )) {
-		std::cerr << "Unable to initialize SDL_image: " << IMG_GetError() << std::endl;
-		return -1;
-	}
+	flat2d::RenderData* renderData = flat->getRenderData();
+	SDL_Renderer* renderer = renderData->getRenderer();
+	flat2d::Camera* camera = renderData->getCamera();
+	flat2d::GameData *gameData = flat->getGameData();
+	flat2d::ObjectContainer* objectContainer = gameData->getObjectContainer();
+	ParticleEngine *particleEngine = new ParticleEngine(objectContainer);
+	ResourceContainer *resourceContainer = new ResourceContainer();
 
-	if (TTF_Init() == -1) {
-		std::cerr << "Unable to initiate SDL2_ttf: " << TTF_GetError() << std::endl;
-		return -1;
-	}
-
-	flat::Window window(GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT);
-	if (!window.init()) {
-		return -1;
-	}
-
-	SDL_Renderer* renderer = window.getRenderer();
-	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
-	flat2d::Camera& camera = CompContainer::getInstance().getCamera();
-	flat2d::RenderData renderData(renderer, &camera);
+	objectContainer->addLayer(Layers::BACK);
+	objectContainer->addLayer(Layers::MID);
+	objectContainer->addLayer(Layers::FRONT);
 
 	// Prototype stuff, shouldn't be here in the future
 	// {{{
 	MapParser parser;
-	parser.createMapFrom("resources/map2/", "map2.tmx", renderer);
+	parser.createMapFrom(resourceContainer, "resources/map2/", "map2.tmx", renderData);
 	
-	flat2d::GameObject* bot = new Bot(200, 200);
-	bot->init(&renderData);
-	objectContainer.registerObject(bot, Layers::MID);
+	flat2d::GameObject* bot = new Bot(particleEngine, 200, 200);
+	bot->init(renderData);
+	objectContainer->registerObject(bot, Layers::MID);
 
 	std::stringstream timeText;
 	flat2d::Timer fpsTimer;
@@ -62,30 +56,30 @@ int main( int argc, char* args[] )
 	bool quit = false;
 
 	// Main loop
-	camera.updateDeltaTime();
+	camera->updateDeltaTime();
 	while (!quit) {
 		fpsCapTimer.start();
-		camera.updateDeltaTime();
+		camera->updateDeltaTime();
 
 		// Handle events
-		objectContainer.preHandleObjects();
+		objectContainer->preHandleObjects(gameData);
 		while (SDL_PollEvent (&e) != 0) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 				break;
 			}
-			objectContainer.handleObjects(e);
+			objectContainer->handleObjects(e);
 		}
-		objectContainer.postHandleObjects();
+		objectContainer->postHandleObjects(gameData);
 
 		// Clear screen to black
 		SDL_SetRenderDrawColor( renderer, 0x0, 0x0, 0x0, 0xFF );
 		SDL_RenderClear( renderer );
 
 		// Render
-		objectContainer.preRenderObjects(&renderData);
-		objectContainer.renderObjects(&renderData);
-		objectContainer.postRenderObjects(&renderData);
+		objectContainer->preRenderObjects(renderData);
+		objectContainer->renderObjects(renderData);
+		objectContainer->postRenderObjects(renderData);
 
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 
@@ -106,14 +100,16 @@ int main( int argc, char* args[] )
 			drawFpsTimer.start();
 		}
 #endif
+
 		int tickCount = fpsCapTimer.getTicks();
 		if (tickCount < GameSettings::SCREEN_TICKS_PER_FRAME) {
 			SDL_Delay(GameSettings::SCREEN_TICKS_PER_FRAME - tickCount);
 		}
 	}
 
-	objectContainer.unregisterAllObjects();
-	CompContainer::getInstance().getResourceContainer().clearTextures();
+	delete particleEngine;
+	delete resourceContainer;
+	delete flat;
 	IMG_Quit();
 	SDL_Quit();
 

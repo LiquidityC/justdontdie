@@ -6,15 +6,16 @@
 
 class MapTileObject;
 class Rocket;
+class ParticleEngine;
 
 class Bot : public flat2d::RenderedGameObject
 {
-
 	typedef struct {
 		int x, y;
 	} Clip;
 
 	private:
+		ParticleEngine *particleEngine;
 		bool grounded = false;
 
 		float xvel = 0;
@@ -60,7 +61,11 @@ class Bot : public flat2d::RenderedGameObject
 
 	public:
 
-		Bot(unsigned int x, unsigned int y) : RenderedGameObject(x, y, 37, 48), checkPointX(x), checkPointY(y) { };
+		Bot(ParticleEngine *pe, unsigned int x, unsigned int y) :
+			RenderedGameObject(x, y, 37, 48),
+			particleEngine(pe),
+			checkPointX(x),
+			checkPointY(y) { };
 
 		~Bot() {
 			if (texture != NULL) {
@@ -76,7 +81,7 @@ class Bot : public flat2d::RenderedGameObject
 		void init(const flat2d::RenderData*);
 
 		void handle(const SDL_Event& event);
-		void postHandle();
+		void postHandle(const flat2d::GameData*);
 
 		void preRender(const flat2d::RenderData*);
 		void render(const flat2d::RenderData*) const;

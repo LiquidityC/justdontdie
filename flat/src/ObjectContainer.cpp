@@ -1,5 +1,6 @@
 #include <cassert>
 #include "ObjectContainer.h"
+#include "GameData.h"
 #include "RenderData.h"
 
 using namespace flat2d;
@@ -80,11 +81,11 @@ void ObjectContainer::unregisterAllObjectsFor(Layer layer)
 	layeredObjects[layer].clear();
 }
 
-void ObjectContainer::preHandleObjects()
+void ObjectContainer::preHandleObjects(const GameData *gameData)
 {
 	clearDeadObjects();
 	for (auto it = objects.begin(); it != objects.end(); it++) {
-		it->second->preHandle();
+		it->second->preHandle(gameData);
 	}
 }
 
@@ -95,10 +96,10 @@ void ObjectContainer::handleObjects(const SDL_Event& event)
 	}
 }
 
-void ObjectContainer::postHandleObjects()
+void ObjectContainer::postHandleObjects(const GameData *gameData)
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
-		it->second->postHandle();
+		it->second->postHandle(gameData);
 	}
 }
 

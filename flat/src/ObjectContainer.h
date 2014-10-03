@@ -47,9 +47,9 @@ namespace flat2d
 			size_t getObjectCount();
 			size_t getObjectCountFor(Layer);
 
-			void preHandleObjects();
+			void preHandleObjects(const GameData*);
 			void handleObjects(const SDL_Event&);
-			void postHandleObjects();
+			void postHandleObjects(const GameData*);
 
 			void preRenderObjects(const RenderData*);
 			void renderObjects(const RenderData*) const;

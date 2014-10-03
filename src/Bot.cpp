@@ -1,11 +1,11 @@
 #include <iostream>
 #include <algorithm>
 #include "Bot.h"
-#include "CompContainer.h"
 #include "BloodParticle.h"
 #include "Layers.h"
 #include "MapTileObject.h"
 #include "Rocket.h"
+#include "ParticleEngine.h"
 
 void Bot::init(const flat2d::RenderData *data)
 {
@@ -27,7 +27,7 @@ void Bot::handle(const SDL_Event& e)
 	}
 }
 
-void Bot::postHandle()
+void Bot::postHandle(const flat2d::GameData *gameData)
 {
 	xvel = 0;
 
@@ -49,7 +49,7 @@ void Bot::preRender(const flat2d::RenderData *data)
 		restoreAtCheckpoint();
 	}
 
-	flat2d::CollisionDetector& colDetector = CompContainer::getInstance().getCollisionDetector();
+	flat2d::CollisionDetector* colDetector = data->getCollisionDetector();
 	float deltaTime = data->getCamera()->getDeltaTime();
 
 	// Gravity
@@ -59,11 +59,11 @@ void Bot::preRender(const flat2d::RenderData *data)
 
 	xpos += (xvel * deltaTime);
 	GameObject *object;
-	if ((object = colDetector.checkForCollisions(this)) != NULL && !handleCollision(object, data)) {
+	if ((object = colDetector->checkForCollisions(this)) != NULL && !handleCollision(object, data)) {
 		xpos -= (xvel * deltaTime);
 
 		// Completly reach the obstruction
-		while (!colDetector.hasCollided(this, object)) {
+		while (!colDetector->hasCollided(this, object)) {
 			xpos += xvel > 0 ? 1 : -1;
 		}
 		xpos += xvel > 0 ? -1 : 1;
@@ -72,11 +72,11 @@ void Bot::preRender(const flat2d::RenderData *data)
 	}
 
 	ypos += (yvel * deltaTime);
-	if ((object = colDetector.checkForCollisions(this)) != NULL && !handleCollision(object, data)) {
+	if ((object = colDetector->checkForCollisions(this)) != NULL && !handleCollision(object, data)) {
 		ypos -= (yvel * deltaTime);
 
 		// Completly ground the bot
-		while (!colDetector.hasCollided(this, object)) {
+		while (!colDetector->hasCollided(this, object)) {
 			ypos += yvel > 0 ? 1 : -1;
 		}
 		ypos += yvel > 0 ? -1 : 1;
@@ -208,8 +208,7 @@ bool Bot::handleCollision(flat2d::GameObject *o, const flat2d::RenderData* data)
 bool Bot::handleTileCollision(MapTileObject *o, const flat2d::RenderData* data)
 {
 	if (o->hasProperty("deadly")) {
-		CompContainer::getInstance().getParticleEngine().createBloodSprayAt(
-				xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		wasKilled();
 		return true;
 	}
@@ -219,12 +218,10 @@ bool Bot::handleTileCollision(MapTileObject *o, const flat2d::RenderData* data)
 bool Bot::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 {
 	if (o->isGhost() && grounded && xvel == 0) {
-		CompContainer::getInstance().getParticleEngine().createBloodSprayAt(
-				xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		wasKilled();
 	} else if (!o->isGhost() && (!grounded || xpos != 0)) {
-		CompContainer::getInstance().getParticleEngine().createBloodSprayAt(
-				xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		wasKilled();
 	}
 

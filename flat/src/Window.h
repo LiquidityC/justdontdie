@@ -3,19 +3,21 @@
 
 #include <SDL2/SDL.h>
 #include <cstdio>
+#include <string>
 
-namespace flat
+namespace flat2d
 {
 	class Window
 	{
 		private:
+			std::string title;
 			unsigned int width, height;
 
 			SDL_Window* window;
 			SDL_Renderer* renderer;
 
 		public:
-			Window(unsigned int w, unsigned int h) : width(w), height(h) { };
+			Window(std::string t, unsigned int w, unsigned int h) : title(t), width(w), height(h) { };
 
 			~Window() {
 				SDL_DestroyWindow(window);

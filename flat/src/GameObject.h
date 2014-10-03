@@ -11,6 +11,7 @@ namespace flat2d
 {
 	class Camera;
 	class RenderData;
+	class GameData;
 
 	class GameObject
 	{
@@ -55,9 +56,9 @@ namespace flat2d
 			virtual bool isDead() const = 0;
 
 			virtual void init(const RenderData*) = 0;
-			virtual void preHandle() = 0;
+			virtual void preHandle(const GameData*) = 0;
 			virtual void handle(const SDL_Event& event) = 0;
-			virtual void postHandle() = 0;
+			virtual void postHandle(const GameData*) = 0;
 
 			virtual void preRender(const RenderData*) = 0;
 			virtual void render(const RenderData*) const = 0;

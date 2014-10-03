@@ -14,9 +14,9 @@ namespace flat2d
 			float deltaTime = 1.0;
 
 		public:
-			Camera(int x, int y, int w, int h) :
-				xpos(x), 
-				ypos(y), 
+			Camera(int w, int h) :
+				xpos(0), 
+				ypos(0), 
 				width(w), 
 				height(h),
 				mapWidth(1920), 

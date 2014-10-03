@@ -23,3 +23,10 @@ bool MapTileObject::hasProperty(std::string prop) const
 	}
 	return pair->second;
 }
+
+void MapTileObject::preHandle(const flat2d::GameData *gameData)
+{
+	if (hasProperty("rocketLauncher")) {
+
+	}
+}

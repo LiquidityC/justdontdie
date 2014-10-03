@@ -1,7 +1,6 @@
 #include <iostream>
 #include <algorithm>
 #include "BloodParticle.h"
-#include "CompContainer.h"
 
 void BloodParticle::postRender(const flat2d::RenderData *data)
 {

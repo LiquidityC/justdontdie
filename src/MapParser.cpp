@@ -3,12 +3,14 @@
 
 #include "MapParser.h"
 #include "MapTileObject.h"
-#include "CompContainer.h"
+#include "ResourceContainer.h"
+#include "Layers.h"
 
 using namespace rapidxml;
 using namespace std;
 
-bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Renderer* renderer)
+bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string dir, std::string filename,
+		flat2d::RenderData *renderData)
 {
 
 	file<> xmlFile((dir + filename).c_str());
@@ -48,9 +50,8 @@ bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Rendere
 	}
 
 	
-	CompContainer::getInstance().getCamera().setMapDimensions(map.width * map.tileWidth, map.height * map.tileHeight);
-	flat2d::ObjectContainer& objectContainer = CompContainer::getInstance().getObjectContainer();
-	ResourceContainer& resourceContainer = CompContainer::getInstance().getResourceContainer();
+	renderData->getCamera()->setMapDimensions(map.width * map.tileWidth, map.height * map.tileHeight);
+	flat2d::ObjectContainer *objectContainer = renderData->getObjectContainer();
 
 
 	// Parse all the layers (might need to add layers in ObjectContainer)
@@ -88,9 +89,9 @@ bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Rendere
 			}
 
 			if (tileset->texture == NULL) {
-				SDL_Texture* texture = flat2d::MediaUtil::loadTexture(dir + tileset->sourcePath, renderer);
+				SDL_Texture* texture = flat2d::MediaUtil::loadTexture(dir + tileset->sourcePath, renderData->getRenderer());
 				tileset->texture = texture;
-				resourceContainer.addTexture(texture);
+				resourceContainer->addTexture(texture);
 			}
 
 			Tile *tile = &(tileset->tiles[gid]);
@@ -115,7 +116,7 @@ bool MapParser::createMapFrom(std::string dir, std::string filename, SDL_Rendere
 
 			SDL_Rect clip = { xclip, yclip, tileset->tileWidth, tileset->tileHeight };
 			tileObj->setClip(clip);
-			objectContainer.registerObject(tileObj, Layers::BACK);
+			objectContainer->registerObject(tileObj, Layers::BACK);
 
 			col++;
 			if (col >= map.width) {

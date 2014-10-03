@@ -1,6 +1,8 @@
 #include <CppUTest/TestHarness.h>
 #include "GameObjectImpl.h"
 #include "../src/ObjectContainer.h"
+#include "../src/GameData.h"
+#include "../src/CollisionDetector.h"
 
 TEST_GROUP( ObjectContainerTests )
 {
@@ -128,6 +130,8 @@ TEST( ObjectContainerTests, TestObjectAutoclean )
 	GameObjectImpl* c2 = new GameObjectImpl(100, 100);
 
 	flat2d::ObjectContainer container;
+	flat2d::CollisionDetector detector(&container);
+	flat2d::GameData gameData(&container, &detector);
 
 	container.registerObject(c1);
 	container.registerObject(c2);
@@ -135,7 +139,7 @@ TEST( ObjectContainerTests, TestObjectAutoclean )
 	CHECK_EQUAL ( 2, container.getObjectCount() );
 
 	c2->setDead(true);
-	container.preHandleObjects();
+	container.preHandleObjects(&gameData);
 
 	CHECK_EQUAL ( 1, container.getObjectCount() );
 }

@@ -21,6 +21,8 @@ class MapTileObject : public flat2d::RenderedGameObject
 			return GameObjectType::TILE;
 		}
 
+		void preHandle(const flat2d::GameData*);
+
 		void setCollidable(bool);
 		bool isCollider() const;
 

@@ -5,6 +5,8 @@
 #include <flat/flat.h>
 #include <string>
 
+class ResourceContainer;
+
 class MapParser
 {
 	typedef struct {
@@ -39,7 +41,7 @@ class MapParser
 		Map map;
 
 	public:
-		bool createMapFrom(std::string, std::string, SDL_Renderer*);
+		bool createMapFrom(ResourceContainer*, std::string, std::string, flat2d::RenderData*);
 
 	private:
 		bool parseMapAttributes(rapidxml::xml_node<> *node);

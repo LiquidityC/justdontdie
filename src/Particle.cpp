@@ -1,7 +1,6 @@
 #include <iostream>
 #include <algorithm>
 #include "Particle.h"
-#include "CompContainer.h"
 
 void Particle::preRender(const flat2d::RenderData* data)
 {
@@ -14,12 +13,12 @@ void Particle::preRender(const flat2d::RenderData* data)
 		yvel += std::min(3600 * deltaTime, 800 - yvel);
 	}
 
-	flat2d::CollisionDetector& colDetector = CompContainer::getInstance().getCollisionDetector();
+	flat2d::CollisionDetector *colDetector = data->getCollisionDetector();
 
 	xpos += (xvel * deltaTime);
 	ypos += (yvel * deltaTime);
 
-	if (colDetector.checkForCollisions(this)) {
+	if (colDetector->checkForCollisions(this)) {
 		xvel = 0;
 		yvel = 0;
 	}

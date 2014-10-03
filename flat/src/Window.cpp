@@ -1,11 +1,11 @@
 #include <iostream>
 #include "Window.h"
 
-using namespace flat;
+using namespace flat2d;
 
 bool Window::init()
 {
-	window = SDL_CreateWindow( "DeadGaem",
+	window = SDL_CreateWindow( title.c_str(),
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
 			width,
