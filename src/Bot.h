@@ -27,6 +27,8 @@ class Bot : public flat2d::RenderedGameObject
 		flat2d::Timer deathTimer;
 
 		int checkPointX, checkPointY;
+		bool ghostMode = false;
+		bool facingLeft = false;
 
 		enum ClipIndex { RIGHT,
 			LEFT,

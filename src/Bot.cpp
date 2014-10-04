@@ -19,12 +19,21 @@ void Bot::handle(const SDL_Event& e)
 		return;
 	}
 
-	if (e.key.keysym.sym == SDLK_SPACE) {
-		if( grounded || !doubleJumped ) {
-			yvel = -1000;
-			doubleJumped = grounded ? false : true;
-			grounded = false;
-		}
+	switch (e.key.keysym.sym) {
+		case SDLK_SPACE:
+		case SDLK_h:
+		case SDLK_k:
+			if( grounded || !doubleJumped ) {
+				yvel = -1000;
+				doubleJumped = grounded ? false : true;
+				grounded = false;
+			}
+			break;
+		case SDLK_j:
+			ghostMode = !ghostMode;
+			break;
+		default:
+			break;
 	}
 }
 
@@ -33,11 +42,13 @@ void Bot::postHandle(const flat2d::GameData *gameData)
 	xvel = 0;
 
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
-	if (currentKeyStates[SDL_SCANCODE_A]) {
+	if (currentKeyStates[SDL_SCANCODE_A] || currentKeyStates[SDL_SCANCODE_LEFT]) {
 		xvel = -300;
+		facingLeft = true;
 	}
-	if (currentKeyStates[SDL_SCANCODE_D]) {
+	if (currentKeyStates[SDL_SCANCODE_D] || currentKeyStates[SDL_SCANCODE_RIGHT]) {
 		xvel = 300;
+		facingLeft = false;
 	}
 
 }
@@ -167,25 +178,20 @@ void Bot::calculateCurrentClip()
 		}
 	}
 
-	if (!grounded) {
-		if (currentClip == ClipIndex::GHOST_RIGHT) {
-			currentClip = ClipIndex::RIGHT;
-		} else if (currentClip == ClipIndex::GHOST_LEFT) {
-			currentClip = ClipIndex::LEFT;
-		}
-	}
-
 	if (xvel == 0 && yvel == 0 && grounded) {
-		if (currentClip == ClipIndex::WALK_RIGHT_1
-				|| currentClip == ClipIndex::WALK_RIGHT_2
-				|| currentClip == ClipIndex::RIGHT)
-		{
-			currentClip = ClipIndex::GHOST_RIGHT;
-		} else if (currentClip == ClipIndex::WALK_LEFT_1
-				|| currentClip == ClipIndex::WALK_LEFT_2
-				|| currentClip == ClipIndex::LEFT)
-		{
-			currentClip = ClipIndex::GHOST_LEFT;
+		if (facingLeft) {
+			if (ghostMode) {
+				currentClip = ClipIndex::GHOST_LEFT;
+			} else {
+				currentClip = ClipIndex::LEFT;
+			}
+
+		} else {
+			if (ghostMode) {
+				currentClip = ClipIndex::GHOST_RIGHT;
+			} else {
+				currentClip = ClipIndex::RIGHT;
+			}
 		}
 	}
 
@@ -219,11 +225,10 @@ bool Bot::handleTileCollision(MapTileObject *o, const flat2d::RenderData* data)
 
 bool Bot::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 {
-	bool ghost = grounded && xvel == 0;
-	if (o->isGhost() && ghost) {
+	if (o->isGhost() && ghostMode) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		wasKilled();
-	} else if (!o->isGhost() && !ghost) {
+	} else if (!o->isGhost() && !ghostMode) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		wasKilled();
 	}
