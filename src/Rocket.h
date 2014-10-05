@@ -9,6 +9,7 @@ class Rocket : public flat2d::RenderedGameObject
 	private:
 		bool ghostMode = false;
 		float xvel;
+		flat2d::Timer deathTimer;
 
 	public:
 		Rocket(int x, int y, bool ghost = false, bool rightToLeft = true) :
@@ -37,6 +38,7 @@ class Rocket : public flat2d::RenderedGameObject
 		void init(const flat2d::RenderData*);
 
 		void preRender(const flat2d::RenderData*);
+		void postRender(const flat2d::RenderData*);
 
 		bool isGhost() const;
 };

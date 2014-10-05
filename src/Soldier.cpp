@@ -16,6 +16,10 @@ void Soldier::init(const flat2d::RenderData *data)
 
 void Soldier::handle(const SDL_Event& e)
 {
+	if (killed) {
+		return;
+	}
+
 	if (e.type != SDL_KEYDOWN) {
 		return;
 	}
@@ -52,6 +56,9 @@ void Soldier::postHandle(const flat2d::GameData *gameData)
 		facingLeft = false;
 	}
 
+	if (spawnGraceTimer.isStarted() && spawnGraceTimer.getTicks() > 1000) {
+		spawnGraceTimer.stop();
+	}
 }
 
 void Soldier::preRender(const flat2d::RenderData *data)
@@ -175,6 +182,9 @@ bool Soldier::handleTileCollision(MapTileObject *o, const flat2d::RenderData* da
 
 bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 {
+	if (spawnGraceTimer.isStarted()) {
+		return true;
+	}
 	if (o->isGhost() && ghostMode) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		wasKilled();
@@ -200,6 +210,7 @@ void Soldier::restoreAtCheckpoint()
 	ypos = checkPointY;
 	xvel = 0;
 	yvel = 0;
+	spawnGraceTimer.start();
 }
 
 void Soldier::setGhostMode(bool ghostMode)

@@ -25,6 +25,7 @@ class Soldier : public flat2d::RenderedGameObject
 		bool doubleJumped = true;
 
 		flat2d::Timer deathTimer;
+		flat2d::Timer spawnGraceTimer;
 
 		int checkPointX, checkPointY;
 		bool ghostMode = false;

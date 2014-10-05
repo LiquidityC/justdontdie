@@ -30,7 +30,7 @@ void MapTileObject::preRender(const flat2d::RenderData *renderData)
 {
 	if (hasProperty("rocketLauncher") && (!launchTimer.isStarted() || launchTimer.getTicks() > 2000)) {
 		launchTimer.start();
-		Rocket *rocket = new Rocket(xpos, ypos);
+		Rocket *rocket = new Rocket(xpos, ypos, hasProperty("ghost"), !hasProperty("shootRight"));
 		rocket->init(renderData);
 		renderData->getObjectContainer()->registerObject(rocket, Layers::FRONT);
 	}

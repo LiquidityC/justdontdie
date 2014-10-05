@@ -26,7 +26,7 @@ void RenderedGameObject::setCollidable(bool collidable)
 
 void RenderedGameObject::render(const RenderData *data) const
 {
-	if (texture == NULL) {
+	if (texture == NULL || dead) {
 		return;
 	}
 
