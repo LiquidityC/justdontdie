@@ -1,19 +1,20 @@
 #include <iostream>
 #include <algorithm>
-#include "Bot.h"
+#include "Soldier.h"
 #include "BloodParticle.h"
 #include "Layers.h"
 #include "MapTileObject.h"
 #include "Rocket.h"
 #include "ParticleEngine.h"
 
-void Bot::init(const flat2d::RenderData *data)
+void Soldier::init(const flat2d::RenderData *data)
 {
-	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/bot.png", data->getRenderer()));
-	setClip(clips[currentClip]);
+	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png", data->getRenderer()));
+	SDL_Rect clip = { 0, 0, width, height };
+	setClip(clip);
 }
 
-void Bot::handle(const SDL_Event& e)
+void Soldier::handle(const SDL_Event& e)
 {
 	if (e.type != SDL_KEYDOWN) {
 		return;
@@ -37,7 +38,7 @@ void Bot::handle(const SDL_Event& e)
 	}
 }
 
-void Bot::postHandle(const flat2d::GameData *gameData)
+void Soldier::postHandle(const flat2d::GameData *gameData)
 {
 	xvel = 0;
 
@@ -53,7 +54,7 @@ void Bot::postHandle(const flat2d::GameData *gameData)
 
 }
 
-void Bot::preRender(const flat2d::RenderData *data)
+void Soldier::preRender(const flat2d::RenderData *data)
 {
 	if (killed && deathTimer.getTicks() < 3000) {
 		return;
@@ -87,7 +88,7 @@ void Bot::preRender(const flat2d::RenderData *data)
 	if ((object = colDetector->checkForCollisions(this)) != NULL && !handleCollision(object, data)) {
 		ypos -= (yvel * deltaTime);
 
-		// Completly ground the bot
+		// Completly ground the soldier
 		while (!colDetector->hasCollided(this, object)) {
 			ypos += yvel > 0 ? 1 : -1;
 		}
@@ -105,7 +106,7 @@ void Bot::preRender(const flat2d::RenderData *data)
 	data->getCamera()->centerOn(xpos + (width/2), ypos + (height/2));
 }
 
-void Bot::render(const flat2d::RenderData* data) const
+void Soldier::render(const flat2d::RenderData* data) const
 {
 	if (killed) {
 		return;
@@ -113,92 +114,41 @@ void Bot::render(const flat2d::RenderData* data) const
 	RenderedGameObject::render(data);
 }
 
-void Bot::calculateCurrentClip()
+void Soldier::calculateCurrentClip()
 {
+	static unsigned int frameSwitch = 0;
+	static bool clipSwitch = false;
+
+	int x = 0;
+	int y = 0;
+
+	if (ghostMode) {
+		y = 24;
+	}
+	if (facingLeft) {
+		x = 2 * width;
+	}
+
+	if (xvel < 0) {
+		x = 2 * width;
+	} else if (xvel > 0) {
+		x = 0;
+	}
+
 	if (xvel != 0) {
-		if (xvel > 0
-				&& currentClip != ClipIndex::RIGHT
-				&& currentClip != ClipIndex::WALK_RIGHT_1
-				&& currentClip != ClipIndex::WALK_RIGHT_2)
-		{
-			currentClip = ClipIndex::WALK_RIGHT_1;
-		} else if (xvel < 0
-				&& currentClip != ClipIndex::LEFT
-				&& currentClip != ClipIndex::WALK_LEFT_1
-				&& currentClip != ClipIndex::WALK_LEFT_2)
-		{
-			currentClip = ClipIndex::WALK_LEFT_1;
+		frameSwitch++;
+		if (frameSwitch >= 4) {
+			clipSwitch = !clipSwitch;
+			frameSwitch = 0;
 		}
-
-		if (xvel > 0) {
-			static int rightClipCount = 0;
-			static int rightClipIndex = 0;
-
-			ClipIndex walkRightClips[4] = { 
-				ClipIndex::WALK_RIGHT_1,
-				ClipIndex::RIGHT,
-				ClipIndex::WALK_RIGHT_2,
-				ClipIndex::RIGHT
-			};
-
-			if (rightClipCount > 2) {
-				rightClipCount = 0;
-
-				currentClip = walkRightClips[rightClipIndex];
-
-				++rightClipIndex;
-				if (rightClipIndex > 3) {
-					rightClipIndex = 0;
-				}
-			}
-			++rightClipCount;
-
-		} else if (xvel < 0) {
-			static int leftClipCount = 0;
-			static int leftClipIndex = 0;
-
-			ClipIndex walkLeftClips[4] = { 
-				ClipIndex::WALK_LEFT_1,
-				ClipIndex::LEFT,
-				ClipIndex::WALK_LEFT_2,
-				ClipIndex::LEFT
-			};
-
-			if (leftClipCount > 2) {
-				leftClipCount = 0;
-
-				currentClip = walkLeftClips[leftClipIndex];
-
-				++leftClipIndex;
-				if (leftClipIndex > 3) {
-					leftClipIndex = 0;
-				}
-			}
-			++leftClipCount;
-		}
+		x += clipSwitch ? width : 0;
 	}
 
-	if (xvel == 0 && yvel == 0 && grounded) {
-		if (facingLeft) {
-			if (ghostMode) {
-				currentClip = ClipIndex::GHOST_LEFT;
-			} else {
-				currentClip = ClipIndex::LEFT;
-			}
-
-		} else {
-			if (ghostMode) {
-				currentClip = ClipIndex::GHOST_RIGHT;
-			} else {
-				currentClip = ClipIndex::RIGHT;
-			}
-		}
-	}
-
-	setClip(clips[currentClip]);
+	SDL_Rect clip = { x, y, width, height };
+	setClip(clip);
 }
 
-bool Bot::handleCollision(flat2d::GameObject *o, const flat2d::RenderData* data)
+bool Soldier::handleCollision(flat2d::GameObject *o, const flat2d::RenderData* data)
 {
 	switch (o->getType()) {
 		case GameObjectType::TILE:
@@ -213,7 +163,7 @@ bool Bot::handleCollision(flat2d::GameObject *o, const flat2d::RenderData* data)
 	return false;
 }
 
-bool Bot::handleTileCollision(MapTileObject *o, const flat2d::RenderData* data)
+bool Soldier::handleTileCollision(MapTileObject *o, const flat2d::RenderData* data)
 {
 	if (o->hasProperty("deadly")) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
@@ -223,7 +173,7 @@ bool Bot::handleTileCollision(MapTileObject *o, const flat2d::RenderData* data)
 	return false;
 }
 
-bool Bot::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
+bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 {
 	if (o->isGhost() && ghostMode) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
@@ -237,17 +187,22 @@ bool Bot::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 	return true;
 }
 
-void Bot::wasKilled()
+void Soldier::wasKilled()
 {
 	killed = true;
 	deathTimer.start();
 }
 
-void Bot::restoreAtCheckpoint()
+void Soldier::restoreAtCheckpoint()
 {
 	killed = false;
 	xpos = checkPointX;
 	ypos = checkPointY;
 	xvel = 0;
 	yvel = 0;
+}
+
+void Soldier::setGhostMode(bool ghostMode)
+{
+	this->ghostMode = ghostMode;
 }

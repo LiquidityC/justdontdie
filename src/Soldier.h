@@ -1,5 +1,5 @@
-#ifndef _BOT_H
-#define _BOT_H
+#ifndef _SOLDIER_H
+#define _SOLDIER_H
 
 #include <flat/flat.h>
 #include "GameObjectType.h"
@@ -8,7 +8,7 @@ class MapTileObject;
 class Rocket;
 class ParticleEngine;
 
-class Bot : public flat2d::RenderedGameObject
+class Soldier : public flat2d::RenderedGameObject
 {
 	typedef struct {
 		int x, y;
@@ -40,19 +40,7 @@ class Bot : public flat2d::RenderedGameObject
 			WALK_LEFT_2
 		};
 
-		ClipIndex currentClip = RIGHT;
-		SDL_Rect clips[8] = {
-			{ 	0,	 0, 37, 48 	},
-			{ 	37,	 0, 37, 48 	},
-			{ 	0,	 48, 37, 48	},
-			{ 	37,	 48, 37, 48	},
-			{ 	74,	 0, 37, 48	},
-			{ 	74,	 48, 37, 48	},
-			{ 	111, 0, 37, 48	},
-			{ 	111, 48, 37, 48	}
-		};
-
-		SDL_Texture* botTexture = NULL;
+		SDL_Texture* soldierTexture = NULL;
 
 		void calculateCurrentClip();
 
@@ -65,16 +53,16 @@ class Bot : public flat2d::RenderedGameObject
 
 	public:
 
-		Bot(ParticleEngine *pe, unsigned int x, unsigned int y) :
-			RenderedGameObject(x, y, 37, 48),
+		Soldier(ParticleEngine *pe, unsigned int x, unsigned int y) :
+			RenderedGameObject(x, y, 28, 24),
 			particleEngine(pe),
 			checkPointX(x),
 			checkPointY(y) { };
 
-		~Bot() {
+		~Soldier() {
 			if (texture != NULL) {
-				SDL_DestroyTexture(botTexture);
-				botTexture = NULL;
+				SDL_DestroyTexture(soldierTexture);
+				soldierTexture = NULL;
 			}
 		};
 
@@ -89,6 +77,8 @@ class Bot : public flat2d::RenderedGameObject
 
 		void preRender(const flat2d::RenderData*);
 		void render(const flat2d::RenderData*) const;
+
+		void setGhostMode(bool);
 };
 
 #endif

@@ -4,7 +4,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <flat/flat.h>
 
-#include "Bot.h"
+#include "Soldier.h"
 #include "ParticleEngine.h"
 #include "ResourceContainer.h"
 #include "GameSettings.h"
@@ -38,9 +38,9 @@ int main( int argc, char* args[] )
 	MapParser parser;
 	parser.createMapFrom(resourceContainer, "resources/map2/", "map2.tmx", renderData);
 	
-	flat2d::GameObject* bot = new Bot(particleEngine, 200, 200);
-	bot->init(renderData);
-	objectContainer->registerObject(bot, Layers::MID);
+	flat2d::GameObject* soldier = new Soldier(particleEngine, 200, 200);
+	soldier->init(renderData);
+	objectContainer->registerObject(soldier, Layers::MID);
 
 	std::stringstream timeText;
 	flat2d::Timer fpsTimer;
