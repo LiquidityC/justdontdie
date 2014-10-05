@@ -37,6 +37,9 @@ void Soldier::handle(const SDL_Event& e)
 		case SDLK_j:
 			ghostMode = !ghostMode;
 			break;
+		case SDLK_u:
+			particleEngine->createGhostSprayAt(xpos, ypos);
+			break;
 		default:
 			break;
 	}
@@ -173,7 +176,12 @@ bool Soldier::handleCollision(flat2d::GameObject *o, const flat2d::RenderData* d
 bool Soldier::handleTileCollision(MapTileObject *o, const flat2d::RenderData* data)
 {
 	if (o->hasProperty("deadly")) {
-		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+
+		if (ghostMode) {
+			particleEngine->createGhostSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		} else {
+			particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		}
 		wasKilled();
 		return true;
 	}
@@ -186,10 +194,12 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 		return true;
 	}
 	if (o->isGhost() && ghostMode) {
-		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		particleEngine->createGhostSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		o->setDead(true);
 		wasKilled();
 	} else if (!o->isGhost() && !ghostMode) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		o->setDead(true);
 		wasKilled();
 	}
 

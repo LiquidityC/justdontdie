@@ -10,7 +10,10 @@ class ParticleEngine
 
 	public:
 		ParticleEngine(flat2d::ObjectContainer *obc) : objectContainer(obc) { };
+
 		void createBloodSprayAt(int, int);
+
+		void createGhostSprayAt(int, int);
 };
 
 #endif

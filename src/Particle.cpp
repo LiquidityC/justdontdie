@@ -35,3 +35,11 @@ void Particle::render(const flat2d::RenderData* data) const
 	SDL_Rect box = { cam->getScreenXposFor(xpos), cam->getScreenYposFor(ypos), width, height };
 	SDL_RenderFillRect( renderer, &box );
 }
+
+void Particle::postRender(const flat2d::RenderData *data)
+{
+	if (!deathTimer.isStarted()) {
+		deathTimer.start();
+	}
+	setDead(deathTimer.getTicks() > 5000);
+}

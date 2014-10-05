@@ -7,6 +7,7 @@ class Particle : public flat2d::RenderedGameObject
 {
 	protected:
 		float xvel, yvel;
+		flat2d::Timer deathTimer;
 
 	public:
 		Particle(int x, int y, int w, int h, int xv, int yv) :
@@ -14,10 +15,12 @@ class Particle : public flat2d::RenderedGameObject
 			xvel(xv),
 			yvel(yv) { 
 				setDead(false);
+				deathTimer.start();
 			};
 
 		virtual void preRender(const flat2d::RenderData*);
 		virtual void render(const flat2d::RenderData*) const;
+		virtual void postRender(const flat2d::RenderData*);
 
 	protected:
 		virtual void setRenderDrawColor(SDL_Renderer*) const = 0;
