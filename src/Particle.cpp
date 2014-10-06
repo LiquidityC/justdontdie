@@ -41,5 +41,35 @@ void Particle::postRender(const flat2d::RenderData *data)
 	if (!deathTimer.isStarted()) {
 		deathTimer.start();
 	}
-	setDead(deathTimer.getTicks() > 5000);
+	if (!isDead()) {
+		setDead(deathTimer.getTicks() > 3000);
+	}
+}
+
+void Particle::reduceXVel(int reduction, float deltaTime)
+{
+	xvel = getReducedVelocity(xvel, reduction, deltaTime);
+}
+
+void Particle::reduceYVel(int reduction, float deltaTime)
+{
+	yvel = getReducedVelocity(yvel, reduction, deltaTime);
+}
+
+float Particle::getReducedVelocity(float vel, int reduction, float deltaTime)
+{
+	if (vel < 50 && vel > -50) {
+		return 0;
+	}
+
+	float calculatedReduction = reduction * deltaTime;
+	if (std::abs(vel) < calculatedReduction) {
+		return 0;
+	}
+
+	if (vel > 0) {
+		return vel - calculatedReduction;
+	} else {
+		return vel + calculatedReduction;
+	}
 }

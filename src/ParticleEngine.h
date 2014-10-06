@@ -14,6 +14,8 @@ class ParticleEngine
 		void createBloodSprayAt(int, int);
 
 		void createGhostSprayAt(int, int);
+
+		void createExplosionAt(int, int);
 };
 
 #endif

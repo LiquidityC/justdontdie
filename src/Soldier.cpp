@@ -195,10 +195,18 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 	}
 	if (o->isGhost() && ghostMode) {
 		particleEngine->createGhostSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+
+		SDL_Rect rocketBox = o->getBoundingBox();
+		particleEngine->createExplosionAt(rocketBox.x + static_cast<int>(rocketBox.w/2),
+				rocketBox.y + static_cast<int>(rocketBox.h/2));
 		o->setDead(true);
 		wasKilled();
 	} else if (!o->isGhost() && !ghostMode) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+
+		SDL_Rect rocketBox = o->getBoundingBox();
+		particleEngine->createExplosionAt(rocketBox.x + static_cast<int>(rocketBox.w/2),
+				rocketBox.y + static_cast<int>(rocketBox.h/2));
 		o->setDead(true);
 		wasKilled();
 	}

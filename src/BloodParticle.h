@@ -7,7 +7,6 @@
 class BloodParticle : public Particle
 {
 	private:
-		GameObject *o = NULL;
 		flat2d::Timer timer;
 
 	public:

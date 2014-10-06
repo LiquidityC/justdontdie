@@ -40,31 +40,3 @@ void GhostParticle::setRenderDrawColor(SDL_Renderer* renderer) const
 {
 	SDL_SetRenderDrawColor(renderer, 0x91, 0x8c, 0xFF, 0xF);
 }
-
-void GhostParticle::reduceXVel(int reduction, float deltaTime)
-{
-	xvel = getReducedVelocity(xvel, reduction, deltaTime);
-}
-
-void GhostParticle::reduceYVel(int reduction, float deltaTime)
-{
-	yvel = getReducedVelocity(yvel, reduction, deltaTime);
-}
-
-float GhostParticle::getReducedVelocity(float vel, int reduction, float deltaTime)
-{
-	if (vel < 50 && vel > -50) {
-		return 0;
-	}
-
-	float calculatedReduction = reduction * deltaTime;
-	if (std::abs(vel) < calculatedReduction) {
-		return 0;
-	}
-
-	if (vel > 0) {
-		return vel - calculatedReduction;
-	} else {
-		return vel + calculatedReduction;
-	}
-}

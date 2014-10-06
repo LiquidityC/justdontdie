@@ -19,7 +19,7 @@ class Rocket : public flat2d::RenderedGameObject
 				setCollidable(true);
 
 				int xclip = rightToLeft ? 0 : 24;
-				int yclip = ghostMode ? 24 : 0;
+				int yclip = ghostMode ? 15 : 0;
 
 				SDL_Rect clip = { xclip, yclip, 24, 15 };
 				setClip(clip);

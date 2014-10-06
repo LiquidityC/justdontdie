@@ -1,4 +1,6 @@
 #include "Rocket.h"
+#include "GameObjectType.h"
+#include "MapTileObject.h"
 
 void Rocket::init(const flat2d::RenderData *data)
 {
@@ -10,11 +12,22 @@ void Rocket::preRender(const flat2d::RenderData *data)
 {
 	flat2d::Camera *cam = data->getCamera();
 	xpos += (xvel * cam->getDeltaTime());
+
+	flat2d::CollisionDetector *detector = data->getCollisionDetector();
+	GameObject *o = detector->checkForCollisions(this);
+	if (o && o->getType() == GameObjectType::TILE) {
+		MapTileObject *tile = static_cast<MapTileObject*>(o);
+		if (tile->hasProperty("rocketStopper")) {
+			setDead(true);
+		}
+	}
 }
 
 void Rocket::postRender(const flat2d::RenderData *data)
 {
-	setDead(deathTimer.getTicks() > 5000);
+	if (!isDead()) {
+		setDead(deathTimer.getTicks() > 5000);
+	}
 }
 
 bool Rocket::isGhost() const

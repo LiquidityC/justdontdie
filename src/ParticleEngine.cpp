@@ -2,6 +2,7 @@
 #include "ParticleEngine.h"
 #include "BloodParticle.h"
 #include "GhostParticle.h"
+#include "FireParticle.h"
 #include "Layers.h"
 
 void ParticleEngine::createBloodSprayAt(int x, int y)
@@ -25,9 +26,21 @@ void ParticleEngine::createGhostSprayAt(int x, int y)
 		int yneg = rand() % 2 > 0 ? 1 : -1;
 		int xvel = (rand() % 500) * xneg;
 		int yvel = (rand() % 500) * yneg;
-		int w = (rand() % 3) + 1;
-		int h = (rand() % 3) + 1;
-		p = new GhostParticle(x, y, w, h, xvel, yvel);
+		int size = (rand() % 3) + 1;
+		p = new GhostParticle(x, y, size, size, xvel, yvel);
+		objectContainer->registerObject(p, Layers::FRONT);
+	}
+}
+
+void ParticleEngine::createExplosionAt(int x, int y)
+{
+	Particle *p;
+	for (auto i = 0; i < 100; i++) {
+		int xneg = rand() % 2 > 0 ? 1 : -1;
+		int yneg = rand() % 2 > 0 ? 1 : -1;
+		int xvel = (rand() % 300) * xneg;
+		int yvel = (rand() % 300) * yneg;
+		p = new FireParticle(x, y, xvel, yvel);
 		objectContainer->registerObject(p, Layers::FRONT);
 	}
 }

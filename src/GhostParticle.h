@@ -14,10 +14,6 @@ class GhostParticle : public Particle
 
 	private:
 		void setRenderDrawColor(SDL_Renderer* renderer) const;
-
-		void reduceXVel(int reduction, float deltaTime);
-		void reduceYVel(int reduction, float deltaTime);
-		float getReducedVelocity(float vel, int reduction, float deltaTime);
 };
 
 #endif

@@ -24,6 +24,9 @@ class Particle : public flat2d::RenderedGameObject
 
 	protected:
 		virtual void setRenderDrawColor(SDL_Renderer*) const = 0;
+		void reduceXVel(int reduction, float deltaTime);
+		void reduceYVel(int reduction, float deltaTime);
+		float getReducedVelocity(float vel, int reduction, float deltaTime);
 };
 
 #endif
