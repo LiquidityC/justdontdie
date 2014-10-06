@@ -65,6 +65,7 @@ namespace flat2d
 			virtual void postRender(const RenderData*) = 0;
 
 			virtual bool isCollider() const = 0;
+			virtual void setColliderBox(SDL_Rect) = 0;
 			virtual SDL_Rect getBoundingBox() const = 0;
 
 			virtual const SDL_Texture* getTexture() const = 0;

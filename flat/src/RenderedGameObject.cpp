@@ -35,6 +35,10 @@ void RenderedGameObject::render(const RenderData *data) const
 
 	if (data->getCamera() != NULL) {
 		Camera* camera = data->getCamera();
+		SDL_Rect box = getBoundingBox();
+		if (!camera->isVisibleOnCamera(box)) {
+			return;
+		}
 		x = camera->getScreenXposFor(x);
 		y = camera->getScreenYposFor(y);
 	}
@@ -55,9 +59,20 @@ bool RenderedGameObject::isCollider() const
 	return collidable;
 }
 
+void RenderedGameObject::setColliderBox(SDL_Rect collider)
+{
+	this->collider = collider;
+}
+
 SDL_Rect RenderedGameObject::getBoundingBox() const
 {
 	SDL_Rect box = { xpos, ypos, width, height };
+	if (collider.w != 0 && collider.h != 0) {
+		box.x += collider.x;
+		box.y += collider.y;
+		box.w = collider.w;
+		box.h = collider.h;
+	}
 	return box;
 }
 

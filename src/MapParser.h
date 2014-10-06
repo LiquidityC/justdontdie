@@ -12,6 +12,7 @@ class MapParser
 	typedef struct {
 		int id;
 		std::map<std::string, bool> properties;
+		SDL_Rect collider;
 	} Tile;
 
 	typedef struct {
@@ -47,6 +48,7 @@ class MapParser
 		bool parseMapAttributes(rapidxml::xml_node<> *node);
 		bool parseTileset(rapidxml::xml_node<> *node);
 		void parseTileProperties(Tile&, rapidxml::xml_node<>*);
+		void parseTileObjects(Tile&, rapidxml::xml_node<>*);
 };
 
 #endif

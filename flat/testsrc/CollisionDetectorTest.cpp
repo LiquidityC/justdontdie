@@ -50,3 +50,11 @@ TEST( CollisionDetectorTests, TestMultiCollisions )
 
 	CHECK( !detector->checkForCollisions( c2 ) );
 }
+
+TEST( CollisionDetectorTests, TestColliders )
+{
+	SDL_Rect colliderBox = { 0, 0, 1, 1 };
+	c1->setColliderBox(colliderBox);
+
+	CHECK( !detector->hasCollided(c1, c4) );
+}

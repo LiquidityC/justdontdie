@@ -14,6 +14,7 @@ namespace flat2d
 			bool dead = false, collidable = false;
 			SDL_Texture *texture = NULL;
 			SDL_Rect clip;
+			SDL_Rect collider;
 
 		public:
 			RenderedGameObject(int x, int y, int w, int h) : 
@@ -24,6 +25,7 @@ namespace flat2d
 				height(h),
 				dead(false) {
 					clip = { xpos, ypos, width, height };
+					collider = { 0, 0, 0, 0 };
 				}
 
 			virtual ~RenderedGameObject() { };
@@ -32,6 +34,7 @@ namespace flat2d
 			void setClip(SDL_Rect&);
 			void setDead(bool);
 			void setCollidable(bool);
+			void setColliderBox(SDL_Rect collider);
 
 			/* Implemented override methods */
 			virtual bool isDead() const;

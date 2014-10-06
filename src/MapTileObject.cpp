@@ -2,16 +2,6 @@
 #include "Rocket.h"
 #include "Layers.h"
 
-void MapTileObject::setCollidable(bool collidable)
-{
-	properties["collidable"] = collidable;
-}
-
-bool MapTileObject::isCollider() const
-{
-	return hasProperty("collidable");
-}
-
 void MapTileObject::setProperty(std::string prop, bool value)
 {
 	properties[prop] = value;
