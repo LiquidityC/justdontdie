@@ -217,15 +217,31 @@ bool MapParser::parseTileset(xml_node<> *node)
 
 	int gid = tileset.firstgid;
 	for (xml_node<> *tileNode = firstTileNode; tileNode; tileNode = tileNode->next_sibling()) {
-		Tile tile;
 		if ( strcmp(tileNode->name(), "tile") != 0) {
 			cout << "Node not named 'tile' parse failed: '" << node->name() << "'" << endl;
 			return false;
 		}
 
-		tile.id = atoi(tileNode->first_attribute()->value());
-		parseTileProperties(tile, tileNode->first_node());
-		parseTileObjects(tile, tileNode->first_node()->next_sibling());
+		int tileId = atoi(tileNode->first_attribute()->value());
+		using namespace std;
+		while (gid <= tileId) {
+			Tile emptyTile;
+			emptyTile.id = gid - 1;
+			cout << "Adding empty tile: " << gid << "->" << emptyTile.id << endl;
+			tileset.tiles[gid] = emptyTile;
+			gid++;
+			cout << "Next gid: " << gid << endl;
+		}
+
+		Tile tile;
+		tile.id = tileId;
+		xml_node<> *firstNode = tileNode->first_node();
+		if ( strcmp(firstNode->name(), "properties") == 0 ) {
+			parseTileProperties(tile, firstNode);
+			parseTileObjects(tile, firstNode->next_sibling());
+		} else {
+			parseTileObjects(tile, firstNode);
+		}
 
 		tileset.tiles[gid] = tile;
 		gid++;

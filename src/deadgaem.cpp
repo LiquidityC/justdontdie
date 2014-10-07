@@ -36,7 +36,7 @@ int main( int argc, char* args[] )
 	// Prototype stuff, shouldn't be here in the future
 	// {{{
 	MapParser parser;
-	parser.createMapFrom(resourceContainer, "resources/map1/", "map1.tmx", renderData);
+	parser.createMapFrom(resourceContainer, "resources/maps/map1/", "map1.tmx", renderData);
 	
 	flat2d::GameObject* soldier = new Soldier(particleEngine, 200, 200);
 	soldier->init(renderData);

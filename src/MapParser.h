@@ -12,7 +12,7 @@ class MapParser
 	typedef struct {
 		int id;
 		std::map<std::string, bool> properties;
-		SDL_Rect collider;
+		SDL_Rect collider = { 0, 0, 0, 0 };
 	} Tile;
 
 	typedef struct {

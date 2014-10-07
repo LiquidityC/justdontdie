@@ -48,8 +48,13 @@ void RenderedGameObject::render(const RenderData *data) const
 
 #ifdef DEBUG
 	if (isCollider()) {
-		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF );
-		SDL_RenderDrawRect( renderer, &box );
+		SDL_SetRenderDrawColor(data->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
+		SDL_Rect bounds = getBoundingBox();
+		if (data->getCamera() != NULL) {
+			bounds.x = data->getCamera()->getScreenXposFor(bounds.x);
+			bounds.y = data->getCamera()->getScreenYposFor(bounds.y);
+		}
+		SDL_RenderDrawRect( data->getRenderer(), &bounds );
 	}
 #endif
 }
