@@ -107,8 +107,8 @@ void Soldier::preRender(const flat2d::RenderData *data)
 			grounded = true;
 			doubleJumped = false;
 		}
-		yvel = 0;
 		object = NULL;
+		yvel = 0;
 	}
 
 	calculateCurrentClip();
@@ -133,7 +133,7 @@ void Soldier::calculateCurrentClip()
 	int y = 0;
 
 	if (ghostMode) {
-		y = 24;
+		y = height;
 	}
 	if (facingLeft) {
 		x = 2 * width;
@@ -151,7 +151,11 @@ void Soldier::calculateCurrentClip()
 			clipSwitch = !clipSwitch;
 			frameSwitch = 0;
 		}
-		x += clipSwitch ? width : 0;
+		if (grounded) {
+			x += clipSwitch ? width : 0;
+		} else {
+			x += width;
+		}
 	}
 
 	SDL_Rect clip = { x, y, width, height };
