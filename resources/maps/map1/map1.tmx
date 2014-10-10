@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="75" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
-  <image source="tiles/tileset.png" width="128" height="160"/>
+  <image source="tiles/tileset.png" width="128" height="224"/>
   <tile id="1">
    <properties>
     <property name="collidable" value="true"/>
@@ -815,8 +815,8 @@
    <tile gid="2"/>
    <tile gid="4"/>
    <tile gid="13"/>
-   <tile gid="15"/>
-   <tile gid="13"/>
+   <tile gid="21"/>
+   <tile gid="22"/>
    <tile gid="13"/>
    <tile gid="13"/>
    <tile gid="13"/>
@@ -865,8 +865,8 @@
    <tile gid="2"/>
    <tile gid="4"/>
    <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
+   <tile gid="25"/>
+   <tile gid="26"/>
    <tile gid="13"/>
    <tile gid="13"/>
    <tile gid="13"/>
@@ -1044,8 +1044,8 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
+   <tile gid="21"/>
+   <tile gid="22"/>
    <tile gid="13"/>
    <tile gid="14"/>
    <tile gid="13"/>
@@ -1094,8 +1094,8 @@
    <tile gid="1"/>
    <tile gid="1"/>
    <tile gid="1"/>
-   <tile gid="15"/>
-   <tile gid="13"/>
+   <tile gid="25"/>
+   <tile gid="26"/>
    <tile gid="13"/>
    <tile gid="13"/>
    <tile gid="20"/>
@@ -2265,8 +2265,8 @@
    <tile gid="2"/>
    <tile gid="4"/>
    <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
+   <tile gid="21"/>
+   <tile gid="22"/>
    <tile gid="13"/>
    <tile gid="13"/>
    <tile gid="13"/>
@@ -2315,8 +2315,8 @@
    <tile gid="2"/>
    <tile gid="4"/>
    <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
+   <tile gid="25"/>
+   <tile gid="26"/>
    <tile gid="13"/>
    <tile gid="13"/>
    <tile gid="13"/>
@@ -3529,8 +3529,8 @@
    <tile gid="13"/>
    <tile gid="13"/>
    <tile gid="13"/>
-   <tile gid="15"/>
-   <tile gid="13"/>
+   <tile gid="21"/>
+   <tile gid="22"/>
    <tile gid="3"/>
    <tile gid="2"/>
    <tile gid="5"/>
@@ -3579,8 +3579,8 @@
    <tile gid="13"/>
    <tile gid="13"/>
    <tile gid="13"/>
-   <tile gid="13"/>
-   <tile gid="13"/>
+   <tile gid="25"/>
+   <tile gid="26"/>
    <tile gid="3"/>
    <tile gid="2"/>
    <tile gid="5"/>

@@ -94,12 +94,13 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 				resourceContainer->addTexture(texture);
 			}
 
-			Tile *tile = &(tileset->tiles[gid]);
-			if (!tile) {
-				cerr << "Unable to locate correct tile" << endl;
-				return false;
-			}
+			if (tileset->tiles.find(gid) == tileset->tiles.end()) {
+				Tile newTile;
+				newTile.id = gid - 1;
+				tileset->tiles[gid] = newTile;
+			} 
 
+			Tile *tile = &(tileset->tiles[gid]);
 
 			// Create til obj
 			MapTileObject* tileObj = new MapTileObject(col * map.tileWidth, row * map.tileHeight, 
@@ -175,7 +176,7 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 bool MapParser::parseTileset(xml_node<> *node)
 {
 	if ( strcmp(node->name(), "tileset") != 0) {
-		cout << "Node not named 'tileset' parse failed: '" << node->name() << "'" << endl;
+		cerr << "Node not named 'tileset' parse failed: '" << node->name() << "'" << endl;
 		return false;
 	}
 
@@ -195,7 +196,7 @@ bool MapParser::parseTileset(xml_node<> *node)
 
 	xml_node<> *imageNode = node->first_node();
 	if ( strcmp(imageNode->name(), "image") != 0) {
-		cout << "Node not named 'image' parse failed: '" << node->name() << "'" << endl;
+		cerr << "Node not named 'image' parse failed: '" << node->name() << "'" << endl;
 		return false;
 	}
 
@@ -218,7 +219,7 @@ bool MapParser::parseTileset(xml_node<> *node)
 	int gid = tileset.firstgid;
 	for (xml_node<> *tileNode = firstTileNode; tileNode; tileNode = tileNode->next_sibling()) {
 		if ( strcmp(tileNode->name(), "tile") != 0) {
-			cout << "Node not named 'tile' parse failed: '" << node->name() << "'" << endl;
+			cerr << "Node not named 'tile' parse failed: '" << node->name() << "'" << endl;
 			return false;
 		}
 
@@ -227,10 +228,8 @@ bool MapParser::parseTileset(xml_node<> *node)
 		while (gid <= tileId) {
 			Tile emptyTile;
 			emptyTile.id = gid - 1;
-			cout << "Adding empty tile: " << gid << "->" << emptyTile.id << endl;
 			tileset.tiles[gid] = emptyTile;
 			gid++;
-			cout << "Next gid: " << gid << endl;
 		}
 
 		Tile tile;
