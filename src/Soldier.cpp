@@ -193,7 +193,8 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 	if (spawnGraceTimer.isStarted()) {
 		return true;
 	}
-	if (o->isGhost() && ghostMode) {
+	Rocket::Mode rocketMode = o->getMode();
+	if (ghostMode && (rocketMode == Rocket::Mode::GHOST || rocketMode == Rocket::Mode::MULTI)) {
 		particleEngine->createGhostSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 
 		SDL_Rect rocketBox = o->getBoundingBox();
@@ -201,7 +202,7 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 				rocketBox.y + static_cast<int>(rocketBox.h/2));
 		o->setDead(true);
 		wasKilled();
-	} else if (!o->isGhost() && !ghostMode) {
+	} else if (!ghostMode && (rocketMode == Rocket::Mode::NORMAL || rocketMode == Rocket::Mode::MULTI)) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 
 		SDL_Rect rocketBox = o->getBoundingBox();

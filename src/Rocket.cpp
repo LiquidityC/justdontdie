@@ -21,6 +21,19 @@ void Rocket::preRender(const flat2d::RenderData *data)
 			setDead(true);
 		}
 	}
+
+	if (mode == Mode::MULTI) {
+		if (!switchTimer.isStarted()) {
+			switchTimer.start();
+		}
+
+		if (switchTimer.getTicks() > 100) {
+			switchTimer.stop();
+			switchTimer.start();
+			clip.y = clip.y == 0 ? 15 : 0;
+			setClip(clip);
+		}
+	}
 }
 
 void Rocket::postRender(const flat2d::RenderData *data)
@@ -30,7 +43,7 @@ void Rocket::postRender(const flat2d::RenderData *data)
 	}
 }
 
-bool Rocket::isGhost() const
+Rocket::Mode Rocket::getMode() const
 {
-	return ghostMode;
+	return mode;
 }

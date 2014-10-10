@@ -3892,34 +3892,16 @@
     <property name="rocketLauncher" value="true"/>
    </properties>
   </object>
-  <object name="Launcher" x="32" y="1144" width="24" height="15">
+  <object name="MultiLauncher" x="104" y="1160" width="24" height="15">
    <properties>
+    <property name="multi" value="true"/>
     <property name="rocketLauncher" value="true"/>
     <property name="shootRight" value="true"/>
    </properties>
   </object>
-  <object name="GhostLauncher" x="32" y="1168" width="24" height="15">
+  <object name="MultiLauncher" x="552" y="1600" width="24" height="15">
    <properties>
-    <property name="ghost" value="true"/>
-    <property name="rocketLauncher" value="true"/>
-    <property name="shootRight" value="true"/>
-   </properties>
-  </object>
-  <object name="Launcher" x="544" y="1632" width="24" height="15">
-   <properties>
-    <property name="rocketLauncher" value="true"/>
-    <property name="shootRight" value="true"/>
-   </properties>
-  </object>
-  <object name="GhostLauncher" x="544" y="1600" width="24" height="15">
-   <properties>
-    <property name="ghost" value="true"/>
-    <property name="rocketLauncher" value="true"/>
-    <property name="shootRight" value="true"/>
-   </properties>
-  </object>
-  <object name="Launcher" x="544" y="1568" width="24" height="15">
-   <properties>
+    <property name="multi" value="true"/>
     <property name="rocketLauncher" value="true"/>
     <property name="shootRight" value="true"/>
    </properties>
@@ -3930,8 +3912,9 @@
     <property name="rocketLauncher" value="true"/>
    </properties>
   </object>
-  <object name="Launcher" x="160" y="2000" width="24" height="15">
+  <object name="MultiLauncher" x="160" y="2000" width="24" height="15">
    <properties>
+    <property name="multi" value="true"/>
     <property name="rocketLauncher" value="true"/>
     <property name="shootRight" value="true"/>
    </properties>
@@ -3942,8 +3925,9 @@
     <property name="rocketLauncher" value="true"/>
    </properties>
   </object>
-  <object name="Launcher" x="736" y="2160" width="24" height="15">
+  <object name="MultiLauncher" x="736" y="2160" width="24" height="15">
    <properties>
+    <property name="multi" value="true"/>
     <property name="rocketLauncher" value="true"/>
    </properties>
   </object>
