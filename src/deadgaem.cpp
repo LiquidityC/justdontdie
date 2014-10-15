@@ -42,10 +42,11 @@ int main( int argc, char* args[] )
 	soldier->init(renderData);
 	objectContainer->registerObject(soldier, Layers::MID);
 
-	std::stringstream timeText;
 	flat2d::Timer fpsTimer;
 	flat2d::Timer drawFpsTimer;
 	int countedFrames = 0;
+	int currentFps = 0;
+	float avgFps = 0;
 	fpsTimer.start();
 	drawFpsTimer.start();
 	// }}}
@@ -87,18 +88,18 @@ int main( int argc, char* args[] )
 		SDL_RenderPresent( renderer );
 
 #ifdef DEBUG
-		countedFrames++;
-		float avgFps = countedFrames / (fpsTimer.getTicks() / 1000.f);
+		avgFps = countedFrames / (fpsTimer.getTicks() / 1000.f);
 		if (avgFps > 20000) {
 			avgFps = 0;
 		}
-		timeText.str("");
-		timeText << "FPS: " << avgFps;
 		if (static_cast<int>((drawFpsTimer.getTicks() / 1000.f)) > 1) {
-			std::cout << timeText.str() << std::endl;
+			std::cout << "AVG FPS: " << avgFps << " FPS: " << currentFps << std::endl;
+			currentFps = 0;
 			drawFpsTimer.stop();
 			drawFpsTimer.start();
 		}
+		countedFrames++;
+		currentFps++;
 #endif
 
 		int tickCount = fpsCapTimer.getTicks();
