@@ -31,7 +31,7 @@ LIB_OBJECTS			= $(addprefix $(OBJDIR)/,$(notdir $(LIB_SOURCES:.cpp=.o)))
 
 LIB_INCLUDE_DIR		= include/flat
 LIB_UNIFIED_INCLUDE	= $(LIB_INCLUDE_DIR)/flat.h
-LIB_INCLUDE_SOURCES	= $(wildcard src/*.h)
+LIB_INCLUDE_SOURCES	= $(filter-out src/NewMacro.h, $(wildcard src/*.h))
 LIB_INCLUDES		= $(addprefix $(LIB_INCLUDE_DIR)/,$(notdir $(LIB_INCLUDE_SOURCES)))
 
 TEST				= test

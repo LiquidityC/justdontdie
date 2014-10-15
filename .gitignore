@@ -3,6 +3,8 @@
 /flat/obj/*.o
 /obj/*.o
 
+*.swp
+
 deadgaem
 test
 tags
