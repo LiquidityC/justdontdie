@@ -30,8 +30,8 @@ TEST_GROUP ( SoldierTests )
 IGNORE_TEST( SoldierTests, TestRocketCollision )
 {
 
-	Rocket *r1 = new Rocket( 200, 200, true, true );
-	Rocket *r2 = new Rocket( 200, 200, false, true );
+	Rocket *r1 = new Rocket( 200, 200 );
+	Rocket *r2 = new Rocket( 200, 200 );
 
 	CHECK ( !detector->hasCollided(soldier, r1) );
 	CHECK ( detector->hasCollided(soldier, r2) );
