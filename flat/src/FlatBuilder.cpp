@@ -9,6 +9,7 @@
 #include "CollisionDetector.h"
 #include "Camera.h"
 #include "Window.h"
+#include "Mixer.h"
 
 using namespace flat2d;
 
@@ -20,11 +21,17 @@ FlatBuilder::~FlatBuilder()
 	delete objectContainer;
 	delete window;
 	delete camera;
+	delete mixer;
+
+	IMG_Quit();
+	SDL_Quit();
+	TTF_Quit();
+	Mix_Quit();
 }
 
 bool FlatBuilder::initSDL(std::string title, int screenWidth, int screenHeight)
 {
-	if (SDL_Init( SDL_INIT_VIDEO ) < 0) {
+	if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0) {
 		std::cerr << "Failed to init video: " 
 			<< SDL_GetError() << std::endl;
 		return false;
@@ -33,6 +40,11 @@ bool FlatBuilder::initSDL(std::string title, int screenWidth, int screenHeight)
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init( imgFlags ) & imgFlags )) {
 		std::cerr << "Unable to initialize SDL_image: " << IMG_GetError() << std::endl;
+		return false;
+	}
+
+	if (Mix_OpenAudio( 44199, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
+		std::cerr << "Could not initialize SDL_Mixer: " << Mix_GetError() << std::endl;
 		return false;
 	}
 
@@ -54,8 +66,9 @@ bool FlatBuilder::initContainers()
 {
 	objectContainer = new ObjectContainer();
 	collisionDetector = new CollisionDetector(objectContainer);
-	gameData = new GameData(objectContainer, collisionDetector);
 	renderData = new RenderData(window->getRenderer(), camera, objectContainer, collisionDetector);
+	mixer = new Mixer();
+	gameData = new GameData(objectContainer, collisionDetector, mixer);
 
 	return true;
 }

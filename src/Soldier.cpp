@@ -7,7 +7,7 @@
 #include "Rocket.h"
 #include "ParticleEngine.h"
 
-void Soldier::init(const flat2d::RenderData *data)
+void Soldier::init(const flat2d::GameData *gameData, const flat2d::RenderData *data)
 {
 	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png", data->getRenderer()));
 	SDL_Rect clip = { 0, 0, width, height };

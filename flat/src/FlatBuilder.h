@@ -11,6 +11,7 @@ namespace flat2d
 	class Camera;
 	class GameData;
 	class RenderData;
+	class Mixer;
 
 	class FlatBuilder
 	{
@@ -21,6 +22,7 @@ namespace flat2d
 			CollisionDetector *collisionDetector = NULL;
 			ObjectContainer *objectContainer = NULL;
 			Camera *camera = NULL;
+			Mixer *mixer = NULL;
 
 		public:
 			~FlatBuilder();

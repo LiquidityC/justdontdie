@@ -39,8 +39,13 @@ int main( int argc, char* args[] )
 	parser.createMapFrom(resourceContainer, "resources/maps/map1/", "map1.tmx", renderData);
 	
 	flat2d::GameObject* soldier = new Soldier(particleEngine, 200, 200);
-	soldier->init(renderData);
+	soldier->init(gameData, renderData);
 	objectContainer->registerObject(soldier, Layers::MID);
+
+	// Test mixer
+	flat2d::Mixer *mixer = gameData->getMixer();
+	mixer->loadMusic(1, "./resources/sound/the_complex.ogg");
+	mixer->playMusic(1);
 
 	flat2d::Timer fpsTimer;
 	flat2d::Timer drawFpsTimer;
@@ -111,8 +116,6 @@ int main( int argc, char* args[] )
 	delete particleEngine;
 	delete resourceContainer;
 	delete flat;
-	IMG_Quit();
-	SDL_Quit();
 
 	return 0;
 }

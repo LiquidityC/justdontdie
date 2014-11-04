@@ -3,6 +3,7 @@
 #include "../src/ObjectContainer.h"
 #include "../src/GameData.h"
 #include "../src/CollisionDetector.h"
+#include "../src/Mixer.h"
 
 TEST_GROUP( ObjectContainerTests )
 {
@@ -131,7 +132,8 @@ TEST( ObjectContainerTests, TestObjectAutoclean )
 
 	flat2d::ObjectContainer container;
 	flat2d::CollisionDetector detector(&container);
-	flat2d::GameData gameData(&container, &detector);
+	flat2d::Mixer mixer;
+	flat2d::GameData gameData(&container, &detector, &mixer);
 
 	container.registerObject(c1);
 	container.registerObject(c2);
