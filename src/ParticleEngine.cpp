@@ -13,7 +13,8 @@ void ParticleEngine::createBloodSprayAt(int x, int y)
 		int yneg = rand() % 2 > 0 ? 1 : -1;
 		int xvel = (rand() % 500) * xneg;
 		int yvel = (rand() % 500) * yneg;
-		p = new BloodParticle(x, y, xvel, yvel);
+		int size = (rand() % 3) + 1;
+		p = new BloodParticle(x, y, size, xvel, yvel);
 		objectContainer->registerObject(p, Layers::FRONT);
 	}
 }

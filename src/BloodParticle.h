@@ -10,8 +10,8 @@ class BloodParticle : public Particle
 		flat2d::Timer timer;
 
 	public:
-		BloodParticle(int x, int y, int xvel, int yvel) 
-			: Particle(x, y, 2, 2, xvel, yvel) { };
+		BloodParticle(int x, int y, int size, int xvel, int yvel) 
+			: Particle(x, y, size, size, xvel, yvel) { };
 
 	private:
 		void setRenderDrawColor(SDL_Renderer* renderer) const;
