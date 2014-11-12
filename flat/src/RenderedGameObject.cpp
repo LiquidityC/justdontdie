@@ -26,14 +26,14 @@ void RenderedGameObject::setCollidable(bool collidable)
 
 void RenderedGameObject::render(const RenderData *data) const
 {
-	if (texture == NULL || dead) {
+	if (texture == nullptr || dead) {
 		return;
 	}
 
 	int x = xpos;
 	int y = ypos;
 
-	if (data->getCamera() != NULL) {
+	if (data->getCamera() != nullptr) {
 		Camera* camera = data->getCamera();
 		SDL_Rect box = getBoundingBox();
 		if (!camera->isVisibleOnCamera(box)) {
@@ -50,7 +50,7 @@ void RenderedGameObject::render(const RenderData *data) const
 	if (isCollider()) {
 		SDL_SetRenderDrawColor(data->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
 		SDL_Rect bounds = getBoundingBox();
-		if (data->getCamera() != NULL) {
+		if (data->getCamera() != nullptr) {
 			bounds.x = data->getCamera()->getScreenXposFor(bounds.x);
 			bounds.y = data->getCamera()->getScreenYposFor(bounds.y);
 		}

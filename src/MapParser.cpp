@@ -72,7 +72,7 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 				continue;
 			}
 
-			Tileset *tileset = NULL;
+			Tileset *tileset = nullptr;
 			for (auto it = map.tilesets.begin(); it != map.tilesets.end(); it++) {
 				if (it->first == gid) {
 					tileset = &(it->second);
@@ -83,12 +83,12 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 				tileset = &(it->second);
 			}
 
-			if (tileset == NULL) {
+			if (tileset == nullptr) {
 				cerr << "Major parse fail" << endl;
 				return false;
 			}
 
-			if (tileset->texture == NULL) {
+			if (tileset->texture == nullptr) {
 				SDL_Texture* texture = flat2d::MediaUtil::loadTexture(dir + tileset->sourcePath, renderData->getRenderer());
 				tileset->texture = texture;
 				resourceContainer->addTexture(texture);
@@ -150,7 +150,7 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 			attr = attr->next_attribute();
 			objBox.h = static_cast<int>(atof(attr->value()));
 
-			MapTileObject* tileObj = new MapTileObject(objBox.x, objBox.y, objBox.w, objBox.h, NULL);
+			MapTileObject* tileObj = new MapTileObject(objBox.x, objBox.y, objBox.w, objBox.h, nullptr);
 			objectContainer->registerObject(tileObj);
 
 			xml_node<> *properties = object->first_node();
@@ -181,7 +181,7 @@ bool MapParser::parseTileset(xml_node<> *node)
 	}
 
 	Tileset tileset;
-	tileset.texture = NULL;
+	tileset.texture = nullptr;
 	for(xml_attribute<> *attr = node->first_attribute(); attr; attr = attr->next_attribute()) {
 		if ( strcmp(attr->name(), "firstgid") == 0) {
 			tileset.firstgid = atoi(attr->value());

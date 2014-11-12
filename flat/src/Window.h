@@ -23,8 +23,8 @@ namespace flat2d
 				SDL_DestroyWindow(window);
 				SDL_DestroyRenderer(renderer);
 
-				window = NULL;
-				renderer = NULL;
+				window = nullptr;
+				renderer = nullptr;
 			};
 
 			bool init();

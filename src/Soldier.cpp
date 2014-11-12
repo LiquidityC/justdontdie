@@ -49,7 +49,7 @@ void Soldier::postHandle(const flat2d::GameData *gameData)
 {
 	xvel = 0;
 
-	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
+	const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
 	if (currentKeyStates[SDL_SCANCODE_A] || currentKeyStates[SDL_SCANCODE_LEFT]) {
 		xvel = -300;
 		facingLeft = true;
@@ -82,7 +82,7 @@ void Soldier::preRender(const flat2d::RenderData *data)
 
 	xpos += (xvel * deltaTime);
 	GameObject *object;
-	if ((object = colDetector->checkForCollisions(this)) != NULL && !handleCollision(object, data)) {
+	if ((object = colDetector->checkForCollisions(this)) != nullptr && !handleCollision(object, data)) {
 		xpos -= (xvel * deltaTime);
 
 		// Completly reach the obstruction
@@ -91,11 +91,11 @@ void Soldier::preRender(const flat2d::RenderData *data)
 		}
 		xpos += xvel > 0 ? -1 : 1;
 		xvel = 0;
-		object = NULL;
+		object = nullptr;
 	}
 
 	ypos += (yvel * deltaTime);
-	if ((object = colDetector->checkForCollisions(this)) != NULL && !handleCollision(object, data)) {
+	if ((object = colDetector->checkForCollisions(this)) != nullptr && !handleCollision(object, data)) {
 		ypos -= (yvel * deltaTime);
 
 		// Completly ground the soldier
@@ -107,7 +107,7 @@ void Soldier::preRender(const flat2d::RenderData *data)
 			grounded = true;
 			doubleJumped = false;
 		}
-		object = NULL;
+		object = nullptr;
 		yvel = 0;
 	}
 

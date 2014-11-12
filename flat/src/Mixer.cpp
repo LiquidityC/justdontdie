@@ -10,7 +10,7 @@ bool Mixer::loadEffect(int id, std::string path)
 	}
 
 	Mix_Chunk* effect = Mix_LoadWAV(path.c_str());
-	if (effect == NULL) {
+	if (effect == nullptr) {
 		std::cerr << "Unable to load sound effect: " << path << std::endl;
 		return false;
 	}
@@ -35,7 +35,7 @@ bool Mixer::loadMusic(int id, std::string path)
 	}
 
 	Mix_Music* tune = Mix_LoadMUS(path.c_str());
-	if (tune == NULL) {
+	if (tune == nullptr) {
 		std::cerr << "Unable to load music " << path << ": " << Mix_GetError() << std::endl;
 		return false;
 	}

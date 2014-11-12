@@ -34,7 +34,7 @@ class Rocket : public flat2d::RenderedGameObject
 			};
 
 		~Rocket() {
-			if (texture != NULL) {
+			if (texture != nullptr) {
 				SDL_DestroyTexture(texture);
 			}
 		};

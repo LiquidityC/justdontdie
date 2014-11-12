@@ -16,13 +16,13 @@ namespace flat2d
 	class FlatBuilder
 	{
 		private:
-			Window *window = NULL;
-			RenderData *renderData = NULL;
-			GameData *gameData = NULL;
-			CollisionDetector *collisionDetector = NULL;
-			ObjectContainer *objectContainer = NULL;
-			Camera *camera = NULL;
-			Mixer *mixer = NULL;
+			Window *window = nullptr;
+			RenderData *renderData = nullptr;
+			GameData *gameData = nullptr;
+			CollisionDetector *collisionDetector = nullptr;
+			ObjectContainer *objectContainer = nullptr;
+			Camera *camera = nullptr;
+			Mixer *mixer = nullptr;
 
 		public:
 			~FlatBuilder();

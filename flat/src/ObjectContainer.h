@@ -63,7 +63,7 @@ namespace flat2d
 							return it->second;
 						}
 					}
-					return NULL;
+					return nullptr;
 				}
 
 			template <class Func>
@@ -74,7 +74,7 @@ namespace flat2d
 							return it->second;
 						}
 					}
-					return NULL;
+					return nullptr;
 				}
 	};
 }

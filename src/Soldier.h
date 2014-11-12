@@ -41,7 +41,7 @@ class Soldier : public flat2d::RenderedGameObject
 			WALK_LEFT_2
 		};
 
-		SDL_Texture* soldierTexture = NULL;
+		SDL_Texture* soldierTexture = nullptr;
 
 		void calculateCurrentClip();
 
@@ -61,9 +61,9 @@ class Soldier : public flat2d::RenderedGameObject
 			checkPointY(y) { };
 
 		~Soldier() {
-			if (texture != NULL) {
+			if (texture != nullptr) {
 				SDL_DestroyTexture(soldierTexture);
-				soldierTexture = NULL;
+				soldierTexture = nullptr;
 			}
 		};
 

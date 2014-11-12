@@ -12,14 +12,14 @@ bool Window::init()
 			height,
 			SDL_WINDOW_SHOWN );
 
-	if (window == NULL) {
+	if (window == nullptr) {
 		std::cerr << "Window could not be created: "
 			<< SDL_GetError() << std::endl;
 		return false;
 	}
 
 	renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
-	if (renderer == NULL) {
+	if (renderer == nullptr) {
 		std::cerr << "Renderer could not be created: " << SDL_GetError() << std::endl;
 		return false;
 	}

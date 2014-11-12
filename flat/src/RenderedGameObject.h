@@ -12,7 +12,7 @@ namespace flat2d
 		protected:
 			int xpos, ypos, width, height;
 			bool dead = false, collidable = false;
-			SDL_Texture *texture = NULL;
+			SDL_Texture *texture = nullptr;
 			SDL_Rect clip;
 			SDL_Rect collider;
 

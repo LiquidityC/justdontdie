@@ -20,7 +20,7 @@ void GhostParticle::preRender(const flat2d::RenderData* data)
 		reduceXVel(1800, deltaTime);
 		xvel *= -1;
 
-		object = NULL;
+		object = nullptr;
 	}
 
 	ypos += (yvel * deltaTime);
