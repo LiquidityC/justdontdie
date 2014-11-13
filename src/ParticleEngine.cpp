@@ -3,12 +3,12 @@
 #include "BloodParticle.h"
 #include "GhostParticle.h"
 #include "FireParticle.h"
-#include "Layers.h"
+#include "LayerService.h"
 
 void ParticleEngine::createBloodSprayAt(int x, int y)
 {
 	Particle *p;
-	for (auto i = 0; i < 150; i++) {
+	for (auto i = 0; i < 50; i++) {
 		int xneg = rand() % 2 > 0 ? 1 : -1;
 		int yneg = rand() % 2 > 0 ? 1 : -1;
 		int xvel = (rand() % 500) * xneg;

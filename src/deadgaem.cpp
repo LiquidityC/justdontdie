@@ -9,7 +9,7 @@
 #include "ResourceContainer.h"
 #include "GameSettings.h"
 #include "MapParser.h"
-#include "Layers.h"
+#include "LayerService.h"
 #include "ResourceLoader.h"
 
 int main( int argc, char* args[] )
@@ -31,10 +31,8 @@ int main( int argc, char* args[] )
 	ParticleEngine *particleEngine = new ParticleEngine(objectContainer);
 	ResourceContainer *resourceContainer = new ResourceContainer();
 
-	objectContainer->addLayer(Layers::BACK);
-	objectContainer->addLayer(Layers::MID);
-	objectContainer->addLayer(Layers::FRONT);
-	objectContainer->addLayer(Layers::OVERLAY);
+	LayerService *layerService = new LayerService;
+	layerService->registerLayers(objectContainer);
 
 	MapParser parser;
 	parser.createMapFrom(resourceContainer, "resources/maps/map1/", "map1.tmx", renderData);

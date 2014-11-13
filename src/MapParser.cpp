@@ -4,7 +4,7 @@
 #include "MapParser.h"
 #include "MapTileObject.h"
 #include "ResourceContainer.h"
-#include "Layers.h"
+#include "LayerService.h"
 
 using namespace rapidxml;
 using namespace std;

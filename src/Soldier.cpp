@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "Soldier.h"
 #include "BloodParticle.h"
-#include "Layers.h"
+#include "LayerService.h"
 #include "MapTileObject.h"
 #include "Rocket.h"
 #include "ParticleEngine.h"
