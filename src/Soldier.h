@@ -17,6 +17,7 @@ class Soldier : public flat2d::RenderedGameObject
 	private:
 		ParticleEngine *particleEngine;
 		bool grounded = false;
+		flat2d::Mixer *mixer = nullptr;
 
 		float xvel = 0;
 		float yvel = 0;

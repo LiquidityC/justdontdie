@@ -12,6 +12,7 @@ void Soldier::init(const flat2d::GameData *gameData, const flat2d::RenderData *d
 	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png", data->getRenderer()));
 	SDL_Rect clip = { 0, 0, width, height };
 	setClip(clip);
+	mixer = gameData->getMixer();
 }
 
 void Soldier::handle(const SDL_Event& e)
@@ -32,6 +33,7 @@ void Soldier::handle(const SDL_Event& e)
 				yvel = -1000;
 				doubleJumped = grounded ? false : true;
 				grounded = false;
+				mixer->playEffect(3);
 			}
 			break;
 		case SDLK_j:
@@ -205,6 +207,7 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 		particleEngine->createExplosionAt(rocketBox.x + static_cast<int>(rocketBox.w/2),
 				rocketBox.y + static_cast<int>(rocketBox.h/2));
 		o->setDead(true);
+		mixer->playEffect(4);
 		wasKilled();
 	} else if (!ghostMode && (rocketMode == Rocket::Mode::NORMAL || rocketMode == Rocket::Mode::MULTI)) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
@@ -213,6 +216,7 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 		particleEngine->createExplosionAt(rocketBox.x + static_cast<int>(rocketBox.w/2),
 				rocketBox.y + static_cast<int>(rocketBox.h/2));
 		o->setDead(true);
+		mixer->playEffect(4);
 		wasKilled();
 	}
 
@@ -224,6 +228,12 @@ void Soldier::wasKilled()
 {
 	killed = true;
 	deathTimer.start();
+
+	if (ghostMode) {
+		mixer->playEffect(2);
+	} else {
+		mixer->playEffect(1);
+	}
 }
 
 void Soldier::restoreAtCheckpoint()

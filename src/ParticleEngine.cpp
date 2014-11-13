@@ -8,7 +8,7 @@
 void ParticleEngine::createBloodSprayAt(int x, int y)
 {
 	Particle *p;
-	for (auto i = 0; i < 50; i++) {
+	for (auto i = 0; i < 150; i++) {
 		int xneg = rand() % 2 > 0 ? 1 : -1;
 		int yneg = rand() % 2 > 0 ? 1 : -1;
 		int xvel = (rand() % 500) * xneg;

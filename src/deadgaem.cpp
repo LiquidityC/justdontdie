@@ -44,8 +44,13 @@ int main( int argc, char* args[] )
 
 	// Test mixer
 	flat2d::Mixer *mixer = gameData->getMixer();
-	mixer->loadMusic(1, "./resources/sound/the_complex.ogg");
+	mixer->loadMusic(1, "resources/sound/axayacatl.ogg");
 	mixer->playMusic(1);
+
+	mixer->loadEffect(1, "resources/sound/splat.wav");
+	mixer->loadEffect(2, "resources/sound/shatter.wav");
+	mixer->loadEffect(3, "resources/sound/jump.wav");
+	mixer->loadEffect(4, "resources/sound/bang.wav");
 
 	flat2d::Timer fpsTimer;
 	flat2d::Timer drawFpsTimer;

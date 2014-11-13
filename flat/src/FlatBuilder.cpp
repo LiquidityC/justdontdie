@@ -37,24 +37,30 @@ bool FlatBuilder::initSDL(std::string title, int screenWidth, int screenHeight)
 		return false;
 	}
 
+	if ( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) ) {
+		std::cerr << "Warning: Linear texture filtering not enabled" << std::endl;
+	}
+
+	window = new Window(title, screenWidth, screenHeight);
+	if (!window->init()) {
+		return false;
+	}
+
 	int imgFlags = IMG_INIT_PNG;
 	if (!(IMG_Init( imgFlags ) & imgFlags )) {
 		std::cerr << "Unable to initialize SDL_image: " << IMG_GetError() << std::endl;
 		return false;
 	}
 
-	if (Mix_OpenAudio( 44199, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
-		std::cerr << "Could not initialize SDL_Mixer: " << Mix_GetError() << std::endl;
-		return false;
-	}
-
+	/*
 	if (TTF_Init() == -1) {
 		std::cerr << "Unable to initiate SDL2_ttf: " << TTF_GetError() << std::endl;
 		return false;
 	}
+	*/
 
-	window = new Window(title, screenWidth, screenHeight);
-	if (!window->init()) {
+	if (Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
+		std::cerr << "Could not initialize SDL_Mixer: " << Mix_GetError() << std::endl;
 		return false;
 	}
 
