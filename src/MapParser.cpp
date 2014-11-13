@@ -18,7 +18,7 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 	doc.parse<0>(xmlFile.data());
 
 	xml_node<> *node = doc.first_node();
-	if ( strcmp(node->name(), "map") != 0) {
+	if ( !checkNodeName(node, "map") ) {
 		cout << "Root node not named 'map' parse failed: '" << node->name() << "'" << endl;
 		return false;
 	}
@@ -29,33 +29,24 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 	}
 
 	// Get tileset data
-	for (xml_node<> *tilesetNode = node->first_node(); tilesetNode; tilesetNode = tilesetNode->next_sibling()) {
-		if ( strcmp(tilesetNode->name(), "tileset") != 0) {
-			break;
-		}
-		if (!parseTileset(tilesetNode)) {
-			return false;
-		}
-	}
+	parseTilesets(node);
 
-	// Find the Layer node
+	// Find the Layer node and parse layers
 	node = node->first_node();
-	while ( node && strcmp(node->name(), "layer") != 0 ) {
+	while ( node && !checkNodeName(node, "layer") ) {
 		node = node->next_sibling();
 	}
-
 	if ( !node ) {
 		cerr << "Failed to load layers" << endl;
 		return false;
 	}
-
 	
 	renderData->getCamera()->setMapDimensions(map.width * map.tileWidth, map.height * map.tileHeight);
 	flat2d::ObjectContainer *objectContainer = renderData->getObjectContainer();
 
 
 	// Parse all the layers (might need to add layers in ObjectContainer)
-	while ( node && strcmp(node->name(), "layer") == 0) {
+	while ( node && checkNodeName(node, "layer") ) {
 		xml_node<> *data = node->first_node();
 
 		int row = 0;
@@ -133,10 +124,10 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 	}
 
 
-	while ( node && strcmp(node->name(), "objectgroup") == 0) {
+	while ( node && checkNodeName(node, "objectgroup") ) {
 		xml_node<> *object = node->first_node();
 		while (object) {
-			if ( strcmp(object->name(), "object") != 0) {
+			if ( !checkNodeName(object, "object") ) {
 				continue;
 			}
 
@@ -163,7 +154,7 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 			while (property) {
 				xml_attribute<> *nameAttr = property->first_attribute();
 				xml_attribute<> *valueAttr = nameAttr->next_attribute();
-				tileObj->setProperty(nameAttr->value(), strcmp(valueAttr->value(), "true") == 0);
+				tileObj->setProperty(nameAttr->value(), checkAttrValue(valueAttr, "true") );
 				property = property->next_sibling();
 			}
 		}
@@ -173,9 +164,24 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 	return true;
 }
 
+bool MapParser::parseTilesets(xml_node<> *node)
+{
+	for (xml_node<> *tilesetNode = node->first_node(); tilesetNode; tilesetNode = tilesetNode->next_sibling()) {
+		if ( !checkNodeName(tilesetNode, "tileset") ) {
+			break;
+		}
+		if (!parseTileset(tilesetNode)) {
+			return false;
+		}
+	}
+
+	cerr << "Expected more data after parsing tilesets" << endl;
+	return false;
+}
+
 bool MapParser::parseTileset(xml_node<> *node)
 {
-	if ( strcmp(node->name(), "tileset") != 0) {
+	if ( !checkNodeName(node, "tileset") ) {
 		cerr << "Node not named 'tileset' parse failed: '" << node->name() << "'" << endl;
 		return false;
 	}
@@ -183,42 +189,42 @@ bool MapParser::parseTileset(xml_node<> *node)
 	Tileset tileset;
 	tileset.texture = nullptr;
 	for(xml_attribute<> *attr = node->first_attribute(); attr; attr = attr->next_attribute()) {
-		if ( strcmp(attr->name(), "firstgid") == 0) {
+		if ( checkAttrName(attr, "firstgid") ) {
 			tileset.firstgid = atoi(attr->value());
-		} else if ( strcmp(attr->name(), "name") == 0) {
+		} else if ( checkAttrName(attr, "name") ) {
 			tileset.name = attr->value();
-		} else if ( strcmp(attr->name(), "tilewidth") == 0) {
+		} else if ( checkAttrName(attr, "tilewidth") ) {
 			tileset.tileWidth = atoi(attr->value());
-		} else if ( strcmp(attr->name(), "tileheight") == 0) {
+		} else if ( checkAttrName(attr, "tileheight") ) {
 			tileset.tileHeight = atoi(attr->value());
 		}
 	}
 
 	xml_node<> *imageNode = node->first_node();
-	if ( strcmp(imageNode->name(), "image") != 0) {
+	if ( !checkNodeName(imageNode, "image") ) {
 		cerr << "Node not named 'image' parse failed: '" << node->name() << "'" << endl;
 		return false;
 	}
 
 	for(xml_attribute<> *attr = imageNode->first_attribute(); attr; attr = attr->next_attribute()) {
-		if ( strcmp(attr->name(), "source") == 0) {
+		if ( checkAttrName(attr, "source") ) {
 			tileset.sourcePath = attr->value();
-		} else if ( strcmp(attr->name(), "width") == 0) {
+		} else if ( checkAttrName(attr, "width") ) {
 			tileset.width = atoi(attr->value());
-		} else if ( strcmp(attr->name(), "height") == 0) {
+		} else if ( checkAttrName(attr, "height") ) {
 			tileset.height = atoi(attr->value());
 		}
 	}
 
 	// Skip terrain tags
 	xml_node<> *firstTileNode = imageNode->next_sibling();
-	while ( strcmp(firstTileNode->name(), "tile") != 0) {
+	while ( !checkNodeName(firstTileNode, "tile") ) {
 		firstTileNode = firstTileNode->next_sibling();
 	}
 
 	int gid = tileset.firstgid;
 	for (xml_node<> *tileNode = firstTileNode; tileNode; tileNode = tileNode->next_sibling()) {
-		if ( strcmp(tileNode->name(), "tile") != 0) {
+		if ( !checkNodeName(tileNode, "tile") ) {
 			cerr << "Node not named 'tile' parse failed: '" << node->name() << "'" << endl;
 			return false;
 		}
@@ -235,7 +241,7 @@ bool MapParser::parseTileset(xml_node<> *node)
 		Tile tile;
 		tile.id = tileId;
 		xml_node<> *firstNode = tileNode->first_node();
-		if ( strcmp(firstNode->name(), "properties") == 0 ) {
+		if ( checkNodeName(firstNode, "properties") ) {
 			parseTileProperties(tile, firstNode);
 			parseTileObjects(tile, firstNode->next_sibling());
 		} else {
@@ -251,6 +257,12 @@ bool MapParser::parseTileset(xml_node<> *node)
 	return true;
 }
 
+bool MapParser::parseLayers(xml_node<> *node)
+{
+	// TODO: Implement
+	return false;
+}
+
 void MapParser::parseTileProperties(Tile& tile, xml_node<> *properties)
 {
 	if (!properties) {
@@ -261,7 +273,7 @@ void MapParser::parseTileProperties(Tile& tile, xml_node<> *properties)
 	while (property) {
 		xml_attribute<> *nameAttr = property->first_attribute();
 		xml_attribute<> *valueAttr = nameAttr->next_attribute();
-		tile.properties[nameAttr->value()] = strcmp( valueAttr->value(), "true") == 0;
+		tile.properties[nameAttr->value()] = checkAttrValue( valueAttr, "true");
 		property = property->next_sibling();
 	}
 }
@@ -274,7 +286,7 @@ void MapParser::parseTileObjects(Tile& tile, xml_node<> *objectgroup)
 
 	xml_node<> *object = objectgroup->first_node();
 	while (object) {
-		if ( strcmp(object->name(), "object") != 0) {
+		if ( !checkNodeName(object, "object") ) {
 			continue;
 		}
 
@@ -294,22 +306,37 @@ void MapParser::parseTileObjects(Tile& tile, xml_node<> *objectgroup)
 bool MapParser::parseMapAttributes(xml_node<> *node)
 {
 	for(xml_attribute<> *attr = node->first_attribute(); attr; attr = attr->next_attribute()) {
-		if ( strcmp(attr->name(), "version") == 0) {
+		if ( checkAttrName(attr, "version") ) {
 			map.version = attr->value();
-		} else if ( strcmp(attr->name(), "orientation") == 0) {
+		} else if ( checkAttrName(attr, "orientation") ) {
 			map.orientation = attr->value();
-		} else if ( strcmp(attr->name(), "render0rder") == 0) {
+		} else if ( checkAttrName(attr, "render0rder") ) {
 			map.renderOrder = attr->value();
-		} else if ( strcmp(attr->name(), "width") == 0) {
+		} else if ( checkAttrName(attr, "width") ) {
 			map.width = atoi(attr->value());
-		} else if ( strcmp(attr->name(), "height") == 0) {
+		} else if ( checkAttrName(attr, "height") ) {
 			map.height = atoi(attr->value());
-		} else if ( strcmp(attr->name(), "tilewidth") == 0) {
+		} else if ( checkAttrName(attr, "tilewidth") ) {
 			map.tileWidth = atoi(attr->value());
-		} else if ( strcmp(attr->name(), "tileheight") == 0) {
+		} else if ( checkAttrName(attr, "tileheight") ) {
 			map.tileHeight = atoi(attr->value());
 		}
 	}
 
 	return true;
+}
+
+bool MapParser::checkNodeName(xml_node<> *node, std::string name) const
+{
+	return strcmp(node->name(), name.c_str()) == 0;
+}
+
+bool MapParser::checkAttrName(xml_attribute<> *attr, std::string name) const
+{
+	return strcmp(attr->name(), name.c_str()) == 0;
+}
+
+bool MapParser::checkAttrValue(xml_attribute<> *attr, std::string name) const
+{
+	return strcmp(attr->value(), name.c_str()) == 0;
 }
