@@ -3,6 +3,7 @@
 
 #include <flat/flat.h>
 #include "GameObjectType.h"
+#include "GhostOverlay.h"
 
 class MapTileObject;
 class Rocket;
@@ -31,6 +32,8 @@ class Soldier : public flat2d::RenderedGameObject
 		int checkPointX, checkPointY;
 		bool ghostMode = false;
 		bool facingLeft = false;
+
+		GhostOverlay *ghostOverlay;
 
 		enum ClipIndex { RIGHT,
 			LEFT,

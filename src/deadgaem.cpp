@@ -34,6 +34,7 @@ int main( int argc, char* args[] )
 	objectContainer->addLayer(Layers::BACK);
 	objectContainer->addLayer(Layers::MID);
 	objectContainer->addLayer(Layers::FRONT);
+	objectContainer->addLayer(Layers::OVERLAY);
 
 	MapParser parser;
 	parser.createMapFrom(resourceContainer, "resources/maps/map1/", "map1.tmx", renderData);

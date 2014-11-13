@@ -33,7 +33,7 @@ void RenderedGameObject::render(const RenderData *data) const
 	int x = xpos;
 	int y = ypos;
 
-	if (data->getCamera() != nullptr) {
+	if (data->getCamera() != nullptr && !fixedPosition) {
 		Camera* camera = data->getCamera();
 		SDL_Rect box = getBoundingBox();
 		if (!camera->isVisibleOnCamera(box)) {
@@ -89,4 +89,14 @@ const SDL_Texture* RenderedGameObject::getTexture() const
 void RenderedGameObject::setTexture(SDL_Texture* texture)
 {
 	this->texture = texture;
+}
+
+bool RenderedGameObject::isFixedPosition()
+{
+	return fixedPosition;
+}
+
+void RenderedGameObject::setFixedPosition(bool fixedPosition)
+{
+	this->fixedPosition = fixedPosition;
 }

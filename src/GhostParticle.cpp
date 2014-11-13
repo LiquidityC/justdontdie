@@ -38,5 +38,5 @@ void GhostParticle::preRender(const flat2d::RenderData* data)
 
 void GhostParticle::setRenderDrawColor(SDL_Renderer* renderer) const
 {
-	SDL_SetRenderDrawColor(renderer, 0x91, 0x8c, 0xFF, 0xF);
+	SDL_SetRenderDrawColor(renderer, 0x91, 0x8c, 0xFF, 0xFF);
 }

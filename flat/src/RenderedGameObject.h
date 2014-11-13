@@ -15,6 +15,7 @@ namespace flat2d
 			SDL_Texture *texture = nullptr;
 			SDL_Rect clip;
 			SDL_Rect collider;
+			bool fixedPosition = false;
 
 		public:
 			RenderedGameObject(int x, int y, int w, int h) : 
@@ -35,6 +36,8 @@ namespace flat2d
 			void setDead(bool);
 			void setCollidable(bool);
 			void setColliderBox(SDL_Rect collider);
+			bool isFixedPosition();
+			void setFixedPosition(bool);
 
 			/* Implemented override methods */
 			virtual bool isDead() const;

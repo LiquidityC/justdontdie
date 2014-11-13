@@ -21,7 +21,7 @@ bool ResourceLoader::loadMusic(flat2d::GameData *gd)
 {
 	flat2d::Mixer *mixer = gd->getMixer();
 
-	if (!mixer->loadMusic(Music::MAIN, "resource/sound/axayacatl.ogg")) {
+	if (!mixer->loadMusic(Music::MAIN, "resources/sound/axayacatl.ogg")) {
 		return false;
 	}
 	return true;

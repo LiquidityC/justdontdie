@@ -4,7 +4,8 @@
 enum Layers {
 	BACK,
 	MID,
-	FRONT
+	FRONT,
+	OVERLAY
 };
 
 #endif

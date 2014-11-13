@@ -14,6 +14,9 @@ void Soldier::init(const flat2d::GameData *gameData, const flat2d::RenderData *d
 	SDL_Rect clip = { 0, 0, width, height };
 	setClip(clip);
 	mixer = gameData->getMixer();
+
+	ghostOverlay = new GhostOverlay();
+	gameData->getObjectContainer()->registerObject(ghostOverlay, Layers::OVERLAY);
 }
 
 void Soldier::handle(const SDL_Event& e)
@@ -39,6 +42,7 @@ void Soldier::handle(const SDL_Event& e)
 			break;
 		case SDLK_j:
 			ghostMode = !ghostMode;
+			ghostOverlay->setVisible(ghostMode);
 			break;
 		case SDLK_u:
 			particleEngine->createGhostSprayAt(xpos, ypos);
