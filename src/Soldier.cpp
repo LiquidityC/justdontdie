@@ -6,6 +6,7 @@
 #include "MapTileObject.h"
 #include "Rocket.h"
 #include "ParticleEngine.h"
+#include "SoundMappings.h"
 
 void Soldier::init(const flat2d::GameData *gameData, const flat2d::RenderData *data)
 {
@@ -33,7 +34,7 @@ void Soldier::handle(const SDL_Event& e)
 				yvel = -1000;
 				doubleJumped = grounded ? false : true;
 				grounded = false;
-				mixer->playEffect(3);
+				mixer->playEffect(Effects::JUMP);
 			}
 			break;
 		case SDLK_j:
@@ -207,7 +208,7 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 		particleEngine->createExplosionAt(rocketBox.x + static_cast<int>(rocketBox.w/2),
 				rocketBox.y + static_cast<int>(rocketBox.h/2));
 		o->setDead(true);
-		mixer->playEffect(4);
+		mixer->playEffect(Effects::JUMP);
 		wasKilled();
 	} else if (!ghostMode && (rocketMode == Rocket::Mode::NORMAL || rocketMode == Rocket::Mode::MULTI)) {
 		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
@@ -216,7 +217,7 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
 		particleEngine->createExplosionAt(rocketBox.x + static_cast<int>(rocketBox.w/2),
 				rocketBox.y + static_cast<int>(rocketBox.h/2));
 		o->setDead(true);
-		mixer->playEffect(4);
+		mixer->playEffect(Effects::BANG);
 		wasKilled();
 	}
 
@@ -230,9 +231,9 @@ void Soldier::wasKilled()
 	deathTimer.start();
 
 	if (ghostMode) {
-		mixer->playEffect(2);
+		mixer->playEffect(Effects::SHATTER);
 	} else {
-		mixer->playEffect(1);
+		mixer->playEffect(Effects::SPLAT);
 	}
 }
 
