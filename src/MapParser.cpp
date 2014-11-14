@@ -175,8 +175,7 @@ bool MapParser::parseTilesets(xml_node<> *node)
 		}
 	}
 
-	cerr << "Expected more data after parsing tilesets" << endl;
-	return false;
+	return true;
 }
 
 bool MapParser::parseTileset(xml_node<> *node)

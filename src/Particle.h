@@ -9,6 +9,8 @@ class Particle : public flat2d::RenderedGameObject
 		float xvel, yvel;
 		flat2d::Timer deathTimer;
 
+		SDL_BlendMode blendMode = SDL_BLENDMODE_NONE;
+
 	public:
 		Particle(int x, int y, int w, int h, int xv, int yv) :
 			RenderedGameObject(x, y, w, h),
@@ -27,6 +29,8 @@ class Particle : public flat2d::RenderedGameObject
 		void reduceXVel(int reduction, float deltaTime);
 		void reduceYVel(int reduction, float deltaTime);
 		float getReducedVelocity(float vel, int reduction, float deltaTime);
+
+		void setBlendMode(SDL_BlendMode);
 };
 
 #endif

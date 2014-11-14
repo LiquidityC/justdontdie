@@ -33,7 +33,10 @@ void Particle::render(const flat2d::RenderData* data) const
 	SDL_Renderer *renderer = data->getRenderer();
 	setRenderDrawColor(renderer);
 	SDL_Rect box = { cam->getScreenXposFor(xpos), cam->getScreenYposFor(ypos), width, height };
+
+	SDL_SetRenderDrawBlendMode(renderer, blendMode);
 	SDL_RenderFillRect( renderer, &box );
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 }
 
 void Particle::postRender(const flat2d::RenderData *data)
@@ -72,4 +75,9 @@ float Particle::getReducedVelocity(float vel, int reduction, float deltaTime)
 	} else {
 		return vel + calculatedReduction;
 	}
+}
+
+void Particle::setBlendMode(SDL_BlendMode blendMode)
+{
+	this->blendMode = blendMode;
 }

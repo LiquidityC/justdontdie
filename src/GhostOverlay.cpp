@@ -9,9 +9,10 @@ void GhostOverlay::render(const flat2d::RenderData *renderData) const
 	SDL_Rect box { 0, 0, width, height };
 
 	SDL_Renderer *renderer = renderData->getRenderer();
-	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_MOD);
 	SDL_SetRenderDrawColor(renderer, 0x00, 0xEA, 0xFF, 0x40);
 	SDL_RenderFillRect(renderer, &box);
+	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 }
 
 bool GhostOverlay::isVisible()

@@ -21,7 +21,6 @@ namespace flat2d
 
 			~Window() {
 				SDL_DestroyWindow(window);
-				SDL_DestroyRenderer(renderer);
 
 				window = nullptr;
 				renderer = nullptr;
