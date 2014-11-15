@@ -10,6 +10,7 @@
 #include "Camera.h"
 #include "Window.h"
 #include "Mixer.h"
+#include "DeltatimeMonitor.h"
 
 using namespace flat2d;
 
@@ -22,6 +23,7 @@ FlatBuilder::~FlatBuilder()
 	delete window;
 	delete camera;
 	delete mixer;
+	delete deltatimeMonitor;
 
 	IMG_Quit();
 	SDL_Quit();
@@ -74,7 +76,8 @@ bool FlatBuilder::initContainers()
 	collisionDetector = new CollisionDetector(objectContainer);
 	renderData = new RenderData(window->getRenderer(), camera, objectContainer, collisionDetector);
 	mixer = new Mixer();
-	gameData = new GameData(objectContainer, collisionDetector, mixer);
+	deltatimeMonitor = new DeltatimeMonitor();
+	gameData = new GameData(objectContainer, collisionDetector, mixer, camera, deltatimeMonitor);
 
 	return true;
 }

@@ -51,9 +51,9 @@ namespace flat2d
 			void handleObjects(const SDL_Event&);
 			void postHandleObjects(const GameData*);
 
-			void preRenderObjects(const RenderData*);
+			void preRenderObjects(const GameData*);
 			void renderObjects(const RenderData*) const;
-			void postRenderObjects(const RenderData*);
+			void postRenderObjects(const GameData*);
 
 			template <class Func>
 				GameObject* checkAllCollidableObjects(Func func) const

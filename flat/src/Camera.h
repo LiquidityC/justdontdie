@@ -9,9 +9,6 @@ namespace flat2d
 	{
 		private:
 			int xpos, ypos, width, height, mapWidth, mapHeight;
-			int currentTime = 0;
-			int oldTime = 0;
-			float deltaTime = 1.0;
 
 		public:
 			Camera(int w, int h) :
@@ -37,10 +34,6 @@ namespace flat2d
 
 			int getScreenXposFor(int x) const;
 			int getScreenYposFor(int y) const;
-
-			void updateDeltaTime();
-
-			float getDeltaTime() const;
 	};
 }
 

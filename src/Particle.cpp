@@ -3,9 +3,9 @@
 #include "Particle.h"
 #include "GameObjectType.h"
 
-void Particle::preRender(const flat2d::RenderData* data)
+void Particle::preRender(const flat2d::GameData* data)
 {
-	float deltaTime = data->getCamera()->getDeltaTime();
+	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
 	if (xvel == 0 && yvel == 0) {
 		return;
 	}
@@ -39,7 +39,7 @@ void Particle::render(const flat2d::RenderData* data) const
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 }
 
-void Particle::postRender(const flat2d::RenderData *data)
+void Particle::postRender(const flat2d::GameData *data)
 {
 	if (!deathTimer.isStarted()) {
 		deathTimer.start();

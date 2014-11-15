@@ -10,7 +10,7 @@ class GhostParticle : public Particle
 		GhostParticle(int x, int y, int w, int h, int xvel, int yvel) :
 			Particle(x, y, w, h, xvel, yvel) { };
 
-		void preRender(const flat2d::RenderData*);
+		void preRender(const flat2d::GameData*);
 
 	private:
 		void setRenderDrawColor(SDL_Renderer* renderer) const;

@@ -2,9 +2,9 @@
 #include "GhostParticle.h"
 #include "GameObjectType.h"
 
-void GhostParticle::preRender(const flat2d::RenderData* data)
+void GhostParticle::preRender(const flat2d::GameData* data)
 {
-	float deltaTime = data->getCamera()->getDeltaTime();
+	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
 
 	if (yvel < 800) {
 		yvel += std::min(3600 * deltaTime, 800 - yvel);

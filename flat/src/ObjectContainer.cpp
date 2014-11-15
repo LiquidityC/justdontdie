@@ -103,7 +103,7 @@ void ObjectContainer::postHandleObjects(const GameData *gameData)
 	}
 }
 
-void ObjectContainer::preRenderObjects(const RenderData* data) 
+void ObjectContainer::preRenderObjects(const GameData* data) 
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->preRender(data);
@@ -119,7 +119,7 @@ void ObjectContainer::renderObjects(const RenderData* data) const
 	}
 }
 
-void ObjectContainer::postRenderObjects(const RenderData* data) 
+void ObjectContainer::postRenderObjects(const GameData* data) 
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->postRender(data);

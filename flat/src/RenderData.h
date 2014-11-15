@@ -16,6 +16,7 @@ namespace flat2d
 			Camera *camera;
 			ObjectContainer* objectContainer;
 			CollisionDetector* collisionDetector;
+			void *customData = nullptr;
 
 		public:
 			RenderData(SDL_Renderer *ren, Camera *cam, ObjectContainer *obc, CollisionDetector *cd) : 
@@ -28,6 +29,7 @@ namespace flat2d
 			Camera* getCamera() const { return camera; };
 			ObjectContainer* getObjectContainer() const { return objectContainer; };
 			CollisionDetector* getCollisionDetector() const { return collisionDetector; };
+			void* getCustomData() { return customData; };
 	};
 }
 

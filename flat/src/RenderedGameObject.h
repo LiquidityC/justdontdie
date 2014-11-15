@@ -52,8 +52,8 @@ namespace flat2d
 			virtual void preHandle(const GameData*) { };
 			virtual void handle(const SDL_Event& event) { };
 			virtual void postHandle(const GameData*) { };
-			virtual void preRender(const RenderData*) { };
-			virtual void postRender(const RenderData*) { };
+			virtual void preRender(const GameData*) { };
+			virtual void postRender(const GameData*) { };
 
 	};
 }

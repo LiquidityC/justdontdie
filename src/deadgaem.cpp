@@ -11,6 +11,7 @@
 #include "MapParser.h"
 #include "LayerService.h"
 #include "ResourceLoader.h"
+#include "CustomGameData.h"
 
 int main( int argc, char* args[] )
 {
@@ -25,26 +26,24 @@ int main( int argc, char* args[] )
 	// TODO: Should probably extract all this into a function/method {{
 	flat2d::RenderData* renderData = flat->getRenderData();
 	SDL_Renderer* renderer = renderData->getRenderer();
-	flat2d::Camera* camera = renderData->getCamera();
 	flat2d::GameData *gameData = flat->getGameData();
 	flat2d::ObjectContainer* objectContainer = gameData->getObjectContainer();
-	ParticleEngine *particleEngine = new ParticleEngine(objectContainer);
-	ResourceContainer *resourceContainer = new ResourceContainer();
 
-	LayerService *layerService = new LayerService;
-	layerService->registerLayers(objectContainer);
+	CustomGameData *customGameData = CustomGameData::create(gameData);
+	gameData->setCustomGameData(customGameData);
+
+	customGameData->getLayerService()->registerLayers(objectContainer);
 
 	MapParser parser;
-	parser.createMapFrom(resourceContainer, "resources/maps/map1/", "map1.tmx", renderData);
+	parser.createMapFrom(customGameData->getResourceContainer(), "resources/maps/map1/", "map1.tmx", renderData);
 	
-	flat2d::GameObject* soldier = new Soldier(particleEngine, 200, 200);
+	flat2d::GameObject* soldier = new Soldier(200, 200);
 	soldier->init(gameData, renderData);
 	objectContainer->registerObject(soldier, Layers::MID);
 
-	ResourceLoader *rLoader = new ResourceLoader();
+	ResourceLoader *rLoader = customGameData->getResourceLoader();
 	rLoader->loadMusic(gameData);
 	rLoader->loadSoundEffects(gameData);
-	delete rLoader;
 	// }}
 
 	flat2d::Timer fpsTimer;
@@ -61,10 +60,10 @@ int main( int argc, char* args[] )
 	bool quit = false;
 
 	// Main loop
-	camera->updateDeltaTime();
+	gameData->getDeltatimeMonitor()->updateDeltaTime();
 	while (!quit) {
 		fpsCapTimer.start();
-		camera->updateDeltaTime();
+		gameData->getDeltatimeMonitor()->updateDeltaTime();
 
 		// Handle events
 		objectContainer->preHandleObjects(gameData);
@@ -82,9 +81,9 @@ int main( int argc, char* args[] )
 		SDL_RenderClear( renderer );
 
 		// Render
-		objectContainer->preRenderObjects(renderData);
+		objectContainer->preRenderObjects(gameData);
 		objectContainer->renderObjects(renderData);
-		objectContainer->postRenderObjects(renderData);
+		objectContainer->postRenderObjects(gameData);
 
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 
@@ -112,8 +111,7 @@ int main( int argc, char* args[] )
 		}
 	}
 
-	delete particleEngine;
-	delete resourceContainer;
+	delete customGameData;
 	delete flat;
 
 	return 0;

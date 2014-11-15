@@ -60,9 +60,9 @@ namespace flat2d
 			virtual void handle(const SDL_Event& event) = 0;
 			virtual void postHandle(const GameData*) = 0;
 
-			virtual void preRender(const RenderData*) = 0;
+			virtual void preRender(const GameData*) = 0;
 			virtual void render(const RenderData*) const = 0;
-			virtual void postRender(const RenderData*) = 0;
+			virtual void postRender(const GameData*) = 0;
 
 			virtual bool isCollider() const = 0;
 			virtual void setColliderBox(SDL_Rect) = 0;

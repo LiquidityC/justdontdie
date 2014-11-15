@@ -7,6 +7,7 @@
 #include "Rocket.h"
 #include "ParticleEngine.h"
 #include "SoundMappings.h"
+#include "CustomGameData.h"
 
 void Soldier::init(const flat2d::GameData *gameData, const flat2d::RenderData *data)
 {
@@ -44,9 +45,6 @@ void Soldier::handle(const SDL_Event& e)
 			ghostMode = !ghostMode;
 			ghostOverlay->setVisible(ghostMode);
 			break;
-		case SDLK_u:
-			particleEngine->createGhostSprayAt(xpos, ypos);
-			break;
 		default:
 			break;
 	}
@@ -71,7 +69,7 @@ void Soldier::postHandle(const flat2d::GameData *gameData)
 	}
 }
 
-void Soldier::preRender(const flat2d::RenderData *data)
+void Soldier::preRender(const flat2d::GameData *data)
 {
 	if (killed && deathTimer.getTicks() < 3000) {
 		return;
@@ -80,7 +78,7 @@ void Soldier::preRender(const flat2d::RenderData *data)
 	}
 
 	flat2d::CollisionDetector* colDetector = data->getCollisionDetector();
-	float deltaTime = data->getCamera()->getDeltaTime();
+	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
 
 	// Gravity
 	if (yvel < 800) {
@@ -169,7 +167,7 @@ void Soldier::calculateCurrentClip()
 	setClip(clip);
 }
 
-bool Soldier::handleCollision(flat2d::GameObject *o, const flat2d::RenderData* data)
+bool Soldier::handleCollision(flat2d::GameObject *o, const flat2d::GameData* data)
 {
 	switch (o->getType()) {
 		case GameObjectType::TILE:
@@ -184,14 +182,14 @@ bool Soldier::handleCollision(flat2d::GameObject *o, const flat2d::RenderData* d
 	return false;
 }
 
-bool Soldier::handleTileCollision(MapTileObject *o, const flat2d::RenderData* data)
+bool Soldier::handleTileCollision(MapTileObject *o, const flat2d::GameData* data)
 {
 	if (o->hasProperty("deadly")) {
 
 		if (ghostMode) {
-			particleEngine->createGhostSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createGhostSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		} else {
-			particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		}
 		wasKilled();
 		return true;
@@ -199,26 +197,30 @@ bool Soldier::handleTileCollision(MapTileObject *o, const flat2d::RenderData* da
 	return false;
 }
 
-bool Soldier::handleRocketCollision(Rocket* o, const flat2d::RenderData* data)
+bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 {
 	if (spawnGraceTimer.isStarted()) {
 		return true;
 	}
 	Rocket::Mode rocketMode = o->getMode();
 	if (ghostMode && (rocketMode == Rocket::Mode::GHOST || rocketMode == Rocket::Mode::MULTI)) {
-		particleEngine->createGhostSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createGhostSprayAt(
+				xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 
 		SDL_Rect rocketBox = o->getBoundingBox();
-		particleEngine->createExplosionAt(rocketBox.x + static_cast<int>(rocketBox.w/2),
+		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createExplosionAt(
+				rocketBox.x + static_cast<int>(rocketBox.w/2),
 				rocketBox.y + static_cast<int>(rocketBox.h/2));
 		o->setDead(true);
 		mixer->playEffect(Effects::JUMP);
 		wasKilled();
 	} else if (!ghostMode && (rocketMode == Rocket::Mode::NORMAL || rocketMode == Rocket::Mode::MULTI)) {
-		particleEngine->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createBloodSprayAt(
+				xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 
 		SDL_Rect rocketBox = o->getBoundingBox();
-		particleEngine->createExplosionAt(rocketBox.x + static_cast<int>(rocketBox.w/2),
+		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createExplosionAt(
+				rocketBox.x + static_cast<int>(rocketBox.w/2),
 				rocketBox.y + static_cast<int>(rocketBox.h/2));
 		o->setDead(true);
 		mixer->playEffect(Effects::BANG);

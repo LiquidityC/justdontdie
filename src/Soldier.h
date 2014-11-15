@@ -7,7 +7,6 @@
 
 class MapTileObject;
 class Rocket;
-class ParticleEngine;
 
 class Soldier : public flat2d::RenderedGameObject
 {
@@ -16,7 +15,6 @@ class Soldier : public flat2d::RenderedGameObject
 	} Clip;
 
 	private:
-		ParticleEngine *particleEngine;
 		bool grounded = false;
 		flat2d::Mixer *mixer = nullptr;
 
@@ -49,18 +47,17 @@ class Soldier : public flat2d::RenderedGameObject
 
 		void calculateCurrentClip();
 
-		bool handleCollision(flat2d::GameObject*, const flat2d::RenderData*);
-		bool handleTileCollision(MapTileObject*, const flat2d::RenderData*);
-		bool handleRocketCollision(Rocket*, const flat2d::RenderData*);
+		bool handleCollision(flat2d::GameObject*, const flat2d::GameData*);
+		bool handleTileCollision(MapTileObject*, const flat2d::GameData*);
+		bool handleRocketCollision(Rocket*, const flat2d::GameData*);
 
 		void wasKilled();
 		void restoreAtCheckpoint();
 
 	public:
 
-		Soldier(ParticleEngine *pe, unsigned int x, unsigned int y) :
+		Soldier(unsigned int x, unsigned int y) :
 			RenderedGameObject(x, y, 28, 24),
-			particleEngine(pe),
 			checkPointX(x),
 			checkPointY(y) { };
 
@@ -80,7 +77,7 @@ class Soldier : public flat2d::RenderedGameObject
 		void handle(const SDL_Event& event);
 		void postHandle(const flat2d::GameData*);
 
-		void preRender(const flat2d::RenderData*);
+		void preRender(const flat2d::GameData*);
 		void render(const flat2d::RenderData*) const;
 
 		void setGhostMode(bool);

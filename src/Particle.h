@@ -20,9 +20,9 @@ class Particle : public flat2d::RenderedGameObject
 				deathTimer.start();
 			};
 
-		virtual void preRender(const flat2d::RenderData*);
+		virtual void preRender(const flat2d::GameData*);
 		virtual void render(const flat2d::RenderData*) const;
-		virtual void postRender(const flat2d::RenderData*);
+		virtual void postRender(const flat2d::GameData*);
 
 	protected:
 		virtual void setRenderDrawColor(SDL_Renderer*) const = 0;

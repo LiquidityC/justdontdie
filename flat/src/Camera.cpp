@@ -73,20 +73,3 @@ int Camera::getScreenYposFor(int y) const
 {
 	return y - ypos;
 }
-
-void Camera::updateDeltaTime()
-{
-	if (currentTime == 0) {
-		currentTime = SDL_GetTicks();
-		return;
-	}
-
-	oldTime = currentTime;
-	currentTime = SDL_GetTicks();
-	deltaTime = (currentTime - oldTime) / 1000.0f;
-}
-
-float Camera::getDeltaTime() const
-{
-	return deltaTime;
-}

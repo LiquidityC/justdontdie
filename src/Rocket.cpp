@@ -8,10 +8,9 @@ void Rocket::init(const flat2d::RenderData *data)
 	deathTimer.start();
 }
 
-void Rocket::preRender(const flat2d::RenderData *data)
+void Rocket::preRender(const flat2d::GameData *data)
 {
-	flat2d::Camera *cam = data->getCamera();
-	xpos += (xvel * cam->getDeltaTime());
+	xpos += (xvel * data->getDeltatimeMonitor()->getDeltaTime());
 
 	flat2d::CollisionDetector *detector = data->getCollisionDetector();
 	GameObject *o = detector->checkForCollisions(this);
@@ -36,7 +35,7 @@ void Rocket::preRender(const flat2d::RenderData *data)
 	}
 }
 
-void Rocket::postRender(const flat2d::RenderData *data)
+void Rocket::postRender(const flat2d::GameData *data)
 {
 	if (!isDead()) {
 		setDead(deathTimer.getTicks() > 5000);

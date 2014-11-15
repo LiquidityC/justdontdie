@@ -15,7 +15,7 @@ TEST_GROUP ( SoldierTests )
 		container = new flat2d::ObjectContainer();
 		detector = new flat2d::CollisionDetector(container);
 
-		soldier = new Soldier(nullptr, 200, 200);
+		soldier = new Soldier(200, 200);
 		container->registerObject(soldier);
 	}
 

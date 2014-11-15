@@ -1,14 +1,14 @@
 #include "FireParticle.h"
 #include "GameObjectType.h"
 
-void FireParticle::preRender(const flat2d::RenderData *data)
+void FireParticle::preRender(const flat2d::GameData *data)
 {
 	if (xvel == 0 && yvel == 0) {
 		setDead(true);
 		return;
 	}
 
-	float deltaTime = data->getCamera()->getDeltaTime();
+	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
 	flat2d::CollisionDetector *colDetector = data->getCollisionDetector();
 	xpos += (xvel * deltaTime);
 	ypos += (yvel * deltaTime);
@@ -37,7 +37,7 @@ void FireParticle::setRenderDrawColor(SDL_Renderer *renderer) const
 	}
 }
 
-void FireParticle::postRender(const flat2d::RenderData *data)
+void FireParticle::postRender(const flat2d::GameData *data)
 {
 	if (!deathTimer.isStarted()) {
 		deathTimer.start();
