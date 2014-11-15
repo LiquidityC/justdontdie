@@ -11,8 +11,8 @@
 
 #include <map>
 #include <boost/lexical_cast.hpp>
-#include "../rapidxml-1.13/rapidxml.hpp"
-#include "../rapidxml-1.13/rapidxml_utils.hpp"
+#include "rapidxml-1.13/rapidxml.hpp"
+#include "rapidxml-1.13/rapidxml_utils.hpp"
 
 // Include this last or everything breaks
 #include <CppUTest/MemoryLeakDetectorNewMacros.h>
