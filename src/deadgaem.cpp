@@ -24,9 +24,9 @@ int main( int argc, char* args[] )
 	}
 
 	// TODO: Should probably extract all this into a function/method {{
-	flat2d::RenderData* renderData = flat->getRenderData();
-	SDL_Renderer* renderer = renderData->getRenderer();
 	flat2d::GameData *gameData = flat->getGameData();
+	flat2d::RenderData* renderData = gameData->getRenderData();
+	SDL_Renderer* renderer = renderData->getRenderer();
 	flat2d::ObjectContainer* objectContainer = gameData->getObjectContainer();
 
 	CustomGameData *customGameData = CustomGameData::create(gameData);
@@ -35,10 +35,10 @@ int main( int argc, char* args[] )
 	customGameData->getLayerService()->registerLayers(objectContainer);
 
 	MapParser parser;
-	parser.createMapFrom(customGameData->getResourceContainer(), "resources/maps/map1/", "map1.tmx", renderData);
+	parser.createMapFrom(gameData, "resources/maps/map1/", "map1.tmx");
 	
 	flat2d::GameObject* soldier = new Soldier(200, 200);
-	soldier->init(gameData, renderData);
+	soldier->init(gameData);
 	objectContainer->registerObject(soldier, Layers::MID);
 
 	ResourceLoader *rLoader = customGameData->getResourceLoader();

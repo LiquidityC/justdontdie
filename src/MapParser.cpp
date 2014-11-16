@@ -3,15 +3,17 @@
 
 #include "MapParser.h"
 #include "MapTileObject.h"
+#include "CustomGameData.h"
 #include "ResourceContainer.h"
 #include "LayerService.h"
 
 using namespace rapidxml;
 using namespace std;
 
-bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string dir, std::string filename,
-		flat2d::RenderData *renderData)
+bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::string filename)
 {
+	flat2d::RenderData *renderData = gameData->getRenderData();
+	ResourceContainer *resourceContainer = static_cast<CustomGameData*>(gameData->getCustomGameData())->getResourceContainer();
 
 	file<> xmlFile((dir + filename).c_str());
 	xml_document<> doc;
@@ -42,7 +44,7 @@ bool MapParser::createMapFrom(ResourceContainer *resourceContainer, std::string 
 	}
 	
 	renderData->getCamera()->setMapDimensions(map.width * map.tileWidth, map.height * map.tileHeight);
-	flat2d::ObjectContainer *objectContainer = renderData->getObjectContainer();
+	flat2d::ObjectContainer *objectContainer = gameData->getObjectContainer();
 
 
 	// Parse all the layers (might need to add layers in ObjectContainer)

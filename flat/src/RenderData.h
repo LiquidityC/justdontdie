@@ -14,21 +14,15 @@ namespace flat2d
 		private:
 			SDL_Renderer *renderer;
 			Camera *camera;
-			ObjectContainer* objectContainer;
-			CollisionDetector* collisionDetector;
 			void *customData = nullptr;
 
 		public:
-			RenderData(SDL_Renderer *ren, Camera *cam, ObjectContainer *obc, CollisionDetector *cd) : 
+			RenderData(SDL_Renderer *ren, Camera *cam) : 
 				renderer(ren),
-				camera(cam),
-				objectContainer(obc), 
-				collisionDetector(cd) { };
+				camera(cam) { };
 
 			SDL_Renderer* getRenderer() const { return renderer; };
 			Camera* getCamera() const { return camera; };
-			ObjectContainer* getObjectContainer() const { return objectContainer; };
-			CollisionDetector* getCollisionDetector() const { return collisionDetector; };
 			void* getCustomData() { return customData; };
 	};
 }

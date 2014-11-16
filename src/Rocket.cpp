@@ -2,9 +2,9 @@
 #include "GameObjectType.h"
 #include "MapTileObject.h"
 
-void Rocket::init(const flat2d::RenderData *data)
+void Rocket::init(const flat2d::GameData *data)
 {
-	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/rocket.png", data->getRenderer()));
+	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/rocket.png", data->getRenderData()->getRenderer()));
 	deathTimer.start();
 }
 

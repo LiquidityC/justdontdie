@@ -133,7 +133,7 @@ TEST( ObjectContainerTests, TestObjectAutoclean )
 	flat2d::ObjectContainer container;
 	flat2d::CollisionDetector detector(&container);
 	flat2d::Mixer mixer;
-	flat2d::GameData gameData(&container, &detector, &mixer);
+	flat2d::GameData gameData(&container, &detector, &mixer, (flat2d::RenderData*) nullptr, (flat2d::DeltatimeMonitor*) nullptr);
 
 	container.registerObject(c1);
 	container.registerObject(c2);

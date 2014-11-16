@@ -16,7 +16,7 @@ bool MapTileObject::hasProperty(std::string prop) const
 	return pair->second;
 }
 
-void MapTileObject::preRender(const flat2d::RenderData *renderData)
+void MapTileObject::preRender(const flat2d::GameData *gameData)
 {
 	if (hasProperty("rocketLauncher") && (!launchTimer.isStarted() || launchTimer.getTicks() > 2000)) {
 		launchTimer.start();
@@ -29,7 +29,7 @@ void MapTileObject::preRender(const flat2d::RenderData *renderData)
 		}
 
 		Rocket *rocket = new Rocket(xpos, ypos, mode, !hasProperty("shootRight"));
-		rocket->init(renderData);
-		renderData->getObjectContainer()->registerObject(rocket, Layers::FRONT);
+		rocket->init(gameData);
+		gameData->getObjectContainer()->registerObject(rocket, Layers::FRONT);
 	}
 }

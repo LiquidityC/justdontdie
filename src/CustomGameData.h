@@ -5,6 +5,7 @@
 #include "ResourceLoader.h"
 #include "ResourceContainer.h"
 #include "ParticleEngine.h"
+#include "LayerService.h"
 
 class CustomGameData
 {

@@ -43,7 +43,7 @@ class Rocket : public flat2d::RenderedGameObject
 			return GameObjectType::ROCKET;
 		};
 
-		void init(const flat2d::RenderData*);
+		void init(const flat2d::GameData*);
 
 		void preRender(const flat2d::GameData*);
 		void postRender(const flat2d::GameData*);

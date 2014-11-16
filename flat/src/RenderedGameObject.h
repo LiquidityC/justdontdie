@@ -48,7 +48,7 @@ namespace flat2d
 			virtual void setTexture(SDL_Texture*);
 
 			/* Empty methods */
-			virtual void init(const GameData*, const RenderData*) { };
+			virtual void init(const GameData*) { };
 			virtual void preHandle(const GameData*) { };
 			virtual void handle(const SDL_Event& event) { };
 			virtual void postHandle(const GameData*) { };

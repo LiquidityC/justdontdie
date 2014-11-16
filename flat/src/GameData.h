@@ -16,16 +16,16 @@ namespace flat2d
 			ObjectContainer *objectContainer;
 			CollisionDetector *collisionDetector;
 			Mixer *mixer;
-			Camera *camera;
+			RenderData *renderData;
 			DeltatimeMonitor *deltatimeMonitor;
 			void *customGameData = nullptr;
 
 		public:
-			GameData(ObjectContainer *obc, CollisionDetector *cd, Mixer *m, Camera *c, DeltatimeMonitor *dtm) : 
+			GameData(ObjectContainer *obc, CollisionDetector *cd, Mixer *m, RenderData *rd, DeltatimeMonitor *dtm) : 
 				objectContainer(obc), 
 				collisionDetector(cd),
 				mixer(m),
-				camera(c),
+				renderData(rd),
 				deltatimeMonitor(dtm) { };
 
 			ObjectContainer* getObjectContainer() const { return objectContainer; };
@@ -35,7 +35,7 @@ namespace flat2d
 			void setCustomGameData(void *customGameData) { this->customGameData = customGameData; };
 			void* getCustomGameData() const { return customGameData; };
 			DeltatimeMonitor* getDeltatimeMonitor() const { return deltatimeMonitor; };
-			Camera* getCamera() const { return camera; };
+			RenderData* getRenderData() const { return renderData; };
 	};
 }
 

@@ -9,9 +9,9 @@
 #include "SoundMappings.h"
 #include "CustomGameData.h"
 
-void Soldier::init(const flat2d::GameData *gameData, const flat2d::RenderData *data)
+void Soldier::init(const flat2d::GameData *gameData)
 {
-	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png", data->getRenderer()));
+	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png", gameData->getRenderData()->getRenderer()));
 	SDL_Rect clip = { 0, 0, width, height };
 	setClip(clip);
 	mixer = gameData->getMixer();
@@ -118,7 +118,7 @@ void Soldier::preRender(const flat2d::GameData *data)
 
 	calculateCurrentClip();
 
-	data->getCamera()->centerOn(xpos + (width/2), ypos + (height/2));
+	data->getRenderData()->getCamera()->centerOn(xpos + (width/2), ypos + (height/2));
 }
 
 void Soldier::render(const flat2d::RenderData* data) const

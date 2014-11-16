@@ -72,7 +72,7 @@ class Soldier : public flat2d::RenderedGameObject
 			return GameObjectType::BOT;
 		};
 
-		void init(const flat2d::GameData*, const flat2d::RenderData*);
+		void init(const flat2d::GameData*);
 
 		void handle(const SDL_Event& event);
 		void postHandle(const flat2d::GameData*);

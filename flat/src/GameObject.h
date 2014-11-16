@@ -55,7 +55,7 @@ namespace flat2d
 			/* Abstract methods */
 			virtual bool isDead() const = 0;
 
-			virtual void init(const GameData*, const RenderData*) = 0;
+			virtual void init(const GameData*) = 0;
 			virtual void preHandle(const GameData*) = 0;
 			virtual void handle(const SDL_Event& event) = 0;
 			virtual void postHandle(const GameData*) = 0;

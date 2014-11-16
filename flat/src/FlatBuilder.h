@@ -32,7 +32,6 @@ namespace flat2d
 			bool initSDL(std::string, int, int);
 			bool initContainers();
 
-			RenderData* getRenderData() const;
 			GameData* getGameData() const;
 
 	};

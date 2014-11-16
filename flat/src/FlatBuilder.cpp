@@ -74,17 +74,12 @@ bool FlatBuilder::initContainers()
 {
 	objectContainer = new ObjectContainer();
 	collisionDetector = new CollisionDetector(objectContainer);
-	renderData = new RenderData(window->getRenderer(), camera, objectContainer, collisionDetector);
+	renderData = new RenderData(window->getRenderer(), camera);
 	mixer = new Mixer();
 	deltatimeMonitor = new DeltatimeMonitor();
-	gameData = new GameData(objectContainer, collisionDetector, mixer, camera, deltatimeMonitor);
+	gameData = new GameData(objectContainer, collisionDetector, mixer, renderData, deltatimeMonitor);
 
 	return true;
-}
-
-RenderData* FlatBuilder::getRenderData() const
-{
-	return renderData;
 }
 
 GameData* FlatBuilder::getGameData() const

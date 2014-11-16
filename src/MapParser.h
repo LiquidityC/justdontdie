@@ -42,7 +42,7 @@ class MapParser
 		Map map;
 
 	public:
-		bool createMapFrom(ResourceContainer*, std::string, std::string, flat2d::RenderData*);
+		bool createMapFrom(flat2d::GameData*, std::string, std::string);
 
 	private:
 		bool parseMapAttributes(rapidxml::xml_node<> *node);
