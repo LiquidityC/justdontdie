@@ -3,6 +3,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <flat/flat.h>
+#include <Box2D/Box2D.h>
 
 #include "Soldier.h"
 #include "ParticleEngine.h"
@@ -64,6 +65,11 @@ int main( int argc, char* args[] )
 	while (!quit) {
 		fpsCapTimer.start();
 		gameData->getDeltatimeMonitor()->updateDeltaTime();
+
+		// Step the Box2D engine
+		customGameData->getB2World()->Step(GameSettings::B2_TIME_STEP,
+				GameSettings::B2_VEL_ITER,
+				GameSettings::B2_POS_ITER);
 
 		// Handle events
 		objectContainer->preHandleObjects(gameData);
