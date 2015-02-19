@@ -42,7 +42,7 @@ TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 default: $(LIBRARY) $(LIB_INCLUDES) $(LIB_UNIFIED_INCLUDE)
 
-all: $(LIBRARY) $(LIBRARY_UI) $(TEST) $(LIB_UNIFIED_INCLUDE)
+all: $(LIBRARY) $(TEST) $(LIB_UNIFIED_INCLUDE)
 
 check: $(TEST)
 	./$(TEST) -v -c
@@ -72,4 +72,4 @@ $(OBJDIR)/%.o: testsrc/%.cpp
 
 clean:
 	@$(ECHO) Cleaning project
-	@$(RM) -f $(TEST) $(LIBRARY) $(TEST_OBJECTS) $(LIBRARY_UI) $(LIB_OBJECTS) $(LIB_UI_OBJECTS) $(LIB_INCLUDES)
+	@$(RM) -f $(TEST) $(LIBRARY) $(TEST_OBJECTS) $(LIB_OBJECTS) $(LIB_UI_OBJECTS) $(LIB_INCLUDES)
