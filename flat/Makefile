@@ -9,6 +9,10 @@ SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
 
 CFLAGS				= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
 					  -include src/NewMacro.h $(SDL2_CFLAGS)
+ifdef NOTEST
+CFLAGS		+= -DNOTEST
+endif
+
 LD					= g++
 LDFLAGS				=
 AR					= ar
