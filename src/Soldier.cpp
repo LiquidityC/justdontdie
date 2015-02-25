@@ -11,7 +11,8 @@
 
 void Soldier::init(const flat2d::GameData *gameData)
 {
-	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png", gameData->getRenderData()->getRenderer()));
+	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png", 
+				gameData->getRenderData()->getRenderer()));
 	SDL_Rect clip = { 0, 0, width, height };
 	setClip(clip);
 	mixer = gameData->getMixer();
@@ -187,9 +188,11 @@ bool Soldier::handleTileCollision(MapTileObject *o, const flat2d::GameData* data
 	if (o->hasProperty("deadly")) {
 
 		if (ghostMode) {
-			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createGhostSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createGhostSprayAt(
+					xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		} else {
-			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createBloodSprayAt(xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createBloodSprayAt(
+					xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
 		}
 		wasKilled();
 		return true;

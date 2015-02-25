@@ -13,7 +13,8 @@ using namespace std;
 bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::string filename)
 {
 	flat2d::RenderData *renderData = gameData->getRenderData();
-	ResourceContainer *resourceContainer = static_cast<CustomGameData*>(gameData->getCustomGameData())->getResourceContainer();
+	ResourceContainer *resourceContainer = static_cast<CustomGameData*>(
+			gameData->getCustomGameData())->getResourceContainer();
 
 	file<> xmlFile((dir + filename).c_str());
 	xml_document<> doc;
@@ -168,7 +169,10 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 
 bool MapParser::parseTilesets(xml_node<> *node)
 {
-	for (xml_node<> *tilesetNode = node->first_node(); tilesetNode; tilesetNode = tilesetNode->next_sibling()) {
+	for (xml_node<> *tilesetNode = node->first_node();
+			tilesetNode;
+			tilesetNode = tilesetNode->next_sibling()) 
+	{
 		if ( !checkNodeName(tilesetNode, "tileset") ) {
 			break;
 		}
