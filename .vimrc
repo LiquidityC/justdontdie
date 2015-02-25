@@ -4,5 +4,5 @@ match ErrorMsg '\%>110v.\+'
 "GF command sourcefiles
 let &path="src,flat/src,"
 
-nnoremap <F2> :make!<cr>
+nnoremap <F2> :make! -j8<cr>
 nnoremap <F3> :!./deadgaem<cr>
