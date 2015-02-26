@@ -30,8 +30,8 @@ void RenderedGameObject::render(const RenderData *data) const
 		return;
 	}
 
-	int x = xpos;
-	int y = ypos;
+	int x = locationProperty.getXpos();
+	int y = locationProperty.getYpos();
 
 	if (data->getCamera() != nullptr && !fixedPosition) {
 		Camera* camera = data->getCamera();
@@ -43,7 +43,7 @@ void RenderedGameObject::render(const RenderData *data) const
 		y = camera->getScreenYposFor(y);
 	}
 
-	SDL_Rect box = { x, y, width, height };
+	SDL_Rect box = locationProperty.getBoundingBox();
 	SDL_RenderCopy(data->getRenderer(), texture, &clip, &box);
 
 #ifdef DEBUG
@@ -71,7 +71,7 @@ void RenderedGameObject::setColliderBox(SDL_Rect collider)
 
 SDL_Rect RenderedGameObject::getBoundingBox() const
 {
-	SDL_Rect box = { xpos, ypos, width, height };
+	SDL_Rect box = locationProperty.getBoundingBox();
 	if (collider.w != 0 && collider.h != 0) {
 		box.x += collider.x;
 		box.y += collider.y;
@@ -99,4 +99,9 @@ bool RenderedGameObject::isFixedPosition()
 void RenderedGameObject::setFixedPosition(bool fixedPosition)
 {
 	this->fixedPosition = fixedPosition;
+}
+
+LocationProperty& RenderedGameObject::getLocationProperty()
+{
+	return locationProperty;
 }

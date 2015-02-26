@@ -2,6 +2,7 @@
 #define _RENDERED_GAME_OBJECT_H
 
 #include "GameObject.h"
+#include "LocationProperty.h"
 
 namespace flat2d
 {
@@ -10,7 +11,7 @@ namespace flat2d
 	class RenderedGameObject : public GameObject
 	{
 		protected:
-			int xpos, ypos, width, height;
+			LocationProperty locationProperty;
 			bool dead = false, collidable = false;
 			SDL_Texture *texture = nullptr;
 			SDL_Rect clip;
@@ -20,12 +21,9 @@ namespace flat2d
 		public:
 			RenderedGameObject(int x, int y, int w, int h) : 
 				GameObject(),
-				xpos(x),
-				ypos(y),
-				width(w),
-				height(h),
+				locationProperty(x, y, w, h),
 				dead(false) {
-					clip = { xpos, ypos, width, height };
+					clip = { x, y, w, h };
 					collider = { 0, 0, 0, 0 };
 				}
 
@@ -38,6 +36,7 @@ namespace flat2d
 			void setColliderBox(SDL_Rect collider);
 			bool isFixedPosition();
 			void setFixedPosition(bool);
+			LocationProperty& getLocationProperty();
 
 			/* Implemented override methods */
 			virtual bool isDead() const;

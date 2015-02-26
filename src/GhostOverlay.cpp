@@ -6,7 +6,7 @@ void GhostOverlay::render(const flat2d::RenderData *renderData) const
 	if (!visible) {
 		return;
 	}
-	SDL_Rect box { 0, 0, width, height };
+	SDL_Rect box { 0, 0, locationProperty.getWidth(), locationProperty.getHeight() };
 
 	SDL_Renderer *renderer = renderData->getRenderer();
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_MOD);

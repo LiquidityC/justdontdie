@@ -4,13 +4,15 @@
 
 void Rocket::init(const flat2d::GameData *data)
 {
-	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/rocket.png", data->getRenderData()->getRenderer()));
+	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/rocket.png", 
+				data->getRenderData()->getRenderer()));
 	deathTimer.start();
 }
 
 void Rocket::preRender(const flat2d::GameData *data)
 {
-	xpos += (xvel * data->getDeltatimeMonitor()->getDeltaTime());
+	locationProperty.setXpos(
+			locationProperty.getXpos() + (xvel * data->getDeltatimeMonitor()->getDeltaTime()));
 
 	flat2d::CollisionDetector *detector = data->getCollisionDetector();
 	GameObject *o = detector->checkForCollisions(this);

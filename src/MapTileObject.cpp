@@ -28,7 +28,7 @@ void MapTileObject::preRender(const flat2d::GameData *gameData)
 			mode = Rocket::Mode::MULTI;
 		}
 
-		Rocket *rocket = new Rocket(xpos, ypos, mode, !hasProperty("shootRight"));
+		Rocket *rocket = new Rocket(locationProperty.getXpos(), locationProperty.getYpos(), mode, !hasProperty("shootRight"));
 		rocket->init(gameData);
 		gameData->getObjectContainer()->registerObject(rocket, Layers::FRONT);
 	}

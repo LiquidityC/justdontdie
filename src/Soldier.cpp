@@ -13,7 +13,7 @@ void Soldier::init(const flat2d::GameData *gameData)
 {
 	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png", 
 				gameData->getRenderData()->getRenderer()));
-	SDL_Rect clip = { 0, 0, width, height };
+	SDL_Rect clip = { 0, 0, locationProperty.getWidth(), locationProperty.getHeight() };
 	setClip(clip);
 	mixer = gameData->getMixer();
 
@@ -86,29 +86,29 @@ void Soldier::preRender(const flat2d::GameData *data)
 		yvel += std::min(3600 * deltaTime, 800 - yvel);
 	}
 
-	xpos += (xvel * deltaTime);
+	locationProperty.incrementXpos(xvel * deltaTime);
 	GameObject *object;
 	if ((object = colDetector->checkForCollisions(this)) != nullptr && !handleCollision(object, data)) {
-		xpos -= (xvel * deltaTime);
+		locationProperty.incrementXpos(-(xvel * deltaTime));
 
 		// Completly reach the obstruction
 		while (!colDetector->hasCollided(this, object)) {
-			xpos += xvel > 0 ? 1 : -1;
+			locationProperty.incrementXpos(xvel > 0 ? 1 : -1);
 		}
-		xpos += xvel > 0 ? -1 : 1;
+		locationProperty.incrementXpos(xvel > 0 ? -1 : 1);
 		xvel = 0;
 		object = nullptr;
 	}
 
-	ypos += (yvel * deltaTime);
+	locationProperty.incrementYpos(yvel * deltaTime);
 	if ((object = colDetector->checkForCollisions(this)) != nullptr && !handleCollision(object, data)) {
-		ypos -= (yvel * deltaTime);
+		locationProperty.incrementYpos(-(yvel * deltaTime));
 
 		// Completly ground the soldier
 		while (!colDetector->hasCollided(this, object)) {
-			ypos += yvel > 0 ? 1 : -1;
+			locationProperty.incrementYpos(yvel > 0 ? 1 : -1);
 		}
-		ypos += yvel > 0 ? -1 : 1;
+		locationProperty.incrementYpos(yvel > 0 ? -1 : 1);
 		if (yvel > 0) {
 			grounded = true;
 			doubleJumped = false;
@@ -119,7 +119,8 @@ void Soldier::preRender(const flat2d::GameData *data)
 
 	calculateCurrentClip();
 
-	data->getRenderData()->getCamera()->centerOn(xpos + (width/2), ypos + (height/2));
+	data->getRenderData()->getCamera()->centerOn(locationProperty.getXpos() + (locationProperty.getWidth()/2),
+			locationProperty.getYpos() + (locationProperty.getHeight()/2));
 }
 
 void Soldier::render(const flat2d::RenderData* data) const
@@ -139,14 +140,14 @@ void Soldier::calculateCurrentClip()
 	int y = 0;
 
 	if (ghostMode) {
-		y = height;
+		y = locationProperty.getHeight();
 	}
 	if (facingLeft) {
-		x = 2 * width;
+		x = 2 * locationProperty.getWidth();
 	}
 
 	if (xvel < 0) {
-		x = 2 * width;
+		x = 2 * locationProperty.getWidth();
 	} else if (xvel > 0) {
 		x = 0;
 	}
@@ -158,13 +159,13 @@ void Soldier::calculateCurrentClip()
 			frameSwitch = 0;
 		}
 		if (grounded) {
-			x += clipSwitch ? width : 0;
+			x += clipSwitch ? locationProperty.getWidth() : 0;
 		} else {
-			x += width;
+			x += locationProperty.getWidth();
 		}
 	}
 
-	SDL_Rect clip = { x, y, width, height };
+	SDL_Rect clip = { x, y, locationProperty.getWidth(), locationProperty.getHeight() };
 	setClip(clip);
 }
 
@@ -189,10 +190,12 @@ bool Soldier::handleTileCollision(MapTileObject *o, const flat2d::GameData* data
 
 		if (ghostMode) {
 			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createGhostSprayAt(
-					xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+					locationProperty.getXpos() + static_cast<int>(locationProperty.getWidth()/2),
+					locationProperty.getYpos() + static_cast<int>(locationProperty.getHeight()/2));
 		} else {
 			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createBloodSprayAt(
-					xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+					locationProperty.getXpos() + static_cast<int>(locationProperty.getWidth()/2),
+					locationProperty.getYpos() + static_cast<int>(locationProperty.getHeight()/2));
 		}
 		wasKilled();
 		return true;
@@ -208,7 +211,8 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 	Rocket::Mode rocketMode = o->getMode();
 	if (ghostMode && (rocketMode == Rocket::Mode::GHOST || rocketMode == Rocket::Mode::MULTI)) {
 		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createGhostSprayAt(
-				xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+				locationProperty.getXpos() + static_cast<int>(locationProperty.getWidth()/2),
+				locationProperty.getYpos() + static_cast<int>(locationProperty.getHeight()/2));
 
 		SDL_Rect rocketBox = o->getBoundingBox();
 		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createExplosionAt(
@@ -219,7 +223,8 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 		wasKilled();
 	} else if (!ghostMode && (rocketMode == Rocket::Mode::NORMAL || rocketMode == Rocket::Mode::MULTI)) {
 		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createBloodSprayAt(
-				xpos + static_cast<int>(width/2), ypos + static_cast<int>(height/2));
+				locationProperty.getXpos() + static_cast<int>(locationProperty.getWidth()/2),
+				locationProperty.getYpos() + static_cast<int>(locationProperty.getHeight()/2));
 
 		SDL_Rect rocketBox = o->getBoundingBox();
 		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createExplosionAt(
@@ -249,8 +254,8 @@ void Soldier::wasKilled()
 void Soldier::restoreAtCheckpoint()
 {
 	killed = false;
-	xpos = checkPointX;
-	ypos = checkPointY;
+	locationProperty.setXpos(checkPointX);
+	locationProperty.setYpos(checkPointY);
 	xvel = 0;
 	yvel = 0;
 	spawnGraceTimer.start();
