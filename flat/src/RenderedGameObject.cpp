@@ -30,20 +30,16 @@ void RenderedGameObject::render(const RenderData *data) const
 		return;
 	}
 
-	int x = locationProperty.getXpos();
-	int y = locationProperty.getYpos();
-
+	SDL_Rect box = locationProperty.getBoundingBox();
 	if (data->getCamera() != nullptr && !fixedPosition) {
 		Camera* camera = data->getCamera();
-		SDL_Rect box = getBoundingBox();
 		if (!camera->isVisibleOnCamera(box)) {
 			return;
 		}
-		x = camera->getScreenXposFor(x);
-		y = camera->getScreenYposFor(y);
+		box.x = camera->getScreenXposFor(box.x);
+		box.y = camera->getScreenYposFor(box.y);
 	}
 
-	SDL_Rect box = locationProperty.getBoundingBox();
 	SDL_RenderCopy(data->getRenderer(), texture, &clip, &box);
 
 #ifdef DEBUG

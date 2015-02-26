@@ -48,7 +48,7 @@ default:
 all: default checkall
 
 run:
-	@$(MAKE) --not-print-directory libs
+	@$(MAKE) --no-print-directory libs
 	@$(MAKE) --no-print-directory $(EXECUTABLE)
 	@./$(EXECUTABLE)
 

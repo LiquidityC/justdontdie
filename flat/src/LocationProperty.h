@@ -22,7 +22,7 @@ namespace flat2d
 			void incrementXpos(int x) { xpos += x; };
 			int getXpos() const { return xpos; };
 
-			void setYpos(int x) { xpos = x; };
+			void setYpos(int y) { ypos = y; };
 			void incrementYpos(int y) { ypos += y; };
 			int getYpos() const { return ypos; };
 
