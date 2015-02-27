@@ -1,24 +1,49 @@
 #ifndef _OBJECT_CONTAINER_H
 #define _OBJECT_CONTAINER_H
 
+#include <SDL2/SDL.h>
 #include <iostream>
 #include <map>
-#include "GameObject.h"
 
-
+/**
+ * Forward declarations
+ */
 namespace flat2d
 {
+	class GameObject;
+	class GameData;
 	class RenderData;
+	class RenderData;
+	class Coordinate;
 
 	typedef int Layer;
 	typedef std::map<std::string, GameObject*> ObjectList;
+	typedef std::map<Layer, ObjectList> LayerMap;
+}
+
+bool operator<(const flat2d::Coordinate&, const flat2d::Coordinate&);
+
+/**
+ * Implementation
+ */
+namespace flat2d
+{
+	class Coordinate
+	{
+		private:
+			int x, y;
+
+		public:
+			Coordinate(int xp, int yp) : x(xp), y(yp) { };
+			friend bool (::operator<)(const flat2d::Coordinate& a, const flat2d::Coordinate& b);
+	};
 
 	class ObjectContainer 
 	{
 		private:
 			ObjectList objects;
 			ObjectList collidableObjects;
-			std::map<Layer, ObjectList> layeredObjects;
+			LayerMap layeredObjects;
 
 		private:
 			ObjectContainer(const ObjectContainer&); // Don't implement

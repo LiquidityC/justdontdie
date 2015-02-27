@@ -5,4 +5,4 @@ match ErrorMsg '\%>110v.\+'
 let &path="src,flat/src,"
 
 nnoremap <F2> :make!<cr>
-nnoremap <F3> :!./deadgaem<cr>
+nnoremap <F3> :make! check<cr>

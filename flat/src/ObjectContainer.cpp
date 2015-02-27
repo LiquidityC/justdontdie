@@ -1,4 +1,5 @@
 #include <cassert>
+#include "GameObject.h"
 #include "ObjectContainer.h"
 #include "GameData.h"
 #include "RenderData.h"
@@ -159,4 +160,9 @@ void ObjectContainer::clearDeadObjects()
 	for (auto it = objectsToErase.begin(); it != objectsToErase.end(); it++) {
 		objects.erase(*it);
 	}
+}
+
+bool operator<(const flat2d::Coordinate& a, const flat2d::Coordinate& b)
+{
+	return (a.x < b.x || a.y < b.y);
 }
