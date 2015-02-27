@@ -133,7 +133,8 @@ TEST( ObjectContainerTests, TestObjectAutoclean )
 	flat2d::ObjectContainer container;
 	flat2d::CollisionDetector detector(&container);
 	flat2d::Mixer mixer;
-	flat2d::GameData gameData(&container, &detector, &mixer, (flat2d::RenderData*) nullptr, (flat2d::DeltatimeMonitor*) nullptr);
+	flat2d::GameData gameData(&container, &detector, &mixer, (flat2d::RenderData*) nullptr,
+			(flat2d::DeltatimeMonitor*) nullptr);
 
 	container.registerObject(c1);
 	container.registerObject(c2);
@@ -144,4 +145,30 @@ TEST( ObjectContainerTests, TestObjectAutoclean )
 	container.preHandleObjects(&gameData);
 
 	CHECK_EQUAL ( 1, container.getObjectCount() );
+}
+
+TEST( ObjectContainerTests, TestSpatialPartitions )
+{
+	flat2d::ObjectContainer container;
+
+	flat2d::GameObject* o1 = new GameObjectImpl(50, 50);
+	flat2d::GameObject* o2 = new GameObjectImpl(150, 150);
+	flat2d::GameObject* o3 = new GameObjectImpl(550, 550);
+	flat2d::GameObject* o4 = new GameObjectImpl(75, 75);
+	flat2d::GameObject* o5 = new GameObjectImpl(1095, 1095);
+
+	container.registerObject(o1);
+	CHECK_EQUAL ( 1, container.getSpatialPartitionCount() );
+
+	container.registerObject(o4);
+	CHECK_EQUAL ( 1, container.getSpatialPartitionCount() );
+
+	container.registerObject(o2);
+	CHECK_EQUAL ( 2, container.getSpatialPartitionCount() );
+
+	container.registerObject(o3);
+	CHECK_EQUAL ( 3, container.getSpatialPartitionCount() );
+
+	container.registerObject(o5);
+	CHECK_EQUAL ( 7, container.getSpatialPartitionCount() );
 }

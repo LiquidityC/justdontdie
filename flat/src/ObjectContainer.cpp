@@ -3,6 +3,7 @@
 #include "ObjectContainer.h"
 #include "GameData.h"
 #include "RenderData.h"
+#include "LocationProperty.h"
 
 using namespace flat2d;
 
@@ -36,8 +37,42 @@ void ObjectContainer::registerObject(GameObject* object, Layer layer)
 	objects[objId] = object;
 	layeredObjects[layer][objId] = object;
 	if (object->isCollider()) {
-		collidableObjects[objId] = object;
+		registerCollidableObject(object);
 	}
+}
+
+void ObjectContainer::registerCollidableObject(GameObject* o)
+{
+	collidableObjects[o->getStringId()] = o;
+
+	LocationProperty locationProp = o->getLocationProperty();
+	SDL_Rect b = locationProp.getBoundingBox();
+
+	addObjectToSpatialPartitionFor(o, b.x, b.y);
+	addObjectToSpatialPartitionFor(o, b.x + b.w, b.y);
+	addObjectToSpatialPartitionFor(o, b.x, b.y + b.h);
+	addObjectToSpatialPartitionFor(o, b.x + b.w, b.y + b.h);
+}
+
+void ObjectContainer::addObjectToSpatialPartitionFor(GameObject* o, int x, int y)
+{
+	std::string objId = o->getStringId();
+
+	unsigned int xcord = (x - (x % spatialPartitionDimension));
+	unsigned int ycord = (y - (y % spatialPartitionDimension));
+
+	LocationProperty loc(xcord, ycord, spatialPartitionDimension);
+	if (spatialPartitionMap.find(loc) == spatialPartitionMap.end()) {
+		ObjectList list;
+		spatialPartitionMap[loc] = list;
+	}
+
+	spatialPartitionMap[loc][objId] = o;
+}
+
+void ObjectContainer::setSpatialPartitionDimension(unsigned int i)
+{
+	spatialPartitionDimension = i;
 }
 
 void ObjectContainer::unregisterObject(GameObject* object)
@@ -162,7 +197,7 @@ void ObjectContainer::clearDeadObjects()
 	}
 }
 
-bool operator<(const flat2d::Coordinate& a, const flat2d::Coordinate& b)
+size_t ObjectContainer::getSpatialPartitionCount() const
 {
-	return (a.x < b.x || a.y < b.y);
+	return spatialPartitionMap.size();
 }

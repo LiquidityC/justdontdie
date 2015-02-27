@@ -6,15 +6,16 @@
 
 namespace flat2d
 {
+	class ObjectContainer;
+
 	class LocationProperty
 	{
 		private:
 			int xpos, ypos, width, height;
 
 		public:
-			LocationProperty(int x, int y, int w, int h) : xpos(x), ypos(y), width(w), height(h) {
-				 // Do nothing
-			}
+			LocationProperty(int x, int y, int dim) : xpos(x), ypos(y), width(dim), height(dim) { };
+			LocationProperty(int x, int y, int w, int h) : xpos(x), ypos(y), width(w), height(h) { };
 
 			SDL_Rect getBoundingBox() const;
 
@@ -31,6 +32,14 @@ namespace flat2d
 
 			void setHeight(int h) { height = h; };
 			int getHeight() const { return height; };
+
+			bool operator<(const LocationProperty&) const;
+			bool operator==(const LocationProperty&) const;
+
+			friend class ObjectContainer;
+
+		private:
+
 	};
 
 	class LocationPropertyListener
