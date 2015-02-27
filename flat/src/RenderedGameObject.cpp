@@ -97,7 +97,7 @@ void RenderedGameObject::setFixedPosition(bool fixedPosition)
 	this->fixedPosition = fixedPosition;
 }
 
-LocationProperty& RenderedGameObject::getLocationProperty()
+const LocationProperty& RenderedGameObject::getLocationProperty()
 {
 	return locationProperty;
 }

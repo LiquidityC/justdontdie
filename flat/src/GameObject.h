@@ -12,6 +12,7 @@ namespace flat2d
 	class Camera;
 	class RenderData;
 	class GameData;
+	class LocationProperty;
 
 	class GameObject
 	{
@@ -70,6 +71,8 @@ namespace flat2d
 
 			virtual const SDL_Texture* getTexture() const = 0;
 			virtual void setTexture(SDL_Texture*) = 0;
+
+			virtual const LocationProperty& getLocationProperty() = 0;
 	};
 }
 
