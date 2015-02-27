@@ -1,3 +1,4 @@
+#include <iostream>
 #include "RenderedGameObject.h"
 #include "Camera.h"
 #include "RenderData.h"
@@ -97,7 +98,7 @@ void RenderedGameObject::setFixedPosition(bool fixedPosition)
 	this->fixedPosition = fixedPosition;
 }
 
-const LocationProperty& RenderedGameObject::getLocationProperty()
+LocationProperty& RenderedGameObject::getLocationProperty()
 {
 	return locationProperty;
 }

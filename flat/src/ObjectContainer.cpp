@@ -1,3 +1,4 @@
+#include <functional>
 #include <cassert>
 #include "GameObject.h"
 #include "ObjectContainer.h"
@@ -43,15 +44,24 @@ void ObjectContainer::registerObject(GameObject* object, Layer layer)
 
 void ObjectContainer::registerCollidableObject(GameObject* o)
 {
-	collidableObjects[o->getStringId()] = o;
+	std::string objId = o->getStringId();
+	collidableObjects[objId] = o;
 
-	LocationProperty locationProp = o->getLocationProperty();
+	LocationProperty& locationProp = o->getLocationProperty();
+	locationProp.getParents().clear();
 	SDL_Rect b = locationProp.getBoundingBox();
 
 	addObjectToSpatialPartitionFor(o, b.x, b.y);
 	addObjectToSpatialPartitionFor(o, b.x + b.w, b.y);
 	addObjectToSpatialPartitionFor(o, b.x, b.y + b.h);
 	addObjectToSpatialPartitionFor(o, b.x + b.w, b.y + b.h);
+
+	locationProp.setOnLocationChange(
+			[]() {
+			std::cout << "Re-registering object" << std::endl;
+			//registerCollidableObject(o);
+			});
+
 }
 
 void ObjectContainer::addObjectToSpatialPartitionFor(GameObject* o, int x, int y)
@@ -61,11 +71,19 @@ void ObjectContainer::addObjectToSpatialPartitionFor(GameObject* o, int x, int y
 	unsigned int xcord = (x - (x % spatialPartitionDimension));
 	unsigned int ycord = (y - (y % spatialPartitionDimension));
 
+	// Find and make sure partition exists
 	LocationProperty loc(xcord, ycord, spatialPartitionDimension);
 	if (spatialPartitionMap.find(loc) == spatialPartitionMap.end()) {
-		ObjectList list;
-		spatialPartitionMap[loc] = list;
+		spatialPartitionMap[loc] = ObjectList();
 	}
+
+	// The object is already in this partition
+	if (spatialPartitionMap[loc].find(objId) != spatialPartitionMap[loc].end()) {
+		return;
+	}
+
+	LocationProperty& objLocationProperty = o->getLocationProperty();
+	objLocationProperty.getParents().push_back(loc);
 
 	spatialPartitionMap[loc][objId] = o;
 }
@@ -82,6 +100,12 @@ void ObjectContainer::unregisterObject(GameObject* object)
 	if (object->isCollider()) {
 		collidableObjects.erase(objId);
 	}
+
+	LocationProperty::Parents locationProps = object->getLocationProperty().getParents();
+	for (auto it = locationProps.begin(); it != locationProps.end(); it++) {
+		spatialPartitionMap[*it].erase(objId);
+	}
+
 	for (auto it = layeredObjects.begin(); it != layeredObjects.end(); it++) {
 		it->second.erase(objId);
 	}
@@ -94,6 +118,7 @@ void ObjectContainer::unregisterAllObjects()
 	}
 	objects.clear();
 	collidableObjects.clear();
+	spatialPartitionMap.clear();
 	for (auto it = layeredObjects.begin(); it != layeredObjects.end(); it++) {
 		it->second.clear();
 	}

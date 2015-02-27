@@ -3,15 +3,26 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
+#include <functional>
 
 namespace flat2d
 {
 	class ObjectContainer;
+	class LocationProperty;
 
 	class LocationProperty
 	{
+		public:
+			typedef std::function<void ()> OnLocationChangeFunction;
+			typedef std::vector<LocationProperty> Parents;
+
 		private:
 			int xpos, ypos, width, height;
+			OnLocationChangeFunction onLocationChange = nullptr;
+			Parents parents;
+
+		private:
+			void locationUpdated();
 
 		public:
 			LocationProperty(int x, int y, int dim) : xpos(x), ypos(y), width(dim), height(dim) { };
@@ -19,32 +30,29 @@ namespace flat2d
 
 			SDL_Rect getBoundingBox() const;
 
-			void setXpos(int x) { xpos = x; };
-			void incrementXpos(int x) { xpos += x; };
-			int getXpos() const { return xpos; };
+			void setXpos(int x);
+			void incrementXpos(int x);
+			int getXpos() const;
 
-			void setYpos(int y) { ypos = y; };
-			void incrementYpos(int y) { ypos += y; };
-			int getYpos() const { return ypos; };
+			void setYpos(int y);
+			void incrementYpos(int y);
+			int getYpos() const;
 
-			void setWidth(int w) { width = w; };
-			int getWidth() const { return width; };
+			void setWidth(int w);
+			int getWidth() const;
 
-			void setHeight(int h) { height = h; };
-			int getHeight() const { return height; };
+			void setHeight(int h);
+			int getHeight() const;
+
+			bool containsPoint(int, int) const;
+
+			Parents& getParents();
 
 			bool operator<(const LocationProperty&) const;
 			bool operator==(const LocationProperty&) const;
+			bool operator!=(const LocationProperty&) const;
 
-			friend class ObjectContainer;
-
-		private:
-
-	};
-
-	class LocationPropertyListener
-	{
-		virtual void onPositionChanged(const LocationProperty&) = 0;
+			void setOnLocationChange(OnLocationChangeFunction);
 	};
 }
 

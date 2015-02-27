@@ -39,7 +39,9 @@ int main( int argc, char* args[] )
 	
 	flat2d::GameObject* soldier = new Soldier(200, 200);
 	soldier->init(gameData);
+	std::cout << "Soldier: " << soldier->getLocationProperty().getParents().size() << std::endl;
 	objectContainer->registerObject(soldier, Layers::MID);
+	std::cout << "Soldier: " << soldier->getLocationProperty().getParents().size() << std::endl;
 
 	ResourceLoader *rLoader = customGameData->getResourceLoader();
 	rLoader->loadMusic(gameData);

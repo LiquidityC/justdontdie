@@ -44,7 +44,7 @@ namespace flat2d
 			virtual SDL_Rect getBoundingBox() const;
 			virtual const SDL_Texture* getTexture() const;
 			virtual void setTexture(SDL_Texture*);
-			virtual const LocationProperty& getLocationProperty();
+			virtual LocationProperty& getLocationProperty();
 
 			/* Empty methods */
 			virtual void init(const GameData*) { };

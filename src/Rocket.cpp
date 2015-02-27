@@ -11,8 +11,7 @@ void Rocket::init(const flat2d::GameData *data)
 
 void Rocket::preRender(const flat2d::GameData *data)
 {
-	locationProperty.setXpos(
-			locationProperty.getXpos() + (xvel * data->getDeltatimeMonitor()->getDeltaTime()));
+	locationProperty.incrementXpos(xvel * data->getDeltatimeMonitor()->getDeltaTime());
 
 	flat2d::CollisionDetector *detector = data->getCollisionDetector();
 	GameObject *o = detector->checkForCollisions(this);
