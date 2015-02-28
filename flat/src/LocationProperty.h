@@ -47,6 +47,7 @@ namespace flat2d
 			bool containsPoint(int, int) const;
 
 			Parents& getParents();
+			const Parents& getParents() const;
 
 			bool operator<(const LocationProperty&) const;
 			bool operator==(const LocationProperty&) const;

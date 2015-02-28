@@ -147,6 +147,21 @@ TEST( ObjectContainerTests, TestObjectAutoclean )
 	CHECK_EQUAL ( 1, container.getObjectCount() );
 }
 
+TEST( ObjectContainerTests, TestSpatialPartitionsHandling )
+{
+	flat2d::ObjectContainer container;
+	flat2d::GameObject* o = new GameObjectImpl(45, 45);
+
+	container.setSpatialPartitionDimension(50);
+	container.registerObject(o);
+
+	CHECK_EQUAL( 4, o->getLocationProperty().getParents().size() );
+
+	o->getLocationProperty().incrementXpos(10);
+
+	CHECK_EQUAL( 2, o->getLocationProperty().getParents().size() );
+}
+
 TEST( ObjectContainerTests, TestSpatialPartitions )
 {
 	flat2d::ObjectContainer container;

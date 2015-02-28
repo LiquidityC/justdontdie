@@ -4,7 +4,8 @@
 enum GameObjectType {
 	TILE,
 	BOT,
-	ROCKET
+	ROCKET,
+	SOLDIER
 };
 
 #endif

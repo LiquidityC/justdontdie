@@ -37,13 +37,17 @@ namespace flat2d
 			LayerMap layeredObjects;
 			SpatialPartitionMap spatialPartitionMap;
 
+			typedef std::function<bool (GameObject*)> GameObjectProcessor;
+
 		private:
 			ObjectContainer(const ObjectContainer&); // Don't implement
 			void operator=(const ObjectContainer&); // Don't implement
 
 			void clearDeadObjects();
 			void registerCollidableObject(GameObject*);
+			void registerObjectToSpatialPartitions(GameObject*);
 			void addObjectToSpatialPartitionFor(GameObject*, int, int);
+			void clearObjectFromCurrentPartitions(GameObject*);
 
 		public:
 			static const int DEFAULT_LAYER = -1;
@@ -78,27 +82,9 @@ namespace flat2d
 
 			void setSpatialPartitionDimension(unsigned int);
 
-			template <class Func>
-				GameObject* checkAllCollidableObjects(Func func) const
-				{
-					for (auto it = collidableObjects.begin(); it != collidableObjects.end(); it++) {
-						if (func(it->second)) {
-							return it->second;
-						}
-					}
-					return nullptr;
-				}
-
-			template <class Func>
-				GameObject* checkAllObjects(Func func) const
-				{
-					for (auto it = objects.begin(); it != objects.end(); it++) {
-						if (func(it->second)) {
-							return it->second;
-						}
-					}
-					return nullptr;
-				}
+			GameObject* checkAllCollidableObjects(GameObjectProcessor) const;
+			GameObject* checkAllObjects(GameObjectProcessor) const;
+			GameObject* checkCollidablesFor(const GameObject*, GameObjectProcessor);
 	};
 }
 

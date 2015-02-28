@@ -6,6 +6,7 @@ using namespace flat2d;
 void LocationProperty::setXpos(int x)
 {
 	xpos = x;
+	locationUpdated();
 }
 
 void LocationProperty::incrementXpos(int x)
@@ -64,7 +65,9 @@ SDL_Rect LocationProperty::getBoundingBox() const
 
 void LocationProperty::setOnLocationChange(OnLocationChangeFunction onChange)
 {
-	this->onLocationChange = onChange;
+	if (!onLocationChange) {
+		onLocationChange = onChange;
+	}
 }
 
 bool LocationProperty::containsPoint(int x, int y) const
@@ -93,21 +96,17 @@ void LocationProperty::locationUpdated()
 		}
 	}
 
-	if (locationChanged && onLocationChange) {
-		try {
-			std::cout << "Location change: " << parents.size() << std::endl;
-			onLocationChange();
-			std::cout << "Lambda called" << std::endl;
-		} catch (const std::exception& e) {
-			std::cout << "Handled exception" << std::endl;
-			std::cout << e.what();
-		} catch (...) {
-			std::cout << "Unhandled exception" << std::endl;
-		}
+	if (locationChanged) {
+		onLocationChange();
 	}
 }
 
 LocationProperty::Parents& LocationProperty::getParents()
+{
+	return parents;
+}
+
+const LocationProperty::Parents& LocationProperty::getParents() const
 {
 	return parents;
 }

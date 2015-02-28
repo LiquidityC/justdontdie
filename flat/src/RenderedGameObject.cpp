@@ -102,3 +102,8 @@ LocationProperty& RenderedGameObject::getLocationProperty()
 {
 	return locationProperty;
 }
+
+const LocationProperty& RenderedGameObject::getLocationProperty() const
+{
+	return locationProperty;
+}

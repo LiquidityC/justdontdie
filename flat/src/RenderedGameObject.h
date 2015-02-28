@@ -45,6 +45,7 @@ namespace flat2d
 			virtual const SDL_Texture* getTexture() const;
 			virtual void setTexture(SDL_Texture*);
 			virtual LocationProperty& getLocationProperty();
+			virtual const LocationProperty& getLocationProperty() const;
 
 			/* Empty methods */
 			virtual void init(const GameData*) { };

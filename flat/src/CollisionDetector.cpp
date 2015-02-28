@@ -11,8 +11,8 @@ CollisionDetector::CollisionDetector(ObjectContainer* objectContainer)
 
 GameObject* CollisionDetector::checkForCollisions(const GameObject* o1) const
 {
-	return objectContainer->checkAllCollidableObjects(
-			[&](const GameObject* o2)
+	return objectContainer->checkCollidablesFor(o1,
+			[this,o1](const GameObject* o2)
 			{
 				return this->hasCollided(o1, o2);
 			});

@@ -37,6 +37,7 @@ void ObjectContainer::registerObject(GameObject* object, Layer layer)
 
 	objects[objId] = object;
 	layeredObjects[layer][objId] = object;
+	registerObjectToSpatialPartitions(object);
 	if (object->isCollider()) {
 		registerCollidableObject(object);
 	}
@@ -44,11 +45,16 @@ void ObjectContainer::registerObject(GameObject* object, Layer layer)
 
 void ObjectContainer::registerCollidableObject(GameObject* o)
 {
-	std::string objId = o->getStringId();
-	collidableObjects[objId] = o;
+	collidableObjects[o->getStringId()] = o;
+}
+
+void ObjectContainer::registerObjectToSpatialPartitions(GameObject *o)
+{
+	if (o->getType() == 1) {
+		std::cout << "Soldier is switching partitions" << std::endl;
+	}
 
 	LocationProperty& locationProp = o->getLocationProperty();
-	locationProp.getParents().clear();
 	SDL_Rect b = locationProp.getBoundingBox();
 
 	addObjectToSpatialPartitionFor(o, b.x, b.y);
@@ -57,11 +63,19 @@ void ObjectContainer::registerCollidableObject(GameObject* o)
 	addObjectToSpatialPartitionFor(o, b.x + b.w, b.y + b.h);
 
 	locationProp.setOnLocationChange(
-			[]() {
-			std::cout << "Re-registering object" << std::endl;
-			//registerCollidableObject(o);
+			[this,o]() {
+			clearObjectFromCurrentPartitions(o);
+			registerObjectToSpatialPartitions(o);
 			});
+}
 
+void ObjectContainer::clearObjectFromCurrentPartitions(GameObject *o)
+{
+	LocationProperty::Parents& parents = o->getLocationProperty().getParents();
+	for (auto it = parents.begin(); it != parents.end(); it++) {
+		spatialPartitionMap[*it].erase(o->getStringId());
+	}
+	parents.clear();
 }
 
 void ObjectContainer::addObjectToSpatialPartitionFor(GameObject* o, int x, int y)
@@ -225,4 +239,40 @@ void ObjectContainer::clearDeadObjects()
 size_t ObjectContainer::getSpatialPartitionCount() const
 {
 	return spatialPartitionMap.size();
+}
+
+GameObject* ObjectContainer::checkAllObjects(GameObjectProcessor func) const
+{
+	for (auto it = objects.begin(); it != objects.end(); it++) {
+		if (func(it->second)) {
+			return it->second;
+		}
+	}
+	return nullptr;
+}
+
+GameObject* ObjectContainer::checkAllCollidableObjects(GameObjectProcessor func) const
+{
+	for (auto it = collidableObjects.begin(); it != collidableObjects.end(); it++) {
+		if (func(it->second)) {
+			return it->second;
+		}
+	}
+	return nullptr;
+}
+
+GameObject* ObjectContainer::checkCollidablesFor(const GameObject* source, GameObjectProcessor func)
+{
+	const LocationProperty::Parents& parents = source->getLocationProperty().getParents();
+	for (auto parentIter = parents.begin(); parentIter != parents.end(); parentIter++) {
+		for (auto objectIter = spatialPartitionMap[*parentIter].begin();
+				objectIter != spatialPartitionMap[*parentIter].end();
+				objectIter++)
+		{
+			if (objectIter->second->isCollider() && func(objectIter->second)) {
+				return objectIter->second;
+			}
+		}
+	}
+	return nullptr;
 }

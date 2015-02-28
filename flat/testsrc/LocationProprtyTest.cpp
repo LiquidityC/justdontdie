@@ -1,4 +1,5 @@
 #include <CppUTest/TestHarness.h>
+#include <iostream>
 #include "GameObjectImpl.h"
 #include "../src/LocationProperty.h"
 
@@ -49,3 +50,37 @@ TEST( LocationPropertyTests, TestLessOperator )
 	CHECK( !(lop1 < lop4) );
 }
 
+TEST( LocationPropertyTests, TestChangeTrigger )
+{
+	bool hasMovedOutOfSpace = false;
+	GameObjectImpl o(100, 100);
+
+	LocationProperty space(0, 0, 200, 200);
+	LocationProperty& lop = o.getLocationProperty();
+	lop.getParents().push_back(space);
+
+	CHECK_EQUAL( 1, lop.getParents().size() );
+
+	lop.setOnLocationChange([&]() { 
+			hasMovedOutOfSpace = true;
+			});
+
+	lop.setXpos(150);
+	CHECK( !hasMovedOutOfSpace );
+
+	lop.setXpos(250);
+	CHECK( hasMovedOutOfSpace );
+	hasMovedOutOfSpace = false;
+
+	lop.setYpos(250);
+	CHECK( hasMovedOutOfSpace );
+	hasMovedOutOfSpace = false;
+
+	lop.incrementXpos(250);
+	CHECK( hasMovedOutOfSpace );
+	hasMovedOutOfSpace = false;
+
+	lop.incrementYpos(250);
+	CHECK( hasMovedOutOfSpace );
+	hasMovedOutOfSpace = false;
+}

@@ -73,6 +73,7 @@ namespace flat2d
 			virtual void setTexture(SDL_Texture*) = 0;
 
 			virtual LocationProperty& getLocationProperty() = 0;
+			virtual const LocationProperty& getLocationProperty() const = 0;
 	};
 }
 
