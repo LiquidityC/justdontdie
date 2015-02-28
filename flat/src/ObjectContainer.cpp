@@ -50,10 +50,6 @@ void ObjectContainer::registerCollidableObject(GameObject* o)
 
 void ObjectContainer::registerObjectToSpatialPartitions(GameObject *o)
 {
-	if (o->getType() == 1) {
-		std::cout << "Soldier is switching partitions" << std::endl;
-	}
-
 	LocationProperty& locationProp = o->getLocationProperty();
 	SDL_Rect b = locationProp.getBoundingBox();
 
