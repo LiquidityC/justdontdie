@@ -8,7 +8,7 @@
 void ParticleEngine::createBloodSprayAt(int x, int y)
 {
 	Particle *p;
-	for (auto i = 0; i < 50; i++) {
+	for (auto i = 0; i < 100; i++) {
 		int xneg = rand() % 2 > 0 ? 1 : -1;
 		int yneg = rand() % 2 > 0 ? 1 : -1;
 		int xvel = (rand() % 500) * xneg;
@@ -22,7 +22,7 @@ void ParticleEngine::createBloodSprayAt(int x, int y)
 void ParticleEngine::createGhostSprayAt(int x, int y)
 {
 	Particle *p;
-	for (auto i = 0; i < 50; i++) {
+	for (auto i = 0; i < 100; i++) {
 		int xneg = rand() % 2 > 0 ? 1 : -1;
 		int yneg = rand() % 2 > 0 ? 1 : -1;
 		int xvel = (rand() % 500) * xneg;
@@ -36,7 +36,7 @@ void ParticleEngine::createGhostSprayAt(int x, int y)
 void ParticleEngine::createExplosionAt(int x, int y)
 {
 	Particle *p;
-	for (auto i = 0; i < 50; i++) {
+	for (auto i = 0; i < 100; i++) {
 		int xneg = rand() % 2 > 0 ? 1 : -1;
 		int yneg = rand() % 2 > 0 ? 1 : -1;
 		int xvel = (rand() % 300) * xneg;

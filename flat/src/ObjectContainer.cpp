@@ -115,10 +115,7 @@ void ObjectContainer::unregisterObject(GameObject* object)
 		collidableObjects.erase(objId);
 	}
 
-	LocationProperty::Parents locationProps = object->getLocationProperty().getParents();
-	for (auto it = locationProps.begin(); it != locationProps.end(); it++) {
-		spatialPartitionMap[*it].erase(objId);
-	}
+	clearObjectFromCurrentPartitions(object);
 
 	for (auto it = layeredObjects.begin(); it != layeredObjects.end(); it++) {
 		it->second.erase(objId);
@@ -227,6 +224,7 @@ void ObjectContainer::clearDeadObjects()
 		for (auto layerIt = layeredObjects.begin(); layerIt != layeredObjects.end(); layerIt++) {
 			layerIt->second.erase(objId);
 		}
+		clearObjectFromCurrentPartitions(it->second);
 		objectsToErase.push_back(objId);
 		delete it->second;
 	}
