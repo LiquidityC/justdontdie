@@ -128,6 +128,18 @@ void Soldier::render(const flat2d::RenderData* data) const
 	if (killed) {
 		return;
 	}
+
+#ifdef DEBUG
+	SDL_SetRenderDrawColor(data->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
+	const flat2d::LocationProperty::Parents parents = locationProperty.getParents();
+	for(auto it = parents.begin(); it != parents.end(); it++) {
+		SDL_Rect bounds = (*it).getBoundingBox();
+		bounds.x = data->getCamera()->getScreenXposFor(bounds.x);
+		bounds.y = data->getCamera()->getScreenYposFor(bounds.y);
+		SDL_RenderDrawRect( data->getRenderer(), &bounds );
+	}
+#endif
+
 	RenderedGameObject::render(data);
 }
 
