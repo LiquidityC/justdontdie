@@ -46,6 +46,7 @@ class Rocket : public flat2d::RenderedGameObject
 		void init(const flat2d::GameData*);
 
 		void preRender(const flat2d::GameData*);
+		void render(const flat2d::RenderData*) const;
 		void postRender(const flat2d::GameData*);
 
 		Mode getMode() const;
