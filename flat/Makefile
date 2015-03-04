@@ -26,7 +26,7 @@ ECHO				= echo -e
 SHELL				= /bin/sh
 CTAGS				= ctags
 
-LIBS 				= $(SDL2_LDFLAGS) -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lCppUTest -lCppUTestExt
+LIBS 				= $(SDL2_LDFLAGS) -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lCppUTest -lCppUTestExt -lsqlite3
 
 DEPS				= $(wildcard src/*.h)
 OBJDIR				= obj
