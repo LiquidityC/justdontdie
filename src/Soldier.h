@@ -47,8 +47,12 @@ class Soldier : public flat2d::RenderedGameObject
 
 		void calculateCurrentClip();
 
-		bool handleCollision(flat2d::GameObject*, const flat2d::GameData*);
-		bool handleTileCollision(MapTileObject*, const flat2d::GameData*);
+		bool handleVerticalCollision(flat2d::GameObject*, const flat2d::GameData*);
+		bool handleHorizontalCollision(flat2d::GameObject*, const flat2d::GameData*);
+		bool handleGeneralCollision(flat2d::GameObject*, const flat2d::GameData*);
+		bool handleVerticalTileCollision(MapTileObject*, const flat2d::GameData*);
+		bool handleHorizontalTileCollision(MapTileObject*, const flat2d::GameData*);
+		bool handleGeneralTileCollision(MapTileObject*, const flat2d::GameData*);
 		bool handleRocketCollision(Rocket*, const flat2d::GameData*);
 
 		void wasKilled();

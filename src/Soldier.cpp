@@ -35,8 +35,8 @@ void Soldier::handle(const SDL_Event& e)
 		case SDLK_SPACE:
 		case SDLK_h:
 		case SDLK_k:
-			if( grounded || !doubleJumped ) {
-				yvel = -1000;
+			if( grounded || (!ghostMode && !doubleJumped) ) {
+				yvel = -1050;
 				doubleJumped = grounded ? false : true;
 				grounded = false;
 				mixer->playEffect(Effects::JUMP);
@@ -64,6 +64,9 @@ void Soldier::postHandle(const flat2d::GameData *gameData)
 		xvel = 300;
 		facingLeft = false;
 	}
+	if (currentKeyStates[SDL_SCANCODE_L] && ghostMode && yvel > 5) {
+		yvel = 5;
+	}
 
 	if (spawnGraceTimer.isStarted() && spawnGraceTimer.getTicks() > 1000) {
 		spawnGraceTimer.stop();
@@ -86,35 +89,18 @@ void Soldier::preRender(const flat2d::GameData *data)
 		yvel += std::min(3600 * deltaTime, 800 - yvel);
 	}
 
+	// Try to move object vertically
 	locationProperty.incrementXpos(xvel * deltaTime);
 	GameObject *object;
-	if ((object = colDetector->checkForCollisions(this)) != nullptr && !handleCollision(object, data)) {
-		locationProperty.incrementXpos(-(xvel * deltaTime));
-
-		// Completly reach the obstruction
-		while (!colDetector->hasCollided(this, object)) {
-			locationProperty.incrementXpos(xvel > 0 ? 1 : -1);
-		}
-		locationProperty.incrementXpos(xvel > 0 ? -1 : 1);
-		xvel = 0;
-		object = nullptr;
+	if ((object = colDetector->checkForCollisions(this)) != nullptr) {
+		handleHorizontalCollision(object, data);
 	}
+	object = nullptr;
 
+	// Try to move object horizontally
 	locationProperty.incrementYpos(yvel * deltaTime);
-	if ((object = colDetector->checkForCollisions(this)) != nullptr && !handleCollision(object, data)) {
-		locationProperty.incrementYpos(-(yvel * deltaTime));
-
-		// Completly ground the soldier
-		while (!colDetector->hasCollided(this, object)) {
-			locationProperty.incrementYpos(yvel > 0 ? 1 : -1);
-		}
-		locationProperty.incrementYpos(yvel > 0 ? -1 : 1);
-		if (yvel > 0) {
-			grounded = true;
-			doubleJumped = false;
-		}
-		object = nullptr;
-		yvel = 0;
+	if ((object = colDetector->checkForCollisions(this)) != nullptr) {
+		handleVerticalCollision(object, data);
 	}
 
 	calculateCurrentClip();
@@ -181,11 +167,31 @@ void Soldier::calculateCurrentClip()
 	setClip(clip);
 }
 
-bool Soldier::handleCollision(flat2d::GameObject *o, const flat2d::GameData* data)
+bool Soldier::handleVerticalCollision(flat2d::GameObject *o, const flat2d::GameData* data)
 {
 	switch (o->getType()) {
 		case GameObjectType::TILE:
-			return handleTileCollision(static_cast<MapTileObject*>(o), data);
+			return handleVerticalTileCollision(static_cast<MapTileObject*>(o), data);
+		default:
+			return handleGeneralCollision(o, data);
+	}
+}
+
+bool Soldier::handleHorizontalCollision(flat2d::GameObject *o, const flat2d::GameData* data)
+{
+	switch (o->getType()) {
+		case GameObjectType::TILE:
+			return handleHorizontalTileCollision(static_cast<MapTileObject*>(o), data);
+		default:
+			return handleGeneralCollision(o, data);
+	}
+}
+
+bool Soldier::handleGeneralCollision(flat2d::GameObject *o, const flat2d::GameData* data)
+{
+	switch (o->getType()) {
+		case GameObjectType::TILE:
+			return handleGeneralTileCollision(static_cast<MapTileObject*>(o), data);
 			break;
 		case GameObjectType::ROCKET:
 			return handleRocketCollision(static_cast<Rocket*>(o), data);
@@ -196,7 +202,51 @@ bool Soldier::handleCollision(flat2d::GameObject *o, const flat2d::GameData* dat
 	return false;
 }
 
-bool Soldier::handleTileCollision(MapTileObject *o, const flat2d::GameData* data)
+bool Soldier::handleVerticalTileCollision(MapTileObject *o, const flat2d::GameData* data)
+{
+	if (handleGeneralTileCollision(o, data)) {
+		return true;
+	}
+
+	// Completly reach the obstruction if it's a tile
+	int o_ypos = o->getLocationProperty().getYpos();
+	int o_height = o->getLocationProperty().getHeight();
+	if (yvel > 0) {
+		locationProperty.setYpos(o_ypos - locationProperty.getHeight() - 1);
+	} else {
+		locationProperty.setYpos(o_ypos + o_height + 1);
+	}
+
+	if (yvel > 0) {
+		grounded = true;
+		doubleJumped = false;
+	}
+	yvel = 0;
+
+	return true;
+}
+
+bool Soldier::handleHorizontalTileCollision(MapTileObject *o, const flat2d::GameData* data)
+{
+	if (handleGeneralTileCollision(o, data)) {
+		return true;
+	}
+
+	// Completly reach the obstruction if it's a tile
+	int o_xpos = o->getLocationProperty().getXpos();
+	int o_width = o->getLocationProperty().getWidth();
+	if (xvel > 0) {
+		locationProperty.setXpos(o_xpos - locationProperty.getWidth() - 1);
+	} else {
+		locationProperty.setXpos(o_xpos + o_width + 1);
+	}
+
+	xvel = 0;
+
+	return true;
+}
+
+bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameData* data)
 {
 	if (o->hasProperty("deadly")) {
 
@@ -231,7 +281,7 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 				rocketBox.x + static_cast<int>(rocketBox.w/2),
 				rocketBox.y + static_cast<int>(rocketBox.h/2));
 		o->setDead(true);
-		mixer->playEffect(Effects::JUMP);
+		mixer->playEffect(Effects::BANG);
 		wasKilled();
 	} else if (!ghostMode && (rocketMode == Rocket::Mode::NORMAL || rocketMode == Rocket::Mode::MULTI)) {
 		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createBloodSprayAt(
