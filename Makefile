@@ -1,4 +1,6 @@
-CXX			= g++
+ifndef CXX
+	CXX = g++
+endif
 
 # ECHO colors
 CNORMAL	= \033[0m

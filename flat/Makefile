@@ -1,19 +1,17 @@
-ifdef CLANG
-CC 			= clang++
-else
-CC			= g++
+ifndef CXX
+CXX			= g++
 endif
 
 SDL2_LDFLAGS		:= $(shell sdl2-config --static-libs)
 SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
 
-CFLAGS				= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
+CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
 					  -include src/NewMacro.h $(SDL2_CFLAGS)
 ifdef DEBUG
-CFLAGS 		+= -DDEBUG
+CXXFLAGS 			+= -DDEBUG
 endif
 ifdef NOTEST
-CFLAGS		+= -DNOTEST
+CXXFLAGS			+= -DNOTEST
 endif
 
 LD					= g++
@@ -72,10 +70,10 @@ $(LIBRARY): $(LIB_OBJECTS) $(DEPS)
 	$(AR) $(ARFLAGS) $@ $(LIB_OBJECTS)
 
 $(OBJDIR)/%.o: src/%.cpp
-	$(CC) $(CFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: testsrc/%.cpp
-	$(CC) $(CFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $< -o $@
 
 clean:
 	@$(ECHO) Cleaning project
