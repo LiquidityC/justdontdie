@@ -1,8 +1,4 @@
-ifdef CLANG
-CC 			= clang++
-else
-CC			= g++
-endif
+CXX			= g++
 
 # ECHO colors
 CNORMAL	= \033[0m
@@ -11,10 +7,10 @@ CGREEN	= \033[32m
 SDL2_LDFLAGS		:= $(shell sdl2-config --static-libs)
 SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
 
-CFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
+CXXFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
 			  -I./flat/include -I./include -include src/NewMacro.h $(SDL2_CFLAGS) -DDEBUG
 ifdef NOTEST
-CFLAGS		+= -DNOTEST
+CXXFLAGS		+= -DNOTEST
 endif
 
 LD			= g++
@@ -75,10 +71,10 @@ $(TEST): $(TEST_OBJECTS) $(DEPS)
 	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
 
 $(OBJDIR)/%.o: src/%.cpp
-	$(CC) $(CFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $< -o $@
 
 $(OBJDIR)/%.o: testsrc/%.cpp
-	$(CC) $(CFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $< -o $@
 
 $(LIBRARIES):
 	@$(ECHO) "$(CGREEN)Building $@lib...$(CNORMAL)"
