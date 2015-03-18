@@ -64,7 +64,7 @@ void Soldier::postHandle(const flat2d::GameData *gameData)
 		xvel = 300;
 		facingLeft = false;
 	}
-	if (currentKeyStates[SDL_SCANCODE_L] && ghostMode && yvel > 5) {
+	if (currentKeyStates[SDL_SCANCODE_K] && ghostMode && !grounded && yvel > 5) {
 		yvel = 5;
 	}
 
