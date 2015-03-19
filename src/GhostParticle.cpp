@@ -17,7 +17,7 @@ void GhostParticle::preRender(const flat2d::GameData* data)
 	if (object && object->getType() != GameObjectType::ROCKET) {
 		locationProperty.incrementXpos(-(xvel * deltaTime));
 
-		reduceXVel(1800, deltaTime);
+		reduceXVel(1800 + locationProperty.getWidth() * 250, deltaTime);
 		xvel *= -1;
 
 		object = nullptr;
@@ -28,11 +28,11 @@ void GhostParticle::preRender(const flat2d::GameData* data)
 	if (object && object->getType() != GameObjectType::ROCKET) {
 		locationProperty.incrementYpos(-(yvel * deltaTime));
 
-		reduceYVel(3600, deltaTime);
+		reduceYVel(4600 + locationProperty.getHeight() * 1000, deltaTime);
 		yvel *= -1;
 	}
 
-	reduceXVel(900, deltaTime);
+	reduceXVel(600, deltaTime);
 	reduceYVel(1800, deltaTime);
 }
 

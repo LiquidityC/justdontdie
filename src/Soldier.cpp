@@ -27,34 +27,43 @@ void Soldier::handle(const SDL_Event& e)
 		return;
 	}
 
-	if (e.type != SDL_KEYDOWN) {
-		return;
-	}
+	if (e.type == SDL_KEYDOWN) {
+		switch (e.key.keysym.sym) {
+			case SDLK_SPACE:
+			case SDLK_h:
+			case SDLK_k:
+				if( grounded || (!ghostMode && !doubleJumped) ) {
+					yvel = -1050;
+					doubleJumped = grounded ? false : true;
+					grounded = false;
+					mixer->playEffect(Effects::JUMP);
+				}
+				break;
+			case SDLK_j:
+				ghostMode = !ghostMode;
+				ghostOverlay->setVisible(ghostMode);
+				break;
+			default:
+				break;
+		}
+	} else if (e.type == SDL_JOYAXISMOTION) {
+		std::cout << "Gamepad motion" << std::endl;
+		std::cout << "Axis: " << e.jaxis.axis << std::endl;
+		std::cout << "Value: " << e.jaxis.value << std::endl;
+		std::cout << "Which: " << e.jaxis.which << std::endl;
 
-	switch (e.key.keysym.sym) {
-		case SDLK_SPACE:
-		case SDLK_h:
-		case SDLK_k:
-			if( grounded || (!ghostMode && !doubleJumped) ) {
-				yvel = -1050;
-				doubleJumped = grounded ? false : true;
-				grounded = false;
-				mixer->playEffect(Effects::JUMP);
-			}
-			break;
-		case SDLK_j:
-			ghostMode = !ghostMode;
-			ghostOverlay->setVisible(ghostMode);
-			break;
-		default:
-			break;
+		if (e.jaxis.value > 1000) {
+			xvel = 300;
+		} else if (e.jaxis.value < 1000) {
+			xvel = -300;
+		} else {
+			xvel = 0;
+		}
 	}
 }
 
 void Soldier::postHandle(const flat2d::GameData *gameData)
 {
-	xvel = 0;
-
 	const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
 	if (currentKeyStates[SDL_SCANCODE_A] || currentKeyStates[SDL_SCANCODE_LEFT]) {
 		xvel = -300;

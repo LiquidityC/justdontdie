@@ -11,6 +11,7 @@
 #include "Window.h"
 #include "Mixer.h"
 #include "DeltatimeMonitor.h"
+#include "GameControllerContainer.h"
 
 using namespace flat2d;
 
@@ -24,6 +25,7 @@ FlatBuilder::~FlatBuilder()
 	delete camera;
 	delete mixer;
 	delete deltatimeMonitor;
+	delete controllerContainer;
 
 	IMG_Quit();
 	SDL_Quit();
@@ -33,7 +35,7 @@ FlatBuilder::~FlatBuilder()
 
 bool FlatBuilder::initSDL(std::string title, int screenWidth, int screenHeight)
 {
-	if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0) {
+	if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK ) < 0) {
 		std::cerr << "Failed to init video: " 
 			<< SDL_GetError() << std::endl;
 		return false;
@@ -77,6 +79,7 @@ bool FlatBuilder::initContainers()
 	renderData = new RenderData(window->getRenderer(), camera);
 	mixer = new Mixer();
 	deltatimeMonitor = new DeltatimeMonitor();
+	controllerContainer = new GameControllerContainer();
 	gameData = new GameData(objectContainer, collisionDetector, mixer, renderData, deltatimeMonitor);
 
 	return true;

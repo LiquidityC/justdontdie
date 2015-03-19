@@ -6,11 +6,9 @@
 #include <map>
 #include "LocationProperty.h"
 
-/**
- * Forward declarations
- */
 namespace flat2d
 {
+	// Forward declarations
 	class GameObject;
 	class GameData;
 	class RenderData;
@@ -20,13 +18,7 @@ namespace flat2d
 	typedef std::map<std::string, GameObject*> ObjectList;
 	typedef std::map<Layer, ObjectList> LayerMap;
 	typedef std::map<LocationProperty, ObjectList> SpatialPartitionMap;
-}
 
-/**
- * Implementation
- */
-namespace flat2d
-{
 	class ObjectContainer 
 	{
 		private:

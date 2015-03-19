@@ -13,6 +13,7 @@ namespace flat2d
 	class RenderData;
 	class Mixer;
 	class DeltatimeMonitor;
+	class GameControllerContainer;
 
 	class FlatBuilder
 	{
@@ -25,6 +26,7 @@ namespace flat2d
 			Camera *camera = nullptr;
 			Mixer *mixer = nullptr;
 			DeltatimeMonitor *deltatimeMonitor = nullptr;
+			GameControllerContainer *controllerContainer = nullptr;
 
 		public:
 			~FlatBuilder();
