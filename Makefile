@@ -18,7 +18,7 @@ RM			= rm
 ECHO		= echo
 CP			= cp
 MV			= mv
-LIBS 		= $(SDL2_LDFLAGS) -lflat
+LIBS 		= -lflat $(SDL2_LDFLAGS)
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h)
