@@ -14,7 +14,7 @@ before_install:
     - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
     - sudo ldconfig
 before_script:
-    - sudo dpkf -L libsdl2-dev
-    - sudo dpkf -L libsdl2-image-dev
-    - sudo dpkf -L libsdl2-ttf-dev
-    - sudo dpkf -L libsdl2-mixer-dev
+    - sudo dpkg -L libsdl2-dev
+    - sudo dpkg -L libsdl2-image-dev
+    - sudo dpkg -L libsdl2-ttf-dev
+    - sudo dpkg -L libsdl2-mixer-dev
