@@ -33,7 +33,7 @@ LIB_OBJECTS			= $(addprefix $(OBJDIR)/,$(notdir $(LIB_SOURCES:.cpp=.o)))
 
 LIB_INCLUDE_DIR		= include/flat
 LIB_UNIFIED_INCLUDE	= $(LIB_INCLUDE_DIR)/flat.h
-LIB_INCLUDE_SOURCES	= $(filter-out src/NewMacro.h, $(wildcard src/*.h))
+LIB_INCLUDE_SOURCES	= $(wildcard src/*.h)
 LIB_INCLUDES		= $(addprefix $(LIB_INCLUDE_DIR)/,$(notdir $(LIB_INCLUDE_SOURCES)))
 
 TEST				= test
@@ -56,7 +56,7 @@ $(LIB_UNIFIED_INCLUDE): $(LIB_INCLUDES)
 	@$(ECHO) "#ifndef _FLAT_H" > $(LIB_INCLUDE_DIR)/flat.h
 	@$(ECHO) "#define _FLAT_H" >> $(LIB_INCLUDE_DIR)/flat.h
 	@$(ECHO) "" >> $(LIB_INCLUDE_DIR)/flat.h
-	@for header in $(shell ls include/flat/*.h | xargs basename -a); do $(ECHO) "#include <flat/$$header>"; done >> $(LIB_INCLUDE_DIR)/flat.h
+	@for header in $(notdir $(LIB_INCLUDES)); do $(ECHO) "#include <flat/$$header>"; done >> $(LIB_INCLUDE_DIR)/flat.h
 	@$(ECHO) "" >> $(LIB_INCLUDE_DIR)/flat.h
 	@$(ECHO) "#endif" >> $(LIB_INCLUDE_DIR)/flat.h
 
