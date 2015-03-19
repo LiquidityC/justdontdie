@@ -1,7 +1,6 @@
 #ifndef _GENERIC_GAME_OBJECT_H
 #define _GENERIC_GAME_OBJECT_H
 
-#include "NewMacro.h"
 #include <iostream>
 #include <flat/flat.h>
 #include "GameObjectType.h"

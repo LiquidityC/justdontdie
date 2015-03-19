@@ -1,13 +1,8 @@
-#include <CppUTest/TestHarness.h>
+#include "catch.hpp"
 #include "GameObjectImpl.h"
 #include "../src/Button.h"
 
-TEST_GROUP ( ButtonTests )
-{
-
-};
-
-TEST (ButtonTests, TestClick)
+TEST_CASE ("ButtonTests", "[click]")
 {
 	bool clicked = false;
 	flat2d::ui::Button button(10, 10, 30, 10, 
@@ -15,9 +10,9 @@ TEST (ButtonTests, TestClick)
 				clicked = true;
 			});
 
-	CHECK( !clicked );
+	REQUIRE( !clicked );
 
 	button.triggerClick();
 
-	CHECK( clicked );
+	REQUIRE( clicked );
 }

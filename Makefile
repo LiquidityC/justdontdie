@@ -10,11 +10,7 @@ SDL2_LDFLAGS		:= $(shell sdl2-config --static-libs)
 SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
 
 CXXFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
-			  -I./flat/include -I./include -include src/NewMacro.h $(SDL2_CFLAGS) -DDEBUG
-
-ifdef NO_MEM_TEST
-CXXFLAGS		+= -DNO_MEM_TEST
-endif
+			  -I./flat/include -I./include $(SDL2_CFLAGS) -DDEBUG
 
 LD			= g++
 LDFLAGS 	= -L./flat/lib/ -L./lib/
@@ -22,7 +18,7 @@ RM			= rm
 ECHO		= echo -e
 CP			= cp
 MV			= mv
-LIBS 		= $(SDL2_LDFLAGS) -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lCppUTest -lCppUTestExt -lflat
+LIBS 		= $(SDL2_LDFLAGS) -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lflat
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h)
@@ -60,7 +56,7 @@ checkall:
 	@$(MAKE) --no-print-directory libs
 	@for d in $(LIBRARIES); do (cd $$d; $(MAKE) --no-print-directory check ); done
 	@$(MAKE) --no-print-directory $(TEST)
-	@./$(TEST) -v -c
+	@./$(TEST)
 
 libs: $(LIBRARIES)
 

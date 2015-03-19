@@ -1,49 +1,45 @@
-#include <CppUTest/TestHarness.h>
 #include "GameObjectImpl.h"
+#include "catch.hpp"
 #include "../src/ObjectContainer.h"
 #include "../src/GameData.h"
 #include "../src/CollisionDetector.h"
 #include "../src/Mixer.h"
 
-TEST_GROUP( ObjectContainerTests )
-{
-};
-
-TEST( ObjectContainerTests, TestObjectRegister )
+TEST_CASE( "Test object register", "[objectcontainer]" )
 {
 	flat2d::GameObject* c = new GameObjectImpl(100, 100);
 	flat2d::ObjectContainer container;
 
-	CHECK_EQUAL( 0, container.getObjectCount() );
+	REQUIRE( 0 == container.getObjectCount() );
 	container.registerObject(c);
-	CHECK_EQUAL( 1, container.getObjectCount() );
+	REQUIRE( 1 == container.getObjectCount() );
 	container.registerObject(c);
-	CHECK_EQUAL( 1, container.getObjectCount() );
+	REQUIRE( 1 == container.getObjectCount() );
 	container.unregisterObject(c);
-	CHECK_EQUAL( 0, container.getObjectCount() );
+	REQUIRE( 0 == container.getObjectCount() );
 
 	delete c;
 }
 
-TEST( ObjectContainerTests, TestObjectContainerDestructor )
+TEST_CASE( "Test container destructor", "[objectcontainer]" )
 {
 	flat2d::GameObject* c = new GameObjectImpl(100, 100);
 	flat2d::ObjectContainer* container = new flat2d::ObjectContainer();
 
-	CHECK_EQUAL( 0, container->getObjectCount() );
+	REQUIRE( 0 == container->getObjectCount() );
 
 	container->registerObject(c);
 
-	CHECK_EQUAL( 1, container->getObjectCount() );
+	REQUIRE( 1 == container->getObjectCount() );
 
 	container->registerObject(c);
 
-	CHECK_EQUAL( 1, container->getObjectCount() );
+	REQUIRE( 1 == container->getObjectCount() );
 
 	delete container;
 }
 
-TEST( ObjectContainerTests, TestObjectContainerUnregister )
+TEST_CASE( "Test unregister", "[objectcontainer]" )
 {
 	flat2d::GameObject* c = new GameObjectImpl(100, 100);
 	flat2d::ObjectContainer container;
@@ -53,14 +49,14 @@ TEST( ObjectContainerTests, TestObjectContainerUnregister )
 	delete c;
 }
 
-TEST( ObjectContainerTests, TestObjectContainerLayers )
+TEST_CASE( "Test layers", "[objectcontainer]" )
 {
 	flat2d::GameObject* c1 = new GameObjectImpl(100, 100);
 	flat2d::GameObject* c2 = new GameObjectImpl(100, 100);
 	flat2d::GameObject* c3 = new GameObjectImpl(100, 100);
 	flat2d::ObjectContainer container;
 	
-	CHECK_EQUAL( 0, container.getObjectCountFor(0) );
+	REQUIRE( 0 == container.getObjectCountFor(0) );
 
 	container.addLayer(0);
 	container.addLayer(0);
@@ -68,30 +64,30 @@ TEST( ObjectContainerTests, TestObjectContainerLayers )
 
 	container.registerObject(c1);
 
-	CHECK_EQUAL( 1, container.getObjectCount() );
-	CHECK_EQUAL( 1, container.getObjectCountFor(flat2d::ObjectContainer::DEFAULT_LAYER) );
+	REQUIRE( 1 == container.getObjectCount() );
+	REQUIRE( 1 == container.getObjectCountFor(flat2d::ObjectContainer::DEFAULT_LAYER) );
 
 	container.registerObject(c2, 0);
 	container.registerObject(c2, 1);
 
-	CHECK_EQUAL( 2, container.getObjectCount() );
-	CHECK_EQUAL( 1, container.getObjectCountFor(0) );
-	CHECK_EQUAL( 0, container.getObjectCountFor(1) );
+	REQUIRE( 2 == container.getObjectCount() );
+	REQUIRE( 1 == container.getObjectCountFor(0) );
+	REQUIRE( 0 == container.getObjectCountFor(1) );
 
 	container.registerObject(c3, 1);
 
-	CHECK_EQUAL( 1, container.getObjectCountFor(1) );
-	CHECK_EQUAL( 3, container.getObjectCount() );
+	REQUIRE( 1 == container.getObjectCountFor(1) );
+	REQUIRE( 3 == container.getObjectCount() );
 
 	container.unregisterObject(c2);
 
-	CHECK_EQUAL( 0, container.getObjectCountFor(0) );
-	CHECK_EQUAL( 2, container.getObjectCount() );
+	REQUIRE( 0 == container.getObjectCountFor(0) );
+	REQUIRE( 2 == container.getObjectCount() );
 
 	delete c2;
 }
 
-TEST( ObjectContainerTests, TestObjectContainerClearLayers )
+TEST_CASE( "Test clearing layers", "[objectcontainer]" )
 {
 	flat2d::GameObject* c1 = new GameObjectImpl(100, 100);
 	flat2d::GameObject* c2 = new GameObjectImpl(100, 100);
@@ -114,18 +110,18 @@ TEST( ObjectContainerTests, TestObjectContainerClearLayers )
 	container.registerObject(c5, backLayer);
 	container.registerObject(c6, backLayer);
 
-	CHECK_EQUAL ( 6, container.getObjectCount() );
-	CHECK_EQUAL ( 3, container.getObjectCountFor(frontLayer) );
-	CHECK_EQUAL ( 3, container.getObjectCountFor(backLayer) );
+	REQUIRE ( 6 == container.getObjectCount() );
+	REQUIRE ( 3 == container.getObjectCountFor(frontLayer) );
+	REQUIRE ( 3 == container.getObjectCountFor(backLayer) );
 
 	container.unregisterAllObjectsFor(frontLayer);
 
-	CHECK_EQUAL ( 3, container.getObjectCount() );
-	CHECK_EQUAL ( 0, container.getObjectCountFor(frontLayer) );
-	CHECK_EQUAL ( 3, container.getObjectCountFor(backLayer) );
+	REQUIRE ( 3 == container.getObjectCount() );
+	REQUIRE ( 0 == container.getObjectCountFor(frontLayer) );
+	REQUIRE ( 3 == container.getObjectCountFor(backLayer) );
 }
 
-TEST( ObjectContainerTests, TestObjectAutoclean )
+TEST_CASE( "Test auto cleaning", "[objectcontainer]" )
 {
 	flat2d::GameObject* c1 = new GameObjectImpl(100, 100);
 	GameObjectImpl* c2 = new GameObjectImpl(100, 100);
@@ -139,15 +135,15 @@ TEST( ObjectContainerTests, TestObjectAutoclean )
 	container.registerObject(c1);
 	container.registerObject(c2);
 
-	CHECK_EQUAL ( 2, container.getObjectCount() );
+	REQUIRE ( 2 == container.getObjectCount() );
 
 	c2->setDead(true);
 	container.preHandleObjects(&gameData);
 
-	CHECK_EQUAL ( 1, container.getObjectCount() );
+	REQUIRE ( 1 == container.getObjectCount() );
 }
 
-TEST( ObjectContainerTests, TestSpatialPartitionsHandling )
+TEST_CASE( "Test partition handling", "[objectcontainer]" )
 {
 	flat2d::ObjectContainer container;
 	flat2d::GameObject* o = new GameObjectImpl(45, 45);
@@ -155,14 +151,14 @@ TEST( ObjectContainerTests, TestSpatialPartitionsHandling )
 	container.setSpatialPartitionDimension(50);
 	container.registerObject(o);
 
-	CHECK_EQUAL( 4, o->getLocationProperty().getParents().size() );
+	REQUIRE( 4 == o->getLocationProperty().getParents().size() );
 
 	o->getLocationProperty().incrementXpos(10);
 
-	CHECK_EQUAL( 2, o->getLocationProperty().getParents().size() );
+	REQUIRE( 2 == o->getLocationProperty().getParents().size() );
 }
 
-TEST( ObjectContainerTests, TestSpatialPartitions )
+TEST_CASE( "Test spatial partitions", "[objectcontainer]" )
 {
 	flat2d::ObjectContainer container;
 
@@ -173,17 +169,17 @@ TEST( ObjectContainerTests, TestSpatialPartitions )
 	flat2d::GameObject* o5 = new GameObjectImpl(1095, 1095);
 
 	container.registerObject(o1);
-	CHECK_EQUAL ( 1, container.getSpatialPartitionCount() );
+	REQUIRE ( 1 == container.getSpatialPartitionCount() );
 
 	container.registerObject(o4);
-	CHECK_EQUAL ( 1, container.getSpatialPartitionCount() );
+	REQUIRE ( 1 == container.getSpatialPartitionCount() );
 
 	container.registerObject(o2);
-	CHECK_EQUAL ( 2, container.getSpatialPartitionCount() );
+	REQUIRE ( 2 == container.getSpatialPartitionCount() );
 
 	container.registerObject(o3);
-	CHECK_EQUAL ( 3, container.getSpatialPartitionCount() );
+	REQUIRE ( 3 == container.getSpatialPartitionCount() );
 
 	container.registerObject(o5);
-	CHECK_EQUAL ( 7, container.getSpatialPartitionCount() );
+	REQUIRE ( 7 == container.getSpatialPartitionCount() );
 }

@@ -1,43 +1,23 @@
-#include <CppUTest/TestHarness.h>
 #include <flat/flat.h>
+#include "catch.hpp"
 #include "../src/Soldier.h"
 #include "../src/Rocket.h"
 
-TEST_GROUP ( SoldierTests )
+TEST_CASE ( "Test the soldier", "[soldier]" )
 {
 	flat2d::ObjectContainer *container;
 	flat2d::CollisionDetector *detector;
 
 	Soldier *soldier;
 
-	void setup()
-	{
-		container = new flat2d::ObjectContainer();
-		detector = new flat2d::CollisionDetector(container);
+	container = new flat2d::ObjectContainer();
+	detector = new flat2d::CollisionDetector(container);
 
-		soldier = new Soldier(200, 200);
-		container->registerObject(soldier);
-	}
+	soldier = new Soldier(200, 200);
+	container->registerObject(soldier);
 
-	void teardown()
-	{
-		delete detector;
-		delete container;
-	}
-};
+	// Future sections here
 
-/* This isn't testing what I intended to test */
-IGNORE_TEST( SoldierTests, TestRocketCollision )
-{
-
-	Rocket *r1 = new Rocket( 200, 200 );
-	Rocket *r2 = new Rocket( 200, 200 );
-
-	CHECK ( !detector->hasCollided(soldier, r1) );
-	CHECK ( detector->hasCollided(soldier, r2) );
-
-	soldier->setGhostMode(true);
-
-	CHECK ( detector->hasCollided(soldier, r1) );
-	CHECK ( !detector->hasCollided(soldier, r2) );
+	delete detector;
+	delete container;
 }

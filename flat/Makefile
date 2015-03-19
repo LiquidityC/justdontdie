@@ -5,14 +5,10 @@ endif
 SDL2_LDFLAGS		:= $(shell sdl2-config --static-libs)
 SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
 
-CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
-					  -include src/NewMacro.h $(SDL2_CFLAGS)
+CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 $(SDL2_CFLAGS)
+
 ifdef DEBUG
 CXXFLAGS 			+= -DDEBUG
-endif
-
-ifdef NO_MEM_TEST
-CXXFLAGS			+= -DNO_MEM_TEST
 endif
 
 LD					= g++
@@ -25,7 +21,7 @@ ECHO				= echo -e
 SHELL				= /bin/sh
 CTAGS				= ctags
 
-LIBS 				= $(SDL2_LDFLAGS) -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lCppUTest -lCppUTestExt -lsqlite3
+LIBS 				= $(SDL2_LDFLAGS) -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lsqlite3
 
 DEPS				= $(wildcard src/*.h)
 OBJDIR				= obj
@@ -51,7 +47,7 @@ default: $(LIBRARY) $(LIB_INCLUDES) $(LIB_UNIFIED_INCLUDE)
 all: $(LIBRARY) $(TEST) $(LIB_UNIFIED_INCLUDE)
 
 check: $(TEST)
-	./$(TEST) -v -c
+	./$(TEST)
 
 $(LIB_INCLUDE_DIR)/%.h: src/%.h
 	@$(CP) $< $@

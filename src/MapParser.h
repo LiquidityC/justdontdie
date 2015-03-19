@@ -1,7 +1,8 @@
 #ifndef _MAP_PARSER_H
 #define _MAP_PARSER_H
 
-#include "NewMacro.h"
+#include "rapidxml-1.13/rapidxml.hpp"
+#include "rapidxml-1.13/rapidxml_utils.hpp"
 #include <flat/flat.h>
 #include <string>
 
