@@ -6,7 +6,7 @@ endif
 CNORMAL	= \033[0m
 CGREEN	= \033[32m
 
-SDL2_LDFLAGS		:= $(shell sdl2-config --static-libs)
+SDL2_LDFLAGS		:= $(shell sdl2-config --libs)
 SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
 
 CXXFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
