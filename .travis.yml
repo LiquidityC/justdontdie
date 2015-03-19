@@ -1,7 +1,7 @@
 language: cpp
 compiler:
     - gcc
-script: cd flat && make && make check && cd .. && make && make check
+script: cd flat && NO_MEM_TEST=1 make && NO_MEM_TEST=1 make check && cd .. && NO_MEM_TEST=1 make && NO_MEM_TEST=1 make check
 before_install:
     - sudo add-apt-repository -y ppa:boost-latest/ppa
     - sudo add-apt-repository -y ppa:zoogie/sdl2-snapshots

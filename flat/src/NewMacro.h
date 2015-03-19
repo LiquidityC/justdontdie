@@ -12,7 +12,9 @@
 #include <map>
 #include <boost/lexical_cast.hpp>
 
+#ifndef NO_MEM_TEST
 // Include this last or everything breaks
 #include <CppUTest/MemoryLeakDetectorNewMacros.h>
+#endif
 
 #endif

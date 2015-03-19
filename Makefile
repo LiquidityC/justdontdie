@@ -11,8 +11,9 @@ SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
 
 CXXFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
 			  -I./flat/include -I./include -include src/NewMacro.h $(SDL2_CFLAGS) -DDEBUG
-ifdef NOTEST
-CXXFLAGS		+= -DNOTEST
+
+ifdef NO_MEM_TEST
+CXXFLAGS		+= -DNO_MEM_TEST
 endif
 
 LD			= g++

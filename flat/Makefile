@@ -10,8 +10,9 @@ CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
 ifdef DEBUG
 CXXFLAGS 			+= -DDEBUG
 endif
-ifdef NOTEST
-CXXFLAGS			+= -DNOTEST
+
+ifdef NO_MEM_TEST
+CXXFLAGS			+= -DNO_MEM_TEST
 endif
 
 LD					= g++
