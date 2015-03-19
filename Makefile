@@ -6,8 +6,8 @@ endif
 CNORMAL	= \033[0m
 CGREEN	= \033[32m
 
-SDL2_LDFLAGS		:= $(shell sdl2-config --libs)
-SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
+SDL2_LDFLAGS		:= $(shell pkg-config --libs SDL2_image SDL2_mixer SDL2_ttf sdl2)
+SDL2_CFLAGS			:= $(shell pkg-config --cflags SDL2_image SDL2_mixer SDL2_ttf sdl2)
 
 CXXFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
 			  -I./flat/include -I./include $(SDL2_CFLAGS) -DDEBUG
@@ -18,7 +18,7 @@ RM			= rm
 ECHO		= echo
 CP			= cp
 MV			= mv
-LIBS 		= -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lflat $(SDL2_LDFLAGS)
+LIBS 		= $(SDL2_LDFLAGS) -lflat
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h)
