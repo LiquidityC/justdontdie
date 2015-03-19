@@ -15,7 +15,7 @@ CXXFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
 LD			= g++
 LDFLAGS 	= -L./flat/lib/ -L./lib/
 RM			= rm
-ECHO		= echo -e
+ECHO		= echo
 CP			= cp
 MV			= mv
 LIBS 		= $(SDL2_LDFLAGS) -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lflat
@@ -36,9 +36,9 @@ LIBRARIES			= flat
 
 default: 
 	@$(MAKE) --no-print-directory libs
-	@$(ECHO) "$(CGREEN)Building $(EXECUTABLE)...$(CNORMAL)"
+	@$(ECHO) -e "$(CGREEN)Building $(EXECUTABLE)...$(CNORMAL)"
 	@$(MAKE) --no-print-directory $(EXECUTABLE)
-	@$(ECHO) "$(CGREEN)Building $(EXECUTABLE) complete$(CNORMAL)"
+	@$(ECHO) -e "$(CGREEN)Building $(EXECUTABLE) complete$(CNORMAL)"
 
 all: default checkall
 
@@ -76,9 +76,9 @@ $(OBJDIR)/%.o: testsrc/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 $(LIBRARIES):
-	@$(ECHO) "$(CGREEN)Building $@lib...$(CNORMAL)"
+	@$(ECHO) -e "$(CGREEN)Building $@lib...$(CNORMAL)"
 	@$(MAKE) -C $@ 
-	@$(ECHO) "$(CGREEN)Building $@lib complete$(CNORMAL)"
+	@$(ECHO) -e "$(CGREEN)Building $@lib complete$(CNORMAL)"
 
 clean:
 	@$(ECHO) Cleaning project

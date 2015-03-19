@@ -17,7 +17,7 @@ AR					= ar
 ARFLAGS				= rcs
 RM					= rm
 CP					= cp
-ECHO				= echo -e
+ECHO				= echo
 SHELL				= /bin/sh
 CTAGS				= ctags
 
