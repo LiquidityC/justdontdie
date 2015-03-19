@@ -2,8 +2,8 @@ ifndef CXX
 CXX			= g++
 endif
 
-SDL2_LDFLAGS		:= $(shell sdl2-config --static-libs)
-SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
+SDL2_LDFLAGS		:= $(shell pkg-config --libs SDL2_image SDL2_mixer SDL2_ttf sdl2)
+SDL2_CFLAGS			:= $(shell pkg-config --cflags SDL2_image SDL2_mixer SDL2_ttf sdl2)
 
 CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 $(SDL2_CFLAGS)
 
@@ -21,7 +21,7 @@ ECHO				= echo
 SHELL				= /bin/sh
 CTAGS				= ctags
 
-LIBS 				= $(SDL2_LDFLAGS) -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lsqlite3
+LIBS 				= $(SDL2_LDFLAGS) -lsqlite3
 
 DEPS				= $(wildcard src/*.h)
 OBJDIR				= obj
