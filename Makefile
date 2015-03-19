@@ -64,10 +64,10 @@ dist: default
 	$(LD) $(LDFLAGS) -Wl,-rpath,'.:lib/.' $(PROG_OBJECTS) $(LIBS) -o dist/$(EXECUTABLE)
 
 $(EXECUTABLE): $(PROG_OBJECTS) $(DEPS)
-	$(LD) $(LDFLAGS) $(PROG_OBJECTS) -o $@ $(LIBS)
+	$(LD) $(LDFLAGS) $(PROG_OBJECTS) $(LIBS) -o $@
 
 $(TEST): $(TEST_OBJECTS) $(DEPS)
-	$(LD) $(LDFLAGS) $(TEST_OBJECTS) -o $@ $(LIBS)
+	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
 
 $(OBJDIR)/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
