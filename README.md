@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/LiquidityC/deadgaem.svg?branch=master)](https://travis-ci.org/LiquidityC/deadgaem)
+
 I'ts going to be a platform game. Just haven't gotten there quite yet.
 
 Currently the game consists of controlling your little soldier through one map
