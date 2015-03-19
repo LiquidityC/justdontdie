@@ -1,7 +1,6 @@
 language: cpp
 compiler:
     - gcc
-    - clang
 script: make && make checkall
 before_install:
     - sudo add-apt-repository -y ppa:boost-latest/ppa
