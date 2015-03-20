@@ -1,0 +1,9 @@
+flat2d:
+	-	Drop the GameObject, it can be replaced by RenderedGameObject.
+		Perhaps rename it Entity?
+	-	Make collision detection a separate game loop and don't check it
+		when moving the actual object. Collisions should run after preRender()
+		and before render().
+
+Game:
+	-	Make the initial level once collisions are smoother.
