@@ -27,12 +27,12 @@ void Soldier::handle(const SDL_Event& e)
 		return;
 	}
 
-	motionController.handle(e, *this);
+	motionController->handle(e);
 }
 
 void Soldier::postHandle(const flat2d::GameData *gameData)
 {
-	motionController.postHandle(gameData, *this);
+	motionController->postHandle(gameData);
 
 	if (spawnGraceTimer.isStarted() && spawnGraceTimer.getTicks() > 1000) {
 		spawnGraceTimer.stop();
@@ -271,6 +271,7 @@ void Soldier::wasKilled()
 {
 	killed = true;
 	deathTimer.start();
+	motionController->freeze();
 
 	if (ghostMode) {
 		mixer->playEffect(Effects::SHATTER);

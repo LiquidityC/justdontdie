@@ -35,7 +35,7 @@ FlatBuilder::~FlatBuilder()
 
 bool FlatBuilder::initSDL(std::string title, int screenWidth, int screenHeight)
 {
-	if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK ) < 0) {
+	if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_GAMECONTROLLER ) < 0) {
 		std::cerr << "Failed to init video: " << SDL_GetError() << std::endl;
 		return false;
 	}

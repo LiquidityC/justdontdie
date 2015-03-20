@@ -17,7 +17,7 @@ class Soldier : public flat2d::RenderedGameObject
 	} Clip;
 
 	private:
-		SoldierMotionController motionController;
+		SoldierMotionController *motionController = nullptr;
 		bool grounded = false;
 		flat2d::Mixer *mixer = nullptr;
 
@@ -66,12 +66,15 @@ class Soldier : public flat2d::RenderedGameObject
 		Soldier(unsigned int x, unsigned int y) :
 			RenderedGameObject(x, y, 28, 24),
 			checkPointX(x),
-			checkPointY(y) { };
+			checkPointY(y) { 
+				motionController = new SoldierMotionController(this);
+			};
 
 		~Soldier() {
 			if (texture != nullptr) {
 				SDL_DestroyTexture(soldierTexture);
 				soldierTexture = nullptr;
+				delete motionController;
 			}
 		};
 

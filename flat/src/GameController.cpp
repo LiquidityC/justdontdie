@@ -5,7 +5,7 @@ namespace flat2d
 {
 	GameController::GameController(int index)
 	{
-		controller = SDL_JoystickOpen(index);
+		controller = SDL_GameControllerOpen(index);
 		if (controller == nullptr) {
 			std::cout << "Unable to open controller (" << index << ")" << std::endl;
 		}
@@ -14,11 +14,11 @@ namespace flat2d
 	GameController::~GameController()
 	{
 		if (controller != nullptr) {
-			SDL_JoystickClose( controller );
+			SDL_GameControllerClose( controller );
 		}
 	}
 
-	SDL_Joystick* GameController::getSDLController()
+	SDL_GameController* GameController::getSDLController()
 	{
 		return controller;
 	}

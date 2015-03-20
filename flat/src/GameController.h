@@ -10,14 +10,14 @@ namespace flat2d
 	class GameController
 	{
 		private:
-			SDL_Joystick *controller = nullptr;
+			SDL_GameController *controller = nullptr;
 
 		public:
 			GameController(int);
 
 			~GameController();
 
-			SDL_Joystick* getSDLController();
+			SDL_GameController* getSDLController();
 	};
 }
 

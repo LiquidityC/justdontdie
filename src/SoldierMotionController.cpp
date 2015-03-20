@@ -3,97 +3,184 @@
 #include "Soldier.h"
 #include "SoundMappings.h"
 
-void SoldierMotionController::handle(const SDL_Event& e, Soldier& soldier)
+SoldierMotionController::SoldierMotionController(Soldier *soldier)
 {
-	if (e.type == SDL_KEYDOWN) {
-		switch (e.key.keysym.sym) {
-			case SDLK_SPACE:
-			case SDLK_h:
-			case SDLK_k:
-				jump(soldier);
-				break;
-			case SDLK_j:
-				ghostMode(soldier);
-				break;
-			default:
-				break;
-		}
-	} else if (e.type == SDL_JOYAXISMOTION) {
-		if (e.jaxis.axis == 0) {
-			if (e.jaxis.value > 3200) {
-				moveRight(soldier);
-			} else if (e.jaxis.value < -3200) {
-				moveLeft(soldier);
-			} else {
-				stop(soldier);
-			}
-		}
-	} else if (e.type == SDL_JOYHATMOTION) {
-		if (e.jhat.value & SDL_HAT_RIGHT) {
-			moveRight(soldier);
-		} else if (e.jhat.value & SDL_HAT_LEFT) {
-			moveLeft(soldier);
+	this->soldier = soldier;
+
+	// Prepare the movement map
+	for (int mapping = MOVE_LEFT; mapping != LAST; mapping++) {
+		movementMap[static_cast<MovementMapping>(mapping)] = false;
+	}
+}
+
+void SoldierMotionController::handle(const SDL_Event& e)
+{
+	switch (e.type) {
+		case SDL_KEYDOWN:
+			keyDown(e.key);
+			break;
+		case SDL_KEYUP:
+			keyUp(e.key);
+			break;
+		case SDL_CONTROLLERAXISMOTION:
+			controllerAxisMotion(e.caxis);
+			break;
+		case SDL_CONTROLLERBUTTONDOWN:
+			controllerButtonDown(e.cbutton);
+			break;
+		case SDL_CONTROLLERBUTTONUP:
+			controllerButtonUp(e.cbutton);
+			break;
+		default:
+			break;
+	}
+}
+
+void SoldierMotionController::keyDown(const SDL_KeyboardEvent& e)
+{
+	switch (e.keysym.sym) {
+		case SDLK_k:
+			jump();
+			movementMap[FLOAT] = true;
+			break;
+		case SDLK_j:
+			ghostMode();
+			break;
+		case SDLK_a:
+		case SDLK_LEFT:
+			movementMap[MOVE_LEFT] = true;
+			break;
+		case SDLK_d:
+		case SDLK_RIGHT:
+			movementMap[MOVE_RIGHT] = true;
+			break;
+		default:
+			break;
+	}
+}
+
+void SoldierMotionController::keyUp(const SDL_KeyboardEvent& e)
+{
+	switch (e.keysym.sym) {
+		case SDLK_k:
+			movementMap[FLOAT] = false;
+			break;
+		case SDLK_a:
+		case SDLK_LEFT:
+			movementMap[MOVE_LEFT] = false;
+			break;
+		case SDLK_d:
+		case SDLK_RIGHT:
+			movementMap[MOVE_RIGHT] = false;
+			break;
+		default:
+			break;
+	}
+}
+
+void SoldierMotionController::controllerAxisMotion(const SDL_ControllerAxisEvent& e)
+{
+	if (e.axis == SDL_CONTROLLER_AXIS_LEFTX) {
+		if (e.value > 3200) {
+			movementMap[MOVE_RIGHT] = true;
+		} else if (e.value < -3200) {
+			movementMap[MOVE_LEFT] = true;
 		} else {
-			stop(soldier);
-		}
-	} else if (e.type == SDL_JOYBUTTONDOWN) {
-		std::cout << "Button: " << static_cast<int>(e.jbutton.button) << std::endl;
-		switch (e.jbutton.button) {
-			case 0:
-				jump(soldier);
-				break;
-			case 1:
-				ghostMode(soldier);
-				break;
-			default:
-				break;
+			movementMap[MOVE_LEFT] = false;
+			movementMap[MOVE_RIGHT] = false;
 		}
 	}
 }
 
-void SoldierMotionController::postHandle(const flat2d::GameData* data, Soldier& soldier)
+void SoldierMotionController::controllerButtonDown(const SDL_ControllerButtonEvent& e)
 {
-	const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
-	if (currentKeyStates[SDL_SCANCODE_A] || currentKeyStates[SDL_SCANCODE_LEFT]) {
-		moveLeft(soldier);
-	}
-	if (currentKeyStates[SDL_SCANCODE_D] || currentKeyStates[SDL_SCANCODE_RIGHT]) {
-		moveRight(soldier);
-	}
-	if (currentKeyStates[SDL_SCANCODE_K] && soldier.ghostMode && !soldier.grounded && soldier.yvel > 5) {
-		soldier.yvel = 5;
-	}
-}
-
-void SoldierMotionController::stop(Soldier& soldier)
-{
-	soldier.xvel = 0;
-}
-
-void SoldierMotionController::moveLeft(Soldier& soldier)
-{
-	soldier.xvel = -300;
-	soldier.facingLeft = true;
-}
-
-void SoldierMotionController::moveRight(Soldier& soldier)
-{
-	soldier.xvel = 300;
-	soldier.facingLeft = false;
-}
-
-void SoldierMotionController::jump(Soldier& soldier)
-{
-	if( soldier.grounded || (!soldier.ghostMode && !soldier.doubleJumped) ) {
-		soldier.yvel = -1050;
-		soldier.doubleJumped = soldier.grounded ? false : true;
-		soldier.grounded = false;
-		soldier.mixer->playEffect(Effects::JUMP);
+	switch (e.button) {
+		case SDL_CONTROLLER_BUTTON_A:
+			jump();
+			movementMap[FLOAT] = true;
+			break;
+		case SDL_CONTROLLER_BUTTON_B:
+			ghostMode();
+			break;
+		case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+			movementMap[MOVE_RIGHT] = true;
+			break;
+		case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+			movementMap[MOVE_LEFT] = true;
+			break;
+		default:
+			break;
 	}
 }
 
-void SoldierMotionController::ghostMode(Soldier& soldier)
+void SoldierMotionController::controllerButtonUp(const SDL_ControllerButtonEvent& e)
 {
-	soldier.ghostMode = !soldier.ghostMode;
-	soldier.ghostOverlay->setVisible(soldier.ghostMode);
+	switch (e.button) {
+		case SDL_CONTROLLER_BUTTON_A:
+			movementMap[FLOAT] = false;
+			break;
+		case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
+			movementMap[MOVE_RIGHT] = false;
+			break;
+		case SDL_CONTROLLER_BUTTON_DPAD_LEFT:
+			movementMap[MOVE_LEFT] = false;
+			break;
+		default:
+			break;
+	}
+}
+
+void SoldierMotionController::postHandle(const flat2d::GameData* data)
+{
+	stop();
+
+	if (movementMap[MOVE_LEFT]) {
+		moveLeft();
+	} else if (movementMap[MOVE_RIGHT]) {
+		moveRight();
+	}
+
+	if (movementMap[FLOAT] && soldier->ghostMode && !soldier->grounded && soldier->yvel > 5) {
+		soldier->yvel = 5;
+	}
+}
+
+void SoldierMotionController::stop()
+{
+	soldier->xvel = 0;
+}
+
+void SoldierMotionController::moveLeft()
+{
+	soldier->xvel = -300;
+	soldier->facingLeft = true;
+}
+
+void SoldierMotionController::moveRight()
+{
+	soldier->xvel = 300;
+	soldier->facingLeft = false;
+}
+
+void SoldierMotionController::jump()
+{
+	if( soldier->grounded || (!soldier->ghostMode && !soldier->doubleJumped) ) {
+		soldier->yvel = -1050;
+		soldier->doubleJumped = soldier->grounded ? false : true;
+		soldier->grounded = false;
+		soldier->mixer->playEffect(Effects::JUMP);
+	}
+}
+
+void SoldierMotionController::ghostMode()
+{
+	soldier->ghostMode = !soldier->ghostMode;
+	soldier->ghostOverlay->setVisible(soldier->ghostMode);
+}
+
+void SoldierMotionController::freeze()
+{
+	for (auto it = movementMap.begin(); it != movementMap.end(); it++) {
+		it->second = false;
+	}
 }
