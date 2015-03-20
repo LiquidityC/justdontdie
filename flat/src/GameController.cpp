@@ -8,8 +8,6 @@ namespace flat2d
 		controller = SDL_JoystickOpen(index);
 		if (controller == nullptr) {
 			std::cout << "Unable to open controller (" << index << ")" << std::endl;
-		} else {
-			std::cout << "Controller(" << index << "): " << SDL_JoystickNumAxes(controller) << std::endl;
 		}
 	}
 

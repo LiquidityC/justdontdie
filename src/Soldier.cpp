@@ -47,15 +47,24 @@ void Soldier::handle(const SDL_Event& e)
 				break;
 		}
 	} else if (e.type == SDL_JOYAXISMOTION) {
-		std::cout << "Gamepad motion" << std::endl;
-		std::cout << "Axis: " << e.jaxis.axis << std::endl;
-		std::cout << "Value: " << e.jaxis.value << std::endl;
-		std::cout << "Which: " << e.jaxis.which << std::endl;
-
-		if (e.jaxis.value > 1000) {
-			xvel = 300;
-		} else if (e.jaxis.value < 1000) {
-			xvel = -300;
+		if (e.jaxis.axis == 0) {
+			if (e.jaxis.value > 3200) {
+				xvel = 300;
+				facingLeft = false;
+			} else if (e.jaxis.value < -3200) {
+				xvel = -300;
+				facingLeft = true;
+			} else {
+				xvel = 0;
+			}
+		}
+	} else if (e.type == SDL_JOYHATMOTION) {
+		if (e.jhat.value & SDL_HAT_RIGHT) {
+				xvel = 300;
+				facingLeft = false;
+		} else if (e.jhat.value & SDL_HAT_LEFT) {
+				xvel = -300;
+				facingLeft = true;
 		} else {
 			xvel = 0;
 		}
