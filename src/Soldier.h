@@ -4,17 +4,20 @@
 #include <flat/flat.h>
 #include "GameObjectType.h"
 #include "GhostOverlay.h"
+#include "SoldierMotionController.h"
 
 class MapTileObject;
 class Rocket;
 
 class Soldier : public flat2d::RenderedGameObject
 {
+	friend class SoldierMotionController;
 	typedef struct {
 		int x, y;
 	} Clip;
 
 	private:
+		SoldierMotionController motionController;
 		bool grounded = false;
 		flat2d::Mixer *mixer = nullptr;
 

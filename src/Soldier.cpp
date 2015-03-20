@@ -27,64 +27,12 @@ void Soldier::handle(const SDL_Event& e)
 		return;
 	}
 
-	if (e.type == SDL_KEYDOWN) {
-		switch (e.key.keysym.sym) {
-			case SDLK_SPACE:
-			case SDLK_h:
-			case SDLK_k:
-				if( grounded || (!ghostMode && !doubleJumped) ) {
-					yvel = -1050;
-					doubleJumped = grounded ? false : true;
-					grounded = false;
-					mixer->playEffect(Effects::JUMP);
-				}
-				break;
-			case SDLK_j:
-				ghostMode = !ghostMode;
-				ghostOverlay->setVisible(ghostMode);
-				break;
-			default:
-				break;
-		}
-	} else if (e.type == SDL_JOYAXISMOTION) {
-		if (e.jaxis.axis == 0) {
-			if (e.jaxis.value > 3200) {
-				xvel = 300;
-				facingLeft = false;
-			} else if (e.jaxis.value < -3200) {
-				xvel = -300;
-				facingLeft = true;
-			} else {
-				xvel = 0;
-			}
-		}
-	} else if (e.type == SDL_JOYHATMOTION) {
-		if (e.jhat.value & SDL_HAT_RIGHT) {
-				xvel = 300;
-				facingLeft = false;
-		} else if (e.jhat.value & SDL_HAT_LEFT) {
-				xvel = -300;
-				facingLeft = true;
-		} else {
-			xvel = 0;
-		}
-	}
+	motionController.handle(e, *this);
 }
 
 void Soldier::postHandle(const flat2d::GameData *gameData)
 {
-	const Uint8* currentKeyStates = SDL_GetKeyboardState(nullptr);
-	if (currentKeyStates[SDL_SCANCODE_A] || currentKeyStates[SDL_SCANCODE_LEFT]) {
-		xvel = -300;
-		facingLeft = true;
-	}
-	if (currentKeyStates[SDL_SCANCODE_D] || currentKeyStates[SDL_SCANCODE_RIGHT]) {
-		xvel = 300;
-		facingLeft = false;
-	}
-	if (currentKeyStates[SDL_SCANCODE_K] && ghostMode && !grounded && yvel > 5) {
-		yvel = 5;
-	}
+	motionController.postHandle(gameData, *this);
 
 	if (spawnGraceTimer.isStarted() && spawnGraceTimer.getTicks() > 1000) {
 		spawnGraceTimer.stop();
