@@ -3,9 +3,9 @@
 
 #include <iostream>
 #include <flat/flat.h>
-#include "GameObjectType.h"
+#include "EntityType.h"
 
-class MapTileObject : public flat2d::RenderedGameObject
+class MapTileObject : public flat2d::Entity
 {
 	private:
 		flat2d::Timer launchTimer;
@@ -13,12 +13,12 @@ class MapTileObject : public flat2d::RenderedGameObject
 
 	public:
 		MapTileObject(int x, int y, int w, int h, SDL_Texture* t) 
-			: RenderedGameObject(x, y, w, h), launchTimer() { 
+			: Entity(x, y, w, h), launchTimer() { 
 				setTexture(t);
 			};
 
 		int getType() {
-			return GameObjectType::TILE;
+			return EntityType::TILE;
 		}
 
 		void preRender(const flat2d::GameData*);

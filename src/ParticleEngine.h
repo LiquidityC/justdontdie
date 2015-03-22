@@ -6,10 +6,10 @@
 
 class ParticleEngine
 {
-	flat2d::ObjectContainer *objectContainer;
+	flat2d::EntityContainer *entityContainer;
 
 	public:
-		ParticleEngine(flat2d::ObjectContainer *obc) : objectContainer(obc) { };
+		ParticleEngine(flat2d::EntityContainer *obc) : entityContainer(obc) { };
 
 		void createBloodSprayAt(int, int);
 

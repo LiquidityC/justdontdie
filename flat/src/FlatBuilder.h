@@ -5,7 +5,7 @@
 
 namespace flat2d
 {
-	class ObjectContainer;
+	class EntityContainer;
 	class CollisionDetector;
 	class Window;
 	class Camera;
@@ -22,7 +22,7 @@ namespace flat2d
 			RenderData *renderData = nullptr;
 			GameData *gameData = nullptr;
 			CollisionDetector *collisionDetector = nullptr;
-			ObjectContainer *objectContainer = nullptr;
+			EntityContainer *entityContainer = nullptr;
 			Camera *camera = nullptr;
 			Mixer *mixer = nullptr;
 			DeltatimeMonitor *deltatimeMonitor = nullptr;

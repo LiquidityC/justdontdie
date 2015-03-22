@@ -2,9 +2,9 @@
 #define _ROCKET_H
 
 #include <flat/flat.h>
-#include "GameObjectType.h"
+#include "EntityType.h"
 
-class Rocket : public flat2d::RenderedGameObject
+class Rocket : public flat2d::Entity
 {
 	public:
 		enum Mode {
@@ -22,7 +22,7 @@ class Rocket : public flat2d::RenderedGameObject
 
 	public:
 		Rocket(int x, int y, Mode m = Mode::NORMAL, bool rightToLeft = true) :
-			flat2d::RenderedGameObject(x, y, 24, 15), mode(m) {
+			flat2d::Entity(x, y, 24, 15), mode(m) {
 				xvel = rightToLeft ? -300 : 300;
 				setCollidable(true);
 
@@ -40,7 +40,7 @@ class Rocket : public flat2d::RenderedGameObject
 		};
 
 		int getType() {
-			return GameObjectType::ROCKET;
+			return EntityType::ROCKET;
 		};
 
 		void init(const flat2d::GameData*);

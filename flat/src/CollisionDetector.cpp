@@ -1,24 +1,24 @@
-#include "GameObject.h"
+#include "Entity.h"
 #include "CollisionDetector.h"
-#include "ObjectContainer.h"
+#include "EntityContainer.h"
 
 using namespace flat2d;
 
-CollisionDetector::CollisionDetector(ObjectContainer* objectContainer) 
+CollisionDetector::CollisionDetector(EntityContainer* entityContainer) 
 {
-	this->objectContainer = objectContainer;
+	this->entityContainer = entityContainer;
 }
 
-GameObject* CollisionDetector::checkForCollisions(const GameObject* o1) const
+Entity* CollisionDetector::checkForCollisions(const Entity* o1) const
 {
-	return objectContainer->checkCollidablesFor(o1,
-			[this,o1](const GameObject* o2)
+	return entityContainer->checkCollidablesFor(o1,
+			[this,o1](const Entity* o2)
 			{
 				return this->hasCollided(o1, o2);
 			});
 }
 
-bool CollisionDetector::hasCollided(const GameObject* o1, const GameObject* o2) const
+bool CollisionDetector::hasCollided(const Entity* o1, const Entity* o2) const
 {
 	if (*o1 == *o2) {
 		return false;

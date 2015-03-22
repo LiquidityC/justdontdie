@@ -1,5 +1,5 @@
 #include "Rocket.h"
-#include "GameObjectType.h"
+#include "EntityType.h"
 #include "MapTileObject.h"
 
 void Rocket::init(const flat2d::GameData *data)
@@ -14,8 +14,8 @@ void Rocket::preRender(const flat2d::GameData *data)
 	locationProperty.incrementXpos(xvel * data->getDeltatimeMonitor()->getDeltaTime());
 
 	flat2d::CollisionDetector *detector = data->getCollisionDetector();
-	GameObject *o = detector->checkForCollisions(this);
-	if (o && o->getType() == GameObjectType::TILE) {
+	Entity *o = detector->checkForCollisions(this);
+	if (o && o->getType() == EntityType::TILE) {
 		MapTileObject *tile = static_cast<MapTileObject*>(o);
 		if (tile->hasProperty("rocketStopper")) {
 			setDead(true);
@@ -49,7 +49,7 @@ void Rocket::render(const flat2d::RenderData* data) const
 	}
 #endif
 
-	RenderedGameObject::render(data);
+	Entity::render(data);
 }
 
 void Rocket::postRender(const flat2d::GameData *data)

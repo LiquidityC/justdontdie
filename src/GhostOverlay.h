@@ -4,13 +4,13 @@
 #include <flat/flat.h>
 #include "GameSettings.h"
 
-class GhostOverlay : public flat2d::RenderedGameObject
+class GhostOverlay : public flat2d::Entity
 {
 	private:
 		bool visible = false;
 
 	public:
-		GhostOverlay() : RenderedGameObject(0, 0, GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT) { }
+		GhostOverlay() : Entity(0, 0, GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT) { }
 
 		void render(const flat2d::RenderData*) const;
 

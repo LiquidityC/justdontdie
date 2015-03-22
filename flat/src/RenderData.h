@@ -6,7 +6,7 @@
 namespace flat2d
 {
 	class Camera;
-	class ObjectContainer;
+	class EntityContainer;
 	class CollisionDetector;
 
 	class RenderData

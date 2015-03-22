@@ -30,7 +30,7 @@ class CustomGameData
 			return new CustomGameData(
 					new ResourceLoader(),
 					new ResourceContainer(),
-					new ParticleEngine(gd->getObjectContainer()),
+					new ParticleEngine(gd->getEntityContainer()),
 					new LayerService()
 					);
 		}

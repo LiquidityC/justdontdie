@@ -14,7 +14,7 @@ enum Layers {
 class LayerService
 {
 	public:
-		void registerLayers(flat2d::ObjectContainer *objectContainer);
+		void registerLayers(flat2d::EntityContainer *entityContainer);
 };
 
 #endif

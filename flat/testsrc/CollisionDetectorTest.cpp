@@ -1,25 +1,25 @@
 #include "catch.hpp"
-#include "GameObjectImpl.h"
+#include "EntityImpl.h"
 #include "../src/CollisionDetector.h"
-#include "../src/ObjectContainer.h"
+#include "../src/EntityContainer.h"
 
 TEST_CASE( "CollisionDetectorTests", "[collision]" )
 {
-	flat2d::ObjectContainer* container;
+	flat2d::EntityContainer* container;
 	flat2d::CollisionDetector* detector;
 
-	flat2d::GameObject* c1;
-	flat2d::GameObject* c2;
-	flat2d::GameObject* c3;
-	flat2d::GameObject* c4;
+	flat2d::Entity* c1;
+	flat2d::Entity* c2;
+	flat2d::Entity* c3;
+	flat2d::Entity* c4;
 
-	container = new flat2d::ObjectContainer();
+	container = new flat2d::EntityContainer();
 	detector = new flat2d::CollisionDetector(container);
 
-	c1 = new GameObjectImpl(100, 100);
-	c2 = new GameObjectImpl(200, 100);
-	c3 = new GameObjectImpl(200, 200);
-	c4 = new GameObjectImpl(105, 105);
+	c1 = new EntityImpl(100, 100);
+	c2 = new EntityImpl(200, 100);
+	c3 = new EntityImpl(200, 200);
+	c4 = new EntityImpl(105, 105);
 
 	container->registerObject(c1);
 	container->registerObject(c2);
@@ -34,7 +34,7 @@ TEST_CASE( "CollisionDetectorTests", "[collision]" )
 
 	SECTION( "Multi collisions", "[collisions]" )
 	{
-		flat2d::GameObject* o = detector->checkForCollisions( c4 );
+		flat2d::Entity* o = detector->checkForCollisions( c4 );
 		REQUIRE( o );
 		REQUIRE( *c1 == *o );
 

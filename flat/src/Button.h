@@ -1,13 +1,13 @@
 #ifndef _BUTTON_H
 #define _BUTTON_H
 
-#include "RenderedGameObject.h"
+#include "Entity.h"
 
 namespace flat2d
 {
 	namespace ui
 	{
-		class Button : public flat2d::RenderedGameObject
+		class Button : public flat2d::Entity
 		{
 			private:
 				std::function<void ()> onClick;
@@ -15,7 +15,7 @@ namespace flat2d
 
 			public:
 				Button(int x, int y, unsigned int w, unsigned int h, std::function<void ()> click) 
-					: RenderedGameObject(x, y, w, h), onClick(click) { 
+					: Entity(x, y, w, h), onClick(click) { 
 						setCollidable(false);
 					};
 

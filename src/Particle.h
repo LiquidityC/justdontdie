@@ -3,7 +3,7 @@
 
 #include <flat/flat.h>
 
-class Particle : public flat2d::RenderedGameObject
+class Particle : public flat2d::Entity
 {
 	protected:
 		float xvel, yvel;
@@ -13,7 +13,7 @@ class Particle : public flat2d::RenderedGameObject
 
 	public:
 		Particle(int x, int y, int w, int h, int xv, int yv) :
-			RenderedGameObject(x, y, w, h),
+			Entity(x, y, w, h),
 			xvel(xv),
 			yvel(yv) { 
 				setDead(false);

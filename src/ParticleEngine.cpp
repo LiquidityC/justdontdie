@@ -15,7 +15,7 @@ void ParticleEngine::createBloodSprayAt(int x, int y)
 		int yvel = (rand() % 500) * yneg;
 		int size = (rand() % 3) + 1;
 		p = new BloodParticle(x, y, size, xvel, yvel);
-		objectContainer->registerObject(p, Layers::FRONT);
+		entityContainer->registerObject(p, Layers::FRONT);
 	}
 }
 
@@ -29,7 +29,7 @@ void ParticleEngine::createGhostSprayAt(int x, int y)
 		int yvel = (rand() % 500) * yneg;
 		int size = (rand() % 3) + 1;
 		p = new GhostParticle(x, y, size, size, xvel, yvel);
-		objectContainer->registerObject(p, Layers::FRONT);
+		entityContainer->registerObject(p, Layers::FRONT);
 	}
 }
 
@@ -42,6 +42,6 @@ void ParticleEngine::createExplosionAt(int x, int y)
 		int xvel = (rand() % 300) * xneg;
 		int yvel = (rand() % 300) * yneg;
 		p = new FireParticle(x, y, xvel, yvel);
-		objectContainer->registerObject(p, Layers::FRONT);
+		entityContainer->registerObject(p, Layers::FRONT);
 	}
 }

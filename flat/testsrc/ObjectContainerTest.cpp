@@ -1,14 +1,14 @@
-#include "GameObjectImpl.h"
+#include "EntityImpl.h"
 #include "catch.hpp"
-#include "../src/ObjectContainer.h"
+#include "../src/EntityContainer.h"
 #include "../src/GameData.h"
 #include "../src/CollisionDetector.h"
 #include "../src/Mixer.h"
 
 TEST_CASE( "Test object register", "[objectcontainer]" )
 {
-	flat2d::GameObject* c = new GameObjectImpl(100, 100);
-	flat2d::ObjectContainer container;
+	flat2d::Entity* c = new EntityImpl(100, 100);
+	flat2d::EntityContainer container;
 
 	REQUIRE( 0 == container.getObjectCount() );
 	container.registerObject(c);
@@ -23,8 +23,8 @@ TEST_CASE( "Test object register", "[objectcontainer]" )
 
 TEST_CASE( "Test container destructor", "[objectcontainer]" )
 {
-	flat2d::GameObject* c = new GameObjectImpl(100, 100);
-	flat2d::ObjectContainer* container = new flat2d::ObjectContainer();
+	flat2d::Entity* c = new EntityImpl(100, 100);
+	flat2d::EntityContainer* container = new flat2d::EntityContainer();
 
 	REQUIRE( 0 == container->getObjectCount() );
 
@@ -41,8 +41,8 @@ TEST_CASE( "Test container destructor", "[objectcontainer]" )
 
 TEST_CASE( "Test unregister", "[objectcontainer]" )
 {
-	flat2d::GameObject* c = new GameObjectImpl(100, 100);
-	flat2d::ObjectContainer container;
+	flat2d::Entity* c = new EntityImpl(100, 100);
+	flat2d::EntityContainer container;
 
 	container.unregisterObject(c);
 
@@ -51,10 +51,10 @@ TEST_CASE( "Test unregister", "[objectcontainer]" )
 
 TEST_CASE( "Test layers", "[objectcontainer]" )
 {
-	flat2d::GameObject* c1 = new GameObjectImpl(100, 100);
-	flat2d::GameObject* c2 = new GameObjectImpl(100, 100);
-	flat2d::GameObject* c3 = new GameObjectImpl(100, 100);
-	flat2d::ObjectContainer container;
+	flat2d::Entity* c1 = new EntityImpl(100, 100);
+	flat2d::Entity* c2 = new EntityImpl(100, 100);
+	flat2d::Entity* c3 = new EntityImpl(100, 100);
+	flat2d::EntityContainer container;
 	
 	REQUIRE( 0 == container.getObjectCountFor(0) );
 
@@ -65,7 +65,7 @@ TEST_CASE( "Test layers", "[objectcontainer]" )
 	container.registerObject(c1);
 
 	REQUIRE( 1 == container.getObjectCount() );
-	REQUIRE( 1 == container.getObjectCountFor(flat2d::ObjectContainer::DEFAULT_LAYER) );
+	REQUIRE( 1 == container.getObjectCountFor(flat2d::EntityContainer::DEFAULT_LAYER) );
 
 	container.registerObject(c2, 0);
 	container.registerObject(c2, 1);
@@ -89,13 +89,13 @@ TEST_CASE( "Test layers", "[objectcontainer]" )
 
 TEST_CASE( "Test clearing layers", "[objectcontainer]" )
 {
-	flat2d::GameObject* c1 = new GameObjectImpl(100, 100);
-	flat2d::GameObject* c2 = new GameObjectImpl(100, 100);
-	flat2d::GameObject* c3 = new GameObjectImpl(100, 100);
-	flat2d::GameObject* c4 = new GameObjectImpl(100, 100);
-	flat2d::GameObject* c5 = new GameObjectImpl(100, 100);
-	flat2d::GameObject* c6 = new GameObjectImpl(100, 100);
-	flat2d::ObjectContainer container;
+	flat2d::Entity* c1 = new EntityImpl(100, 100);
+	flat2d::Entity* c2 = new EntityImpl(100, 100);
+	flat2d::Entity* c3 = new EntityImpl(100, 100);
+	flat2d::Entity* c4 = new EntityImpl(100, 100);
+	flat2d::Entity* c5 = new EntityImpl(100, 100);
+	flat2d::Entity* c6 = new EntityImpl(100, 100);
+	flat2d::EntityContainer container;
 
 	unsigned int backLayer = 0;
 	unsigned int frontLayer = 1;
@@ -123,10 +123,10 @@ TEST_CASE( "Test clearing layers", "[objectcontainer]" )
 
 TEST_CASE( "Test auto cleaning", "[objectcontainer]" )
 {
-	flat2d::GameObject* c1 = new GameObjectImpl(100, 100);
-	GameObjectImpl* c2 = new GameObjectImpl(100, 100);
+	flat2d::Entity* c1 = new EntityImpl(100, 100);
+	EntityImpl* c2 = new EntityImpl(100, 100);
 
-	flat2d::ObjectContainer container;
+	flat2d::EntityContainer container;
 	flat2d::CollisionDetector detector(&container);
 	flat2d::Mixer mixer;
 	flat2d::GameData gameData(&container, &detector, &mixer, (flat2d::RenderData*) nullptr,
@@ -145,8 +145,8 @@ TEST_CASE( "Test auto cleaning", "[objectcontainer]" )
 
 TEST_CASE( "Test partition handling", "[objectcontainer]" )
 {
-	flat2d::ObjectContainer container;
-	flat2d::GameObject* o = new GameObjectImpl(45, 45);
+	flat2d::EntityContainer container;
+	flat2d::Entity* o = new EntityImpl(45, 45);
 
 	container.setSpatialPartitionDimension(50);
 	container.registerObject(o);
@@ -160,13 +160,13 @@ TEST_CASE( "Test partition handling", "[objectcontainer]" )
 
 TEST_CASE( "Test spatial partitions", "[objectcontainer]" )
 {
-	flat2d::ObjectContainer container;
+	flat2d::EntityContainer container;
 
-	flat2d::GameObject* o1 = new GameObjectImpl(50, 50);
-	flat2d::GameObject* o2 = new GameObjectImpl(150, 150);
-	flat2d::GameObject* o3 = new GameObjectImpl(550, 550);
-	flat2d::GameObject* o4 = new GameObjectImpl(75, 75);
-	flat2d::GameObject* o5 = new GameObjectImpl(1095, 1095);
+	flat2d::Entity* o1 = new EntityImpl(50, 50);
+	flat2d::Entity* o2 = new EntityImpl(150, 150);
+	flat2d::Entity* o3 = new EntityImpl(550, 550);
+	flat2d::Entity* o4 = new EntityImpl(75, 75);
+	flat2d::Entity* o5 = new EntityImpl(1095, 1095);
 
 	container.registerObject(o1);
 	REQUIRE ( 1 == container.getSpatialPartitionCount() );

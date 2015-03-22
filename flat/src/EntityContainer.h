@@ -9,17 +9,17 @@
 namespace flat2d
 {
 	// Forward declarations
-	class GameObject;
+	class Entity;
 	class GameData;
 	class RenderData;
 	class RenderData;
 
 	typedef int Layer;
-	typedef std::map<std::string, GameObject*> ObjectList;
+	typedef std::map<std::string, Entity*> ObjectList;
 	typedef std::map<Layer, ObjectList> LayerMap;
 	typedef std::map<LocationProperty, ObjectList> SpatialPartitionMap;
 
-	class ObjectContainer 
+	class EntityContainer 
 	{
 		private:
 			unsigned int spatialPartitionDimension = 100;
@@ -29,32 +29,32 @@ namespace flat2d
 			LayerMap layeredObjects;
 			SpatialPartitionMap spatialPartitionMap;
 
-			typedef std::function<bool (GameObject*)> GameObjectProcessor;
+			typedef std::function<bool (Entity*)> EntityProcessor;
 
 		private:
-			ObjectContainer(const ObjectContainer&); // Don't implement
-			void operator=(const ObjectContainer&); // Don't implement
+			EntityContainer(const EntityContainer&); // Don't implement
+			void operator=(const EntityContainer&); // Don't implement
 
 			void clearDeadObjects();
-			void registerCollidableObject(GameObject*);
-			void registerObjectToSpatialPartitions(GameObject*);
-			void addObjectToSpatialPartitionFor(GameObject*, int, int);
-			void clearObjectFromCurrentPartitions(GameObject*);
+			void registerCollidableObject(Entity*);
+			void registerObjectToSpatialPartitions(Entity*);
+			void addObjectToSpatialPartitionFor(Entity*, int, int);
+			void clearObjectFromCurrentPartitions(Entity*);
 
 		public:
 			static const int DEFAULT_LAYER = -1;
 
-			ObjectContainer() { 
+			EntityContainer() { 
 				ObjectList list;
 				layeredObjects[-1] = list;
 			}; 
 
-			~ObjectContainer();
+			~EntityContainer();
 
 			void addLayer(unsigned int);
 
-			void registerObject(GameObject*, Layer = DEFAULT_LAYER);
-			void unregisterObject(GameObject*);
+			void registerObject(Entity*, Layer = DEFAULT_LAYER);
+			void unregisterObject(Entity*);
 
 			void unregisterAllObjects();
 			void unregisterAllObjectsFor(Layer);
@@ -74,9 +74,9 @@ namespace flat2d
 
 			void setSpatialPartitionDimension(unsigned int);
 
-			GameObject* checkAllCollidableObjects(GameObjectProcessor) const;
-			GameObject* checkAllObjects(GameObjectProcessor) const;
-			GameObject* checkCollidablesFor(const GameObject*, GameObjectProcessor);
+			Entity* checkAllCollidableObjects(EntityProcessor) const;
+			Entity* checkAllObjects(EntityProcessor) const;
+			Entity* checkCollidablesFor(const Entity*, EntityProcessor);
 	};
 }
 

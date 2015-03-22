@@ -50,7 +50,7 @@ run:
 check: 
 	@$(MAKE) --no-print-directory libs
 	@$(MAKE) --no-print-directory $(TEST)
-	@./$(TEST) -v -c
+	@./$(TEST)
 
 checkall:
 	@$(MAKE) --no-print-directory libs

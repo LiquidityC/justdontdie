@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "GameObjectImpl.h"
+#include "EntityImpl.h"
 #include "../src/Button.h"
 
 TEST_CASE ("ButtonTests", "[click]")

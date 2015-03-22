@@ -3,7 +3,7 @@
 
 namespace flat2d
 {
-	class ObjectContainer;
+	class EntityContainer;
 	class CollisionDetector;
 	class RenderData;
 	class Mixer;
@@ -13,7 +13,7 @@ namespace flat2d
 	class GameData
 	{
 		private:
-			ObjectContainer *objectContainer;
+			EntityContainer *entityContainer;
 			CollisionDetector *collisionDetector;
 			Mixer *mixer;
 			RenderData *renderData;
@@ -21,14 +21,14 @@ namespace flat2d
 			void *customGameData = nullptr;
 
 		public:
-			GameData(ObjectContainer *obc, CollisionDetector *cd, Mixer *m, RenderData *rd, DeltatimeMonitor *dtm) : 
-				objectContainer(obc), 
+			GameData(EntityContainer *obc, CollisionDetector *cd, Mixer *m, RenderData *rd, DeltatimeMonitor *dtm) : 
+				entityContainer(obc), 
 				collisionDetector(cd),
 				mixer(m),
 				renderData(rd),
 				deltatimeMonitor(dtm) { };
 
-			ObjectContainer* getObjectContainer() const { return objectContainer; };
+			EntityContainer* getEntityContainer() const { return entityContainer; };
 			CollisionDetector* getCollisionDetector() const { return collisionDetector; };
 			Mixer* getMixer() const { return mixer; };
 

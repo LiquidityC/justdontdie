@@ -1,31 +1,31 @@
 #include <iostream>
-#include "RenderedGameObject.h"
+#include "Entity.h"
 #include "Camera.h"
 #include "RenderData.h"
 
 using namespace flat2d;
 
-void RenderedGameObject::setDead(bool dead)
+void Entity::setDead(bool dead)
 {
 	this->dead = dead;
 }
 
-void RenderedGameObject::setClip(SDL_Rect& rect)
+void Entity::setClip(SDL_Rect& rect)
 {
 	clip = rect;
 }
 
-bool RenderedGameObject::isDead() const
+bool Entity::isDead() const
 {
 	return dead;
 }
 
-void RenderedGameObject::setCollidable(bool collidable)
+void Entity::setCollidable(bool collidable)
 {
 	this->collidable = collidable;
 }
 
-void RenderedGameObject::render(const RenderData *data) const
+void Entity::render(const RenderData *data) const
 {
 	if (texture == nullptr || dead) {
 		return;
@@ -56,17 +56,17 @@ void RenderedGameObject::render(const RenderData *data) const
 #endif
 }
 
-bool RenderedGameObject::isCollider() const
+bool Entity::isCollider() const
 {
 	return collidable;
 }
 
-void RenderedGameObject::setColliderBox(SDL_Rect collider)
+void Entity::setColliderBox(SDL_Rect collider)
 {
 	this->collider = collider;
 }
 
-SDL_Rect RenderedGameObject::getBoundingBox() const
+SDL_Rect Entity::getBoundingBox() const
 {
 	SDL_Rect box = locationProperty.getBoundingBox();
 	if (collider.w != 0 && collider.h != 0) {
@@ -78,32 +78,32 @@ SDL_Rect RenderedGameObject::getBoundingBox() const
 	return box;
 }
 
-const SDL_Texture* RenderedGameObject::getTexture() const
+const SDL_Texture* Entity::getTexture() const
 {
 	return texture;
 }
 
-void RenderedGameObject::setTexture(SDL_Texture* texture)
+void Entity::setTexture(SDL_Texture* texture)
 {
 	this->texture = texture;
 }
 
-bool RenderedGameObject::isFixedPosition()
+bool Entity::isFixedPosition()
 {
 	return fixedPosition;
 }
 
-void RenderedGameObject::setFixedPosition(bool fixedPosition)
+void Entity::setFixedPosition(bool fixedPosition)
 {
 	this->fixedPosition = fixedPosition;
 }
 
-LocationProperty& RenderedGameObject::getLocationProperty()
+LocationProperty& Entity::getLocationProperty()
 {
 	return locationProperty;
 }
 
-const LocationProperty& RenderedGameObject::getLocationProperty() const
+const LocationProperty& Entity::getLocationProperty() const
 {
 	return locationProperty;
 }

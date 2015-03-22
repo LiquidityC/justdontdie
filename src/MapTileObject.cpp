@@ -30,6 +30,6 @@ void MapTileObject::preRender(const flat2d::GameData *gameData)
 
 		Rocket *rocket = new Rocket(locationProperty.getXpos(), locationProperty.getYpos(), mode, !hasProperty("shootRight"));
 		rocket->init(gameData);
-		gameData->getObjectContainer()->registerObject(rocket, Layers::FRONT);
+		gameData->getEntityContainer()->registerObject(rocket, Layers::FRONT);
 	}
 }

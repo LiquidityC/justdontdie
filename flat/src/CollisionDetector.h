@@ -3,20 +3,20 @@
 
 namespace flat2d 
 {
-	class ObjectContainer;
-	class GameObject;
+	class EntityContainer;
+	class Entity;
 
 	class CollisionDetector
 	{
 
 		private:
-			ObjectContainer* objectContainer;
+			EntityContainer* entityContainer;
 
 		public:
-			CollisionDetector(ObjectContainer* objectContainer);
+			CollisionDetector(EntityContainer* entityContainer);
 
-			GameObject* checkForCollisions(const GameObject*) const;
-			bool hasCollided(const GameObject*, const GameObject*) const;
+			Entity* checkForCollisions(const Entity*) const;
+			bool hasCollided(const Entity*, const Entity*) const;
 
 		private:
 			CollisionDetector(const CollisionDetector&); // Don't implement, single instance

@@ -7,7 +7,7 @@
 
 namespace flat2d
 {
-	class ObjectContainer;
+	class EntityContainer;
 	class LocationProperty;
 
 	class LocationProperty

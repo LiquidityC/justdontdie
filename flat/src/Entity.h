@@ -1,15 +1,25 @@
 #ifndef _RENDERED_GAME_OBJECT_H
 #define _RENDERED_GAME_OBJECT_H
 
-#include "GameObject.h"
+#include <SDL2/SDL.h>
+#include <boost/lexical_cast.hpp>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 #include "LocationProperty.h"
 
 namespace flat2d
 {
 	class Camera;
+	class RenderData;
+	class GameData;
 
-	class RenderedGameObject : public GameObject
+	class Entity
 	{
+		private:
+			boost::uuids::uuid id;
+
 		protected:
 			LocationProperty locationProperty;
 			bool dead = false, collidable = false;
@@ -19,15 +29,41 @@ namespace flat2d
 			bool fixedPosition = false;
 
 		public:
-			RenderedGameObject(int x, int y, int w, int h) : 
-				GameObject(),
+			Entity(int x, int y, int w, int h) : 
 				locationProperty(x, y, w, h),
 				dead(false) {
+
+					/* Not providing ran creates valgrind warnings */
+					static boost::mt19937 ran;
+					id = boost::uuids::random_generator(ran)();
+
 					clip = { x, y, w, h };
 					collider = { 0, 0, 0, 0 };
 				}
 
-			virtual ~RenderedGameObject() { };
+			virtual ~Entity() { };
+
+			/* Operators */
+			virtual bool operator==(const Entity& o) const {
+				return id == o.id;
+			};
+
+			virtual bool operator!=(const Entity& o) const {
+				return id != o.id;
+			};
+
+			virtual Entity& operator=(const Entity& o) {
+				id = o.id;
+				return *this;
+			};
+
+			virtual std::string getStringId() const {
+				return boost::lexical_cast<std::string>(id);
+			};
+
+			virtual int getType() {
+				return -1;
+			};
 
 			/* Own methods */
 			void setClip(SDL_Rect&);

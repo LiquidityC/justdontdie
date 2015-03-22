@@ -1,8 +1,8 @@
 #include "LayerService.h"
 
-void LayerService::registerLayers(flat2d::ObjectContainer *objectContainer)
+void LayerService::registerLayers(flat2d::EntityContainer *entityContainer)
 {
 	for (int i = Layers::BACK; i != Layers::LAST; i++) {
-		objectContainer->addLayer(i);
+		entityContainer->addLayer(i);
 	}
 }

@@ -5,7 +5,7 @@
 #include "FlatBuilder.h"
 #include "GameData.h"
 #include "RenderData.h"
-#include "ObjectContainer.h"
+#include "EntityContainer.h"
 #include "CollisionDetector.h"
 #include "Camera.h"
 #include "Window.h"
@@ -20,7 +20,7 @@ FlatBuilder::~FlatBuilder()
 	delete renderData;
 	delete gameData;
 	delete collisionDetector;
-	delete objectContainer;
+	delete entityContainer;
 	delete window;
 	delete camera;
 	delete mixer;
@@ -73,13 +73,13 @@ bool FlatBuilder::initSDL(std::string title, int screenWidth, int screenHeight)
 
 bool FlatBuilder::initContainers()
 {
-	objectContainer = new ObjectContainer();
-	collisionDetector = new CollisionDetector(objectContainer);
+	entityContainer = new EntityContainer();
+	collisionDetector = new CollisionDetector(entityContainer);
 	renderData = new RenderData(window->getRenderer(), camera);
 	mixer = new Mixer();
 	deltatimeMonitor = new DeltatimeMonitor();
 	controllerContainer = new GameControllerContainer();
-	gameData = new GameData(objectContainer, collisionDetector, mixer, renderData, deltatimeMonitor);
+	gameData = new GameData(entityContainer, collisionDetector, mixer, renderData, deltatimeMonitor);
 
 	return true;
 }

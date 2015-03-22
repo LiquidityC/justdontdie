@@ -18,7 +18,7 @@ void Soldier::init(const flat2d::GameData *gameData)
 	mixer = gameData->getMixer();
 
 	ghostOverlay = new GhostOverlay();
-	gameData->getObjectContainer()->registerObject(ghostOverlay, Layers::OVERLAY);
+	gameData->getEntityContainer()->registerObject(ghostOverlay, Layers::OVERLAY);
 }
 
 void Soldier::handle(const SDL_Event& e)
@@ -57,7 +57,7 @@ void Soldier::preRender(const flat2d::GameData *data)
 
 	// Try to move object vertically
 	locationProperty.incrementXpos(xvel * deltaTime);
-	GameObject *object;
+	Entity *object;
 	if ((object = colDetector->checkForCollisions(this)) != nullptr) {
 		handleHorizontalCollision(object, data);
 	}
@@ -92,7 +92,7 @@ void Soldier::render(const flat2d::RenderData* data) const
 	}
 #endif
 
-	RenderedGameObject::render(data);
+	Entity::render(data);
 }
 
 void Soldier::calculateCurrentClip()
@@ -133,33 +133,33 @@ void Soldier::calculateCurrentClip()
 	setClip(clip);
 }
 
-bool Soldier::handleVerticalCollision(flat2d::GameObject *o, const flat2d::GameData* data)
+bool Soldier::handleVerticalCollision(flat2d::Entity *o, const flat2d::GameData* data)
 {
 	switch (o->getType()) {
-		case GameObjectType::TILE:
+		case EntityType::TILE:
 			return handleVerticalTileCollision(static_cast<MapTileObject*>(o), data);
 		default:
 			return handleGeneralCollision(o, data);
 	}
 }
 
-bool Soldier::handleHorizontalCollision(flat2d::GameObject *o, const flat2d::GameData* data)
+bool Soldier::handleHorizontalCollision(flat2d::Entity *o, const flat2d::GameData* data)
 {
 	switch (o->getType()) {
-		case GameObjectType::TILE:
+		case EntityType::TILE:
 			return handleHorizontalTileCollision(static_cast<MapTileObject*>(o), data);
 		default:
 			return handleGeneralCollision(o, data);
 	}
 }
 
-bool Soldier::handleGeneralCollision(flat2d::GameObject *o, const flat2d::GameData* data)
+bool Soldier::handleGeneralCollision(flat2d::Entity *o, const flat2d::GameData* data)
 {
 	switch (o->getType()) {
-		case GameObjectType::TILE:
+		case EntityType::TILE:
 			return handleGeneralTileCollision(static_cast<MapTileObject*>(o), data);
 			break;
-		case GameObjectType::ROCKET:
+		case EntityType::ROCKET:
 			return handleRocketCollision(static_cast<Rocket*>(o), data);
 			break;
 		default:

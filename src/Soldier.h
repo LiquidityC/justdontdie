@@ -2,14 +2,14 @@
 #define _SOLDIER_H
 
 #include <flat/flat.h>
-#include "GameObjectType.h"
+#include "EntityType.h"
 #include "GhostOverlay.h"
 #include "SoldierMotionController.h"
 
 class MapTileObject;
 class Rocket;
 
-class Soldier : public flat2d::RenderedGameObject
+class Soldier : public flat2d::Entity
 {
 	friend class SoldierMotionController;
 	typedef struct {
@@ -50,9 +50,9 @@ class Soldier : public flat2d::RenderedGameObject
 
 		void calculateCurrentClip();
 
-		bool handleVerticalCollision(flat2d::GameObject*, const flat2d::GameData*);
-		bool handleHorizontalCollision(flat2d::GameObject*, const flat2d::GameData*);
-		bool handleGeneralCollision(flat2d::GameObject*, const flat2d::GameData*);
+		bool handleVerticalCollision(flat2d::Entity*, const flat2d::GameData*);
+		bool handleHorizontalCollision(flat2d::Entity*, const flat2d::GameData*);
+		bool handleGeneralCollision(flat2d::Entity*, const flat2d::GameData*);
 		bool handleVerticalTileCollision(MapTileObject*, const flat2d::GameData*);
 		bool handleHorizontalTileCollision(MapTileObject*, const flat2d::GameData*);
 		bool handleGeneralTileCollision(MapTileObject*, const flat2d::GameData*);
@@ -64,7 +64,7 @@ class Soldier : public flat2d::RenderedGameObject
 	public:
 
 		Soldier(unsigned int x, unsigned int y) :
-			RenderedGameObject(x, y, 28, 24),
+			Entity(x, y, 28, 24),
 			checkPointX(x),
 			checkPointY(y) { 
 				motionController = new SoldierMotionController(this);
@@ -79,7 +79,7 @@ class Soldier : public flat2d::RenderedGameObject
 		};
 
 		int getType() {
-			return GameObjectType::BOT;
+			return EntityType::BOT;
 		};
 
 		void init(const flat2d::GameData*);

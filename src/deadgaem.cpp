@@ -27,19 +27,19 @@ int main( int argc, char* args[] )
 	flat2d::GameData *gameData = flat->getGameData();
 	flat2d::RenderData* renderData = gameData->getRenderData();
 	SDL_Renderer* renderer = renderData->getRenderer();
-	flat2d::ObjectContainer* objectContainer = gameData->getObjectContainer();
+	flat2d::EntityContainer* entityContainer = gameData->getEntityContainer();
 
 	CustomGameData *customGameData = CustomGameData::create(gameData);
 	gameData->setCustomGameData(customGameData);
 
-	customGameData->getLayerService()->registerLayers(objectContainer);
+	customGameData->getLayerService()->registerLayers(entityContainer);
 
 	MapParser parser;
 	parser.createMapFrom(gameData, "resources/maps/map1/", "map1.tmx");
 	
-	flat2d::GameObject* soldier = new Soldier(200, 200);
+	flat2d::Entity* soldier = new Soldier(200, 200);
 	soldier->init(gameData);
-	objectContainer->registerObject(soldier, Layers::MID);
+	entityContainer->registerObject(soldier, Layers::MID);
 
 	ResourceLoader *rLoader = customGameData->getResourceLoader();
 	rLoader->loadMusic(gameData);
@@ -66,24 +66,24 @@ int main( int argc, char* args[] )
 		gameData->getDeltatimeMonitor()->updateDeltaTime();
 
 		// Handle events
-		objectContainer->preHandleObjects(gameData);
+		entityContainer->preHandleObjects(gameData);
 		while (SDL_PollEvent (&e) != 0) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 				break;
 			}
-			objectContainer->handleObjects(e);
+			entityContainer->handleObjects(e);
 		}
-		objectContainer->postHandleObjects(gameData);
+		entityContainer->postHandleObjects(gameData);
 
 		// Clear screen to black
 		SDL_SetRenderDrawColor( renderer, 0x0, 0x0, 0x0, 0xFF );
 		SDL_RenderClear( renderer );
 
 		// Render
-		objectContainer->preRenderObjects(gameData);
-		objectContainer->renderObjects(renderData);
-		objectContainer->postRenderObjects(gameData);
+		entityContainer->preRenderObjects(gameData);
+		entityContainer->renderObjects(renderData);
+		entityContainer->postRenderObjects(gameData);
 
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 

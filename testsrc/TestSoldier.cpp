@@ -5,12 +5,12 @@
 
 TEST_CASE ( "Test the soldier", "[soldier]" )
 {
-	flat2d::ObjectContainer *container;
+	flat2d::EntityContainer *container;
 	flat2d::CollisionDetector *detector;
 
 	Soldier *soldier;
 
-	container = new flat2d::ObjectContainer();
+	container = new flat2d::EntityContainer();
 	detector = new flat2d::CollisionDetector(container);
 
 	soldier = new Soldier(200, 200);

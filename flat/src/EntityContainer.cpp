@@ -1,19 +1,19 @@
 #include <functional>
 #include <cassert>
-#include "GameObject.h"
-#include "ObjectContainer.h"
+#include "Entity.h"
+#include "EntityContainer.h"
 #include "GameData.h"
 #include "RenderData.h"
 #include "LocationProperty.h"
 
 using namespace flat2d;
 
-ObjectContainer::~ObjectContainer()
+EntityContainer::~EntityContainer()
 {
 	unregisterAllObjects();
 }
 
-void ObjectContainer::addLayer(unsigned int layer)
+void EntityContainer::addLayer(unsigned int layer)
 {
 	Layer newLayer = static_cast<Layer>(layer);
 	if (layeredObjects.find(newLayer) != layeredObjects.end()) {
@@ -23,7 +23,7 @@ void ObjectContainer::addLayer(unsigned int layer)
 	layeredObjects[newLayer] = list;
 }
 
-void ObjectContainer::registerObject(GameObject* object, Layer layer)
+void EntityContainer::registerObject(Entity* object, Layer layer)
 {
 	std::string objId = object->getStringId();
 	if (objects.find(objId) != objects.end()) {
@@ -43,12 +43,12 @@ void ObjectContainer::registerObject(GameObject* object, Layer layer)
 	}
 }
 
-void ObjectContainer::registerCollidableObject(GameObject* o)
+void EntityContainer::registerCollidableObject(Entity* o)
 {
 	collidableObjects[o->getStringId()] = o;
 }
 
-void ObjectContainer::registerObjectToSpatialPartitions(GameObject *o)
+void EntityContainer::registerObjectToSpatialPartitions(Entity *o)
 {
 	LocationProperty& locationProp = o->getLocationProperty();
 	SDL_Rect b = locationProp.getBoundingBox();
@@ -65,7 +65,7 @@ void ObjectContainer::registerObjectToSpatialPartitions(GameObject *o)
 			});
 }
 
-void ObjectContainer::clearObjectFromCurrentPartitions(GameObject *o)
+void EntityContainer::clearObjectFromCurrentPartitions(Entity *o)
 {
 	LocationProperty::Parents& parents = o->getLocationProperty().getParents();
 	for (auto it = parents.begin(); it != parents.end(); it++) {
@@ -74,7 +74,7 @@ void ObjectContainer::clearObjectFromCurrentPartitions(GameObject *o)
 	parents.clear();
 }
 
-void ObjectContainer::addObjectToSpatialPartitionFor(GameObject* o, int x, int y)
+void EntityContainer::addObjectToSpatialPartitionFor(Entity* o, int x, int y)
 {
 	std::string objId = o->getStringId();
 
@@ -98,12 +98,12 @@ void ObjectContainer::addObjectToSpatialPartitionFor(GameObject* o, int x, int y
 	spatialPartitionMap[loc][objId] = o;
 }
 
-void ObjectContainer::setSpatialPartitionDimension(unsigned int i)
+void EntityContainer::setSpatialPartitionDimension(unsigned int i)
 {
 	spatialPartitionDimension = i;
 }
 
-void ObjectContainer::unregisterObject(GameObject* object)
+void EntityContainer::unregisterObject(Entity* object)
 {
 	std::string objId = object->getStringId();
 	objects.erase(objId);
@@ -118,7 +118,7 @@ void ObjectContainer::unregisterObject(GameObject* object)
 	}
 }
 
-void ObjectContainer::unregisterAllObjects()
+void EntityContainer::unregisterAllObjects()
 {
 	for(auto it = objects.begin(); it != objects.end(); it++) {
 		delete it->second;
@@ -131,7 +131,7 @@ void ObjectContainer::unregisterAllObjects()
 	}
 }
 
-void ObjectContainer::unregisterAllObjectsFor(Layer layer)
+void EntityContainer::unregisterAllObjectsFor(Layer layer)
 {
 	if (layeredObjects.find(layer) == layeredObjects.end()) {
 		return;
@@ -149,7 +149,7 @@ void ObjectContainer::unregisterAllObjectsFor(Layer layer)
 	layeredObjects[layer].clear();
 }
 
-void ObjectContainer::preHandleObjects(const GameData *gameData)
+void EntityContainer::preHandleObjects(const GameData *gameData)
 {
 	clearDeadObjects();
 	for (auto it = objects.begin(); it != objects.end(); it++) {
@@ -157,28 +157,28 @@ void ObjectContainer::preHandleObjects(const GameData *gameData)
 	}
 }
 
-void ObjectContainer::handleObjects(const SDL_Event& event)
+void EntityContainer::handleObjects(const SDL_Event& event)
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->handle(event);
 	}
 }
 
-void ObjectContainer::postHandleObjects(const GameData *gameData)
+void EntityContainer::postHandleObjects(const GameData *gameData)
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->postHandle(gameData);
 	}
 }
 
-void ObjectContainer::preRenderObjects(const GameData* data) 
+void EntityContainer::preRenderObjects(const GameData* data) 
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->preRender(data);
 	}
 }
 
-void ObjectContainer::renderObjects(const RenderData* data) const
+void EntityContainer::renderObjects(const RenderData* data) const
 {
 	for (auto it1 = layeredObjects.begin(); it1 != layeredObjects.end(); it1++) {
 		for (auto it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
@@ -187,19 +187,19 @@ void ObjectContainer::renderObjects(const RenderData* data) const
 	}
 }
 
-void ObjectContainer::postRenderObjects(const GameData* data) 
+void EntityContainer::postRenderObjects(const GameData* data) 
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		it->second->postRender(data);
 	}
 }
 
-size_t ObjectContainer::getObjectCount() 
+size_t EntityContainer::getObjectCount() 
 {
 	return objects.size();
 }
 
-size_t ObjectContainer::getObjectCountFor(Layer layer) 
+size_t EntityContainer::getObjectCountFor(Layer layer) 
 {
 	if (layeredObjects.find(layer) == layeredObjects.end()) {
 		return 0;
@@ -208,7 +208,7 @@ size_t ObjectContainer::getObjectCountFor(Layer layer)
 	return layeredObjects[layer].size();
 }
 
-void ObjectContainer::clearDeadObjects()
+void EntityContainer::clearDeadObjects()
 {
 	std::vector<std::string> objectsToErase;
 	for (auto it = objects.begin(); it != objects.end(); it++) {
@@ -230,12 +230,12 @@ void ObjectContainer::clearDeadObjects()
 	}
 }
 
-size_t ObjectContainer::getSpatialPartitionCount() const
+size_t EntityContainer::getSpatialPartitionCount() const
 {
 	return spatialPartitionMap.size();
 }
 
-GameObject* ObjectContainer::checkAllObjects(GameObjectProcessor func) const
+Entity* EntityContainer::checkAllObjects(EntityProcessor func) const
 {
 	for (auto it = objects.begin(); it != objects.end(); it++) {
 		if (func(it->second)) {
@@ -245,7 +245,7 @@ GameObject* ObjectContainer::checkAllObjects(GameObjectProcessor func) const
 	return nullptr;
 }
 
-GameObject* ObjectContainer::checkAllCollidableObjects(GameObjectProcessor func) const
+Entity* EntityContainer::checkAllCollidableObjects(EntityProcessor func) const
 {
 	for (auto it = collidableObjects.begin(); it != collidableObjects.end(); it++) {
 		if (func(it->second)) {
@@ -255,7 +255,7 @@ GameObject* ObjectContainer::checkAllCollidableObjects(GameObjectProcessor func)
 	return nullptr;
 }
 
-GameObject* ObjectContainer::checkCollidablesFor(const GameObject* source, GameObjectProcessor func)
+Entity* EntityContainer::checkCollidablesFor(const Entity* source, EntityProcessor func)
 {
 	const LocationProperty::Parents& parents = source->getLocationProperty().getParents();
 	for (auto parentIter = parents.begin(); parentIter != parents.end(); parentIter++) {

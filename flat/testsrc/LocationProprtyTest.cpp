@@ -1,6 +1,6 @@
 #include <iostream>
 #include "catch.hpp"
-#include "GameObjectImpl.h"
+#include "EntityImpl.h"
 #include "../src/LocationProperty.h"
 
 using namespace flat2d;
@@ -49,7 +49,7 @@ TEST_CASE( "Test less operator", "[locprop]" )
 TEST_CASE( "Test change trigger", "[locprop]" )
 {
 	bool hasMovedOutOfSpace = false;
-	GameObjectImpl o(100, 100);
+	EntityImpl o(100, 100);
 
 	LocationProperty space(0, 0, 200, 200);
 	LocationProperty& lop = o.getLocationProperty();

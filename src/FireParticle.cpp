@@ -1,5 +1,5 @@
 #include "FireParticle.h"
-#include "GameObjectType.h"
+#include "EntityType.h"
 
 void FireParticle::preRender(const flat2d::GameData *data)
 {
@@ -13,8 +13,8 @@ void FireParticle::preRender(const flat2d::GameData *data)
 	locationProperty.incrementXpos(xvel * deltaTime);
 	locationProperty.incrementYpos(yvel * deltaTime);
 
-	GameObject *object = colDetector->checkForCollisions(this);
-	if (object && object->getType() != GameObjectType::ROCKET) {
+	Entity *object = colDetector->checkForCollisions(this);
+	if (object && object->getType() != EntityType::ROCKET) {
 		setDead(true);
 	}
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include "Particle.h"
-#include "GameObjectType.h"
+#include "EntityType.h"
 
 void Particle::preRender(const flat2d::GameData* data)
 {
@@ -19,8 +19,8 @@ void Particle::preRender(const flat2d::GameData* data)
 	locationProperty.incrementXpos(xvel * deltaTime);
 	locationProperty.incrementYpos(yvel * deltaTime);
 
-	GameObject *object = colDetector->checkForCollisions(this);
-	if (object && object->getType() != GameObjectType::ROCKET) {
+	Entity *object = colDetector->checkForCollisions(this);
+	if (object && object->getType() != EntityType::ROCKET) {
 		xvel = 0;
 		yvel = 0;
 	}

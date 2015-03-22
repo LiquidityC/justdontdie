@@ -45,10 +45,10 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 	}
 	
 	renderData->getCamera()->setMapDimensions(map.width * map.tileWidth, map.height * map.tileHeight);
-	flat2d::ObjectContainer *objectContainer = gameData->getObjectContainer();
+	flat2d::EntityContainer *entityContainer = gameData->getEntityContainer();
 
 
-	// Parse all the layers (might need to add layers in ObjectContainer)
+	// Parse all the layers (might need to add layers in EntityContainer)
 	while ( node && checkNodeName(node, "layer") ) {
 		xml_node<> *data = node->first_node();
 
@@ -115,7 +115,7 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 
 			SDL_Rect clip = { xclip, yclip, tileset->tileWidth, tileset->tileHeight };
 			tileObj->setClip(clip);
-			objectContainer->registerObject(tileObj, Layers::BACK);
+			entityContainer->registerObject(tileObj, Layers::BACK);
 
 			col++;
 			if (col >= map.width) {
@@ -145,7 +145,7 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 			objBox.h = static_cast<int>(atof(attr->value()));
 
 			MapTileObject* tileObj = new MapTileObject(objBox.x, objBox.y, objBox.w, objBox.h, nullptr);
-			objectContainer->registerObject(tileObj);
+			entityContainer->registerObject(tileObj);
 
 			xml_node<> *properties = object->first_node();
 			object = object->next_sibling();

@@ -1,6 +1,6 @@
 #include <algorithm>
 #include "GhostParticle.h"
-#include "GameObjectType.h"
+#include "EntityType.h"
 
 void GhostParticle::preRender(const flat2d::GameData* data)
 {
@@ -13,8 +13,8 @@ void GhostParticle::preRender(const flat2d::GameData* data)
 	flat2d::CollisionDetector *colDetector = data->getCollisionDetector();
 
 	locationProperty.incrementXpos(xvel * deltaTime);
-	GameObject *object = colDetector->checkForCollisions(this);
-	if (object && object->getType() != GameObjectType::ROCKET) {
+	Entity *object = colDetector->checkForCollisions(this);
+	if (object && object->getType() != EntityType::ROCKET) {
 		locationProperty.incrementXpos(-(xvel * deltaTime));
 
 		reduceXVel(1800 + locationProperty.getWidth() * 250, deltaTime);
@@ -25,7 +25,7 @@ void GhostParticle::preRender(const flat2d::GameData* data)
 
 	locationProperty.incrementYpos(yvel * deltaTime);
 	object = colDetector->checkForCollisions(this);
-	if (object && object->getType() != GameObjectType::ROCKET) {
+	if (object && object->getType() != EntityType::ROCKET) {
 		locationProperty.incrementYpos(-(yvel * deltaTime));
 
 		reduceYVel(4600 + locationProperty.getHeight() * 1000, deltaTime);
