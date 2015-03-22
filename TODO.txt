@@ -2,6 +2,7 @@ flat2d:
 	-	Make collision detection a separate game loop and don't check it
 		when moving the actual object. Collisions should run after preRender()
 		and before render().
+		This is the plan: http://blog.5pmcasual.com/game-controller-api-in-sdl2.html
 
 Game:
 	-	Make the initial level once collisions are smoother.
