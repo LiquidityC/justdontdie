@@ -1,5 +1,5 @@
-#ifndef _RENDER_DATA_H
-#define _RENDER_DATA_H
+#ifndef RENDERDATA_H_
+#define RENDERDATA_H_
 
 #include <SDL2/SDL.h>
 
@@ -17,14 +17,14 @@ namespace flat2d
 			void *customData = nullptr;
 
 		public:
-			RenderData(SDL_Renderer *ren, Camera *cam) : 
+			RenderData(SDL_Renderer *ren, Camera *cam) :
 				renderer(ren),
-				camera(cam) { };
+				camera(cam) { }
 
-			SDL_Renderer* getRenderer() const { return renderer; };
-			Camera* getCamera() const { return camera; };
-			void* getCustomData() { return customData; };
+			SDL_Renderer* getRenderer() const { return renderer; }
+			Camera* getCamera() const { return camera; }
+			void* getCustomData() { return customData; }
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // RENDERDATA_H_

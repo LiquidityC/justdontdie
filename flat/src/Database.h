@@ -1,58 +1,62 @@
-#ifndef _DATABASE_H
-#define _DATABASE_H
+#ifndef DATABASE_H_
+#define DATABASE_H_
 
+#include <sqlite3.h>
 #include <string>
 #include <vector>
-#include <sqlite3.h>
 
 /**
  * @brief Handle SQLite databases
  * @author Linus Probert <linus.probert@gmail.com>
  */
-class Database {
+namespace flat2d
+{
+	namespace db
+	{
+		class Database {
+			public:
+				typedef std::vector<std::string> Row;
+				typedef std::vector<Row> Result;
 
-	public:
-		typedef std::vector<std::string> Row;
-		typedef std::vector<Row> Result;
+			public:
+				/**
+				 * @brief Constructor
+				 * @param filename The database file
+				 */
+				explicit Database(const std::string& filename);
 
-	public:
+				/**
+				 * @brief destructor
+				 */
+				~Database();
 
-		/**
-		 * @brief Constructor
-		 * @param filename The database file
-		 */
-		Database(const std::string& filename);
+				/**
+				 * @brief Open provided database file
+				 * @param filename the path to the file
+				 */
+				bool open(const std::string& filename);
 
-		/**
-		 * @brief destructor
-		 */
-		~Database();
+				/**
+				 * @brief Run a query against the database
+				 * @return the result of the query
+				 */
+				Result query(const std::string& query);
 
-		/**
-		 * @brief Open provided database file
-		 * @param filename the path to the file
-		 */
-		bool open(const std::string& filename);
+				/**
+				 * @brief Close the database
+				 */
+				void close();
 
-		/**
-		 * @brief Run a query against the database
-		 * @return the result of the query
-		 */
-		Result query(const std::string& query);
+				/**
+				 * @brief Get table count for given table
+				 * @patam table_name The name of the table
+				 */
+				unsigned int get_table_count(const std::string& table_name);
 
-		/**
-		 * @brief Close the database
-		 */
-		void close();
+			private:
+				sqlite3* database;
+		};
+	} // namespace db NOLINT(readability/namespace)
+} // namespace flat2d
 
-		/**
-		 * @brief Get table count for given table
-		 * @patam table_name The name of the table
-		 */
-		unsigned int get_table_count(const std::string& table_name);
-
-	private:
-		sqlite3* database;
-};
-
-#endif
+#endif // DATABASE_H_

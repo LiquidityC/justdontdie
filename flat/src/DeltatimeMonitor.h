@@ -1,5 +1,5 @@
-#ifndef _DELTATIME_MONITOR_H
-#define _DELTATIME_MONITOR_H
+#ifndef DELTATIMEMONITOR_H_
+#define DELTATIMEMONITOR_H_
 
 namespace flat2d
 {
@@ -14,6 +14,6 @@ namespace flat2d
 			void updateDeltaTime();
 			float getDeltaTime() const;
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // DELTATIMEMONITOR_H_

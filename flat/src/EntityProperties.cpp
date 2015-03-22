@@ -1,131 +1,143 @@
-#include <iostream>
 #include "EntityProperties.h"
 
-using namespace flat2d;
 
-void EntityProperties::setXpos(int x)
+namespace flat2d
 {
-	xpos = x;
-	locationUpdated();
-}
-
-void EntityProperties::incrementXpos(int x)
-{
-	xpos += x;
-	locationUpdated();
-}
-
-int EntityProperties::getXpos() const
-{
-	return xpos;
-}
-
-void EntityProperties::setYpos(int y)
-{
-	ypos = y;
-	locationUpdated();
-}
-
-void EntityProperties::incrementYpos(int y)
-{
-	ypos += y;
-	locationUpdated();
-}
-
-int EntityProperties::getYpos() const
-{
-	return ypos;
-}
-
-void EntityProperties::setWidth(int w) {
-	width = w;
-	locationUpdated();
-}
-
-int EntityProperties::getWidth() const
-{
-	return width;
-}
-
-void EntityProperties::setHeight(int h)
-{
-	height = h;
-	locationUpdated();
-}
-
-int EntityProperties::getHeight() const
-{
-	return height;
-}
-
-SDL_Rect EntityProperties::getBoundingBox() const
-{
-	return { xpos, ypos, width, height };
-}
-
-void EntityProperties::setOnLocationChange(OnLocationChangeFunction onChange)
-{
-	if (!onLocationChange) {
-		onLocationChange = onChange;
-	}
-}
-
-bool EntityProperties::containsPoint(int x, int y) const
-{
-	return x >= xpos
-		&& x <= xpos + width
-		&& y >= ypos 
-		&& y <= ypos + height;
-}
-
-void EntityProperties::locationUpdated()
-{
-	if (!onLocationChange || parents.empty()) {
-		return;
+	void EntityProperties::setXpos(int x)
+	{
+		this->x = x;
+		locationUpdated();
 	}
 
-	bool locationChanged = false;
-	for (auto it = parents.begin(); it != parents.end(); ++it) {
-		if (!it->containsPoint(xpos, ypos)
-				|| !it->containsPoint(xpos + width, ypos)
-				|| !it->containsPoint(xpos, ypos + height)
-				|| !it->containsPoint(xpos + width, ypos + height))
-		{
-			locationChanged = true;
-			break;
+	void EntityProperties::incrementXpos(int x)
+	{
+		this->x += x;
+		locationUpdated();
+	}
+
+	int EntityProperties::getXpos() const
+	{
+		return x;
+	}
+
+	void EntityProperties::setYpos(int y)
+	{
+		this->y = y;
+		locationUpdated();
+	}
+
+	void EntityProperties::incrementYpos(int y)
+	{
+		this->y += y;
+		locationUpdated();
+	}
+
+	int EntityProperties::getYpos() const
+	{
+		return y;
+	}
+
+	void EntityProperties::setWidth(int w) {
+		this->w = w;
+		locationUpdated();
+	}
+
+	int EntityProperties::getWidth() const
+	{
+		return w;
+	}
+
+	void EntityProperties::setHeight(int h)
+	{
+		this->h = h;
+		locationUpdated();
+	}
+
+	int EntityProperties::getHeight() const
+	{
+		return h;
+	}
+
+	void EntityProperties::setXvel(float v)
+	{
+		xvel = v;
+	}
+
+	float EntityProperties::getXvel() const
+	{
+		return xvel;
+	}
+
+	void EntityProperties::setYvel(float v)
+	{
+		yvel = v;
+	}
+
+	float EntityProperties::getYvel() const
+	{
+		return yvel;
+	}
+
+	bool EntityProperties::isMoving() const
+	{
+		return xvel != 0 || yvel != 0;
+	}
+
+	SDL_Rect EntityProperties::getBoundingBox() const
+	{
+		return { x, y, w, h };
+	}
+
+	EntityShape EntityProperties::getColliderShape() const
+	{
+		return { x, y, w, h };
+	}
+
+	void EntityProperties::setOnLocationChange(OnLocationChangeFunction onChange)
+	{
+		if (!onLocationChange) {
+			onLocationChange = onChange;
 		}
 	}
 
-	if (locationChanged) {
-		onLocationChange();
+	bool EntityProperties::containsPoint(int px, int py) const
+	{
+		return px >= x
+			&& px <= x + w
+			&& py >= y
+			&& py <= y + h;
 	}
-}
 
-EntityProperties::Parents& EntityProperties::getParents()
-{
-	return parents;
-}
+	void EntityProperties::locationUpdated()
+	{
+		if (!onLocationChange || currentAreas.empty()) {
+			return;
+		}
 
-const EntityProperties::Parents& EntityProperties::getParents() const
-{
-	return parents;
-}
+		bool locationChanged = false;
+		for (auto it = currentAreas.begin(); it != currentAreas.end(); ++it) {
+			if (!it->containsPoint(x, y)
+					|| !it->containsPoint(x + w, y)
+					|| !it->containsPoint(x, y + h)
+					|| !it->containsPoint(x + w, y + h))
+			{
+				locationChanged = true;
+				break;
+			}
+		}
 
-bool EntityProperties::operator<(const EntityProperties& loc) const
-{
-	if (xpos == loc.xpos) {
-		return ypos < loc.ypos;
-	} else {
-		return xpos < loc.xpos;
+		if (locationChanged) {
+			onLocationChange();
+		}
 	}
-}
 
-bool EntityProperties::operator==(const EntityProperties& loc) const
-{
-	return width == loc.width && height == loc.height && !(*this < loc) && !(loc < *this);
-}
+	EntityProperties::Areas& EntityProperties::getCurrentAreas()
+	{
+		return currentAreas;
+	}
 
-bool EntityProperties::operator!=(const EntityProperties& loc) const
-{
-	return !(*this == loc);
-}
+	const EntityProperties::Areas& EntityProperties::getCurrentAreas() const
+	{
+		return currentAreas;
+	}
+} // namespace flat2d

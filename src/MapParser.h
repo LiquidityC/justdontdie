@@ -1,10 +1,12 @@
-#ifndef _MAP_PARSER_H
-#define _MAP_PARSER_H
+#ifndef MAPPARSER_H_
+#define MAPPARSER_H_
+
+#include <flat/flat.h>
+#include <string>
+#include <map>
 
 #include "rapidxml-1.13/rapidxml.hpp"
 #include "rapidxml-1.13/rapidxml_utils.hpp"
-#include <flat/flat.h>
-#include <string>
 
 class ResourceContainer;
 
@@ -61,4 +63,4 @@ class MapParser
 		bool checkAttrValue( rapidxml::xml_attribute<>*, std::string) const;
 };
 
-#endif
+#endif // MAPPARSER_H_

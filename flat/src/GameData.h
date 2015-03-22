@@ -1,5 +1,5 @@
-#ifndef _GAME_DATA_H
-#define _GAME_DATA_H
+#ifndef GAMEDATA_H_
+#define GAMEDATA_H_
 
 namespace flat2d
 {
@@ -21,23 +21,24 @@ namespace flat2d
 			void *customGameData = nullptr;
 
 		public:
-			GameData(EntityContainer *obc, CollisionDetector *cd, Mixer *m, RenderData *rd, DeltatimeMonitor *dtm) : 
-				entityContainer(obc), 
+			GameData(EntityContainer *obc, CollisionDetector *cd,
+					Mixer *m, RenderData *rd, DeltatimeMonitor *dtm) :
+				entityContainer(obc),
 				collisionDetector(cd),
 				mixer(m),
 				renderData(rd),
-				deltatimeMonitor(dtm) { };
+				deltatimeMonitor(dtm) { }
 
-			EntityContainer* getEntityContainer() const { return entityContainer; };
-			CollisionDetector* getCollisionDetector() const { return collisionDetector; };
-			Mixer* getMixer() const { return mixer; };
+			EntityContainer* getEntityContainer() const { return entityContainer; }
+			CollisionDetector* getCollisionDetector() const { return collisionDetector; }
+			Mixer* getMixer() const { return mixer; }
 
-			void setCustomGameData(void *customGameData) { this->customGameData = customGameData; };
-			void* getCustomGameData() const { return customGameData; };
-			DeltatimeMonitor* getDeltatimeMonitor() const { return deltatimeMonitor; };
-			RenderData* getRenderData() const { return renderData; };
+			void setCustomGameData(void *customGameData) { this->customGameData = customGameData; }
+			void* getCustomGameData() const { return customGameData; }
+			DeltatimeMonitor* getDeltatimeMonitor() const { return deltatimeMonitor; }
+			RenderData* getRenderData() const { return renderData; }
 	};
-}
+} // namespace flat2d
 
 
-#endif
+#endif // GAMEDATA_H_

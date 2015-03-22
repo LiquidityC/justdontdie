@@ -1,5 +1,5 @@
-#ifndef _GAME_SETTINGS_H
-#define _GAME_SETTINGS_H
+#ifndef GAMESETTINGS_H_
+#define GAMESETTINGS_H_
 
 class GameSettings
 {
@@ -11,4 +11,4 @@ class GameSettings
 		static const int SCREEN_TICKS_PER_FRAME = 1000 / SCREEN_FPS;
 };
 
-#endif
+#endif // GAMESETTINGS_H_

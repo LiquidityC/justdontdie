@@ -1,5 +1,5 @@
-#ifndef _GAME_CONTROLLER_CONTAINER_H
-#define _GAME_CONTROLLER_CONTAINER_H
+#ifndef GAMECONTROLLERCONTAINER_H_
+#define GAMECONTROLLERCONTAINER_H_
 
 #include <vector>
 #include "GameController.h"
@@ -18,8 +18,8 @@ namespace flat2d
 			virtual ~GameControllerContainer();
 
 			bool hasControllers();
-			GameController* getController(int);
+			GameController* getController(int index);
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // GAMECONTROLLERCONTAINER_H_

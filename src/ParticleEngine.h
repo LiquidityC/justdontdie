@@ -1,5 +1,5 @@
-#ifndef _PARTICLE_ENGINE_H
-#define _PARTICLE_ENGINE_H
+#ifndef PARTICLEENGINE_H_
+#define PARTICLEENGINE_H_
 
 #include <SDL2/SDL.h>
 #include <flat/flat.h>
@@ -9,7 +9,7 @@ class ParticleEngine
 	flat2d::EntityContainer *entityContainer;
 
 	public:
-		ParticleEngine(flat2d::EntityContainer *obc) : entityContainer(obc) { };
+		explicit ParticleEngine(flat2d::EntityContainer *obc) : entityContainer(obc) { }
 
 		void createBloodSprayAt(int, int);
 
@@ -18,4 +18,4 @@ class ParticleEngine
 		void createExplosionAt(int, int);
 };
 
-#endif
+#endif // PARTICLEENGINE_H_

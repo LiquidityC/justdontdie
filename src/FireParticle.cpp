@@ -24,7 +24,8 @@ void FireParticle::preRender(const flat2d::GameData *data)
 
 void FireParticle::setRenderDrawColor(SDL_Renderer *renderer) const
 {
-	static int random = rand() % 2;
+	static unsigned int seed = 378193;
+	static int random = rand_r(&seed) % 2;
 
 	switch (random) {
 		case 0:

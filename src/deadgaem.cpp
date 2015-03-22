@@ -1,8 +1,8 @@
-#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include <flat/flat.h>
+#include <iostream>
 
 #include "Soldier.h"
 #include "ParticleEngine.h"
@@ -23,7 +23,7 @@ int main( int argc, char* args[] )
 		return -1;
 	}
 
-	// TODO: Should probably extract all this into a function/method {{
+	// TODO(Linus): Should probably extract all this into a function/method {{
 	flat2d::GameData *gameData = flat->getGameData();
 	flat2d::RenderData* renderData = gameData->getRenderData();
 	SDL_Renderer* renderer = renderData->getRenderer();
@@ -36,7 +36,7 @@ int main( int argc, char* args[] )
 
 	MapParser parser;
 	parser.createMapFrom(gameData, "resources/maps/map1/", "map1.tmx");
-	
+
 	flat2d::Entity* soldier = new Soldier(200, 200);
 	soldier->init(gameData);
 	entityContainer->registerObject(soldier, Layers::MID);

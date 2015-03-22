@@ -1,5 +1,5 @@
-#ifndef _MIXER_H
-#define _MIXER_H
+#ifndef MIXER_H_
+#define MIXER_H_
 
 #include <SDL2/SDL_mixer.h>
 #include <map>
@@ -14,7 +14,6 @@ namespace flat2d
 			std::map<int, Mix_Music*> music;
 
 		public:
-
 			~Mixer() {
 				for (auto it = effects.begin(); it != effects.end(); it++) {
 					Mix_FreeChunk(it->second);
@@ -22,15 +21,15 @@ namespace flat2d
 				for (auto it = music.begin(); it != music.end(); it++) {
 					Mix_FreeMusic(it->second);
 				}
-			};
+			}
 
 			bool loadEffect(int, std::string);
 
-			void playEffect(int);
+			void playEffect(int effect);
 
 			bool loadMusic(int, std::string);
 
-			void playMusic(int);
+			void playMusic(int music);
 
 			bool playingMusic();
 
@@ -42,6 +41,6 @@ namespace flat2d
 
 			void stopMusic();
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // MIXER_H_

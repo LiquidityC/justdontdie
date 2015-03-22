@@ -1,5 +1,5 @@
-#ifndef _GAME_CONTROLLER_H
-#define _GAME_CONTROLLER_H
+#ifndef GAMECONTROLLER_H_
+#define GAMECONTROLLER_H_
 
 #include <SDL2/SDL.h>
 
@@ -13,12 +13,12 @@ namespace flat2d
 			SDL_GameController *controller = nullptr;
 
 		public:
-			GameController(int);
+			explicit GameController(int index);
 
 			~GameController();
 
 			SDL_GameController* getSDLController();
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // GAMECONTROLLER_H_

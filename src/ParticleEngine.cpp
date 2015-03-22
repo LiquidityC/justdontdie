@@ -8,12 +8,14 @@
 void ParticleEngine::createBloodSprayAt(int x, int y)
 {
 	Particle *p;
+	unsigned int seed = 313213;
+
 	for (auto i = 0; i < 50; i++) {
-		int xneg = rand() % 2 > 0 ? 1 : -1;
-		int yneg = rand() % 2 > 0 ? 1 : -1;
-		int xvel = (rand() % 500) * xneg;
-		int yvel = (rand() % 500) * yneg;
-		int size = (rand() % 3) + 1;
+		int xneg = rand_r(&seed) % 2 > 0 ? 1 : -1;
+		int yneg = rand_r(&seed) % 2 > 0 ? 1 : -1;
+		int xvel = (rand_r(&seed) % 500) * xneg;
+		int yvel = (rand_r(&seed) % 500) * yneg;
+		int size = (rand_r(&seed) % 3) + 1;
 		p = new BloodParticle(x, y, size, xvel, yvel);
 		entityContainer->registerObject(p, Layers::FRONT);
 	}
@@ -22,12 +24,14 @@ void ParticleEngine::createBloodSprayAt(int x, int y)
 void ParticleEngine::createGhostSprayAt(int x, int y)
 {
 	Particle *p;
+	unsigned int seed = 748329;
+
 	for (auto i = 0; i < 50; i++) {
-		int xneg = rand() % 2 > 0 ? 1 : -1;
-		int yneg = rand() % 2 > 0 ? 1 : -1;
-		int xvel = (rand() % 500) * xneg;
-		int yvel = (rand() % 500) * yneg;
-		int size = (rand() % 3) + 1;
+		int xneg = rand_r(&seed) % 2 > 0 ? 1 : -1;
+		int yneg = rand_r(&seed) % 2 > 0 ? 1 : -1;
+		int xvel = (rand_r(&seed) % 500) * xneg;
+		int yvel = (rand_r(&seed) % 500) * yneg;
+		int size = (rand_r(&seed) % 3) + 1;
 		p = new GhostParticle(x, y, size, size, xvel, yvel);
 		entityContainer->registerObject(p, Layers::FRONT);
 	}
@@ -36,11 +40,13 @@ void ParticleEngine::createGhostSprayAt(int x, int y)
 void ParticleEngine::createExplosionAt(int x, int y)
 {
 	Particle *p;
+	unsigned int seed = 327681;
+
 	for (auto i = 0; i < 50; i++) {
-		int xneg = rand() % 2 > 0 ? 1 : -1;
-		int yneg = rand() % 2 > 0 ? 1 : -1;
-		int xvel = (rand() % 300) * xneg;
-		int yvel = (rand() % 300) * yneg;
+		int xneg = rand_r(&seed) % 2 > 0 ? 1 : -1;
+		int yneg = rand_r(&seed) % 2 > 0 ? 1 : -1;
+		int xvel = (rand_r(&seed) % 300) * xneg;
+		int yvel = (rand_r(&seed) % 300) * yneg;
 		p = new FireParticle(x, y, xvel, yvel);
 		entityContainer->registerObject(p, Layers::FRONT);
 	}

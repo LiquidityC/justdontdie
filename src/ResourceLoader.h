@@ -1,5 +1,5 @@
-#ifndef _RESOURCE_LOADER_H
-#define _RESOURCE_LOADER_H
+#ifndef RESOURCELOADER_H_
+#define RESOURCELOADER_H_
 
 #include <flat/flat.h>
 
@@ -11,4 +11,4 @@ class ResourceLoader
 		bool loadMusic(flat2d::GameData*);
 };
 
-#endif
+#endif // RESOURCELOADER_H_

@@ -1,5 +1,5 @@
-#ifndef _SOUND_MAPPINGS_H
-#define _SOUND_MAPPINGS_H
+#ifndef SOUNDMAPPINGS_H_
+#define SOUNDMAPPINGS_H_
 
 enum Effects {
 	SPLAT,
@@ -12,4 +12,4 @@ enum Music {
 	MAIN
 };
 
-#endif
+#endif // SOUNDMAPPINGS_H_

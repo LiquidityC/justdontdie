@@ -3,107 +3,108 @@
 #include "Camera.h"
 #include "RenderData.h"
 
-using namespace flat2d;
-
-void Entity::setDead(bool dead)
+namespace flat2d
 {
-	this->dead = dead;
-}
-
-void Entity::setClip(SDL_Rect& rect)
-{
-	clip = rect;
-}
-
-bool Entity::isDead() const
-{
-	return dead;
-}
-
-void Entity::setCollidable(bool collidable)
-{
-	this->collidable = collidable;
-}
-
-void Entity::render(const RenderData *data) const
-{
-	if (texture == nullptr || dead) {
-		return;
+	void Entity::setDead(bool dead)
+	{
+		this->dead = dead;
 	}
 
-	SDL_Rect box = entityProperties.getBoundingBox();
-	if (data->getCamera() != nullptr && !fixedPosition) {
-		Camera* camera = data->getCamera();
-		if (!camera->isVisibleOnCamera(box)) {
+	void Entity::setClip(SDL_Rect& rect)
+	{
+		clip = rect;
+	}
+
+	bool Entity::isDead() const
+	{
+		return dead;
+	}
+
+	void Entity::setCollidable(bool collidable)
+	{
+		this->collidable = collidable;
+	}
+
+	void Entity::render(const RenderData *data) const
+	{
+		if (texture == nullptr || dead) {
 			return;
 		}
-		box.x = camera->getScreenXposFor(box.x);
-		box.y = camera->getScreenYposFor(box.y);
-	}
 
-	SDL_RenderCopy(data->getRenderer(), texture, &clip, &box);
+		SDL_Rect box = entityProperties.getBoundingBox();
+		if (data->getCamera() != nullptr && !fixedPosition) {
+			Camera* camera = data->getCamera();
+			if (!camera->isVisibleOnCamera(box)) {
+				return;
+			}
+			box.x = camera->getScreenXposFor(box.x);
+			box.y = camera->getScreenYposFor(box.y);
+		}
+
+		SDL_RenderCopy(data->getRenderer(), texture, &clip, static_cast<SDL_Rect*>(&box));
 
 #ifdef DEBUG
-	if (isCollider()) {
-		SDL_SetRenderDrawColor(data->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
-		SDL_Rect bounds = getBoundingBox();
-		if (data->getCamera() != nullptr) {
-			bounds.x = data->getCamera()->getScreenXposFor(bounds.x);
-			bounds.y = data->getCamera()->getScreenYposFor(bounds.y);
+		if (isCollider()) {
+			SDL_SetRenderDrawColor(data->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
+			SDL_Rect bounds = getBoundingBox();
+			if (data->getCamera() != nullptr) {
+				bounds.x = data->getCamera()->getScreenXposFor(bounds.x);
+				bounds.y = data->getCamera()->getScreenYposFor(bounds.y);
+			}
+			SDL_RenderDrawRect( data->getRenderer(), &bounds );
 		}
-		SDL_RenderDrawRect( data->getRenderer(), &bounds );
-	}
 #endif
-}
-
-bool Entity::isCollider() const
-{
-	return collidable;
-}
-
-void Entity::setColliderBox(SDL_Rect collider)
-{
-	this->collider = collider;
-}
-
-SDL_Rect Entity::getBoundingBox() const
-{
-	SDL_Rect box = entityProperties.getBoundingBox();
-	if (collider.w != 0 && collider.h != 0) {
-		box.x += collider.x;
-		box.y += collider.y;
-		box.w = collider.w;
-		box.h = collider.h;
 	}
-	return box;
-}
 
-const SDL_Texture* Entity::getTexture() const
-{
-	return texture;
-}
+	bool Entity::isCollider() const
+	{
+		return collidable;
+	}
 
-void Entity::setTexture(SDL_Texture* texture)
-{
-	this->texture = texture;
-}
+	void Entity::setColliderBox(SDL_Rect collider)
+	{
+		this->collider = collider;
+	}
 
-bool Entity::isFixedPosition()
-{
-	return fixedPosition;
-}
+	SDL_Rect Entity::getBoundingBox() const
+	{
+		SDL_Rect box = entityProperties.getBoundingBox();
+		if (collider.w != 0 && collider.h != 0) {
+			box.x += collider.x;
+			box.y += collider.y;
+			box.w = collider.w;
+			box.h = collider.h;
+		}
+		return box;
+	}
 
-void Entity::setFixedPosition(bool fixedPosition)
-{
-	this->fixedPosition = fixedPosition;
-}
+	const SDL_Texture* Entity::getTexture() const
+	{
+		return texture;
+	}
 
-EntityProperties& Entity::getEntityProperties()
-{
-	return entityProperties;
-}
+	void Entity::setTexture(SDL_Texture* texture)
+	{
+		this->texture = texture;
+	}
 
-const EntityProperties& Entity::getEntityProperties() const
-{
-	return entityProperties;
-}
+	bool Entity::isFixedPosition()
+	{
+		return fixedPosition;
+	}
+
+	void Entity::setFixedPosition(bool fixedPosition)
+	{
+		this->fixedPosition = fixedPosition;
+	}
+
+	EntityProperties& Entity::getEntityProperties()
+	{
+		return entityProperties;
+	}
+
+	const EntityProperties& Entity::getEntityProperties() const
+	{
+		return entityProperties;
+	}
+} // namespace flat2d

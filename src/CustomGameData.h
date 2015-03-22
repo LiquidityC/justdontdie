@@ -1,5 +1,5 @@
-#ifndef _CUSTOM_GAME_DATA_H
-#define _CUSTOM_GAME_DATA_H
+#ifndef CUSTOMGAMEDATA_H_
+#define CUSTOMGAMEDATA_H_
 
 #include <flat/flat.h>
 #include "ResourceLoader.h"
@@ -16,7 +16,7 @@ class CustomGameData
 		LayerService *layerService = nullptr;
 
 		CustomGameData(ResourceLoader *rl, ResourceContainer *rc, ParticleEngine *pe, LayerService *ls)
-			: resourceLoader(rl), resourceContainer(rc), particleEngine(pe), layerService(ls) { };
+			: resourceLoader(rl), resourceContainer(rc), particleEngine(pe), layerService(ls) { }
 
 	public:
 		~CustomGameData() {
@@ -35,10 +35,10 @@ class CustomGameData
 					);
 		}
 
-		ResourceContainer* getResourceContainer() { return resourceContainer; };
-		ResourceLoader* getResourceLoader() { return resourceLoader; };
-		ParticleEngine* getParticleEngine() { return particleEngine; };
-		LayerService* getLayerService() { return layerService; };
+		ResourceContainer* getResourceContainer() { return resourceContainer; }
+		ResourceLoader* getResourceLoader() { return resourceLoader; }
+		ParticleEngine* getParticleEngine() { return particleEngine; }
+		LayerService* getLayerService() { return layerService; }
 };
 
-#endif
+#endif // CUSTOMGAMEDATA_H_

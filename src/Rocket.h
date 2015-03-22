@@ -1,5 +1,5 @@
-#ifndef _ROCKET_H
-#define _ROCKET_H
+#ifndef ROCKET_H_
+#define ROCKET_H_
 
 #include <flat/flat.h>
 #include "EntityType.h"
@@ -18,7 +18,7 @@ class Rocket : public flat2d::Entity
 		flat2d::Timer deathTimer;
 		flat2d::Timer switchTimer;
 		SDL_Rect clip;
-		Mode mode; 
+		Mode mode;
 
 	public:
 		Rocket(int x, int y, Mode m = Mode::NORMAL, bool rightToLeft = true) :
@@ -31,17 +31,17 @@ class Rocket : public flat2d::Entity
 
 				clip = { xclip, yclip, 24, 15 };
 				setClip(clip);
-			};
+			}
 
 		~Rocket() {
 			if (texture != nullptr) {
 				SDL_DestroyTexture(texture);
 			}
-		};
+		}
 
 		int getType() {
 			return EntityType::ROCKET;
-		};
+		}
 
 		void init(const flat2d::GameData*);
 
@@ -52,4 +52,4 @@ class Rocket : public flat2d::Entity
 		Mode getMode() const;
 };
 
-#endif
+#endif // ROCKET_H_

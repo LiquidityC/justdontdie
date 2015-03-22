@@ -47,4 +47,4 @@ namespace flat2d
 	{
 		return controllers[index];
 	}
-}
+} // namespace flat2d

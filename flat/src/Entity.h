@@ -1,11 +1,12 @@
-#ifndef _RENDERED_GAME_OBJECT_H
-#define _RENDERED_GAME_OBJECT_H
+#ifndef ENTITY_H_
+#define ENTITY_H_
 
 #include <SDL2/SDL.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
+#include <string>
 
 #include "EntityProperties.h"
 
@@ -29,10 +30,9 @@ namespace flat2d
 			bool fixedPosition = false;
 
 		public:
-			Entity(int x, int y, int w, int h) : 
+			Entity(int x, int y, int w, int h) :
 				entityProperties(x, y, w, h),
 				dead(false) {
-
 					/* Not providing ran creates valgrind warnings */
 					static boost::mt19937 ran;
 					id = boost::uuids::random_generator(ran)();
@@ -41,37 +41,37 @@ namespace flat2d
 					collider = { 0, 0, 0, 0 };
 				}
 
-			virtual ~Entity() { };
+			virtual ~Entity() { }
 
 			/* Operators */
 			virtual bool operator==(const Entity& o) const {
 				return id == o.id;
-			};
+			}
 
 			virtual bool operator!=(const Entity& o) const {
 				return id != o.id;
-			};
+			}
 
 			virtual Entity& operator=(const Entity& o) {
 				id = o.id;
 				return *this;
-			};
+			}
 
 			virtual std::string getStringId() const {
 				return boost::lexical_cast<std::string>(id);
-			};
+			}
 
 			virtual int getType() {
 				return -1;
-			};
+			}
 
 			/* Own methods */
 			void setClip(SDL_Rect&);
-			void setDead(bool);
-			void setCollidable(bool);
+			void setDead(bool isDead);
+			void setCollidable(bool isCollidable);
 			void setColliderBox(SDL_Rect collider);
 			bool isFixedPosition();
-			void setFixedPosition(bool);
+			void setFixedPosition(bool isFixed);
 
 			/* Implemented override methods */
 			virtual bool isDead() const;
@@ -79,19 +79,18 @@ namespace flat2d
 			virtual bool isCollider() const;
 			virtual SDL_Rect getBoundingBox() const;
 			virtual const SDL_Texture* getTexture() const;
-			virtual void setTexture(SDL_Texture*);
+			virtual void setTexture(SDL_Texture* texture);
 			virtual EntityProperties& getEntityProperties();
 			virtual const EntityProperties& getEntityProperties() const;
 
 			/* Empty methods */
-			virtual void init(const GameData*) { };
-			virtual void preHandle(const GameData*) { };
-			virtual void handle(const SDL_Event& event) { };
-			virtual void postHandle(const GameData*) { };
-			virtual void preRender(const GameData*) { };
-			virtual void postRender(const GameData*) { };
-
+			virtual void init(const GameData*) { }
+			virtual void preHandle(const GameData*) { }
+			virtual void handle(const SDL_Event& event) { }
+			virtual void postHandle(const GameData*) { }
+			virtual void preRender(const GameData*) { }
+			virtual void postRender(const GameData*) { }
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // ENTITY_H_

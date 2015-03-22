@@ -1,33 +1,40 @@
-#ifndef _LOCATION_PROPERTY_H
-#define _LOCATION_PROPERTY_H
+#ifndef ENTITYPROPERTIES_H_
+#define ENTITYPROPERTIES_H_
 
 #include <SDL2/SDL.h>
 #include <vector>
 #include <functional>
 
+#include "Square.h"
+#include "MapArea.h"
+#include "EntityShape.h"
+
 namespace flat2d
 {
 	class EntityContainer;
 
-	class EntityProperties
+	class EntityProperties : public Square
 	{
 		public:
 			typedef std::function<void ()> OnLocationChangeFunction;
-			typedef std::vector<EntityProperties> Parents;
+			typedef std::vector<MapArea> Areas;
 
 		private:
-			int xpos, ypos, xvel, yvel, width, height;
+			float xvel, yvel;
+
 			OnLocationChangeFunction onLocationChange = nullptr;
-			Parents parents;
+			Areas currentAreas;
 
 		private:
 			void locationUpdated();
 
 		public:
-			EntityProperties(int x, int y, int dim) : xpos(x), ypos(y), width(dim), height(dim) { };
-			EntityProperties(int x, int y, int w, int h) : xpos(x), ypos(y), width(w), height(h) { };
+			EntityProperties(int x, int y, int dim) : Square(x, y, dim) { }
+			EntityProperties(int x, int y, int w, int h) : Square(x, y, w, h) { }
 
 			SDL_Rect getBoundingBox() const;
+
+			EntityShape getColliderShape() const;
 
 			void setXpos(int x);
 			void incrementXpos(int x);
@@ -43,17 +50,21 @@ namespace flat2d
 			void setHeight(int h);
 			int getHeight() const;
 
+			void setXvel(float xvel);
+			float getXvel() const;
+
+			void setYvel(float yvel);
+			float getYvel() const;
+
+			bool isMoving() const;
+
 			bool containsPoint(int, int) const;
 
-			Parents& getParents();
-			const Parents& getParents() const;
-
-			bool operator<(const EntityProperties&) const;
-			bool operator==(const EntityProperties&) const;
-			bool operator!=(const EntityProperties&) const;
+			Areas& getCurrentAreas();
+			const Areas& getCurrentAreas() const;
 
 			void setOnLocationChange(OnLocationChangeFunction);
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // ENTITYPROPERTIES_H_

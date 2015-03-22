@@ -1,5 +1,5 @@
-#ifndef _RESOURCE_CONTAINER_H
-#define _RESOURCE_CONTAINER_H
+#ifndef RESOURCECONTAINER_H_
+#define RESOURCECONTAINER_H_
 
 #include <SDL2/SDL.h>
 #include <vector>
@@ -13,12 +13,12 @@ class ResourceContainer
 		std::vector<SDL_Texture*> textures;
 
 	public:
-		ResourceContainer() { };
+		ResourceContainer() { }
 		~ResourceContainer();
 
 		void clearTextures();
 
-		void addTexture(SDL_Texture*);
+		void addTexture(SDL_Texture* texture);
 };
 
-#endif
+#endif // RESOURCECONTAINER_H_

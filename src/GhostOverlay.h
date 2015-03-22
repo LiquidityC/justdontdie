@@ -1,5 +1,5 @@
-#ifndef _GHOST_OVERLAY_H
-#define _GHOST_OVERLAY_H
+#ifndef GHOSTOVERLAY_H_
+#define GHOSTOVERLAY_H_
 
 #include <flat/flat.h>
 #include "GameSettings.h"
@@ -16,7 +16,7 @@ class GhostOverlay : public flat2d::Entity
 
 		bool isVisible();
 
-		void setVisible(bool);
+		void setVisible(bool visible);
 };
 
-#endif
+#endif // GHOSTOVERLAY_H_

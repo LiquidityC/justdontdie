@@ -1,5 +1,5 @@
-#ifndef _FLAT_BUILDER_H
-#define _FLAT_BUILDER_H
+#ifndef FLATBUILDER_H_
+#define FLATBUILDER_H_
 
 #include <string>
 
@@ -35,8 +35,7 @@ namespace flat2d
 			bool initContainers();
 
 			GameData* getGameData() const;
-
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // FLATBUILDER_H_

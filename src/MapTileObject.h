@@ -1,8 +1,10 @@
-#ifndef _GENERIC_GAME_OBJECT_H
-#define _GENERIC_GAME_OBJECT_H
+#ifndef MAPTILEOBJECT_H_
+#define MAPTILEOBJECT_H_
 
-#include <iostream>
 #include <flat/flat.h>
+#include <iostream>
+#include <map>
+#include <string>
 #include "EntityType.h"
 
 class MapTileObject : public flat2d::Entity
@@ -12,10 +14,10 @@ class MapTileObject : public flat2d::Entity
 		std::map<std::string, bool> properties;
 
 	public:
-		MapTileObject(int x, int y, int w, int h, SDL_Texture* t) 
-			: Entity(x, y, w, h), launchTimer() { 
+		MapTileObject(int x, int y, int w, int h, SDL_Texture* t)
+			: Entity(x, y, w, h), launchTimer() {
 				setTexture(t);
-			};
+			}
 
 		int getType() {
 			return EntityType::TILE;
@@ -27,4 +29,4 @@ class MapTileObject : public flat2d::Entity
 		bool hasProperty(std::string) const;
 };
 
-#endif
+#endif // MAPTILEOBJECT_H_

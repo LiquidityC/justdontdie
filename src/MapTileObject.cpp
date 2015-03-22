@@ -1,3 +1,5 @@
+#include <string>
+
 #include "MapTileObject.h"
 #include "Rocket.h"
 #include "LayerService.h"

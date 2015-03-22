@@ -1,5 +1,5 @@
-#ifndef _GHOST_PARTICLE_H
-#define _GHOST_PARTICLE_H
+#ifndef GHOSTPARTICLE_H_
+#define GHOSTPARTICLE_H_
 
 #include <flat/flat.h>
 #include "Particle.h"
@@ -8,7 +8,7 @@ class GhostParticle : public Particle
 {
 	public:
 		GhostParticle(int x, int y, int w, int h, int xvel, int yvel) :
-			Particle(x, y, w, h, xvel, yvel) { };
+			Particle(x, y, w, h, xvel, yvel) { }
 
 		void preRender(const flat2d::GameData*);
 
@@ -16,4 +16,4 @@ class GhostParticle : public Particle
 		void setRenderDrawColor(SDL_Renderer* renderer) const;
 };
 
-#endif
+#endif // GHOSTPARTICLE_H_

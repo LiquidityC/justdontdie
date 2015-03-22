@@ -1,5 +1,5 @@
-#ifndef _FIRE_PARTICLE_H
-#define _FIRE_PARTICLE_H
+#ifndef FIREPARTICLE_H_
+#define FIREPARTICLE_H_
 
 #include <flat/flat.h>
 #include "Particle.h"
@@ -8,7 +8,7 @@ class FireParticle : public Particle
 {
 	public:
 		FireParticle(int x, int y, int xv, int yv) :
-			Particle(x, y, 2, 2, xv, yv) { };
+			Particle(x, y, 2, 2, xv, yv) { }
 
 		void preRender(const flat2d::GameData*);
 		void postRender(const flat2d::GameData*);
@@ -17,4 +17,4 @@ class FireParticle : public Particle
 		void setRenderDrawColor(SDL_Renderer* renderer) const;
 };
 
-#endif
+#endif // FIREPARTICLE_H_

@@ -1,7 +1,7 @@
-#ifndef _TIMER_H
-#define _TIMER_H
+#ifndef TIMER_H_
+#define TIMER_H_
 
-namespace flat2d 
+namespace flat2d
 {
 	class Timer
 	{
@@ -19,11 +19,10 @@ namespace flat2d
 			bool isPaused() const;
 
 		private:
-
 			Uint32 startTicks, pausedTicks;
 
 			bool paused, started;
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // TIMER_H_

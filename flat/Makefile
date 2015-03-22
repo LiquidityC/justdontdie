@@ -19,6 +19,7 @@ RM					= rm
 CP					= cp
 ECHO				= echo
 SHELL				= /bin/sh
+LINT				= cpplint
 CTAGS				= ctags
 
 LIBS 				= $(SDL2_LDFLAGS) -lsqlite3
@@ -40,7 +41,7 @@ TEST				= test
 TEST_SOURCES 		= $(wildcard src/*.cpp) $(wildcard testsrc/*.cpp)
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
-.PHONY: $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR) $(LIB_UNIFIED_INCLUDE)
+.PHONY: lint $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR) $(LIB_UNIFIED_INCLUDE)
 
 default: $(LIBRARY) $(LIB_INCLUDES) $(LIB_UNIFIED_INCLUDE)
 
@@ -71,6 +72,11 @@ $(OBJDIR)/%.o: src/%.cpp
 
 $(OBJDIR)/%.o: testsrc/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
+
+lint:
+	python2.7 lint/cpplint.py --linelength=120 --root=flat/src --extensions=cpp,h \
+		--filter=-whitespace/tab,-whitespace/indent,-whitespace/parens,-whitespace/braces,-whitespace/comments,-runtime/indentation_namespace,-legal \
+		src/*
 
 clean:
 	@$(ECHO) Cleaning project

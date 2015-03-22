@@ -1,5 +1,5 @@
-#ifndef _CAMERA_H
-#define _CAMERA_H
+#ifndef CAMERA_H_
+#define CAMERA_H_
 
 #include <SDL2/SDL.h>
 
@@ -12,12 +12,12 @@ namespace flat2d
 
 		public:
 			Camera(int w, int h) :
-				xpos(0), 
-				ypos(0), 
-				width(w), 
+				xpos(0),
+				ypos(0),
+				width(w),
 				height(h),
-				mapWidth(1920), 
-				mapHeight(1080) { };
+				mapWidth(1920),
+				mapHeight(1080) { }
 
 			int getXpos();
 			int getYpos();
@@ -30,11 +30,11 @@ namespace flat2d
 
 			void centerOn(int x, int y);
 
-			bool isVisibleOnCamera(SDL_Rect& box);
+			bool isVisibleOnCamera(const SDL_Rect& box);
 
 			int getScreenXposFor(int x) const;
 			int getScreenYposFor(int y) const;
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // CAMERA_H_

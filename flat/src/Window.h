@@ -1,5 +1,5 @@
-#ifndef _WINDOW_H
-#define _WINDOW_H
+#ifndef WINDOW_H_
+#define WINDOW_H_
 
 #include <SDL2/SDL.h>
 #include <cstdio>
@@ -17,20 +17,20 @@ namespace flat2d
 			SDL_Renderer* renderer;
 
 		public:
-			Window(std::string t, unsigned int w, unsigned int h) : title(t), width(w), height(h) { };
+			Window(std::string t, unsigned int w, unsigned int h) : title(t), width(w), height(h) { }
 
 			~Window() {
 				SDL_DestroyWindow(window);
 
 				window = nullptr;
 				renderer = nullptr;
-			};
+			}
 
 			bool init();
 
-			SDL_Window* getWindow() { return window; };
-			SDL_Renderer* getRenderer() { return renderer; };
+			SDL_Window* getWindow() { return window; }
+			SDL_Renderer* getRenderer() { return renderer; }
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // WINDOW_H_

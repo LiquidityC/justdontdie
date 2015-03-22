@@ -1,5 +1,5 @@
-#ifndef _SOLDIER_H
-#define _SOLDIER_H
+#ifndef SOLDIER_H_
+#define SOLDIER_H_
 
 #include <flat/flat.h>
 #include "EntityType.h"
@@ -62,13 +62,12 @@ class Soldier : public flat2d::Entity
 		void restoreAtCheckpoint();
 
 	public:
-
 		Soldier(unsigned int x, unsigned int y) :
 			Entity(x, y, 28, 24),
 			checkPointX(x),
-			checkPointY(y) { 
+			checkPointY(y) {
 				motionController = new SoldierMotionController(this);
-			};
+			}
 
 		~Soldier() {
 			if (texture != nullptr) {
@@ -76,11 +75,11 @@ class Soldier : public flat2d::Entity
 				soldierTexture = nullptr;
 				delete motionController;
 			}
-		};
+		}
 
 		int getType() {
 			return EntityType::BOT;
-		};
+		}
 
 		void init(const flat2d::GameData*);
 
@@ -90,7 +89,7 @@ class Soldier : public flat2d::Entity
 		void preRender(const flat2d::GameData*);
 		void render(const flat2d::RenderData*) const;
 
-		void setGhostMode(bool);
+		void setGhostMode(bool ghostMode);
 };
 
-#endif
+#endif // SOLDIER_H_

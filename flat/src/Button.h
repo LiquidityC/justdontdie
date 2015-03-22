@@ -1,5 +1,5 @@
-#ifndef _BUTTON_H
-#define _BUTTON_H
+#ifndef BUTTON_H_
+#define BUTTON_H_
 
 #include "Entity.h"
 
@@ -14,12 +14,12 @@ namespace flat2d
 				bool mouseIsOver = false;
 
 			public:
-				Button(int x, int y, unsigned int w, unsigned int h, std::function<void ()> click) 
-					: Entity(x, y, w, h), onClick(click) { 
+				Button(int x, int y, unsigned int w, unsigned int h, std::function<void ()> click)
+					: Entity(x, y, w, h), onClick(click) {
 						setCollidable(false);
-					};
+					}
 
-				~Button() { };
+				~Button() { }
 
 				void setOnClick(std::function<void ()> click);
 				void triggerClick();
@@ -28,8 +28,7 @@ namespace flat2d
 
 				virtual void handle(const SDL_Event&);
 		};
+	}// namespace ui NOLINT(readability/namespace)
+}// namespace flat2d
 
-	}
-}
-
-#endif
+#endif // BUTTON_H_

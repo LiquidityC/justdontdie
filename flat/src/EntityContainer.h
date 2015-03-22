@@ -1,10 +1,12 @@
-#ifndef _OBJECT_CONTAINER_H
-#define _OBJECT_CONTAINER_H
+#ifndef ENTITYCONTAINER_H_
+#define ENTITYCONTAINER_H_
 
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <map>
-#include "EntityProperties.h"
+#include <string>
+#include <functional>
+#include "MapArea.h"
 
 namespace flat2d
 {
@@ -12,14 +14,13 @@ namespace flat2d
 	class Entity;
 	class GameData;
 	class RenderData;
-	class RenderData;
 
 	typedef int Layer;
 	typedef std::map<std::string, Entity*> ObjectList;
 	typedef std::map<Layer, ObjectList> LayerMap;
-	typedef std::map<EntityProperties, ObjectList> SpatialPartitionMap;
+	typedef std::map<MapArea, ObjectList> SpatialPartitionMap;
 
-	class EntityContainer 
+	class EntityContainer
 	{
 		private:
 			unsigned int spatialPartitionDimension = 100;
@@ -36,25 +37,25 @@ namespace flat2d
 			void operator=(const EntityContainer&); // Don't implement
 
 			void clearDeadObjects();
-			void registerCollidableObject(Entity*);
-			void registerObjectToSpatialPartitions(Entity*);
-			void addObjectToSpatialPartitionFor(Entity*, int, int);
-			void clearObjectFromCurrentPartitions(Entity*);
+			void registerCollidableObject(Entity *entity);
+			void registerObjectToSpatialPartitions(Entity *entity);
+			void addObjectToSpatialPartitionFor(Entity *entity, int x, int y);
+			void clearObjectFromCurrentPartitions(Entity *entity);
 
 		public:
 			static const int DEFAULT_LAYER = -1;
 
-			EntityContainer() { 
+			EntityContainer() {
 				ObjectList list;
 				layeredObjects[-1] = list;
-			}; 
+			}
 
 			~EntityContainer();
 
 			void addLayer(unsigned int);
 
 			void registerObject(Entity*, Layer = DEFAULT_LAYER);
-			void unregisterObject(Entity*);
+			void unregisterObject(Entity *entity);
 
 			void unregisterAllObjects();
 			void unregisterAllObjectsFor(Layer);
@@ -78,6 +79,6 @@ namespace flat2d
 			Entity* checkAllObjects(EntityProcessor) const;
 			Entity* checkCollidablesFor(const Entity*, EntityProcessor);
 	};
-}
+} // namespace flat2d
 
-#endif
+#endif // ENTITYCONTAINER_H_

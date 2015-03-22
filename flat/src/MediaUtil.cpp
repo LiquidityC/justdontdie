@@ -1,5 +1,7 @@
-#include <iostream>
 #include <SDL2/SDL_ttf.h>
+#include <string>
+#include <iostream>
+
 #include "MediaUtil.h"
 
 SDL_Texture* flat2d::MediaUtil::loadTexture(std::string path, SDL_Renderer* renderer)

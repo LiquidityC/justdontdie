@@ -1,5 +1,5 @@
-#ifndef _MEDIA_UTIL_H
-#define _MEDIA_UTIL_H
+#ifndef MEDIAUTIL_H_
+#define MEDIAUTIL_H_
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -9,9 +9,9 @@ namespace flat2d
 {
 	class MediaUtil
 	{
-		public: 
+		public:
 			static SDL_Texture* loadTexture(std::string, SDL_Renderer*);
 			static SDL_Texture* loadTextTexture(std::string, std::string, SDL_Renderer*);
 	};
 }
-#endif
+#endif // MEDIAUTIL_H_

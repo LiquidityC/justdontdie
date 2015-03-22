@@ -11,7 +11,7 @@
 
 void Soldier::init(const flat2d::GameData *gameData)
 {
-	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png", 
+	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png",
 				gameData->getRenderData()->getRenderer()));
 	SDL_Rect clip = { 0, 0, entityProperties.getWidth(), entityProperties.getHeight() };
 	setClip(clip);
@@ -83,9 +83,9 @@ void Soldier::render(const flat2d::RenderData* data) const
 
 #ifdef DEBUG
 	SDL_SetRenderDrawColor(data->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
-	const flat2d::EntityProperties::Parents parents = entityProperties.getParents();
-	for(auto it = parents.begin(); it != parents.end(); it++) {
-		SDL_Rect bounds = (*it).getBoundingBox();
+	const flat2d::EntityProperties::Areas currentAreas = entityProperties.getCurrentAreas();
+	for(auto it = currentAreas.begin(); it != currentAreas.end(); it++) {
+		SDL_Rect bounds = (*it).asSDLRect();
 		bounds.x = data->getCamera()->getScreenXposFor(bounds.x);
 		bounds.y = data->getCamera()->getScreenYposFor(bounds.y);
 		SDL_RenderDrawRect( data->getRenderer(), &bounds );
@@ -215,7 +215,6 @@ bool Soldier::handleHorizontalTileCollision(MapTileObject *o, const flat2d::Game
 bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameData* data)
 {
 	if (o->hasProperty("deadly")) {
-
 		if (ghostMode) {
 			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createGhostSprayAt(
 					entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),

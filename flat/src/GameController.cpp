@@ -22,4 +22,4 @@ namespace flat2d
 	{
 		return controller;
 	}
-}
+} // namespace flat2d

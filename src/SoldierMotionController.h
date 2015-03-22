@@ -1,5 +1,5 @@
-#ifndef _SOLDIER_MOTION_CONTROLLER_H
-#define _SOLDIER_MOTION_CONTROLLER_H
+#ifndef SOLDIERMOTIONCONTROLLER_H_
+#define SOLDIERMOTIONCONTROLLER_H_
 
 #include <SDL2/SDL.h>
 #include <flat/flat.h>
@@ -10,7 +10,6 @@ class Soldier;
 class SoldierMotionController
 {
 	private:
-
 		enum MovementMapping {
 			MOVE_LEFT,
 			MOVE_RIGHT,
@@ -36,12 +35,11 @@ class SoldierMotionController
 		void ghostMode();
 
 	public:
-
-		SoldierMotionController(Soldier*);
+		explicit SoldierMotionController(Soldier* soldier);
 
 		void handle(const SDL_Event&);
 		void postHandle(const flat2d::GameData*);
 		void freeze();
 };
 
-#endif
+#endif // SOLDIERMOTIONCONTROLLER_H_

@@ -51,11 +51,11 @@ TEST_CASE( "Test change trigger", "[locprop]" )
 	bool hasMovedOutOfSpace = false;
 	EntityImpl o(100, 100);
 
-	EntityProperties space(0, 0, 200, 200);
+	MapArea area(0, 0, 200, 200);
 	EntityProperties& lop = o.getEntityProperties();
-	lop.getParents().push_back(space);
+	lop.getCurrentAreas().push_back(area);
 
-	REQUIRE( 1 == lop.getParents().size() );
+	REQUIRE( 1 == lop.getCurrentAreas().size() );
 
 	lop.setOnLocationChange([&]() { 
 			hasMovedOutOfSpace = true;

@@ -1,5 +1,5 @@
-#ifndef _GAME_OBJECT_TYPES_H
-#define _GAME_OBJECT_TYPES_H
+#ifndef ENTITYTYPE_H_
+#define ENTITYTYPE_H_
 
 enum EntityType {
 	TILE,
@@ -8,4 +8,4 @@ enum EntityType {
 	SOLDIER
 };
 
-#endif
+#endif // ENTITYTYPE_H_

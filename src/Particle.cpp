@@ -32,7 +32,8 @@ void Particle::render(const flat2d::RenderData* data) const
 
 	SDL_Renderer *renderer = data->getRenderer();
 	setRenderDrawColor(renderer);
-	SDL_Rect box = { cam->getScreenXposFor(entityProperties.getXpos()), cam->getScreenYposFor(entityProperties.getYpos()), 
+	SDL_Rect box = { cam->getScreenXposFor(entityProperties.getXpos()),
+		cam->getScreenYposFor(entityProperties.getYpos()),
 		entityProperties.getWidth(), entityProperties.getHeight() };
 
 	SDL_SetRenderDrawBlendMode(renderer, blendMode);

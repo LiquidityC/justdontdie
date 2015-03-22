@@ -18,6 +18,7 @@ RM			= rm
 ECHO		= echo
 CP			= cp
 MV			= mv
+LINT		= cpplint
 LIBS 		= -lflat $(SDL2_LDFLAGS)
 
 OBJDIR				= obj
@@ -32,7 +33,7 @@ TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 LIBRARIES			= flat
 
-.PHONY: $(LIBRARIES) $(OBJDIR) libs default dist clean cleanall check checkall
+.PHONY: $(LIBRARIES) $(OBJDIR) libs default dist lint clean cleanall check checkall
 
 default: 
 	@$(MAKE) --no-print-directory libs
@@ -57,6 +58,8 @@ checkall:
 	@for d in $(LIBRARIES); do (cd $$d; $(MAKE) --no-print-directory check ); done
 	@$(MAKE) --no-print-directory $(TEST)
 	@./$(TEST)
+	@for d in $(LIBRARIES); do (cd $$d; $(MAKE) --no-print-directory lint ); done
+	@$(MAKE) --no-print-directory lint
 
 libs: $(LIBRARIES)
 
@@ -79,6 +82,11 @@ $(LIBRARIES):
 	@$(ECHO) -e "$(CGREEN)Building $@lib...$(CNORMAL)"
 	@$(MAKE) -C $@ 
 	@$(ECHO) -e "$(CGREEN)Building $@lib complete$(CNORMAL)"
+
+lint:
+	python2.7 lint/cpplint.py --linelength=120 --root=src --extensions=cpp,h \
+		--filter=-whitespace/tab,-whitespace/parens,-whitespace/braces,-whitespace/comments,-legal \
+		src/*
 
 clean:
 	@$(ECHO) Cleaning project

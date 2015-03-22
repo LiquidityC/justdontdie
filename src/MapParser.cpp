@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <string>
 
 #include "MapParser.h"
 #include "MapTileObject.h"
@@ -7,8 +8,10 @@
 #include "ResourceContainer.h"
 #include "LayerService.h"
 
-using namespace rapidxml;
-using namespace std;
+using rapidxml::file;
+using rapidxml::xml_document;
+using rapidxml::xml_node;
+using rapidxml::xml_attribute;
 
 bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::string filename)
 {
@@ -22,7 +25,7 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 
 	xml_node<> *node = doc.first_node();
 	if ( !checkNodeName(node, "map") ) {
-		cout << "Root node not named 'map' parse failed: '" << node->name() << "'" << endl;
+		std::cout << "Root node not named 'map' parse failed: '" << node->name() << "'" << std::endl;
 		return false;
 	}
 
@@ -40,10 +43,10 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 		node = node->next_sibling();
 	}
 	if ( !node ) {
-		cerr << "Failed to load layers" << endl;
+		std::cerr << "Failed to load layers" << std::endl;
 		return false;
 	}
-	
+
 	renderData->getCamera()->setMapDimensions(map.width * map.tileWidth, map.height * map.tileHeight);
 	flat2d::EntityContainer *entityContainer = gameData->getEntityContainer();
 
@@ -78,12 +81,13 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 			}
 
 			if (tileset == nullptr) {
-				cerr << "Major parse fail" << endl;
+				std::cerr << "Major parse fail" << std::endl;
 				return false;
 			}
 
 			if (tileset->texture == nullptr) {
-				SDL_Texture* texture = flat2d::MediaUtil::loadTexture(dir + tileset->sourcePath, renderData->getRenderer());
+				SDL_Texture* texture = flat2d::MediaUtil::loadTexture(
+						dir + tileset->sourcePath, renderData->getRenderer());
 				tileset->texture = texture;
 				resourceContainer->addTexture(texture);
 			}
@@ -92,12 +96,12 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 				Tile newTile;
 				newTile.id = gid - 1;
 				tileset->tiles[gid] = newTile;
-			} 
+			}
 
 			Tile *tile = &(tileset->tiles[gid]);
 
 			// Create til obj
-			MapTileObject* tileObj = new MapTileObject(col * map.tileWidth, row * map.tileHeight, 
+			MapTileObject* tileObj = new MapTileObject(col * map.tileWidth, row * map.tileHeight,
 					tileset->tileWidth, tileset->tileHeight, tileset->texture);
 
 			// Set properties
@@ -171,7 +175,7 @@ bool MapParser::parseTilesets(xml_node<> *node)
 {
 	for (xml_node<> *tilesetNode = node->first_node();
 			tilesetNode;
-			tilesetNode = tilesetNode->next_sibling()) 
+			tilesetNode = tilesetNode->next_sibling())
 	{
 		if ( !checkNodeName(tilesetNode, "tileset") ) {
 			break;
@@ -187,7 +191,7 @@ bool MapParser::parseTilesets(xml_node<> *node)
 bool MapParser::parseTileset(xml_node<> *node)
 {
 	if ( !checkNodeName(node, "tileset") ) {
-		cerr << "Node not named 'tileset' parse failed: '" << node->name() << "'" << endl;
+		std::cerr << "Node not named 'tileset' parse failed: '" << node->name() << "'" << std::endl;
 		return false;
 	}
 
@@ -207,7 +211,7 @@ bool MapParser::parseTileset(xml_node<> *node)
 
 	xml_node<> *imageNode = node->first_node();
 	if ( !checkNodeName(imageNode, "image") ) {
-		cerr << "Node not named 'image' parse failed: '" << node->name() << "'" << endl;
+		std::cerr << "Node not named 'image' parse failed: '" << node->name() << "'" << std::endl;
 		return false;
 	}
 
@@ -230,12 +234,11 @@ bool MapParser::parseTileset(xml_node<> *node)
 	int gid = tileset.firstgid;
 	for (xml_node<> *tileNode = firstTileNode; tileNode; tileNode = tileNode->next_sibling()) {
 		if ( !checkNodeName(tileNode, "tile") ) {
-			cerr << "Node not named 'tile' parse failed: '" << node->name() << "'" << endl;
+			std::cerr << "Node not named 'tile' parse failed: '" << node->name() << "'" << std::endl;
 			return false;
 		}
 
 		int tileId = atoi(tileNode->first_attribute()->value());
-		using namespace std;
 		while (gid <= tileId) {
 			Tile emptyTile;
 			emptyTile.id = gid - 1;
@@ -264,7 +267,7 @@ bool MapParser::parseTileset(xml_node<> *node)
 
 bool MapParser::parseLayers(xml_node<> *node)
 {
-	// TODO: Implement
+	// TODO(Linus): Implement
 	return false;
 }
 

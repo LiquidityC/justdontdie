@@ -1,5 +1,5 @@
-#ifndef _LAYER_SERVICE_H
-#define _LAYER_SERVICE_H
+#ifndef LAYERSERVICE_H_
+#define LAYERSERVICE_H_
 
 #include <flat/flat.h>
 
@@ -17,4 +17,4 @@ class LayerService
 		void registerLayers(flat2d::EntityContainer *entityContainer);
 };
 
-#endif
+#endif // LAYERSERVICE_H_
