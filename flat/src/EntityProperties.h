@@ -8,16 +8,15 @@
 namespace flat2d
 {
 	class EntityContainer;
-	class LocationProperty;
 
-	class LocationProperty
+	class EntityProperties
 	{
 		public:
 			typedef std::function<void ()> OnLocationChangeFunction;
-			typedef std::vector<LocationProperty> Parents;
+			typedef std::vector<EntityProperties> Parents;
 
 		private:
-			int xpos, ypos, width, height;
+			int xpos, ypos, xvel, yvel, width, height;
 			OnLocationChangeFunction onLocationChange = nullptr;
 			Parents parents;
 
@@ -25,8 +24,8 @@ namespace flat2d
 			void locationUpdated();
 
 		public:
-			LocationProperty(int x, int y, int dim) : xpos(x), ypos(y), width(dim), height(dim) { };
-			LocationProperty(int x, int y, int w, int h) : xpos(x), ypos(y), width(w), height(h) { };
+			EntityProperties(int x, int y, int dim) : xpos(x), ypos(y), width(dim), height(dim) { };
+			EntityProperties(int x, int y, int w, int h) : xpos(x), ypos(y), width(w), height(h) { };
 
 			SDL_Rect getBoundingBox() const;
 
@@ -49,9 +48,9 @@ namespace flat2d
 			Parents& getParents();
 			const Parents& getParents() const;
 
-			bool operator<(const LocationProperty&) const;
-			bool operator==(const LocationProperty&) const;
-			bool operator!=(const LocationProperty&) const;
+			bool operator<(const EntityProperties&) const;
+			bool operator==(const EntityProperties&) const;
+			bool operator!=(const EntityProperties&) const;
 
 			void setOnLocationChange(OnLocationChangeFunction);
 	};

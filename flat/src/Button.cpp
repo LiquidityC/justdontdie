@@ -9,11 +9,11 @@ void Button::handle(const SDL_Event& e)
 		int x = e.motion.x;
 		int y = e.motion.y;
 
-		if (x < locationProperty.getXpos() || x > locationProperty.getXpos() + locationProperty.getWidth()) {
+		if (x < entityProperties.getXpos() || x > entityProperties.getXpos() + entityProperties.getWidth()) {
 			mouseIsOver = false;
 			return;
 		} 
-		if (y < locationProperty.getYpos() || y > locationProperty.getYpos() + locationProperty.getHeight()) {
+		if (y < entityProperties.getYpos() || y > entityProperties.getYpos() + entityProperties.getHeight()) {
 			mouseIsOver = false;
 			return;
 		}
@@ -33,7 +33,7 @@ void Button::render(const RenderData* data) const
 	// Draw the box
 	SDL_Renderer *renderer = data->getRenderer();
 	SDL_SetRenderDrawColor(renderer, 0x99, 0x99, 0x99, 0xFF);
-	SDL_Rect rect = { locationProperty.getXpos(), locationProperty.getYpos(), locationProperty.getWidth(), locationProperty.getHeight() };
+	SDL_Rect rect = { entityProperties.getXpos(), entityProperties.getYpos(), entityProperties.getWidth(), entityProperties.getHeight() };
 	SDL_RenderFillRect(renderer, &rect);
 
 	// Draw the border

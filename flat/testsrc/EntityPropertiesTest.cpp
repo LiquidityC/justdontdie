@@ -1,13 +1,13 @@
 #include <iostream>
 #include "catch.hpp"
 #include "EntityImpl.h"
-#include "../src/LocationProperty.h"
+#include "../src/EntityProperties.h"
 
 using namespace flat2d;
 
 TEST_CASE( "Test point matching", "[locprop]" )
 {
-	LocationProperty lop(100, 100, 100);
+	EntityProperties lop(100, 100, 100);
 
 	REQUIRE( lop.containsPoint(150, 150) );
 	REQUIRE( lop.containsPoint(105, 105) );
@@ -21,9 +21,9 @@ TEST_CASE( "Test point matching", "[locprop]" )
 
 TEST_CASE( "Test equality", "[locprop]" )
 {
-	LocationProperty lop1(10, 20, 40);
-	LocationProperty lop2(10, 20, 40);
-	LocationProperty lop3(10, 10, 40);
+	EntityProperties lop1(10, 20, 40);
+	EntityProperties lop2(10, 20, 40);
+	EntityProperties lop3(10, 10, 40);
 
 	REQUIRE( lop1 == lop2 );
 	REQUIRE( !(lop1 == lop3) );
@@ -33,10 +33,10 @@ TEST_CASE( "Test equality", "[locprop]" )
 
 TEST_CASE( "Test less operator", "[locprop]" )
 {
-	LocationProperty lop1(10, 20, 40);
-	LocationProperty lop2(10, 20, 40);
-	LocationProperty lop3(10, 10, 40);
-	LocationProperty lop4(5, 30, 40);
+	EntityProperties lop1(10, 20, 40);
+	EntityProperties lop2(10, 20, 40);
+	EntityProperties lop3(10, 10, 40);
+	EntityProperties lop4(5, 30, 40);
 
 	REQUIRE( !(lop1 < lop2) );
 	REQUIRE( !(lop2 < lop1) );
@@ -51,8 +51,8 @@ TEST_CASE( "Test change trigger", "[locprop]" )
 	bool hasMovedOutOfSpace = false;
 	EntityImpl o(100, 100);
 
-	LocationProperty space(0, 0, 200, 200);
-	LocationProperty& lop = o.getLocationProperty();
+	EntityProperties space(0, 0, 200, 200);
+	EntityProperties& lop = o.getEntityProperties();
 	lop.getParents().push_back(space);
 
 	REQUIRE( 1 == lop.getParents().size() );

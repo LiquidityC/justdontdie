@@ -31,7 +31,7 @@ void Entity::render(const RenderData *data) const
 		return;
 	}
 
-	SDL_Rect box = locationProperty.getBoundingBox();
+	SDL_Rect box = entityProperties.getBoundingBox();
 	if (data->getCamera() != nullptr && !fixedPosition) {
 		Camera* camera = data->getCamera();
 		if (!camera->isVisibleOnCamera(box)) {
@@ -68,7 +68,7 @@ void Entity::setColliderBox(SDL_Rect collider)
 
 SDL_Rect Entity::getBoundingBox() const
 {
-	SDL_Rect box = locationProperty.getBoundingBox();
+	SDL_Rect box = entityProperties.getBoundingBox();
 	if (collider.w != 0 && collider.h != 0) {
 		box.x += collider.x;
 		box.y += collider.y;
@@ -98,12 +98,12 @@ void Entity::setFixedPosition(bool fixedPosition)
 	this->fixedPosition = fixedPosition;
 }
 
-LocationProperty& Entity::getLocationProperty()
+EntityProperties& Entity::getEntityProperties()
 {
-	return locationProperty;
+	return entityProperties;
 }
 
-const LocationProperty& Entity::getLocationProperty() const
+const EntityProperties& Entity::getEntityProperties() const
 {
-	return locationProperty;
+	return entityProperties;
 }

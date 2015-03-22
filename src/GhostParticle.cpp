@@ -12,23 +12,23 @@ void GhostParticle::preRender(const flat2d::GameData* data)
 
 	flat2d::CollisionDetector *colDetector = data->getCollisionDetector();
 
-	locationProperty.incrementXpos(xvel * deltaTime);
+	entityProperties.incrementXpos(xvel * deltaTime);
 	Entity *object = colDetector->checkForCollisions(this);
 	if (object && object->getType() != EntityType::ROCKET) {
-		locationProperty.incrementXpos(-(xvel * deltaTime));
+		entityProperties.incrementXpos(-(xvel * deltaTime));
 
-		reduceXVel(1800 + locationProperty.getWidth() * 250, deltaTime);
+		reduceXVel(1800 + entityProperties.getWidth() * 250, deltaTime);
 		xvel *= -1;
 
 		object = nullptr;
 	}
 
-	locationProperty.incrementYpos(yvel * deltaTime);
+	entityProperties.incrementYpos(yvel * deltaTime);
 	object = colDetector->checkForCollisions(this);
 	if (object && object->getType() != EntityType::ROCKET) {
-		locationProperty.incrementYpos(-(yvel * deltaTime));
+		entityProperties.incrementYpos(-(yvel * deltaTime));
 
-		reduceYVel(4600 + locationProperty.getHeight() * 1000, deltaTime);
+		reduceYVel(4600 + entityProperties.getHeight() * 1000, deltaTime);
 		yvel *= -1;
 	}
 

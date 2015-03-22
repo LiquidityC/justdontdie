@@ -151,11 +151,11 @@ TEST_CASE( "Test partition handling", "[objectcontainer]" )
 	container.setSpatialPartitionDimension(50);
 	container.registerObject(o);
 
-	REQUIRE( 4 == o->getLocationProperty().getParents().size() );
+	REQUIRE( 4 == o->getEntityProperties().getParents().size() );
 
-	o->getLocationProperty().incrementXpos(10);
+	o->getEntityProperties().incrementXpos(10);
 
-	REQUIRE( 2 == o->getLocationProperty().getParents().size() );
+	REQUIRE( 2 == o->getEntityProperties().getParents().size() );
 }
 
 TEST_CASE( "Test spatial partitions", "[objectcontainer]" )

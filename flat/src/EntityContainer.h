@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include <map>
-#include "LocationProperty.h"
+#include "EntityProperties.h"
 
 namespace flat2d
 {
@@ -17,7 +17,7 @@ namespace flat2d
 	typedef int Layer;
 	typedef std::map<std::string, Entity*> ObjectList;
 	typedef std::map<Layer, ObjectList> LayerMap;
-	typedef std::map<LocationProperty, ObjectList> SpatialPartitionMap;
+	typedef std::map<EntityProperties, ObjectList> SpatialPartitionMap;
 
 	class EntityContainer 
 	{

@@ -16,8 +16,8 @@ void Particle::preRender(const flat2d::GameData* data)
 
 	flat2d::CollisionDetector *colDetector = data->getCollisionDetector();
 
-	locationProperty.incrementXpos(xvel * deltaTime);
-	locationProperty.incrementYpos(yvel * deltaTime);
+	entityProperties.incrementXpos(xvel * deltaTime);
+	entityProperties.incrementYpos(yvel * deltaTime);
 
 	Entity *object = colDetector->checkForCollisions(this);
 	if (object && object->getType() != EntityType::ROCKET) {
@@ -32,8 +32,8 @@ void Particle::render(const flat2d::RenderData* data) const
 
 	SDL_Renderer *renderer = data->getRenderer();
 	setRenderDrawColor(renderer);
-	SDL_Rect box = { cam->getScreenXposFor(locationProperty.getXpos()), cam->getScreenYposFor(locationProperty.getYpos()), 
-		locationProperty.getWidth(), locationProperty.getHeight() };
+	SDL_Rect box = { cam->getScreenXposFor(entityProperties.getXpos()), cam->getScreenYposFor(entityProperties.getYpos()), 
+		entityProperties.getWidth(), entityProperties.getHeight() };
 
 	SDL_SetRenderDrawBlendMode(renderer, blendMode);
 	SDL_RenderFillRect( renderer, &box );

@@ -4,7 +4,7 @@
 #include "EntityContainer.h"
 #include "GameData.h"
 #include "RenderData.h"
-#include "LocationProperty.h"
+#include "EntityProperties.h"
 
 using namespace flat2d;
 
@@ -50,7 +50,7 @@ void EntityContainer::registerCollidableObject(Entity* o)
 
 void EntityContainer::registerObjectToSpatialPartitions(Entity *o)
 {
-	LocationProperty& locationProp = o->getLocationProperty();
+	EntityProperties& locationProp = o->getEntityProperties();
 	SDL_Rect b = locationProp.getBoundingBox();
 
 	addObjectToSpatialPartitionFor(o, b.x, b.y);
@@ -67,7 +67,7 @@ void EntityContainer::registerObjectToSpatialPartitions(Entity *o)
 
 void EntityContainer::clearObjectFromCurrentPartitions(Entity *o)
 {
-	LocationProperty::Parents& parents = o->getLocationProperty().getParents();
+	EntityProperties::Parents& parents = o->getEntityProperties().getParents();
 	for (auto it = parents.begin(); it != parents.end(); it++) {
 		spatialPartitionMap[*it].erase(o->getStringId());
 	}
@@ -82,7 +82,7 @@ void EntityContainer::addObjectToSpatialPartitionFor(Entity* o, int x, int y)
 	unsigned int ycord = (y - (y % spatialPartitionDimension));
 
 	// Find and make sure partition exists
-	LocationProperty loc(xcord, ycord, spatialPartitionDimension);
+	EntityProperties loc(xcord, ycord, spatialPartitionDimension);
 	if (spatialPartitionMap.find(loc) == spatialPartitionMap.end()) {
 		spatialPartitionMap[loc] = ObjectList();
 	}
@@ -92,8 +92,8 @@ void EntityContainer::addObjectToSpatialPartitionFor(Entity* o, int x, int y)
 		return;
 	}
 
-	LocationProperty& objLocationProperty = o->getLocationProperty();
-	objLocationProperty.getParents().push_back(loc);
+	EntityProperties& objEntityProperties = o->getEntityProperties();
+	objEntityProperties.getParents().push_back(loc);
 
 	spatialPartitionMap[loc][objId] = o;
 }
@@ -257,7 +257,7 @@ Entity* EntityContainer::checkAllCollidableObjects(EntityProcessor func) const
 
 Entity* EntityContainer::checkCollidablesFor(const Entity* source, EntityProcessor func)
 {
-	const LocationProperty::Parents& parents = source->getLocationProperty().getParents();
+	const EntityProperties::Parents& parents = source->getEntityProperties().getParents();
 	for (auto parentIter = parents.begin(); parentIter != parents.end(); parentIter++) {
 		for (auto objectIter = spatialPartitionMap[*parentIter].begin();
 				objectIter != spatialPartitionMap[*parentIter].end();

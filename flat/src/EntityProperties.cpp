@@ -1,76 +1,76 @@
 #include <iostream>
-#include "LocationProperty.h"
+#include "EntityProperties.h"
 
 using namespace flat2d;
 
-void LocationProperty::setXpos(int x)
+void EntityProperties::setXpos(int x)
 {
 	xpos = x;
 	locationUpdated();
 }
 
-void LocationProperty::incrementXpos(int x)
+void EntityProperties::incrementXpos(int x)
 {
 	xpos += x;
 	locationUpdated();
 }
 
-int LocationProperty::getXpos() const
+int EntityProperties::getXpos() const
 {
 	return xpos;
 }
 
-void LocationProperty::setYpos(int y)
+void EntityProperties::setYpos(int y)
 {
 	ypos = y;
 	locationUpdated();
 }
 
-void LocationProperty::incrementYpos(int y)
+void EntityProperties::incrementYpos(int y)
 {
 	ypos += y;
 	locationUpdated();
 }
 
-int LocationProperty::getYpos() const
+int EntityProperties::getYpos() const
 {
 	return ypos;
 }
 
-void LocationProperty::setWidth(int w) {
+void EntityProperties::setWidth(int w) {
 	width = w;
 	locationUpdated();
 }
 
-int LocationProperty::getWidth() const
+int EntityProperties::getWidth() const
 {
 	return width;
 }
 
-void LocationProperty::setHeight(int h)
+void EntityProperties::setHeight(int h)
 {
 	height = h;
 	locationUpdated();
 }
 
-int LocationProperty::getHeight() const
+int EntityProperties::getHeight() const
 {
 	return height;
 }
 
-SDL_Rect LocationProperty::getBoundingBox() const
+SDL_Rect EntityProperties::getBoundingBox() const
 {
 	return { xpos, ypos, width, height };
 }
 
-void LocationProperty::setOnLocationChange(OnLocationChangeFunction onChange)
+void EntityProperties::setOnLocationChange(OnLocationChangeFunction onChange)
 {
 	if (!onLocationChange) {
 		onLocationChange = onChange;
 	}
 }
 
-bool LocationProperty::containsPoint(int x, int y) const
+bool EntityProperties::containsPoint(int x, int y) const
 {
 	return x >= xpos
 		&& x <= xpos + width
@@ -78,7 +78,7 @@ bool LocationProperty::containsPoint(int x, int y) const
 		&& y <= ypos + height;
 }
 
-void LocationProperty::locationUpdated()
+void EntityProperties::locationUpdated()
 {
 	if (!onLocationChange || parents.empty()) {
 		return;
@@ -101,17 +101,17 @@ void LocationProperty::locationUpdated()
 	}
 }
 
-LocationProperty::Parents& LocationProperty::getParents()
+EntityProperties::Parents& EntityProperties::getParents()
 {
 	return parents;
 }
 
-const LocationProperty::Parents& LocationProperty::getParents() const
+const EntityProperties::Parents& EntityProperties::getParents() const
 {
 	return parents;
 }
 
-bool LocationProperty::operator<(const LocationProperty& loc) const
+bool EntityProperties::operator<(const EntityProperties& loc) const
 {
 	if (xpos == loc.xpos) {
 		return ypos < loc.ypos;
@@ -120,12 +120,12 @@ bool LocationProperty::operator<(const LocationProperty& loc) const
 	}
 }
 
-bool LocationProperty::operator==(const LocationProperty& loc) const
+bool EntityProperties::operator==(const EntityProperties& loc) const
 {
 	return width == loc.width && height == loc.height && !(*this < loc) && !(loc < *this);
 }
 
-bool LocationProperty::operator!=(const LocationProperty& loc) const
+bool EntityProperties::operator!=(const EntityProperties& loc) const
 {
 	return !(*this == loc);
 }

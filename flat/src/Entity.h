@@ -7,7 +7,7 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
-#include "LocationProperty.h"
+#include "EntityProperties.h"
 
 namespace flat2d
 {
@@ -21,7 +21,7 @@ namespace flat2d
 			boost::uuids::uuid id;
 
 		protected:
-			LocationProperty locationProperty;
+			EntityProperties entityProperties;
 			bool dead = false, collidable = false;
 			SDL_Texture *texture = nullptr;
 			SDL_Rect clip;
@@ -30,7 +30,7 @@ namespace flat2d
 
 		public:
 			Entity(int x, int y, int w, int h) : 
-				locationProperty(x, y, w, h),
+				entityProperties(x, y, w, h),
 				dead(false) {
 
 					/* Not providing ran creates valgrind warnings */
@@ -80,8 +80,8 @@ namespace flat2d
 			virtual SDL_Rect getBoundingBox() const;
 			virtual const SDL_Texture* getTexture() const;
 			virtual void setTexture(SDL_Texture*);
-			virtual LocationProperty& getLocationProperty();
-			virtual const LocationProperty& getLocationProperty() const;
+			virtual EntityProperties& getEntityProperties();
+			virtual const EntityProperties& getEntityProperties() const;
 
 			/* Empty methods */
 			virtual void init(const GameData*) { };
