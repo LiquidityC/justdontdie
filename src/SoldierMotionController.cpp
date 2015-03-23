@@ -140,32 +140,32 @@ void SoldierMotionController::postHandle(const flat2d::GameData* data)
 		moveRight();
 	}
 
-	if (movementMap[FLOAT] && soldier->ghostMode && !soldier->grounded && soldier->yvel > 5) {
-		soldier->yvel = 5;
+	if (movementMap[FLOAT] && soldier->ghostMode && !soldier->grounded && soldier->getEntityProperties().getYvel() > 5) {
+		soldier->getEntityProperties().setYvel(5);
 	}
 }
 
 void SoldierMotionController::stop()
 {
-	soldier->xvel = 0;
+	soldier->getEntityProperties().setXvel(0);
 }
 
 void SoldierMotionController::moveLeft()
 {
-	soldier->xvel = -300;
+	soldier->getEntityProperties().setXvel(-300);
 	soldier->facingLeft = true;
 }
 
 void SoldierMotionController::moveRight()
 {
-	soldier->xvel = 300;
+	soldier->entityProperties.setXvel(300);
 	soldier->facingLeft = false;
 }
 
 void SoldierMotionController::jump()
 {
 	if( soldier->grounded || (!soldier->ghostMode && !soldier->doubleJumped) ) {
-		soldier->yvel = -1050;
+		soldier->getEntityProperties().setYvel(-1050);
 		soldier->doubleJumped = soldier->grounded ? false : true;
 		soldier->grounded = false;
 		soldier->mixer->playEffect(Effects::JUMP);

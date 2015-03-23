@@ -14,7 +14,6 @@ class Rocket : public flat2d::Entity
 		};
 
 	private:
-		float xvel;
 		flat2d::Timer deathTimer;
 		flat2d::Timer switchTimer;
 		SDL_Rect clip;
@@ -23,7 +22,7 @@ class Rocket : public flat2d::Entity
 	public:
 		Rocket(int x, int y, Mode m = Mode::NORMAL, bool rightToLeft = true) :
 			flat2d::Entity(x, y, 24, 15), mode(m) {
-				xvel = rightToLeft ? -300 : 300;
+				entityProperties.setXvel(rightToLeft ? -300 : 300);
 				entityProperties.setCollidable(true);
 				entityProperties.setColliderShape({ 5, 5, 15, 5 });
 

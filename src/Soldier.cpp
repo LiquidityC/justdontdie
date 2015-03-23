@@ -51,12 +51,13 @@ void Soldier::preRender(const flat2d::GameData *data)
 	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
 
 	// Gravity
-	if (yvel < 800) {
-		yvel += std::min(3600 * deltaTime, 800 - yvel);
+	if (entityProperties.getYvel() < 800) {
+		float yvel = entityProperties.getYvel();
+		entityProperties.setYvel(yvel + std::min(3600 * deltaTime, 800 - yvel));
 	}
 
 	// Try to move object vertically
-	entityProperties.incrementXpos(xvel * deltaTime);
+	entityProperties.incrementXpos(entityProperties.getXvel() * deltaTime);
 	Entity *object;
 	if ((object = colDetector->checkForCollisions(this)) != nullptr) {
 		handleHorizontalCollision(object, data);
@@ -64,7 +65,7 @@ void Soldier::preRender(const flat2d::GameData *data)
 	object = nullptr;
 
 	// Try to move object horizontally
-	entityProperties.incrementYpos(yvel * deltaTime);
+	entityProperties.incrementYpos(entityProperties.getYvel() * deltaTime);
 	if ((object = colDetector->checkForCollisions(this)) != nullptr) {
 		handleVerticalCollision(object, data);
 	}
@@ -110,13 +111,13 @@ void Soldier::calculateCurrentClip()
 		x = 2 * entityProperties.getWidth();
 	}
 
-	if (xvel < 0) {
+	if (entityProperties.getXvel() < 0) {
 		x = 2 * entityProperties.getWidth();
-	} else if (xvel > 0) {
+	} else if (entityProperties.getXvel() > 0) {
 		x = 0;
 	}
 
-	if (xvel != 0) {
+	if (entityProperties.getXvel() != 0) {
 		frameSwitch++;
 		if (frameSwitch >= 4) {
 			clipSwitch = !clipSwitch;
@@ -177,6 +178,7 @@ bool Soldier::handleVerticalTileCollision(MapTileObject *o, const flat2d::GameDa
 	// Completly reach the obstruction if it's a tile
 	int o_ypos = o->getEntityProperties().getYpos();
 	int o_height = o->getEntityProperties().getHeight();
+	float yvel = entityProperties.getYvel();
 	if (yvel > 0) {
 		entityProperties.setYpos(o_ypos - entityProperties.getHeight() - 1);
 	} else {
@@ -187,7 +189,7 @@ bool Soldier::handleVerticalTileCollision(MapTileObject *o, const flat2d::GameDa
 		grounded = true;
 		doubleJumped = false;
 	}
-	yvel = 0;
+	entityProperties.setYvel(0);
 
 	return true;
 }
@@ -201,13 +203,13 @@ bool Soldier::handleHorizontalTileCollision(MapTileObject *o, const flat2d::Game
 	// Completly reach the obstruction if it's a tile
 	int o_xpos = o->getEntityProperties().getXpos();
 	int o_width = o->getEntityProperties().getWidth();
-	if (xvel > 0) {
+	if (entityProperties.getXvel() > 0) {
 		entityProperties.setXpos(o_xpos - entityProperties.getWidth() - 1);
 	} else {
 		entityProperties.setXpos(o_xpos + o_width + 1);
 	}
 
-	xvel = 0;
+	entityProperties.setXvel(0);
 
 	return true;
 }
@@ -284,8 +286,8 @@ void Soldier::restoreAtCheckpoint()
 	killed = false;
 	entityProperties.setXpos(checkPointX);
 	entityProperties.setYpos(checkPointY);
-	xvel = 0;
-	yvel = 0;
+	entityProperties.setXvel(0);
+	entityProperties.setYvel(0);
 	spawnGraceTimer.start();
 }
 

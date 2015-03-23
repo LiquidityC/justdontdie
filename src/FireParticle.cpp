@@ -3,15 +3,15 @@
 
 void FireParticle::preRender(const flat2d::GameData *data)
 {
-	if (xvel == 0 && yvel == 0) {
+	if (!entityProperties.isMoving()) {
 		setDead(true);
 		return;
 	}
 
 	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
 	flat2d::CollisionDetector *colDetector = data->getCollisionDetector();
-	entityProperties.incrementXpos(xvel * deltaTime);
-	entityProperties.incrementYpos(yvel * deltaTime);
+	entityProperties.incrementXpos(entityProperties.getXvel() * deltaTime);
+	entityProperties.incrementYpos(entityProperties.getYvel() * deltaTime);
 
 	Entity *object = colDetector->checkForCollisions(this);
 	if (object && object->getType() != EntityType::ROCKET) {

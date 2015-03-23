@@ -6,23 +6,23 @@
 void Particle::preRender(const flat2d::GameData* data)
 {
 	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
-	if (xvel == 0 && yvel == 0) {
+	if (entityProperties.getXvel() == 0 && entityProperties.getYvel() == 0) {
 		return;
 	}
 
-	if (yvel < 800) {
-		yvel += std::min(3600 * deltaTime, 800 - yvel);
+	if (entityProperties.getYvel() < 800) {
+		entityProperties.setYvel(entityProperties.getYvel() + std::min(3600 * deltaTime, 800 - entityProperties.getYvel()));
 	}
 
 	flat2d::CollisionDetector *colDetector = data->getCollisionDetector();
 
-	entityProperties.incrementXpos(xvel * deltaTime);
-	entityProperties.incrementYpos(yvel * deltaTime);
+	entityProperties.incrementXpos(entityProperties.getXvel() * deltaTime);
+	entityProperties.incrementYpos(entityProperties.getYvel() * deltaTime);
 
 	Entity *object = colDetector->checkForCollisions(this);
 	if (object && object->getType() != EntityType::ROCKET) {
-		xvel = 0;
-		yvel = 0;
+		entityProperties.setXvel(0);
+		entityProperties.setYvel(0);
 	}
 }
 
@@ -53,12 +53,12 @@ void Particle::postRender(const flat2d::GameData *data)
 
 void Particle::reduceXVel(int reduction, float deltaTime)
 {
-	xvel = getReducedVelocity(xvel, reduction, deltaTime);
+	entityProperties.setXvel(getReducedVelocity(entityProperties.getXvel(), reduction, deltaTime));
 }
 
 void Particle::reduceYVel(int reduction, float deltaTime)
 {
-	yvel = getReducedVelocity(yvel, reduction, deltaTime);
+	entityProperties.setYvel(getReducedVelocity(entityProperties.getYvel(), reduction, deltaTime));
 }
 
 float Particle::getReducedVelocity(float vel, int reduction, float deltaTime)

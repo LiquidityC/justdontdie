@@ -20,7 +20,8 @@ namespace flat2d
 			typedef std::vector<MapArea> Areas;
 
 		private:
-			float xvel, yvel;
+			float xvel = 0.0f;
+			float yvel = 0.0f;
 
 			bool collidable = false;
 			EntityShape colliderShape = { 0, 0, 0, 0 };

@@ -6,30 +6,30 @@ void GhostParticle::preRender(const flat2d::GameData* data)
 {
 	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
 
-	if (yvel < 800) {
-		yvel += std::min(3600 * deltaTime, 800 - yvel);
+	if (entityProperties.getYvel() < 800) {
+		entityProperties.setYvel(entityProperties.getYvel() + std::min(3600 * deltaTime, 800 - entityProperties.getYvel()));
 	}
 
 	flat2d::CollisionDetector *colDetector = data->getCollisionDetector();
 
-	entityProperties.incrementXpos(xvel * deltaTime);
+	entityProperties.incrementXpos(entityProperties.getXvel() * deltaTime);
 	Entity *object = colDetector->checkForCollisions(this);
 	if (object && object->getType() != EntityType::ROCKET) {
-		entityProperties.incrementXpos(-(xvel * deltaTime));
+		entityProperties.incrementXpos(-(entityProperties.getXvel() * deltaTime));
 
 		reduceXVel(1800 + entityProperties.getWidth() * 250, deltaTime);
-		xvel *= -1;
+		entityProperties.setXvel(entityProperties.getXvel() * -1);
 
 		object = nullptr;
 	}
 
-	entityProperties.incrementYpos(yvel * deltaTime);
+	entityProperties.incrementYpos(entityProperties.getYvel() * deltaTime);
 	object = colDetector->checkForCollisions(this);
 	if (object && object->getType() != EntityType::ROCKET) {
-		entityProperties.incrementYpos(-(yvel * deltaTime));
+		entityProperties.incrementYpos(-(entityProperties.getYvel() * deltaTime));
 
 		reduceYVel(4600 + entityProperties.getHeight() * 1000, deltaTime);
-		yvel *= -1;
+		entityProperties.setYvel(entityProperties.getYvel() * -1);
 	}
 
 	reduceXVel(600, deltaTime);

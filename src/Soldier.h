@@ -21,9 +21,6 @@ class Soldier : public flat2d::Entity
 		bool grounded = false;
 		flat2d::Mixer *mixer = nullptr;
 
-		float xvel = 0;
-		float yvel = 0;
-
 		bool killed = false;
 		bool doubleJumped = true;
 
