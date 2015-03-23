@@ -241,7 +241,7 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
 				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
 
-		SDL_Rect rocketBox = o->getBoundingBox();
+		SDL_Rect rocketBox = o->getEntityProperties().getBoundingBox();
 		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createExplosionAt(
 				rocketBox.x + static_cast<int>(rocketBox.w/2),
 				rocketBox.y + static_cast<int>(rocketBox.h/2));
@@ -253,7 +253,7 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
 				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
 
-		SDL_Rect rocketBox = o->getBoundingBox();
+		SDL_Rect rocketBox = o->getEntityProperties().getBoundingBox();
 		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createExplosionAt(
 				rocketBox.x + static_cast<int>(rocketBox.w/2),
 				rocketBox.y + static_cast<int>(rocketBox.h/2));

@@ -42,7 +42,7 @@ namespace flat2d
 		objects[objId] = object;
 		layeredObjects[layer][objId] = object;
 		registerObjectToSpatialPartitions(object);
-		if (object->isCollider()) {
+		if (object->getEntityProperties().isCollidable()) {
 			registerCollidableObject(object);
 		}
 	}
@@ -111,7 +111,7 @@ namespace flat2d
 	{
 		std::string objId = object->getStringId();
 		objects.erase(objId);
-		if (object->isCollider()) {
+		if (object->getEntityProperties().isCollidable()) {
 			collidableObjects.erase(objId);
 		}
 
@@ -144,7 +144,7 @@ namespace flat2d
 		for (auto it = layeredObjects[layer].begin(); it != layeredObjects[layer].end(); it++) {
 			std::string objId = it->second->getStringId();
 			objects.erase(objId);
-			if (it->second->isCollider()) {
+			if (it->second->getEntityProperties().isCollidable()) {
 				collidableObjects.erase(objId);
 			}
 			delete it->second;
@@ -267,7 +267,7 @@ namespace flat2d
 					objectIter != spatialPartitionMap[*areaIter].end();
 					objectIter++)
 			{
-				if (objectIter->second->isCollider() && func(objectIter->second)) {
+				if (objectIter->second->getEntityProperties().isCollidable() && func(objectIter->second)) {
 					return objectIter->second;
 				}
 			}

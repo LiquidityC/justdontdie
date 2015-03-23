@@ -24,7 +24,8 @@ class Rocket : public flat2d::Entity
 		Rocket(int x, int y, Mode m = Mode::NORMAL, bool rightToLeft = true) :
 			flat2d::Entity(x, y, 24, 15), mode(m) {
 				xvel = rightToLeft ? -300 : 300;
-				setCollidable(true);
+				entityProperties.setCollidable(true);
+				entityProperties.setColliderShape({ 5, 5, 15, 5 });
 
 				int xclip = rightToLeft ? 0 : 24;
 				int yclip = mode == Mode::GHOST ? 15 : 0;

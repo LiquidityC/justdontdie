@@ -16,7 +16,7 @@ namespace flat2d
 			public:
 				Button(int x, int y, unsigned int w, unsigned int h, std::function<void ()> click)
 					: Entity(x, y, w, h), onClick(click) {
-						setCollidable(false);
+						entityProperties.setCollidable(false);
 					}
 
 				~Button() { }

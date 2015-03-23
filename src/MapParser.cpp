@@ -108,9 +108,9 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 			for (auto it = tile->properties.begin(); it != tile->properties.end(); it++) {
 				tileObj->setProperty(it->first, it->second);
 			}
-			tileObj->setColliderBox(tile->collider);
+			tileObj->getEntityProperties().setColliderShape(tile->collider);
 			if (tile->collider.w != 0 && tile->collider.h != 0) {
-				tileObj->setCollidable(true);
+				tileObj->getEntityProperties().setCollidable(true);
 			}
 
 			int xoffset = tile->id * tileset->tileWidth;

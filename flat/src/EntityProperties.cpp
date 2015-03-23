@@ -88,9 +88,29 @@ namespace flat2d
 		return { x, y, w, h };
 	}
 
+	void EntityProperties::setCollidable(bool collidable)
+	{
+		this->collidable = collidable;
+	}
+
+	bool EntityProperties::isCollidable() const
+	{
+		return collidable;
+	}
+
 	EntityShape EntityProperties::getColliderShape() const
 	{
-		return { x, y, w, h };
+		return {
+			x + colliderShape.x,
+			y + colliderShape.y,
+			colliderShape.w,
+			colliderShape.h
+		};
+	}
+
+	void EntityProperties::setColliderShape(EntityShape shape)
+	{
+		this->colliderShape = shape;
 	}
 
 	void EntityProperties::setOnLocationChange(OnLocationChangeFunction onChange)

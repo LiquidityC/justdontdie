@@ -22,6 +22,9 @@ namespace flat2d
 		private:
 			float xvel, yvel;
 
+			bool collidable = false;
+			EntityShape colliderShape = { 0, 0, 0, 0 };
+
 			OnLocationChangeFunction onLocationChange = nullptr;
 			Areas currentAreas;
 
@@ -35,6 +38,10 @@ namespace flat2d
 			SDL_Rect getBoundingBox() const;
 
 			EntityShape getColliderShape() const;
+			void setColliderShape(EntityShape shape);
+
+			void setCollidable(bool isCollidable);
+			bool isCollidable() const;
 
 			void setXpos(int x);
 			void incrementXpos(int x);

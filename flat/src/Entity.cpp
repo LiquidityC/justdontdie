@@ -20,11 +20,6 @@ namespace flat2d
 		return dead;
 	}
 
-	void Entity::setCollidable(bool collidable)
-	{
-		this->collidable = collidable;
-	}
-
 	void Entity::render(const RenderData *data) const
 	{
 		if (texture == nullptr || dead) {
@@ -44,38 +39,17 @@ namespace flat2d
 		SDL_RenderCopy(data->getRenderer(), texture, &clip, static_cast<SDL_Rect*>(&box));
 
 #ifdef DEBUG
-		if (isCollider()) {
+		if (entityProperties.isCollidable()) {
 			SDL_SetRenderDrawColor(data->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
-			SDL_Rect bounds = getBoundingBox();
+			EntityShape bounds = entityProperties.getColliderShape();
 			if (data->getCamera() != nullptr) {
 				bounds.x = data->getCamera()->getScreenXposFor(bounds.x);
 				bounds.y = data->getCamera()->getScreenYposFor(bounds.y);
 			}
-			SDL_RenderDrawRect( data->getRenderer(), &bounds );
+			SDL_Rect box = { bounds.x, bounds.y, bounds.w, bounds.h };
+			SDL_RenderDrawRect( data->getRenderer(), &box );
 		}
 #endif
-	}
-
-	bool Entity::isCollider() const
-	{
-		return collidable;
-	}
-
-	void Entity::setColliderBox(SDL_Rect collider)
-	{
-		this->collider = collider;
-	}
-
-	SDL_Rect Entity::getBoundingBox() const
-	{
-		SDL_Rect box = entityProperties.getBoundingBox();
-		if (collider.w != 0 && collider.h != 0) {
-			box.x += collider.x;
-			box.y += collider.y;
-			box.w = collider.w;
-			box.h = collider.h;
-		}
-		return box;
 	}
 
 	const SDL_Texture* Entity::getTexture() const

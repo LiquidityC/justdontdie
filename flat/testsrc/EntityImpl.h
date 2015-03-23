@@ -7,8 +7,9 @@ class EntityImpl : public flat2d::Entity
 {
 	public:
 		EntityImpl(unsigned int x, unsigned int y) : Entity(x, y, 10, 10) { 
-			setCollidable(true);
-		};
+			entityProperties.setCollidable(true);
+			entityProperties.setColliderShape({0, 0, 10, 10});
+		}
 };
 
 #endif

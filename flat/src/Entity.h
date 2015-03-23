@@ -26,7 +26,6 @@ namespace flat2d
 			bool dead = false, collidable = false;
 			SDL_Texture *texture = nullptr;
 			SDL_Rect clip;
-			SDL_Rect collider;
 			bool fixedPosition = false;
 
 		public:
@@ -37,8 +36,8 @@ namespace flat2d
 					static boost::mt19937 ran;
 					id = boost::uuids::random_generator(ran)();
 
+					entityProperties.setColliderShape({ 0, 0, w, h });
 					clip = { x, y, w, h };
-					collider = { 0, 0, 0, 0 };
 				}
 
 			virtual ~Entity() { }
@@ -68,16 +67,12 @@ namespace flat2d
 			/* Own methods */
 			void setClip(SDL_Rect&);
 			void setDead(bool isDead);
-			void setCollidable(bool isCollidable);
-			void setColliderBox(SDL_Rect collider);
 			bool isFixedPosition();
 			void setFixedPosition(bool isFixed);
 
 			/* Implemented override methods */
 			virtual bool isDead() const;
 			virtual void render(const RenderData*) const;
-			virtual bool isCollider() const;
-			virtual SDL_Rect getBoundingBox() const;
 			virtual const SDL_Texture* getTexture() const;
 			virtual void setTexture(SDL_Texture* texture);
 			virtual EntityProperties& getEntityProperties();

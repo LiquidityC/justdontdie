@@ -2,6 +2,7 @@
 #include "EntityImpl.h"
 #include "../src/CollisionDetector.h"
 #include "../src/EntityContainer.h"
+#include "../src/EntityShape.h"
 
 TEST_CASE( "CollisionDetectorTests", "[collision]" )
 {
@@ -43,8 +44,8 @@ TEST_CASE( "CollisionDetectorTests", "[collision]" )
 
 	SECTION( "Colliders", "[collisions]" )
 	{
-		SDL_Rect colliderBox = { 0, 0, 1, 1 };
-		c1->setColliderBox(colliderBox);
+		flat2d::EntityShape colliderBox = { 0, 0, 1, 1 };
+		c1->getEntityProperties().setColliderShape(colliderBox);
 
 		REQUIRE( !detector->hasCollided(c1, c4) );
 	}

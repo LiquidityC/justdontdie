@@ -24,8 +24,8 @@ namespace flat2d
 			return false;
 		}
 
-		SDL_Rect b1 = o1->getBoundingBox();
-		SDL_Rect b2 = o2->getBoundingBox();
+		EntityShape b1 = o1->getEntityProperties().getColliderShape();
+		EntityShape b2 = o2->getEntityProperties().getColliderShape();
 
 		if (b1.x > b2.x + b2.w) {
 			return false;
