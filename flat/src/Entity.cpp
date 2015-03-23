@@ -77,6 +77,11 @@ namespace flat2d
 		return entityProperties;
 	}
 
+	bool Entity::onCollision(Entity* collider)
+	{
+		return false;
+	}
+
 	const EntityProperties& Entity::getEntityProperties() const
 	{
 		return entityProperties;

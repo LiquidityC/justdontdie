@@ -1,6 +1,7 @@
 #include "catch.hpp"
 #include "EntityImpl.h"
 #include "../src/CollisionDetector.h"
+#include "../src/EntityProperties.h"
 #include "../src/EntityContainer.h"
 #include "../src/EntityShape.h"
 
@@ -13,6 +14,7 @@ TEST_CASE( "CollisionDetectorTests", "[collision]" )
 	flat2d::Entity* c2;
 	flat2d::Entity* c3;
 	flat2d::Entity* c4;
+	flat2d::Entity* c5;
 
 	container = new flat2d::EntityContainer();
 	detector = new flat2d::CollisionDetector(container);
@@ -21,6 +23,7 @@ TEST_CASE( "CollisionDetectorTests", "[collision]" )
 	c2 = new EntityImpl(200, 100);
 	c3 = new EntityImpl(200, 200);
 	c4 = new EntityImpl(105, 105);
+	c5 = new EntityImpl(115, 115);
 
 	container->registerObject(c1);
 	container->registerObject(c2);
@@ -48,6 +51,16 @@ TEST_CASE( "CollisionDetectorTests", "[collision]" )
 		c1->getEntityProperties().setColliderShape(colliderBox);
 
 		REQUIRE( !detector->hasCollided(c1, c4) );
+	}
+
+	SECTION( "Moving object collision", "[collisions]" )
+	{
+		flat2d::EntityProperties& props = c1->getEntityProperties();
+		props.setXvel(10);
+		props.setYvel(0);
+
+		// This one should start failing once sweptAABB is back online
+		REQUIRE( !detector->hasCollided(c1, c5) );
 	}
 
 	delete detector;

@@ -1,6 +1,7 @@
 #include "EntityImpl.h"
 #include "catch.hpp"
 #include "../src/EntityContainer.h"
+#include "../src/EntityProperties.h"
 #include "../src/GameData.h"
 #include "../src/CollisionDetector.h"
 #include "../src/Mixer.h"
@@ -182,4 +183,34 @@ TEST_CASE( "Test spatial partitions", "[objectcontainer]" )
 
 	container.registerObject(o5);
 	REQUIRE ( 7 == container.getSpatialPartitionCount() );
+}
+
+TEST_CASE( "Test spatial partitions with velocity", "[objectcontainer]" )
+{
+	flat2d::EntityContainer container;
+
+	flat2d::Entity* o1 = new EntityImpl(50, 50);
+	flat2d::Entity* o2 = new EntityImpl(150, 150);
+
+	flat2d::EntityProperties& o1props = o1->getEntityProperties();
+	o1props.setXvel(100);
+	o1props.setYvel(100);
+
+	flat2d::EntityProperties& o2props = o2->getEntityProperties();
+	o2props.setXvel(-100);
+	o2props.setYvel(-100);
+
+	REQUIRE ( 0 == container.getSpatialPartitionCount() );
+
+	container.registerObject(o1);
+
+	REQUIRE ( 4 == container.getSpatialPartitionCount() );
+
+	container.unregisterAllObjects();
+
+	REQUIRE ( 0 == container.getSpatialPartitionCount() );
+
+	container.registerObject(o2);
+
+	REQUIRE ( 4 == container.getSpatialPartitionCount() );
 }

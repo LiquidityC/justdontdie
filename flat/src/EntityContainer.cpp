@@ -54,15 +54,43 @@ namespace flat2d
 
 	void EntityContainer::registerObjectToSpatialPartitions(Entity *o)
 	{
-		EntityProperties& locationProp = o->getEntityProperties();
-		SDL_Rect b = locationProp.getBoundingBox();
+		EntityProperties& props = o->getEntityProperties();
+		SDL_Rect b = props.getBoundingBox();
 
-		addObjectToSpatialPartitionFor(o, b.x, b.y);
-		addObjectToSpatialPartitionFor(o, b.x + b.w, b.y);
-		addObjectToSpatialPartitionFor(o, b.x, b.y + b.h);
-		addObjectToSpatialPartitionFor(o, b.x + b.w, b.y + b.h);
+		float xvel = props.getXvel();
+		float yvel = props.getYvel();
 
-		locationProp.setOnLocationChange(
+		int xMax, xMin;
+		int yMin, yMax;
+
+		if (xvel < 0) {
+			xMin = b.x + xvel;
+			xMax = b.x + b.w;
+		} else {
+			xMin = b.x;
+			xMax = b.x + b.w + xvel;
+		}
+
+		if (yvel < 0) {
+			yMin = b.y + yvel;
+			yMax = b.y + b.w;
+		} else {
+			yMin = b.y;
+			yMax = b.y + b.w + yvel;
+		}
+
+		if (static_cast<unsigned int>(xMax - xMin) > spatialPartitionDimension ||
+				static_cast<unsigned int>(yMax - yMin) > spatialPartitionDimension)
+		{
+			std::cout << "Warning: Spatial partitions are to small in size" << std::endl;
+		}
+
+		addObjectToSpatialPartitionFor(o, xMax, yMax);
+		addObjectToSpatialPartitionFor(o, xMax, yMin);
+		addObjectToSpatialPartitionFor(o, xMin, yMax);
+		addObjectToSpatialPartitionFor(o, xMin, yMin);
+
+		props.setOnLocationChange(
 				[this, o]() {
 				clearObjectFromCurrentPartitions(o);
 				registerObjectToSpatialPartitions(o);

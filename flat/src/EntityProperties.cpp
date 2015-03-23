@@ -61,6 +61,7 @@ namespace flat2d
 	void EntityProperties::setXvel(float v)
 	{
 		xvel = v;
+		locationUpdated();
 	}
 
 	float EntityProperties::getXvel() const
@@ -71,6 +72,7 @@ namespace flat2d
 	void EntityProperties::setYvel(float v)
 	{
 		yvel = v;
+		locationUpdated();
 	}
 
 	float EntityProperties::getYvel() const
