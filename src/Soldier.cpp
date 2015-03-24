@@ -53,7 +53,7 @@ void Soldier::preRender(const flat2d::GameData *data)
 	// Gravity
 	if (entityProperties.getYvel() < 800) {
 		float yvel = entityProperties.getYvel();
-		entityProperties.setYvel(yvel + std::min(3600 * deltaTime, 800 - yvel));
+		entityProperties.setYvel(yvel + 60);
 	}
 
 	// Try to move object vertically

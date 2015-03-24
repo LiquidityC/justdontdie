@@ -14,6 +14,7 @@ namespace flat2d
 	class Entity;
 	class GameData;
 	class RenderData;
+	class DeltatimeMonitor;
 
 	typedef int Layer;
 	typedef std::map<std::string, Entity*> ObjectList;
@@ -24,6 +25,8 @@ namespace flat2d
 	{
 		private:
 			unsigned int spatialPartitionDimension = 100;
+
+			DeltatimeMonitor *dtMonitor = nullptr;
 
 			ObjectList objects;
 			ObjectList collidableObjects;
@@ -45,7 +48,7 @@ namespace flat2d
 		public:
 			static const int DEFAULT_LAYER = -1;
 
-			EntityContainer() {
+			explicit EntityContainer(DeltatimeMonitor* dtm) : dtMonitor(dtm) {
 				ObjectList list;
 				layeredObjects[-1] = list;
 			}

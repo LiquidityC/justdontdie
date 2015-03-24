@@ -5,13 +5,15 @@
 
 TEST_CASE ( "Test the soldier", "[soldier]" )
 {
+	flat2d::DeltatimeMonitor *dtm;
 	flat2d::EntityContainer *container;
 	flat2d::CollisionDetector *detector;
 
 	Soldier *soldier;
 
-	container = new flat2d::EntityContainer();
-	detector = new flat2d::CollisionDetector(container);
+	dtm = new flat2d::DeltatimeMonitor();
+	container = new flat2d::EntityContainer(dtm);
+	detector = new flat2d::CollisionDetector(container, dtm);
 
 	soldier = new Soldier(200, 200);
 	container->registerObject(soldier);
@@ -20,4 +22,5 @@ TEST_CASE ( "Test the soldier", "[soldier]" )
 
 	delete detector;
 	delete container;
+	delete dtm;
 }

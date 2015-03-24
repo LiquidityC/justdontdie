@@ -8,6 +8,7 @@
 #include "GameData.h"
 #include "RenderData.h"
 #include "EntityProperties.h"
+#include "DeltatimeMonitor.h"
 
 
 namespace flat2d
@@ -57,8 +58,8 @@ namespace flat2d
 		EntityProperties& props = o->getEntityProperties();
 		SDL_Rect b = props.getBoundingBox();
 
-		float xvel = props.getXvel();
-		float yvel = props.getYvel();
+		float xvel = props.getXvel() * dtMonitor->getDeltaTime();
+		float yvel = props.getYvel() * dtMonitor->getDeltaTime();
 
 		int xMax, xMin;
 		int yMin, yMax;

@@ -75,11 +75,11 @@ namespace flat2d
 
 	bool FlatBuilder::initContainers()
 	{
-		entityContainer = new EntityContainer();
-		collisionDetector = new CollisionDetector(entityContainer);
+		deltatimeMonitor = new DeltatimeMonitor();
+		entityContainer = new EntityContainer(deltatimeMonitor);
+		collisionDetector = new CollisionDetector(entityContainer, deltatimeMonitor);
 		renderData = new RenderData(window->getRenderer(), camera);
 		mixer = new Mixer();
-		deltatimeMonitor = new DeltatimeMonitor();
 		controllerContainer = new GameControllerContainer();
 		gameData = new GameData(entityContainer, collisionDetector, mixer, renderData, deltatimeMonitor);
 

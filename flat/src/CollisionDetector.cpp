@@ -4,14 +4,10 @@
 #include "Entity.h"
 #include "CollisionDetector.h"
 #include "EntityContainer.h"
+#include "DeltatimeMonitor.h"
 
 namespace flat2d
 {
-	CollisionDetector::CollisionDetector(EntityContainer* entityContainer)
-	{
-		this->entityContainer = entityContainer;
-	}
-
 	Entity* CollisionDetector::checkForCollisions(const Entity* o1) const
 	{
 		return entityContainer->checkCollidablesFor(o1,
@@ -66,8 +62,8 @@ namespace flat2d
 		EntityShape b1 = p1.getColliderShape();
 		EntityShape b2 = p2.getColliderShape();
 
-		float xvel = p1.getXvel();
-		float yvel = p1.getYvel();
+		float xvel = p1.getXvel() * dtMonitor->getDeltaTime();
+		float yvel = p1.getYvel() * dtMonitor->getDeltaTime();
 
 
 		// Find the distances to the blocking object

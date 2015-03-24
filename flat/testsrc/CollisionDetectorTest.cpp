@@ -2,11 +2,13 @@
 #include "EntityImpl.h"
 #include "../src/CollisionDetector.h"
 #include "../src/EntityProperties.h"
+#include "../src/DeltatimeMonitor.h"
 #include "../src/EntityContainer.h"
 #include "../src/EntityShape.h"
 
 TEST_CASE( "CollisionDetectorTests", "[collision]" )
 {
+	flat2d::DeltatimeMonitor *dtm;
 	flat2d::EntityContainer* container;
 	flat2d::CollisionDetector* detector;
 
@@ -16,8 +18,10 @@ TEST_CASE( "CollisionDetectorTests", "[collision]" )
 	flat2d::Entity* c4;
 	flat2d::Entity* c5;
 
-	container = new flat2d::EntityContainer();
-	detector = new flat2d::CollisionDetector(container);
+
+	dtm = new flat2d::DeltatimeMonitor();
+	container = new flat2d::EntityContainer(dtm);
+	detector = new flat2d::CollisionDetector(container, dtm);
 
 	c1 = new EntityImpl(100, 100);
 	c2 = new EntityImpl(200, 100);
@@ -65,5 +69,6 @@ TEST_CASE( "CollisionDetectorTests", "[collision]" )
 
 	delete detector;
 	delete container;
+	delete dtm;
 }
 

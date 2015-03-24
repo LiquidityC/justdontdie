@@ -7,14 +7,16 @@ namespace flat2d
 {
 	class EntityContainer;
 	class Entity;
+	class DeltatimeMonitor;
 
 	class CollisionDetector
 	{
 		private:
-			EntityContainer* entityContainer;
+			EntityContainer *entityContainer;
+			DeltatimeMonitor *dtMonitor;
 
 		public:
-			explicit CollisionDetector(EntityContainer* entityContainer);
+			CollisionDetector(EntityContainer *ec, DeltatimeMonitor *dtm) : entityContainer(ec), dtMonitor(dtm) { }
 
 			Entity* checkForCollisions(const Entity*) const;
 			bool hasCollided(const Entity*, const Entity*) const;
