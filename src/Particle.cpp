@@ -5,24 +5,13 @@
 
 void Particle::preRender(const flat2d::GameData* data)
 {
-	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
 	if (entityProperties.getXvel() == 0 && entityProperties.getYvel() == 0) {
 		return;
 	}
 
 	if (entityProperties.getYvel() < 800) {
-		entityProperties.setYvel(entityProperties.getYvel() + std::min(3600 * deltaTime, 800 - entityProperties.getYvel()));
-	}
-
-	flat2d::CollisionDetector *colDetector = data->getCollisionDetector();
-
-	entityProperties.incrementXpos(entityProperties.getXvel() * deltaTime);
-	entityProperties.incrementYpos(entityProperties.getYvel() * deltaTime);
-
-	Entity *object = colDetector->checkForCollisions(this);
-	if (object && object->getType() != EntityType::ROCKET) {
-		entityProperties.setXvel(0);
-		entityProperties.setYvel(0);
+		float yvel = entityProperties.getYvel();
+		entityProperties.setYvel(yvel + 60);
 	}
 }
 

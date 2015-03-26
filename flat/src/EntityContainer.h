@@ -34,6 +34,7 @@ namespace flat2d
 			SpatialPartitionMap spatialPartitionMap;
 
 			typedef std::function<bool (Entity*)> EntityProcessor;
+			typedef std::function<void (Entity*)> EntityIter;
 
 		private:
 			EntityContainer(const EntityContainer&); // Don't implement
@@ -78,6 +79,8 @@ namespace flat2d
 
 			void setSpatialPartitionDimension(unsigned int);
 
+			void iterateAllMovingObjects(EntityIter) const;
+			void iterateCollidablesFor(const Entity*, EntityIter);
 			Entity* checkAllCollidableObjects(EntityProcessor) const;
 			Entity* checkAllObjects(EntityProcessor) const;
 			Entity* checkCollidablesFor(const Entity*, EntityProcessor);

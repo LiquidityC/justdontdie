@@ -41,6 +41,8 @@ namespace flat2d
 			EntityShape getColliderShape() const;
 			void setColliderShape(EntityShape shape);
 
+			EntityShape getVelocityColiderShape(float deltatime) const;
+
 			void setCollidable(bool isCollidable);
 			bool isCollidable() const;
 

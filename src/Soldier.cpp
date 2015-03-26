@@ -1,5 +1,6 @@
 #include <iostream>
 #include <algorithm>
+#include <cmath>
 #include "Soldier.h"
 #include "BloodParticle.h"
 #include "LayerService.h"
@@ -19,6 +20,7 @@ void Soldier::init(const flat2d::GameData *gameData)
 
 	ghostOverlay = new GhostOverlay();
 	gameData->getEntityContainer()->registerObject(ghostOverlay, Layers::OVERLAY);
+	entityProperties.setCollidable(true);
 }
 
 void Soldier::handle(const SDL_Event& e)
@@ -47,27 +49,10 @@ void Soldier::preRender(const flat2d::GameData *data)
 		restoreAtCheckpoint();
 	}
 
-	flat2d::CollisionDetector* colDetector = data->getCollisionDetector();
-	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
-
 	// Gravity
 	if (entityProperties.getYvel() < 800) {
 		float yvel = entityProperties.getYvel();
-		entityProperties.setYvel(yvel + 60);
-	}
-
-	// Try to move object vertically
-	entityProperties.incrementXpos(entityProperties.getXvel() * deltaTime);
-	Entity *object;
-	if ((object = colDetector->checkForCollisions(this)) != nullptr) {
-		handleHorizontalCollision(object, data);
-	}
-	object = nullptr;
-
-	// Try to move object horizontally
-	entityProperties.incrementYpos(entityProperties.getYvel() * deltaTime);
-	if ((object = colDetector->checkForCollisions(this)) != nullptr) {
-		handleVerticalCollision(object, data);
+		entityProperties.setYvel(yvel + std::min(60, 800 - static_cast<int>(yvel)));
 	}
 
 	calculateCurrentClip();
@@ -94,6 +79,15 @@ void Soldier::render(const flat2d::RenderData* data) const
 #endif
 
 	Entity::render(data);
+
+#ifdef DEBUG
+	flat2d::EntityShape vShape = entityProperties.getVelocityColiderShape(0.017);
+	SDL_Rect broadphaseShape = { vShape.x, vShape.y, vShape.w, vShape.h };
+	broadphaseShape.x = data->getCamera()->getScreenXposFor(broadphaseShape.x);
+	broadphaseShape.y = data->getCamera()->getScreenYposFor(broadphaseShape.y);
+	SDL_SetRenderDrawColor(data->getRenderer(), 0x00, 0xFF, 0x00, 0xFF );
+	SDL_RenderDrawRect( data->getRenderer(), &broadphaseShape );
+#endif
 }
 
 void Soldier::calculateCurrentClip()

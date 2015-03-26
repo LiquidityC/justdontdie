@@ -110,6 +110,30 @@ namespace flat2d
 		};
 	}
 
+	EntityShape EntityProperties::getVelocityColiderShape(float deltatime) const
+	{
+		float dx = xvel * deltatime;
+		float dy = yvel * deltatime;
+
+		EntityShape eShape = getColliderShape();
+		EntityShape vShape;
+		if (xvel > 0) {
+			vShape.x = eShape.x;
+			vShape.w = eShape.w + dx;
+		} else {
+			vShape.x = eShape.x + dx;
+			vShape.w = eShape.w - dx;
+		}
+		if (yvel > 0) {
+			vShape.y = eShape.y;
+			vShape.h = eShape.h + dy;
+		} else {
+			vShape.y = eShape.y + dy;
+			vShape.h = eShape.h - dy;
+		}
+		return vShape;
+	}
+
 	void EntityProperties::setColliderShape(EntityShape shape)
 	{
 		this->colliderShape = shape;

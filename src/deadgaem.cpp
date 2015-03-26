@@ -28,6 +28,7 @@ int main( int argc, char* args[] )
 	flat2d::RenderData* renderData = gameData->getRenderData();
 	SDL_Renderer* renderer = renderData->getRenderer();
 	flat2d::EntityContainer* entityContainer = gameData->getEntityContainer();
+	entityContainer->setSpatialPartitionDimension(120);
 
 	CustomGameData *customGameData = CustomGameData::create(gameData);
 	gameData->setCustomGameData(customGameData);
@@ -82,6 +83,9 @@ int main( int argc, char* args[] )
 
 		// Render
 		entityContainer->preRenderObjects(gameData);
+
+		gameData->getCollisionDetector()->moveAllObjects();
+
 		entityContainer->renderObjects(renderData);
 		entityContainer->postRenderObjects(gameData);
 
@@ -96,7 +100,8 @@ int main( int argc, char* args[] )
 			avgFps = 0;
 		}
 		if (static_cast<int>((drawFpsTimer.getTicks() / 1000.f)) > 1) {
-			std::cout << "AVG FPS: " << avgFps << " FPS: " << currentFps << std::endl;
+			std::cout << "AVG FPS: " << avgFps << " FPS: " << currentFps
+				<< " DT: " << gameData->getDeltatimeMonitor()->getDeltaTime() << std::endl;
 			currentFps = 0;
 			drawFpsTimer.stop();
 			drawFpsTimer.start();

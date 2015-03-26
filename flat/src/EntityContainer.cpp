@@ -1,7 +1,9 @@
 #include <functional>
 #include <cassert>
 #include <string>
+#include <map>
 #include <vector>
+#include <cmath>
 
 #include "Entity.h"
 #include "EntityContainer.h"
@@ -55,30 +57,16 @@ namespace flat2d
 
 	void EntityContainer::registerObjectToSpatialPartitions(Entity *o)
 	{
-		EntityProperties& props = o->getEntityProperties();
-		SDL_Rect b = props.getBoundingBox();
-
-		float xvel = props.getXvel() * dtMonitor->getDeltaTime();
-		float yvel = props.getYvel() * dtMonitor->getDeltaTime();
+		EntityShape vShape = o->getEntityProperties().getVelocityColiderShape(dtMonitor->getDeltaTime());
 
 		int xMax, xMin;
 		int yMin, yMax;
 
-		if (xvel < 0) {
-			xMin = b.x + xvel;
-			xMax = b.x + b.w;
-		} else {
-			xMin = b.x;
-			xMax = b.x + b.w + xvel;
-		}
+		xMax = vShape.x + vShape.w;
+		xMin = vShape.x;
 
-		if (yvel < 0) {
-			yMin = b.y + yvel;
-			yMax = b.y + b.w;
-		} else {
-			yMin = b.y;
-			yMax = b.y + b.w + yvel;
-		}
+		yMax = vShape.y + vShape.h;
+		yMin = vShape.y;
 
 		if (static_cast<unsigned int>(xMax - xMin) > spatialPartitionDimension ||
 				static_cast<unsigned int>(yMax - yMin) > spatialPartitionDimension)
@@ -91,7 +79,7 @@ namespace flat2d
 		addObjectToSpatialPartitionFor(o, xMin, yMax);
 		addObjectToSpatialPartitionFor(o, xMin, yMin);
 
-		props.setOnLocationChange(
+		o->getEntityProperties().setOnLocationChange(
 				[this, o]() {
 				clearObjectFromCurrentPartitions(o);
 				registerObjectToSpatialPartitions(o);
@@ -268,6 +256,46 @@ namespace flat2d
 		return spatialPartitionMap.size();
 	}
 
+	void EntityContainer::iterateAllMovingObjects(EntityIter func) const
+	{
+		for (auto it = objects.begin(); it != objects.end(); it++) {
+			if (it->second->getEntityProperties().isMoving()) {
+				func(it->second);
+			}
+		}
+	}
+
+	void EntityContainer::iterateCollidablesFor(const Entity* source, EntityIter func)
+	{
+		const EntityProperties::Areas& currentAreas = source->getEntityProperties().getCurrentAreas();
+		std::map<int, Entity*> sortedMap;
+		int sx = source->getEntityProperties().getColliderShape().x;
+		int sy = source->getEntityProperties().getColliderShape().y;
+
+		for (auto areaIter = currentAreas.begin(); areaIter != currentAreas.end(); areaIter++) {
+			// Might need to sort these in wome way before checking
+			for (auto objectIter = spatialPartitionMap[*areaIter].begin();
+					objectIter != spatialPartitionMap[*areaIter].end();
+					objectIter++)
+			{
+				if (!objectIter->second->getEntityProperties().isCollidable()) {
+					continue;
+				}
+				const EntityShape& targetShape = objectIter->second->getEntityProperties().getColliderShape();
+				int distance = sqrt(pow(sx - targetShape.x, 2) + pow(sy - targetShape.y, 2));
+
+				while (sortedMap.find(distance) != sortedMap.end()) {
+					distance += 1;
+				}
+
+				sortedMap[distance] = objectIter->second;
+			}
+		}
+
+		for (auto objectIter = sortedMap.begin(); objectIter != sortedMap.end(); objectIter++) {
+			func(objectIter->second);
+		}
+	}
 	Entity* EntityContainer::checkAllObjects(EntityProcessor func) const
 	{
 		for (auto it = objects.begin(); it != objects.end(); it++) {

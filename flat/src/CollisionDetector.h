@@ -18,17 +18,25 @@ namespace flat2d
 		public:
 			CollisionDetector(EntityContainer *ec, DeltatimeMonitor *dtm) : entityContainer(ec), dtMonitor(dtm) { }
 
-			Entity* checkForCollisions(const Entity*) const;
-			bool hasCollided(const Entity*, const Entity*) const;
+			void moveAllObjects();
+
+			void handlePossibleCollision(Entity*, Entity*) const;
+
+			/**
+			 * Collision algorithms follow below
+			 *
+			 * These are public for the sake of testing
+			 */
+			bool AABB(const EntityShape&, const EntityShape&) const;
+
+			float sweptAABB(const EntityProperties& props1, const EntityProperties& props2,
+					float *normalx, float *normaly) const;
 
 		private:
 			CollisionDetector(const CollisionDetector&); // Don't implement, single instance
 			const CollisionDetector& operator=(const CollisionDetector& c); // Don't use, single instance
 
-			bool AABB(const EntityProperties& props1, const EntityProperties& props2) const;
-
-			float sweptAABB(const EntityProperties& props1, const EntityProperties& props2,
-					float *normalx, float *normaly) const;
+			void handlePossibleCollisionsFor(Entity* entity) const;
 	};
 } // namespace flat2d
 

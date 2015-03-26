@@ -9,15 +9,6 @@ void FireParticle::preRender(const flat2d::GameData *data)
 	}
 
 	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
-	flat2d::CollisionDetector *colDetector = data->getCollisionDetector();
-	entityProperties.incrementXpos(entityProperties.getXvel() * deltaTime);
-	entityProperties.incrementYpos(entityProperties.getYvel() * deltaTime);
-
-	Entity *object = colDetector->checkForCollisions(this);
-	if (object && object->getType() != EntityType::ROCKET) {
-		setDead(true);
-	}
-
 	reduceXVel(900, deltaTime);
 	reduceYVel(900, deltaTime);
 }

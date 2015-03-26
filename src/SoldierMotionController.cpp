@@ -164,12 +164,13 @@ void SoldierMotionController::moveRight()
 
 void SoldierMotionController::jump()
 {
-	if( soldier->grounded || (!soldier->ghostMode && !soldier->doubleJumped) ) {
+	// TODO(Linus): Uncomment this when it's fixed again
+	//if( soldier->grounded || (!soldier->ghostMode && !soldier->doubleJumped) ) {
 		soldier->getEntityProperties().setYvel(-1050);
 		soldier->doubleJumped = soldier->grounded ? false : true;
 		soldier->grounded = false;
 		soldier->mixer->playEffect(Effects::JUMP);
-	}
+	//}
 }
 
 void SoldierMotionController::ghostMode()

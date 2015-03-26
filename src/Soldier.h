@@ -18,7 +18,7 @@ class Soldier : public flat2d::Entity
 
 	private:
 		SoldierMotionController *motionController = nullptr;
-		bool grounded = false;
+		bool grounded = true;
 		flat2d::Mixer *mixer = nullptr;
 
 		bool killed = false;

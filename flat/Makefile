@@ -6,10 +6,7 @@ SDL2_LDFLAGS		:= $(shell pkg-config --libs SDL2_image SDL2_mixer SDL2_ttf sdl2)
 SDL2_CFLAGS			:= $(shell pkg-config --cflags SDL2_image SDL2_mixer SDL2_ttf sdl2)
 
 CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 $(SDL2_CFLAGS)
-
-ifdef DEBUG
 CXXFLAGS 			+= -DDEBUG
-endif
 
 LD					= g++
 LDFLAGS				=

@@ -1,5 +1,6 @@
 #include <limits>
 #include <algorithm>
+#include <vector>
 
 #include "Entity.h"
 #include "CollisionDetector.h"
@@ -8,41 +9,56 @@
 
 namespace flat2d
 {
-	Entity* CollisionDetector::checkForCollisions(const Entity* o1) const
+	void CollisionDetector::moveAllObjects()
 	{
-		return entityContainer->checkCollidablesFor(o1,
-				[this, o1](const Entity* o2)
+		std::vector<Entity*> objectsToMove;
+		entityContainer->iterateAllMovingObjects(
+				[this, &objectsToMove](Entity* e)
 				{
-				return this->hasCollided(o1, o2);
+				objectsToMove.push_back(e);
+				this->handlePossibleCollisionsFor(e);
+				});
+
+		for (auto it = objectsToMove.begin(); it != objectsToMove.end(); it++) {
+			EntityProperties& props = (*it)->getEntityProperties();
+			props.incrementXpos(props.getXvel() * dtMonitor->getDeltaTime());
+			props.incrementYpos(props.getYvel() * dtMonitor->getDeltaTime());
+		}
+	}
+
+	void CollisionDetector::handlePossibleCollisionsFor(Entity* e) const
+	{
+		EntityShape broadphaseShape = e->getEntityProperties().getVelocityColiderShape(dtMonitor->getDeltaTime());
+		entityContainer->iterateCollidablesFor(e,
+				[this, e, &broadphaseShape](Entity* o)
+				{
+					if (this->AABB(broadphaseShape, o->getEntityProperties().getColliderShape())) {
+						this->handlePossibleCollision(e, o);
+					}
 				});
 	}
 
-	bool CollisionDetector::hasCollided(const Entity* o1, const Entity* o2) const
+	void CollisionDetector::handlePossibleCollision(Entity* o1, Entity* o2) const
 	{
 		if (*o1 == *o2) {
-			return false;
+			return;
 		}
 
-		return AABB(o1->getEntityProperties(), o2->getEntityProperties());
+		float normalx, normaly;
+		EntityProperties &props = o1->getEntityProperties();
 
-		/*
-		 * Will use this later when velocities are treated with deltatime
-		 *
-		if (!o1->getEntityProperties().isMoving()) {
-			return AABB(o1->getEntityProperties(), o2->getEntityProperties());
-		} else {
-			float normalx, normaly;
-			float res = sweptAABB(o1->getEntityProperties(), o2->getEntityProperties(), &normalx, &normaly);
-			return res > 0.0f && res < 1.0f;
+		float res = sweptAABB(props, o2->getEntityProperties(), &normalx, &normaly);
+		if (res > 0.0f && res < 1.0f) {
+			float xvel = props.getXvel() * dtMonitor->getDeltaTime();
+			float yvel = props.getYvel() * dtMonitor->getDeltaTime();
+			float dotprod = (xvel * normaly + yvel * normalx) * res;
+			props.setXvel((dotprod * normaly) / dtMonitor->getDeltaTime());
+			props.setYvel((dotprod * normalx) / dtMonitor->getDeltaTime());
 		}
-		*/
 	}
 
-	bool CollisionDetector::AABB(const EntityProperties& p1, const EntityProperties& p2) const
+	bool CollisionDetector::AABB(const EntityShape& b1, const EntityShape& b2) const
 	{
-		EntityShape b1 = p1.getColliderShape();
-		EntityShape b2 = p2.getColliderShape();
-
 		if (b1.x > b2.x + b2.w) {
 			return false;
 		} else if (b1.x + b1.w < b2.x) {
@@ -92,7 +108,7 @@ namespace flat2d
 
 		if (xvel == 0.0f) {
 			xEntry = -std::numeric_limits<float>::infinity();
-			xExit = -std::numeric_limits<float>::infinity();
+			xExit = std::numeric_limits<float>::infinity();
 		} else {
 			xEntry = xInvEntry / xvel;
 			xExit = xInvExit / xvel;
@@ -100,17 +116,17 @@ namespace flat2d
 
 		if (yvel == 0.0f) {
 			yEntry = -std::numeric_limits<float>::infinity();
-			yExit = -std::numeric_limits<float>::infinity();
+			yExit = std::numeric_limits<float>::infinity();
 		} else {
 			yEntry = yInvEntry / yvel;
 			yExit = yInvExit / yvel;
 		}
 
-		// Find earliest/latest times of collition
+		// Find earliest/latest times of collision
 		float entryTime = std::max(xEntry, yEntry);
 		float exitTime = std::min(xExit, yExit);
 
-		if (entryTime < exitTime || (xEntry < 0.0f && yEntry < 0.0f) || xEntry > 1.0f || yEntry > 1.0f ) {
+		if (entryTime > exitTime || (xEntry < 0.0f && yEntry < 0.0f) || xEntry > 1.0f || yEntry > 1.0f ) {
 			// No collision
 			*normalx = 0.0f;
 			*normaly = 0.0f;
