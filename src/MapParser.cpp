@@ -139,7 +139,7 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 			}
 
 			SDL_Rect objBox;
-			xml_attribute<> *attr = object->first_attribute()->next_attribute();
+			xml_attribute<> *attr = object->first_attribute()->next_attribute()->next_attribute();
 			objBox.x = static_cast<int>(atof(attr->value()));
 			attr = attr->next_attribute();
 			objBox.y = static_cast<int>(atof(attr->value()));
@@ -298,7 +298,9 @@ void MapParser::parseTileObjects(Tile& tile, xml_node<> *objectgroup)
 			continue;
 		}
 
-		xml_attribute<> *attr = object->first_attribute();
+		// Skip first attr because it's id in a newer version of tiled
+		xml_attribute<> *attr = object->first_attribute()->next_attribute();
+
 		tile.collider.x = static_cast<int>(atof(attr->value()));
 		attr = attr->next_attribute();
 		tile.collider.y = static_cast<int>(atof(attr->value()));

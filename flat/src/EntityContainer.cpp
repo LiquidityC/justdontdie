@@ -304,6 +304,10 @@ namespace flat2d
 				if (!objectIter->second->getEntityProperties().isCollidable()) {
 					continue;
 				}
+				if (*source == *objectIter->second) {
+					continue;
+				}
+
 				const EntityShape& targetShape = objectIter->second->getEntityProperties().getColliderShape();
 				int distance = sqrt(pow(sx - targetShape.x, 2) + pow(sy - targetShape.y, 2));
 

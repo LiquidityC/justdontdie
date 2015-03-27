@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="75" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="75" tilewidth="32" tileheight="32" nextobjectid="9">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
   <image source="tiles/tileset.png" width="128" height="224"/>
   <tile id="1">
@@ -15,7 +15,7 @@
     <property name="rocketStopper" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="0.181818" y="0.363636" width="31.2727" height="31.2727"/>
+    <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
   <tile id="3">
@@ -24,7 +24,7 @@
     <property name="rocketStopper" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="0" y="0.181818" width="31.6364" height="31.4545"/>
+    <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
   <tile id="4">
@@ -33,7 +33,7 @@
     <property name="rocketStopper" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="0.363636" y="0.363636" width="31.2727" height="31.4545"/>
+    <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
   <tile id="5">
@@ -42,7 +42,7 @@
     <property name="rocketStopper" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="0.181818" y="0.363636" width="31.4545" height="31.0909"/>
+    <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
   <tile id="6">
@@ -51,7 +51,7 @@
     <property name="rocketStopper" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="0" y="0.181818" width="31.4545" height="31.4545"/>
+    <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
   <tile id="7">
@@ -60,7 +60,7 @@
     <property name="rocketStopper" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="0.363636" y="0.181818" width="31.0909" height="31.4545"/>
+    <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
   <tile id="8">
@@ -69,7 +69,7 @@
     <property name="deadly" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="10.1818" y="11.2727" width="11.6364" height="18.3636"/>
+    <object id="0" x="10.1818" y="11.2727" width="11.6364" height="18.3636"/>
    </objectgroup>
   </tile>
   <tile id="9">
@@ -78,7 +78,7 @@
     <property name="deadly" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="1.81818" y="8.72727" width="17.4545" height="14"/>
+    <object id="0" x="1.81818" y="8.72727" width="17.4545" height="14"/>
    </objectgroup>
   </tile>
   <tile id="10">
@@ -87,7 +87,7 @@
     <property name="deadly" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="8" y="2.54545" width="14.7273" height="17.0909"/>
+    <object id="0" x="8" y="2.54545" width="14.7273" height="17.0909"/>
    </objectgroup>
   </tile>
   <tile id="11">
@@ -96,7 +96,7 @@
     <property name="deadly" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="14.1818" y="8.36364" width="15.4545" height="14.9091"/>
+    <object id="0" x="14.1818" y="8.36364" width="15.4545" height="14.9091"/>
    </objectgroup>
   </tile>
   <tile id="16">
@@ -104,7 +104,7 @@
     <property name="deadly" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="9.375" y="13.5" width="13.5" height="16.125"/>
+    <object id="0" x="9.375" y="13.5" width="13.5" height="16.125"/>
    </objectgroup>
   </tile>
   <tile id="17">
@@ -112,7 +112,7 @@
     <property name="deadly" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="1.875" y="9.375" width="15.5" height="14.125"/>
+    <object id="0" x="1.875" y="9.375" width="15.5" height="14.125"/>
    </objectgroup>
   </tile>
   <tile id="18">
@@ -120,7 +120,7 @@
     <property name="deadly" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="9" y="3.375" width="13.375" height="14.75"/>
+    <object id="0" x="9" y="3.375" width="13.375" height="14.75"/>
    </objectgroup>
   </tile>
   <tile id="19">
@@ -128,7 +128,7 @@
     <property name="deadly" value="true"/>
    </properties>
    <objectgroup draworder="index">
-    <object x="12.625" y="9.625" width="16.75" height="11.75"/>
+    <object id="0" x="12.625" y="9.625" width="16.75" height="11.75"/>
    </objectgroup>
   </tile>
  </tileset>
@@ -3887,50 +3887,50 @@
   </data>
  </layer>
  <objectgroup name="Object Layer 1">
-  <object name="Launcher" x="1096" y="2032" width="24" height="15" rotation="-0.449181">
+  <object id="1" name="Launcher" x="1096" y="2032" width="24" height="15" rotation="-0.449181">
    <properties>
     <property name="rocketLauncher" value="true"/>
    </properties>
   </object>
-  <object name="MultiLauncher" x="104" y="1160" width="24" height="15">
-   <properties>
-    <property name="multi" value="true"/>
-    <property name="rocketLauncher" value="true"/>
-    <property name="shootRight" value="true"/>
-   </properties>
-  </object>
-  <object name="MultiLauncher" x="552" y="1600" width="24" height="15">
+  <object id="2" name="MultiLauncher" x="104" y="1160" width="24" height="15">
    <properties>
     <property name="multi" value="true"/>
     <property name="rocketLauncher" value="true"/>
     <property name="shootRight" value="true"/>
    </properties>
   </object>
-  <object name="GhostLauncher" x="736" y="2224" width="24" height="15">
+  <object id="3" name="MultiLauncher" x="552" y="1600" width="24" height="15">
+   <properties>
+    <property name="multi" value="true"/>
+    <property name="rocketLauncher" value="true"/>
+    <property name="shootRight" value="true"/>
+   </properties>
+  </object>
+  <object id="4" name="GhostLauncher" x="736" y="2224" width="24" height="15">
    <properties>
     <property name="ghost" value="true"/>
     <property name="rocketLauncher" value="true"/>
    </properties>
   </object>
-  <object name="MultiLauncher" x="160" y="2000" width="24" height="15">
+  <object id="5" name="MultiLauncher" x="160" y="2000" width="24" height="15">
    <properties>
     <property name="multi" value="true"/>
     <property name="rocketLauncher" value="true"/>
     <property name="shootRight" value="true"/>
    </properties>
   </object>
-  <object name="GhostLauncher" x="769.917" y="330.497" width="24" height="15">
+  <object id="6" name="GhostLauncher" x="769.917" y="330.497" width="24" height="15">
    <properties>
     <property name="ghost" value="true"/>
     <property name="rocketLauncher" value="true"/>
    </properties>
   </object>
-  <object name="MultiLauncher" x="736" y="2160" width="24" height="15">
+  <object id="7" name="MultiLauncher" x="736" y="2160" width="24" height="15">
    <properties>
     <property name="multi" value="true"/>
     <property name="rocketLauncher" value="true"/>
    </properties>
   </object>
-  <object name="Goal" x="960" y="160" width="32" height="32"/>
+  <object id="8" name="Goal" x="960" y="160" width="32" height="32"/>
  </objectgroup>
 </map>

@@ -23,11 +23,11 @@ namespace flat2d
 
 	void CollisionDetector::handlePossibleCollisionsFor(Entity* e) const
 	{
-		EntityShape broadphaseShape = e->getEntityProperties().getVelocityColiderShape(
-				dtMonitor->getDeltaTime());
 		entityContainer->iterateCollidablesFor(e,
-				[this, e, &broadphaseShape](Entity* o)
+				[this, e](Entity* o)
 				{
+					EntityShape broadphaseShape = e->getEntityProperties().getVelocityColiderShape(
+							dtMonitor->getDeltaTime());
 					if (this->AABB(broadphaseShape, o->getEntityProperties().getColliderShape())) {
 						this->handlePossibleCollision(e, o);
 					}
@@ -87,17 +87,17 @@ namespace flat2d
 
 		if (xvel > 0.0f) {
 			xInvEntry = b2.x - (b1.x + b1.w + 2);
-			xInvExit = (b2.x + b2.w) - b1.x + 2;
+			xInvExit = (b2.x + b2.w) - (b1.x - 2);
 		} else {
-			xInvEntry = (b2.x + b2.w) - b1.x + 2;
+			xInvEntry = (b2.x + b2.w) - (b1.x - 2);
 			xInvExit = b2.x - (b1.x + b1.w + 2);
 		}
 
 		if (yvel > 0.0f) {
 			yInvEntry = b2.y - (b1.y + b1.w + 2);
-			yInvExit = (b2.y + b2.w) - b1.y + 2;
+			yInvExit = (b2.y + b2.w) - (b1.y - 2);
 		} else {
-			yInvEntry = (b2.y + b2.w) - b1.y + 2;
+			yInvEntry = (b2.y + b2.w) - (b1.y - 2);
 			yInvExit = b2.y - (b1.y + b1.w + 2);
 		}
 
