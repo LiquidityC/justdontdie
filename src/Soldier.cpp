@@ -50,15 +50,16 @@ void Soldier::preMove(const flat2d::GameData *data)
 	}
 
 	// Gravity
-	if (entityProperties.getYvel() < 800) {
-		float yvel = entityProperties.getYvel();
+	float yvel = entityProperties.getYvel();
+	if (yvel < 800 && !floating) {
 		entityProperties.setYvel(yvel + std::min(60, 800 - static_cast<int>(yvel)));
+	} else if (floating && yvel != 5) {
+		entityProperties.setYvel(5);
 	}
-
-	calculateCurrentClip();
 
 	data->getRenderData()->getCamera()->centerOn(entityProperties.getXpos() + (entityProperties.getWidth()/2),
 			entityProperties.getYpos() + (entityProperties.getHeight()/2));
+	calculateCurrentClip();
 }
 
 void Soldier::render(const flat2d::RenderData* data) const
@@ -163,6 +164,12 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 		}
 		wasKilled();
 		return true;
+	}
+
+	flat2d::EntityShape soliderBox = entityProperties.getColliderShape();
+	if (soliderBox.y + soliderBox.h < o->getEntityProperties().getColliderShape().y) {
+		grounded = true;
+		doubleJumped = false;
 	}
 	return false;
 }

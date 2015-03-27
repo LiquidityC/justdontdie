@@ -23,6 +23,7 @@ class Soldier : public flat2d::Entity
 
 		bool killed = false;
 		bool doubleJumped = true;
+		bool floating = false;
 
 		flat2d::Timer deathTimer;
 		flat2d::Timer spawnGraceTimer;

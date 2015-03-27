@@ -140,8 +140,12 @@ void SoldierMotionController::postHandle(const flat2d::GameData* data)
 		moveRight();
 	}
 
-	if (movementMap[FLOAT] && soldier->ghostMode && !soldier->grounded && soldier->getEntityProperties().getYvel() > 5) {
-		soldier->getEntityProperties().setYvel(5);
+	if (movementMap[FLOAT] && soldier->ghostMode && !soldier->grounded
+			&& soldier->getEntityProperties().getYvel() > 5)
+	{
+		soldier->floating = true;
+	} else {
+		soldier->floating = false;
 	}
 }
 
@@ -164,13 +168,12 @@ void SoldierMotionController::moveRight()
 
 void SoldierMotionController::jump()
 {
-	// TODO(Linus): Uncomment this when it's fixed again
-	//if( soldier->grounded || (!soldier->ghostMode && !soldier->doubleJumped) ) {
+	if( soldier->grounded || (!soldier->ghostMode && !soldier->doubleJumped) ) {
 		soldier->getEntityProperties().setYvel(-1050);
 		soldier->doubleJumped = soldier->grounded ? false : true;
 		soldier->grounded = false;
 		soldier->mixer->playEffect(Effects::JUMP);
-	//}
+	}
 }
 
 void SoldierMotionController::ghostMode()
