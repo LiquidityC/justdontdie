@@ -16,7 +16,6 @@ namespace flat2d
 	class EntityProperties : public Square
 	{
 		public:
-			typedef std::function<void ()> OnLocationChangeFunction;
 			typedef std::vector<MapArea> Areas;
 
 		private:
@@ -24,13 +23,11 @@ namespace flat2d
 			float yvel = 0.0f;
 
 			bool collidable = false;
+			bool locationChanged = false;
+
 			EntityShape colliderShape = { 0, 0, 0, 0 };
 
-			OnLocationChangeFunction onLocationChange = nullptr;
 			Areas currentAreas;
-
-		private:
-			void locationUpdated();
 
 		public:
 			EntityProperties(int x, int y, int dim) : Square(x, y, dim) { }
@@ -46,34 +43,30 @@ namespace flat2d
 			void setCollidable(bool isCollidable);
 			bool isCollidable() const;
 
-			void setXpos(int x);
 			void incrementXpos(int x);
+			void setXpos(int pos);
 			int getXpos() const;
-
-			void setYpos(int y);
 			void incrementYpos(int y);
+			void setYpos(int pos);
 			int getYpos() const;
-
-			void setWidth(int w);
 			int getWidth() const;
-
-			void setHeight(int h);
 			int getHeight() const;
-
 			void setXvel(float xvel);
 			float getXvel() const;
-
 			void setYvel(float yvel);
 			float getYvel() const;
 
 			bool isMoving() const;
+
+			void move(float deltatime);
 
 			bool containsPoint(int, int) const;
 
 			Areas& getCurrentAreas();
 			const Areas& getCurrentAreas() const;
 
-			void setOnLocationChange(OnLocationChangeFunction);
+			void setLocationChanged(bool changed);
+			bool hasLocationChanged() const;
 	};
 } // namespace flat2d
 

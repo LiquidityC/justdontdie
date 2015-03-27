@@ -3,7 +3,7 @@
 #include "Particle.h"
 #include "EntityType.h"
 
-void Particle::preRender(const flat2d::GameData* data)
+void Particle::preMove(const flat2d::GameData* data)
 {
 	if (entityProperties.getXvel() == 0 && entityProperties.getYvel() == 0) {
 		return;

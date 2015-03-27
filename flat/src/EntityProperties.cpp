@@ -3,16 +3,16 @@
 
 namespace flat2d
 {
-	void EntityProperties::setXpos(int x)
-	{
-		this->x = x;
-		locationUpdated();
-	}
-
 	void EntityProperties::incrementXpos(int x)
 	{
 		this->x += x;
-		locationUpdated();
+		setLocationChanged(true);
+	}
+
+	void EntityProperties::setXpos(int pos)
+	{
+		x = pos;
+		setLocationChanged(true);
 	}
 
 	int EntityProperties::getXpos() const
@@ -20,16 +20,16 @@ namespace flat2d
 		return x;
 	}
 
-	void EntityProperties::setYpos(int y)
-	{
-		this->y = y;
-		locationUpdated();
-	}
-
 	void EntityProperties::incrementYpos(int y)
 	{
 		this->y += y;
-		locationUpdated();
+		setLocationChanged(true);
+	}
+
+	void EntityProperties::setYpos(int pos)
+	{
+		y = pos;
+		setLocationChanged(true);
 	}
 
 	int EntityProperties::getYpos() const
@@ -37,20 +37,9 @@ namespace flat2d
 		return y;
 	}
 
-	void EntityProperties::setWidth(int w) {
-		this->w = w;
-		locationUpdated();
-	}
-
 	int EntityProperties::getWidth() const
 	{
 		return w;
-	}
-
-	void EntityProperties::setHeight(int h)
-	{
-		this->h = h;
-		locationUpdated();
 	}
 
 	int EntityProperties::getHeight() const
@@ -61,7 +50,7 @@ namespace flat2d
 	void EntityProperties::setXvel(float v)
 	{
 		xvel = v;
-		locationUpdated();
+		setLocationChanged(true);
 	}
 
 	float EntityProperties::getXvel() const
@@ -72,7 +61,7 @@ namespace flat2d
 	void EntityProperties::setYvel(float v)
 	{
 		yvel = v;
-		locationUpdated();
+		setLocationChanged(true);
 	}
 
 	float EntityProperties::getYvel() const
@@ -117,14 +106,14 @@ namespace flat2d
 
 		EntityShape eShape = getColliderShape();
 		EntityShape vShape;
-		if (xvel > 0) {
+		if (dx > 0) {
 			vShape.x = eShape.x;
 			vShape.w = eShape.w + dx;
 		} else {
 			vShape.x = eShape.x + dx;
 			vShape.w = eShape.w - dx;
 		}
-		if (yvel > 0) {
+		if (dy > 0) {
 			vShape.y = eShape.y;
 			vShape.h = eShape.h + dy;
 		} else {
@@ -139,13 +128,6 @@ namespace flat2d
 		this->colliderShape = shape;
 	}
 
-	void EntityProperties::setOnLocationChange(OnLocationChangeFunction onChange)
-	{
-		if (!onLocationChange) {
-			onLocationChange = onChange;
-		}
-	}
-
 	bool EntityProperties::containsPoint(int px, int py) const
 	{
 		return px >= x
@@ -154,27 +136,14 @@ namespace flat2d
 			&& py <= y + h;
 	}
 
-	void EntityProperties::locationUpdated()
+	void EntityProperties::setLocationChanged(bool changed)
 	{
-		if (!onLocationChange || currentAreas.empty()) {
-			return;
-		}
+		locationChanged = changed;
+	}
 
-		bool locationChanged = false;
-		for (auto it = currentAreas.begin(); it != currentAreas.end(); ++it) {
-			if (!it->containsPoint(x, y)
-					|| !it->containsPoint(x + w, y)
-					|| !it->containsPoint(x, y + h)
-					|| !it->containsPoint(x + w, y + h))
-			{
-				locationChanged = true;
-				break;
-			}
-		}
-
-		if (locationChanged) {
-			onLocationChange();
-		}
+	bool EntityProperties::hasLocationChanged() const
+	{
+		return locationChanged;
 	}
 
 	EntityProperties::Areas& EntityProperties::getCurrentAreas()
@@ -185,5 +154,18 @@ namespace flat2d
 	const EntityProperties::Areas& EntityProperties::getCurrentAreas() const
 	{
 		return currentAreas;
+	}
+
+	void EntityProperties::move(float deltatime)
+	{
+		int dx = xvel * deltatime;
+		int dy = yvel * deltatime;
+
+		if (dy != 0 || dx != 0) {
+			setLocationChanged(true);
+		}
+
+		x += dx;
+		y += dy;
 	}
 } // namespace flat2d

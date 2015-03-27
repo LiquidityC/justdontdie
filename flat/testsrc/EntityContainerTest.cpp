@@ -138,21 +138,27 @@ TEST_CASE( "Object container tests", "[objectcontainer]" )
 		REQUIRE ( 2 == container.getObjectCount() );
 
 		c2->setDead(true);
-		container.preHandleObjects(&gameData);
+		container.moveObjects(&gameData);
 
 		REQUIRE ( 1 == container.getObjectCount() );
 	}
 
 	SECTION( "Test partition handling", "[objectcontainer]" )
 	{
-		flat2d::Entity* o = new EntityImpl(45, 45);
+		flat2d::Entity* o = new EntityImpl(95, 95);
 
-		container.setSpatialPartitionDimension(50);
+		container.setSpatialPartitionDimension(100);
 		container.registerObject(o);
 
 		REQUIRE( 4 == o->getEntityProperties().getCurrentAreas().size() );
 
-		o->getEntityProperties().incrementXpos(10);
+		flat2d::CollisionDetector detector(&container, dtm);
+		flat2d::Mixer mixer;
+		flat2d::GameData gameData(&container, &detector, &mixer, (flat2d::RenderData*) nullptr,
+				(flat2d::DeltatimeMonitor*) nullptr);
+
+		o->getEntityProperties().incrementXpos(35);
+		container.moveObjects(&gameData);
 
 		REQUIRE( 2 == o->getEntityProperties().getCurrentAreas().size() );
 	}

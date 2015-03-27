@@ -66,7 +66,7 @@ TEST_CASE( "CollisionDetectorTests", "[collision]" )
 		props.setYvel(0);
 
 		float normaly, normalx;
-		float result = detector->sweptAABB(c1->getEntityProperties(), c5->getEntityProperties(), &normaly, &normalx);
+		float result = detector->sweptAABB(&c1->getEntityProperties(), &c5->getEntityProperties(), &normaly, &normalx);
 		REQUIRE( result > 0.0f );
 		REQUIRE( result < 1.0f );
 	}

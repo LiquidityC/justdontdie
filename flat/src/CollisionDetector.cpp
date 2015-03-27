@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Entity.h"
+#include "EntityShape.h"
 #include "CollisionDetector.h"
 #include "EntityContainer.h"
 #include "DeltatimeMonitor.h"
@@ -18,17 +19,12 @@ namespace flat2d
 				objectsToMove.push_back(e);
 				this->handlePossibleCollisionsFor(e);
 				});
-
-		for (auto it = objectsToMove.begin(); it != objectsToMove.end(); it++) {
-			EntityProperties& props = (*it)->getEntityProperties();
-			props.incrementXpos(props.getXvel() * dtMonitor->getDeltaTime());
-			props.incrementYpos(props.getYvel() * dtMonitor->getDeltaTime());
-		}
 	}
 
 	void CollisionDetector::handlePossibleCollisionsFor(Entity* e) const
 	{
-		EntityShape broadphaseShape = e->getEntityProperties().getVelocityColiderShape(dtMonitor->getDeltaTime());
+		EntityShape broadphaseShape = e->getEntityProperties().getVelocityColiderShape(
+				dtMonitor->getDeltaTime());
 		entityContainer->iterateCollidablesFor(e,
 				[this, e, &broadphaseShape](Entity* o)
 				{
@@ -47,11 +43,14 @@ namespace flat2d
 		float normalx, normaly;
 		EntityProperties &props = o1->getEntityProperties();
 
-		float res = sweptAABB(props, o2->getEntityProperties(), &normalx, &normaly);
-		if (res > 0.0f && res < 1.0f) {
+		float collisionTime = sweptAABB(&props, &o2->getEntityProperties(), &normalx, &normaly);
+		if (collisionTime < 1.0f) {
 			float xvel = props.getXvel() * dtMonitor->getDeltaTime();
 			float yvel = props.getYvel() * dtMonitor->getDeltaTime();
-			float dotprod = (xvel * normaly + yvel * normalx) * res;
+			props.incrementXpos(xvel * collisionTime);
+			props.incrementYpos(yvel * collisionTime);
+			float remainingTime = 1.0f - collisionTime;
+			float dotprod = (xvel * normaly + yvel * normalx) * remainingTime;
 			props.setXvel((dotprod * normaly) / dtMonitor->getDeltaTime());
 			props.setYvel((dotprod * normalx) / dtMonitor->getDeltaTime());
 		}
@@ -72,14 +71,14 @@ namespace flat2d
 		return true;
 	}
 
-	float CollisionDetector::sweptAABB(const EntityProperties& p1, const EntityProperties& p2,
+	float CollisionDetector::sweptAABB(EntityProperties* p1, EntityProperties* p2,
 			float *normalx, float *normaly) const
 	{
-		EntityShape b1 = p1.getColliderShape();
-		EntityShape b2 = p2.getColliderShape();
+		EntityShape b1 = p1->getColliderShape();
+		EntityShape b2 = p2->getColliderShape();
 
-		float xvel = p1.getXvel() * dtMonitor->getDeltaTime();
-		float yvel = p1.getYvel() * dtMonitor->getDeltaTime();
+		float xvel = p1->getXvel() * dtMonitor->getDeltaTime();
+		float yvel = p1->getYvel() * dtMonitor->getDeltaTime();
 
 
 		// Find the distances to the blocking object
@@ -87,19 +86,19 @@ namespace flat2d
 		float yInvEntry, yInvExit;
 
 		if (xvel > 0.0f) {
-			xInvEntry = b2.x - (b1.x + b1.w);
-			xInvExit = (b2.x + b2.w) - b1.x;
+			xInvEntry = b2.x - (b1.x + b1.w + 2);
+			xInvExit = (b2.x + b2.w) - b1.x + 2;
 		} else {
-			xInvEntry = (b2.x + b2.w) - b1.x;
-			xInvExit = b2.x - (b1.x + b1.w);
+			xInvEntry = (b2.x + b2.w) - b1.x + 2;
+			xInvExit = b2.x - (b1.x + b1.w + 2);
 		}
 
 		if (yvel > 0.0f) {
-			yInvEntry = b2.y - (b1.y + b1.w);
-			yInvExit = (b2.y + b2.w) - b1.y;
+			yInvEntry = b2.y - (b1.y + b1.w + 2);
+			yInvExit = (b2.y + b2.w) - b1.y + 2;
 		} else {
-			yInvEntry = (b2.y + b2.w) - b1.y;
-			yInvExit = b2.y - (b1.y + b1.w);
+			yInvEntry = (b2.y + b2.w) - b1.y + 2;
+			yInvExit = b2.y - (b1.y + b1.w + 2);
 		}
 
 		// Find the impact time
@@ -131,6 +130,7 @@ namespace flat2d
 			*normalx = 0.0f;
 			*normaly = 0.0f;
 			return 1.0f;
+
 		} else {
 			if (xEntry > yEntry) {
 				if (xInvEntry < 0.0f) {

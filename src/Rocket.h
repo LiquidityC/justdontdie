@@ -45,7 +45,7 @@ class Rocket : public flat2d::Entity
 
 		void init(const flat2d::GameData*);
 
-		void preRender(const flat2d::GameData*);
+		void preMove(const flat2d::GameData*);
 		void render(const flat2d::RenderData*) const;
 		void postRender(const flat2d::GameData*);
 

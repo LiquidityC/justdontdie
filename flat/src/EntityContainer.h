@@ -6,7 +6,9 @@
 #include <map>
 #include <string>
 #include <functional>
+
 #include "MapArea.h"
+#include "EntityShape.h"
 
 namespace flat2d
 {
@@ -15,6 +17,7 @@ namespace flat2d
 	class GameData;
 	class RenderData;
 	class DeltatimeMonitor;
+	class EntityProperties;
 
 	typedef int Layer;
 	typedef std::map<std::string, Entity*> ObjectList;
@@ -24,6 +27,8 @@ namespace flat2d
 	class EntityContainer
 	{
 		private:
+			// TODO(Linus): Maybe make this editable in the future?
+			const int spatialPartitionExpansion = 20;
 			unsigned int spatialPartitionDimension = 100;
 
 			DeltatimeMonitor *dtMonitor = nullptr;
@@ -45,6 +50,8 @@ namespace flat2d
 			void registerObjectToSpatialPartitions(Entity *entity);
 			void addObjectToSpatialPartitionFor(Entity *entity, int x, int y);
 			void clearObjectFromCurrentPartitions(Entity *entity);
+			void clearObjectFromUnattachedPartitions(Entity *entity);
+			EntityShape createBoundingBoxFor(const EntityProperties& props) const;
 
 		public:
 			static const int DEFAULT_LAYER = -1;
@@ -69,13 +76,11 @@ namespace flat2d
 
 			size_t getSpatialPartitionCount() const;
 
-			void preHandleObjects(const GameData*);
-			void handleObjects(const SDL_Event&);
-			void postHandleObjects(const GameData*);
+			void handleObjects(const SDL_Event&, const GameData*);
 
-			void preRenderObjects(const GameData*);
-			void renderObjects(const RenderData*) const;
-			void postRenderObjects(const GameData*);
+			void moveObjects(const GameData*);
+
+			void renderObjects(const GameData*) const;
 
 			void setSpatialPartitionDimension(unsigned int);
 

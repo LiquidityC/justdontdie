@@ -86,6 +86,8 @@ namespace flat2d
 			virtual void postHandle(const GameData*) { }
 			virtual void preRender(const GameData*) { }
 			virtual void postRender(const GameData*) { }
+			virtual void preMove(const GameData*) { }
+			virtual void postMove(const GameData*) { }
 	};
 } // namespace flat2d
 

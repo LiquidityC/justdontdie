@@ -23,7 +23,7 @@ class MapTileObject : public flat2d::Entity
 			return EntityType::TILE;
 		}
 
-		void preRender(const flat2d::GameData*);
+		void preMove(const flat2d::GameData*);
 
 		void setProperty(std::string, bool);
 		bool hasProperty(std::string) const;

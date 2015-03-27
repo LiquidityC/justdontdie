@@ -11,6 +11,7 @@
 #include "RenderData.h"
 #include "EntityProperties.h"
 #include "DeltatimeMonitor.h"
+#include "CollisionDetector.h"
 
 
 namespace flat2d
@@ -55,35 +56,35 @@ namespace flat2d
 		collidableObjects[o->getStringId()] = o;
 	}
 
+	EntityShape EntityContainer::createBoundingBoxFor(const EntityProperties& props) const
+	{
+		EntityShape vShape = props.getVelocityColiderShape(dtMonitor->getDeltaTime());
+		return {
+			vShape.x - spatialPartitionExpansion,
+			vShape.y - spatialPartitionExpansion,
+			vShape.w + spatialPartitionExpansion,
+			vShape.h + spatialPartitionExpansion
+		};
+	}
+
 	void EntityContainer::registerObjectToSpatialPartitions(Entity *o)
 	{
-		EntityShape vShape = o->getEntityProperties().getVelocityColiderShape(dtMonitor->getDeltaTime());
+		EntityProperties& props = o->getEntityProperties();
+		EntityShape boundingBox = createBoundingBoxFor(props);
 
-		int xMax, xMin;
-		int yMin, yMax;
-
-		xMax = vShape.x + vShape.w;
-		xMin = vShape.x;
-
-		yMax = vShape.y + vShape.h;
-		yMin = vShape.y;
-
-		if (static_cast<unsigned int>(xMax - xMin) > spatialPartitionDimension ||
-				static_cast<unsigned int>(yMax - yMin) > spatialPartitionDimension)
+		if (static_cast<unsigned int>(boundingBox.w) > spatialPartitionDimension ||
+				static_cast<unsigned int>(boundingBox.h) > spatialPartitionDimension)
 		{
-			std::cout << "Warning: Spatial partitions are to small in size" << std::endl;
+			std::cout << "Warning: Spatial partitions are to small in size"
+				<< " " << boundingBox.w << "x" << boundingBox.h << ">" << spatialPartitionDimension << std::endl;
 		}
 
-		addObjectToSpatialPartitionFor(o, xMax, yMax);
-		addObjectToSpatialPartitionFor(o, xMax, yMin);
-		addObjectToSpatialPartitionFor(o, xMin, yMax);
-		addObjectToSpatialPartitionFor(o, xMin, yMin);
+		addObjectToSpatialPartitionFor(o, boundingBox.x, boundingBox.y);
+		addObjectToSpatialPartitionFor(o, boundingBox.x, boundingBox.y + boundingBox.h);
+		addObjectToSpatialPartitionFor(o, boundingBox.x + boundingBox.w, boundingBox.y);
+		addObjectToSpatialPartitionFor(o, boundingBox.x + boundingBox.w, boundingBox.y + boundingBox.h);
 
-		o->getEntityProperties().setOnLocationChange(
-				[this, o]() {
-				clearObjectFromCurrentPartitions(o);
-				registerObjectToSpatialPartitions(o);
-				});
+		props.setLocationChanged(false);
 	}
 
 	void EntityContainer::clearObjectFromCurrentPartitions(Entity *o)
@@ -92,7 +93,32 @@ namespace flat2d
 		for (auto it = currentAreas.begin(); it != currentAreas.end(); it++) {
 			spatialPartitionMap[*it].erase(o->getStringId());
 		}
+
 		currentAreas.clear();
+	}
+
+	void EntityContainer::clearObjectFromUnattachedPartitions(Entity *o)
+	{
+		// TODO(Linus): This is bugging out. Fix later for optimization.
+		EntityProperties::Areas& currentAreas = o->getEntityProperties().getCurrentAreas();
+		EntityShape bounder = createBoundingBoxFor(o->getEntityProperties());
+
+		std::vector<int> indexes;
+		int index = 0;
+		for (auto it = currentAreas.begin(); it != currentAreas.end(); it++) {
+			if (!it->containsPoint(bounder.x, bounder.y)
+					&& !it->containsPoint(bounder.x, bounder.y + bounder.h)
+					&& !it->containsPoint(bounder.x + bounder.w, bounder.y)
+					&& !it->containsPoint(bounder.x + bounder.w, bounder.y + bounder.h))
+			{
+				spatialPartitionMap[*it].erase(o->getStringId());
+				indexes.push_back(index++);
+			}
+		}
+
+		for (auto it = indexes.begin(); it != indexes.end(); it++) {
+			currentAreas.erase(currentAreas.begin() + *it);
+		}
 	}
 
 	void EntityContainer::addObjectToSpatialPartitionFor(Entity* o, int x, int y)
@@ -170,49 +196,46 @@ namespace flat2d
 		layeredObjects[layer].clear();
 	}
 
-	void EntityContainer::preHandleObjects(const GameData *gameData)
+	void EntityContainer::handleObjects(const SDL_Event& event, const GameData* gameData)
 	{
-		clearDeadObjects();
 		for (auto it = objects.begin(); it != objects.end(); it++) {
 			it->second->preHandle(gameData);
-		}
-	}
-
-	void EntityContainer::handleObjects(const SDL_Event& event)
-	{
-		for (auto it = objects.begin(); it != objects.end(); it++) {
 			it->second->handle(event);
-		}
-	}
-
-	void EntityContainer::postHandleObjects(const GameData *gameData)
-	{
-		for (auto it = objects.begin(); it != objects.end(); it++) {
 			it->second->postHandle(gameData);
 		}
 	}
 
-	void EntityContainer::preRenderObjects(const GameData* data)
-	{
-		for (auto it = objects.begin(); it != objects.end(); it++) {
-			it->second->preRender(data);
-		}
-	}
-
-	void EntityContainer::renderObjects(const RenderData* data) const
+	void EntityContainer::renderObjects(const GameData* data) const
 	{
 		for (auto it1 = layeredObjects.begin(); it1 != layeredObjects.end(); it1++) {
 			for (auto it2 = it1->second.begin(); it2 != it1->second.end(); it2++) {
-				it2->second->render(data);
+				it2->second->preRender(data);
+				it2->second->render(data->getRenderData());
+				it2->second->postRender(data);
 			}
 		}
 	}
 
-	void EntityContainer::postRenderObjects(const GameData* data)
+	void EntityContainer::moveObjects(const GameData* data)
 	{
+		float deltatime = dtMonitor->getDeltaTime();
+		CollisionDetector *coldetector = data->getCollisionDetector();
+
 		for (auto it = objects.begin(); it != objects.end(); it++) {
-			it->second->postRender(data);
+			it->second->preMove(data);
+			EntityProperties& props = it->second->getEntityProperties();
+			if (props.isMoving()) {
+				coldetector->handlePossibleCollisionsFor(it->second);
+				props.move(deltatime);
+			}
+			if (props.hasLocationChanged()) {
+				clearObjectFromCurrentPartitions(it->second);
+				registerObjectToSpatialPartitions(it->second);
+			}
+			it->second->postMove(data);
 		}
+
+		clearDeadObjects();
 	}
 
 	size_t EntityContainer::getObjectCount()

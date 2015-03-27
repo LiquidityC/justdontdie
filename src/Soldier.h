@@ -84,7 +84,7 @@ class Soldier : public flat2d::Entity
 		void handle(const SDL_Event& event);
 		void postHandle(const flat2d::GameData*);
 
-		void preRender(const flat2d::GameData*);
+		void preMove(const flat2d::GameData*);
 		void render(const flat2d::RenderData*) const;
 
 		void setGhostMode(bool ghostMode);

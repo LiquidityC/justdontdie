@@ -1,13 +1,15 @@
 #ifndef COLLISIONDETECTOR_H_
 #define COLLISIONDETECTOR_H_
 
-#include "EntityProperties.h"
+#include "EntityShape.h"
 
 namespace flat2d
 {
 	class EntityContainer;
+	class EntityProperties;
 	class Entity;
 	class DeltatimeMonitor;
+	class Square;
 
 	class CollisionDetector
 	{
@@ -17,6 +19,10 @@ namespace flat2d
 
 		public:
 			CollisionDetector(EntityContainer *ec, DeltatimeMonitor *dtm) : entityContainer(ec), dtMonitor(dtm) { }
+
+			// Single instance, delete copy operations
+			CollisionDetector(const CollisionDetector&) = delete;
+			const CollisionDetector& operator=(const CollisionDetector& c) = delete;
 
 			void moveAllObjects();
 
@@ -29,12 +35,8 @@ namespace flat2d
 			 */
 			bool AABB(const EntityShape&, const EntityShape&) const;
 
-			float sweptAABB(const EntityProperties& props1, const EntityProperties& props2,
+			float sweptAABB(EntityProperties* props1, EntityProperties* props2,
 					float *normalx, float *normaly) const;
-
-		private:
-			CollisionDetector(const CollisionDetector&); // Don't implement, single instance
-			const CollisionDetector& operator=(const CollisionDetector& c); // Don't use, single instance
 
 			void handlePossibleCollisionsFor(Entity* entity) const;
 	};

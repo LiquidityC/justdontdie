@@ -2,7 +2,7 @@
 #include "GhostParticle.h"
 #include "EntityType.h"
 
-void GhostParticle::preRender(const flat2d::GameData* data)
+void GhostParticle::preMove(const flat2d::GameData* data)
 {
 	float deltaTime = data->getDeltatimeMonitor()->getDeltaTime();
 

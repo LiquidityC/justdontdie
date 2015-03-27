@@ -1,7 +1,7 @@
 #include "FireParticle.h"
 #include "EntityType.h"
 
-void FireParticle::preRender(const flat2d::GameData *data)
+void FireParticle::preMove(const flat2d::GameData *data)
 {
 	if (!entityProperties.isMoving()) {
 		setDead(true);

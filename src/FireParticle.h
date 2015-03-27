@@ -10,7 +10,7 @@ class FireParticle : public Particle
 		FireParticle(int x, int y, int xv, int yv) :
 			Particle(x, y, 2, 2, xv, yv) { }
 
-		void preRender(const flat2d::GameData*);
+		void preMove(const flat2d::GameData*);
 		void postRender(const flat2d::GameData*);
 
 	private:

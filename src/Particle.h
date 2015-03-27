@@ -19,7 +19,7 @@ class Particle : public flat2d::Entity
 				deathTimer.start();
 			}
 
-		virtual void preRender(const flat2d::GameData*);
+		virtual void preMove(const flat2d::GameData*);
 		virtual void render(const flat2d::RenderData*) const;
 		virtual void postRender(const flat2d::GameData*);
 

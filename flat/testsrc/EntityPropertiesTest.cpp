@@ -45,38 +45,3 @@ TEST_CASE( "Test less operator", "[locprop]" )
 	REQUIRE( !(lop1 < lop3) );
 	REQUIRE( !(lop1 < lop4) );
 }
-
-TEST_CASE( "Test change trigger", "[locprop]" )
-{
-	bool hasMovedOutOfSpace = false;
-	EntityImpl o(100, 100);
-
-	MapArea area(0, 0, 200, 200);
-	EntityProperties& lop = o.getEntityProperties();
-	lop.getCurrentAreas().push_back(area);
-
-	REQUIRE( 1 == lop.getCurrentAreas().size() );
-
-	lop.setOnLocationChange([&]() { 
-			hasMovedOutOfSpace = true;
-			});
-
-	lop.setXpos(150);
-	REQUIRE( !hasMovedOutOfSpace );
-
-	lop.setXpos(250);
-	REQUIRE( hasMovedOutOfSpace );
-	hasMovedOutOfSpace = false;
-
-	lop.setYpos(250);
-	REQUIRE( hasMovedOutOfSpace );
-	hasMovedOutOfSpace = false;
-
-	lop.incrementXpos(250);
-	REQUIRE( hasMovedOutOfSpace );
-	hasMovedOutOfSpace = false;
-
-	lop.incrementYpos(250);
-	REQUIRE( hasMovedOutOfSpace );
-	hasMovedOutOfSpace = false;
-}

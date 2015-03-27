@@ -9,7 +9,7 @@ void Rocket::init(const flat2d::GameData *data)
 	deathTimer.start();
 }
 
-void Rocket::preRender(const flat2d::GameData *data)
+void Rocket::preMove(const flat2d::GameData *data)
 {
 	if (mode == Mode::MULTI) {
 		if (!switchTimer.isStarted()) {

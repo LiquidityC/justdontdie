@@ -41,7 +41,7 @@ void Soldier::postHandle(const flat2d::GameData *gameData)
 	}
 }
 
-void Soldier::preRender(const flat2d::GameData *data)
+void Soldier::preMove(const flat2d::GameData *data)
 {
 	if (killed && deathTimer.getTicks() < 3000) {
 		return;
@@ -169,22 +169,6 @@ bool Soldier::handleVerticalTileCollision(MapTileObject *o, const flat2d::GameDa
 		return true;
 	}
 
-	// Completly reach the obstruction if it's a tile
-	int o_ypos = o->getEntityProperties().getYpos();
-	int o_height = o->getEntityProperties().getHeight();
-	float yvel = entityProperties.getYvel();
-	if (yvel > 0) {
-		entityProperties.setYpos(o_ypos - entityProperties.getHeight() - 1);
-	} else {
-		entityProperties.setYpos(o_ypos + o_height + 1);
-	}
-
-	if (yvel > 0) {
-		grounded = true;
-		doubleJumped = false;
-	}
-	entityProperties.setYvel(0);
-
 	return true;
 }
 
@@ -194,16 +178,6 @@ bool Soldier::handleHorizontalTileCollision(MapTileObject *o, const flat2d::Game
 		return true;
 	}
 
-	// Completly reach the obstruction if it's a tile
-	int o_xpos = o->getEntityProperties().getXpos();
-	int o_width = o->getEntityProperties().getWidth();
-	if (entityProperties.getXvel() > 0) {
-		entityProperties.setXpos(o_xpos - entityProperties.getWidth() - 1);
-	} else {
-		entityProperties.setXpos(o_xpos + o_width + 1);
-	}
-
-	entityProperties.setXvel(0);
 
 	return true;
 }

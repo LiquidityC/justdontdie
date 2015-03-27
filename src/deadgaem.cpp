@@ -28,7 +28,7 @@ int main( int argc, char* args[] )
 	flat2d::RenderData* renderData = gameData->getRenderData();
 	SDL_Renderer* renderer = renderData->getRenderer();
 	flat2d::EntityContainer* entityContainer = gameData->getEntityContainer();
-	entityContainer->setSpatialPartitionDimension(120);
+	entityContainer->setSpatialPartitionDimension(100);
 
 	CustomGameData *customGameData = CustomGameData::create(gameData);
 	gameData->setCustomGameData(customGameData);
@@ -67,27 +67,20 @@ int main( int argc, char* args[] )
 		gameData->getDeltatimeMonitor()->updateDeltaTime();
 
 		// Handle events
-		entityContainer->preHandleObjects(gameData);
 		while (SDL_PollEvent (&e) != 0) {
 			if (e.type == SDL_QUIT) {
 				quit = true;
 				break;
 			}
-			entityContainer->handleObjects(e);
+			entityContainer->handleObjects(e, gameData);
 		}
-		entityContainer->postHandleObjects(gameData);
+
+		entityContainer->moveObjects(gameData);
 
 		// Clear screen to black
 		SDL_SetRenderDrawColor( renderer, 0x0, 0x0, 0x0, 0xFF );
 		SDL_RenderClear( renderer );
-
-		// Render
-		entityContainer->preRenderObjects(gameData);
-
-		gameData->getCollisionDetector()->moveAllObjects();
-
-		entityContainer->renderObjects(renderData);
-		entityContainer->postRenderObjects(gameData);
+		entityContainer->renderObjects(gameData);
 
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 

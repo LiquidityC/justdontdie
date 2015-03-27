@@ -18,7 +18,7 @@ bool MapTileObject::hasProperty(std::string prop) const
 	return pair->second;
 }
 
-void MapTileObject::preRender(const flat2d::GameData *gameData)
+void MapTileObject::preMove(const flat2d::GameData *gameData)
 {
 	if (hasProperty("rocketLauncher") && (!launchTimer.isStarted() || launchTimer.getTicks() > 2000)) {
 		launchTimer.start();
