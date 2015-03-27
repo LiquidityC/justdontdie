@@ -225,7 +225,7 @@ namespace flat2d
 			it->second->preMove(data);
 			EntityProperties& props = it->second->getEntityProperties();
 			if (props.isMoving()) {
-				coldetector->handlePossibleCollisionsFor(it->second);
+				coldetector->handlePossibleCollisionsFor(it->second, data);
 				props.move(deltatime);
 			}
 			if (props.hasLocationChanged()) {

@@ -10,12 +10,15 @@ namespace flat2d
 	class Entity;
 	class DeltatimeMonitor;
 	class Square;
+	class GameData;
 
 	class CollisionDetector
 	{
 		private:
 			EntityContainer *entityContainer;
 			DeltatimeMonitor *dtMonitor;
+
+			void handlePossibleCollision(Entity*, Entity*, const GameData *data) const;
 
 		public:
 			CollisionDetector(EntityContainer *ec, DeltatimeMonitor *dtm) : entityContainer(ec), dtMonitor(dtm) { }
@@ -24,9 +27,7 @@ namespace flat2d
 			CollisionDetector(const CollisionDetector&) = delete;
 			const CollisionDetector& operator=(const CollisionDetector& c) = delete;
 
-			void moveAllObjects();
-
-			void handlePossibleCollision(Entity*, Entity*) const;
+			void handlePossibleCollisionsFor(Entity* entity, const GameData *data) const;
 
 			/**
 			 * Collision algorithms follow below
@@ -37,8 +38,6 @@ namespace flat2d
 
 			float sweptAABB(EntityProperties* props1, EntityProperties* props2,
 					float *normalx, float *normaly) const;
-
-			void handlePossibleCollisionsFor(Entity* entity) const;
 	};
 } // namespace flat2d
 

@@ -47,11 +47,7 @@ class Soldier : public flat2d::Entity
 
 		void calculateCurrentClip();
 
-		bool handleVerticalCollision(flat2d::Entity*, const flat2d::GameData*);
-		bool handleHorizontalCollision(flat2d::Entity*, const flat2d::GameData*);
 		bool handleGeneralCollision(flat2d::Entity*, const flat2d::GameData*);
-		bool handleVerticalTileCollision(MapTileObject*, const flat2d::GameData*);
-		bool handleHorizontalTileCollision(MapTileObject*, const flat2d::GameData*);
 		bool handleGeneralTileCollision(MapTileObject*, const flat2d::GameData*);
 		bool handleRocketCollision(Rocket*, const flat2d::GameData*);
 
@@ -88,6 +84,9 @@ class Soldier : public flat2d::Entity
 		void render(const flat2d::RenderData*) const;
 
 		void setGhostMode(bool ghostMode);
+		bool isGhostMode() const;
+
+		bool onCollision(Entity *collider, const flat2d::GameData*);
 };
 
 #endif // SOLDIER_H_

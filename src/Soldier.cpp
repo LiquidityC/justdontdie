@@ -128,24 +128,10 @@ void Soldier::calculateCurrentClip()
 	setClip(clip);
 }
 
-bool Soldier::handleVerticalCollision(flat2d::Entity *o, const flat2d::GameData* data)
+bool Soldier::onCollision(Entity *collider, const flat2d::GameData *data)
 {
-	switch (o->getType()) {
-		case EntityType::TILE:
-			return handleVerticalTileCollision(static_cast<MapTileObject*>(o), data);
-		default:
-			return handleGeneralCollision(o, data);
-	}
-}
-
-bool Soldier::handleHorizontalCollision(flat2d::Entity *o, const flat2d::GameData* data)
-{
-	switch (o->getType()) {
-		case EntityType::TILE:
-			return handleHorizontalTileCollision(static_cast<MapTileObject*>(o), data);
-		default:
-			return handleGeneralCollision(o, data);
-	}
+	handleGeneralCollision(collider, data);
+	return isDead();
 }
 
 bool Soldier::handleGeneralCollision(flat2d::Entity *o, const flat2d::GameData* data)
@@ -161,25 +147,6 @@ bool Soldier::handleGeneralCollision(flat2d::Entity *o, const flat2d::GameData* 
 			break;
 	}
 	return false;
-}
-
-bool Soldier::handleVerticalTileCollision(MapTileObject *o, const flat2d::GameData* data)
-{
-	if (handleGeneralTileCollision(o, data)) {
-		return true;
-	}
-
-	return true;
-}
-
-bool Soldier::handleHorizontalTileCollision(MapTileObject *o, const flat2d::GameData* data)
-{
-	if (handleGeneralTileCollision(o, data)) {
-		return true;
-	}
-
-
-	return true;
 }
 
 bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameData* data)
@@ -210,25 +177,11 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createGhostSprayAt(
 				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
 				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
-
-		SDL_Rect rocketBox = o->getEntityProperties().getBoundingBox();
-		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createExplosionAt(
-				rocketBox.x + static_cast<int>(rocketBox.w/2),
-				rocketBox.y + static_cast<int>(rocketBox.h/2));
-		o->setDead(true);
-		mixer->playEffect(Effects::BANG);
 		wasKilled();
 	} else if (!ghostMode && (rocketMode == Rocket::Mode::NORMAL || rocketMode == Rocket::Mode::MULTI)) {
 		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createBloodSprayAt(
 				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
 				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
-
-		SDL_Rect rocketBox = o->getEntityProperties().getBoundingBox();
-		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createExplosionAt(
-				rocketBox.x + static_cast<int>(rocketBox.w/2),
-				rocketBox.y + static_cast<int>(rocketBox.h/2));
-		o->setDead(true);
-		mixer->playEffect(Effects::BANG);
 		wasKilled();
 	}
 
@@ -239,6 +192,7 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 void Soldier::wasKilled()
 {
 	killed = true;
+	entityProperties.setCollidable(false);
 	deathTimer.start();
 	motionController->freeze();
 
@@ -252,6 +206,7 @@ void Soldier::wasKilled()
 void Soldier::restoreAtCheckpoint()
 {
 	killed = false;
+	entityProperties.setCollidable(true);
 	entityProperties.setXpos(checkPointX);
 	entityProperties.setYpos(checkPointY);
 	entityProperties.setXvel(0);
@@ -262,4 +217,9 @@ void Soldier::restoreAtCheckpoint()
 void Soldier::setGhostMode(bool ghostMode)
 {
 	this->ghostMode = ghostMode;
+}
+
+bool Soldier::isGhostMode() const
+{
+	return ghostMode;
 }

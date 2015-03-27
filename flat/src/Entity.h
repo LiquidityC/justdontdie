@@ -77,7 +77,7 @@ namespace flat2d
 			virtual void setTexture(SDL_Texture* texture);
 			virtual EntityProperties& getEntityProperties();
 			virtual const EntityProperties& getEntityProperties() const;
-			virtual bool onCollision(Entity *collider);
+			virtual bool onCollision(Entity *collider, const GameData*);
 
 			/* Empty methods */
 			virtual void init(const GameData*) { }

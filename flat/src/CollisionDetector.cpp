@@ -7,34 +7,24 @@
 #include "CollisionDetector.h"
 #include "EntityContainer.h"
 #include "DeltatimeMonitor.h"
+#include "GameData.h"
 
 namespace flat2d
 {
-	void CollisionDetector::moveAllObjects()
-	{
-		std::vector<Entity*> objectsToMove;
-		entityContainer->iterateAllMovingObjects(
-				[this, &objectsToMove](Entity* e)
-				{
-				objectsToMove.push_back(e);
-				this->handlePossibleCollisionsFor(e);
-				});
-	}
-
-	void CollisionDetector::handlePossibleCollisionsFor(Entity* e) const
+	void CollisionDetector::handlePossibleCollisionsFor(Entity* e, const GameData *data) const
 	{
 		entityContainer->iterateCollidablesFor(e,
-				[this, e](Entity* o)
+				[this, e, data](Entity* o)
 				{
 					EntityShape broadphaseShape = e->getEntityProperties().getVelocityColiderShape(
 							dtMonitor->getDeltaTime());
 					if (this->AABB(broadphaseShape, o->getEntityProperties().getColliderShape())) {
-						this->handlePossibleCollision(e, o);
+						this->handlePossibleCollision(e, o, data);
 					}
 				});
 	}
 
-	void CollisionDetector::handlePossibleCollision(Entity* o1, Entity* o2) const
+	void CollisionDetector::handlePossibleCollision(Entity* o1, Entity* o2, const GameData *data) const
 	{
 		if (*o1 == *o2) {
 			return;
@@ -44,7 +34,7 @@ namespace flat2d
 		EntityProperties &props = o1->getEntityProperties();
 
 		float collisionTime = sweptAABB(&props, &o2->getEntityProperties(), &normalx, &normaly);
-		if (collisionTime < 1.0f) {
+		if (collisionTime < 1.0f && !o1->onCollision(o2, data)) {
 			float xvel = props.getXvel() * dtMonitor->getDeltaTime();
 			float yvel = props.getYvel() * dtMonitor->getDeltaTime();
 			props.incrementXpos(xvel * collisionTime);

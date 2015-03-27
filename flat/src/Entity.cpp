@@ -77,7 +77,7 @@ namespace flat2d
 		return entityProperties;
 	}
 
-	bool Entity::onCollision(Entity* collider)
+	bool Entity::onCollision(Entity* collider, const GameData *data)
 	{
 		return false;
 	}

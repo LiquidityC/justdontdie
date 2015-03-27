@@ -49,6 +49,8 @@ class Rocket : public flat2d::Entity
 		void render(const flat2d::RenderData*) const;
 		void postRender(const flat2d::GameData*);
 
+		bool onCollision(Entity *collider, const flat2d::GameData *data);
+
 		Mode getMode() const;
 };
 

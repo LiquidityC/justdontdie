@@ -1,6 +1,9 @@
 #include "Rocket.h"
 #include "EntityType.h"
 #include "MapTileObject.h"
+#include "Soldier.h"
+#include "CustomGameData.h"
+#include "SoundMappings.h"
 
 void Rocket::init(const flat2d::GameData *data)
 {
@@ -51,4 +54,29 @@ void Rocket::postRender(const flat2d::GameData *data)
 Rocket::Mode Rocket::getMode() const
 {
 	return mode;
+}
+
+bool Rocket::onCollision(Entity* e, const flat2d::GameData *data)
+{
+	if (e->getType() == EntityType::BOT) {
+		Soldier *soldier = static_cast<Soldier*>(e);
+		bool ghostSoldier = soldier->isGhostMode();
+		if ((ghostSoldier && mode == GHOST)
+				|| (!ghostSoldier && mode == NORMAL)
+				|| mode == MULTI)
+		{
+			soldier->onCollision(this, data);
+			SDL_Rect rocketBox = entityProperties.getBoundingBox();
+			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createExplosionAt(
+					rocketBox.x + static_cast<int>(rocketBox.w/2),
+					rocketBox.y + static_cast<int>(rocketBox.h/2));
+			data->getMixer()->playEffect(Effects::BANG);
+		} else {
+			entityProperties.move(data->getDeltatimeMonitor()->getDeltaTime());
+			return true;
+		}
+	}
+
+	setDead(true);
+	return true;
 }
