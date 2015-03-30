@@ -49,6 +49,15 @@ namespace flat2d
 			SDL_Rect box = { bounds.x, bounds.y, bounds.w, bounds.h };
 			SDL_RenderDrawRect( data->getRenderer(), &box );
 		}
+
+		if (entityProperties.isMoving()) {
+			flat2d::EntityShape vShape = entityProperties.getVelocityColiderShape(0.017);
+			SDL_Rect broadphaseShape = { vShape.x, vShape.y, vShape.w, vShape.h };
+			broadphaseShape.x = data->getCamera()->getScreenXposFor(broadphaseShape.x);
+			broadphaseShape.y = data->getCamera()->getScreenYposFor(broadphaseShape.y);
+			SDL_SetRenderDrawColor(data->getRenderer(), 0x00, 0xFF, 0xFF, 0xFF );
+			SDL_RenderDrawRect( data->getRenderer(), &broadphaseShape );
+		}
 #endif
 	}
 

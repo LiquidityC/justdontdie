@@ -293,9 +293,10 @@ namespace flat2d
 	void EntityContainer::iterateCollidablesFor(const Entity* source, EntityIter func)
 	{
 		const EntityProperties::Areas& currentAreas = source->getEntityProperties().getCurrentAreas();
-		std::map<int, Entity*> sortedMap;
-		int sx = source->getEntityProperties().getColliderShape().x;
-		int sy = source->getEntityProperties().getColliderShape().y;
+		std::map<float, Entity*> sortedMap;
+		EntityShape colliderShape = source->getEntityProperties().getColliderShape();
+		float sx = colliderShape.x + (colliderShape.w / 2);
+		float sy = colliderShape.y + (colliderShape.h / 2);
 
 		for (auto areaIter = currentAreas.begin(); areaIter != currentAreas.end(); areaIter++) {
 			// Might need to sort these in wome way before checking
@@ -311,10 +312,26 @@ namespace flat2d
 				}
 
 				const EntityShape& targetShape = objectIter->second->getEntityProperties().getColliderShape();
-				int distance = sqrt(pow(sx - targetShape.x, 2) + pow(sy - targetShape.y, 2));
+				float tx = targetShape.x + (targetShape.w/2);
+				float ty = targetShape.y + (targetShape.h/2);
+
+				float distance;
+				if (sx == tx) {
+					distance = abs(sy - ty);
+				} else if (sy == ty) {
+					distance = abs(sx - tx);
+				} else {
+					distance = sqrt(pow(sx - tx, 2) + pow(sy - ty, 2));
+				}
+
+				if (sortedMap.find(distance) != sortedMap.end()) {
+					if (*sortedMap[distance] == *objectIter->second) {
+						continue;
+					}
+				}
 
 				while (sortedMap.find(distance) != sortedMap.end()) {
-					distance += 1;
+					distance += 0.00001f;
 				}
 
 				sortedMap[distance] = objectIter->second;

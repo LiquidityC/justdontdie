@@ -23,7 +23,7 @@ namespace flat2d
 
 		protected:
 			EntityProperties entityProperties;
-			bool dead = false, collidable = false;
+			bool dead = false;
 			SDL_Texture *texture = nullptr;
 			SDL_Rect clip;
 			bool fixedPosition = false;
@@ -60,7 +60,7 @@ namespace flat2d
 				return boost::lexical_cast<std::string>(id);
 			}
 
-			virtual int getType() {
+			virtual int getType() const {
 				return -1;
 			}
 

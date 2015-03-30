@@ -19,7 +19,7 @@ class MapTileObject : public flat2d::Entity
 				setTexture(t);
 			}
 
-		int getType() {
+		int getType() const {
 			return EntityType::TILE;
 		}
 

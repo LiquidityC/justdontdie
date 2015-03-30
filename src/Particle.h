@@ -15,7 +15,6 @@ class Particle : public flat2d::Entity
 			Entity(x, y, w, h) {
 				entityProperties.setXvel(xv);
 				entityProperties.setYvel(yv);
-				setDead(false);
 				deathTimer.start();
 			}
 

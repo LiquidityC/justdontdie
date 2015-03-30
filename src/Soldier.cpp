@@ -80,15 +80,6 @@ void Soldier::render(const flat2d::RenderData* data) const
 #endif
 
 	Entity::render(data);
-
-#ifdef DEBUG
-	flat2d::EntityShape vShape = entityProperties.getVelocityColiderShape(0.017);
-	SDL_Rect broadphaseShape = { vShape.x, vShape.y, vShape.w, vShape.h };
-	broadphaseShape.x = data->getCamera()->getScreenXposFor(broadphaseShape.x);
-	broadphaseShape.y = data->getCamera()->getScreenYposFor(broadphaseShape.y);
-	SDL_SetRenderDrawColor(data->getRenderer(), 0x00, 0xFF, 0x00, 0xFF );
-	SDL_RenderDrawRect( data->getRenderer(), &broadphaseShape );
-#endif
 }
 
 void Soldier::calculateCurrentClip()
@@ -131,8 +122,7 @@ void Soldier::calculateCurrentClip()
 
 bool Soldier::onCollision(Entity *collider, const flat2d::GameData *data)
 {
-	handleGeneralCollision(collider, data);
-	return isDead();
+	return handleGeneralCollision(collider, data);
 }
 
 bool Soldier::handleGeneralCollision(flat2d::Entity *o, const flat2d::GameData* data)
@@ -169,6 +159,7 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 	flat2d::EntityShape soliderBox = entityProperties.getColliderShape();
 	if (soliderBox.y + soliderBox.h < o->getEntityProperties().getColliderShape().y) {
 		grounded = true;
+		entityProperties.setYvel(0);
 		doubleJumped = false;
 	}
 	return false;

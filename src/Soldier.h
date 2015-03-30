@@ -72,7 +72,7 @@ class Soldier : public flat2d::Entity
 			}
 		}
 
-		int getType() {
+		int getType() const {
 			return EntityType::BOT;
 		}
 
