@@ -65,14 +65,12 @@ bool Rocket::onCollision(Entity* e, const flat2d::GameData *data)
 				|| (!ghostSoldier && mode == NORMAL)
 				|| mode == MULTI)
 		{
-			soldier->onCollision(this, data);
 			SDL_Rect rocketBox = entityProperties.getBoundingBox();
 			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createExplosionAt(
 					rocketBox.x + static_cast<int>(rocketBox.w/2),
 					rocketBox.y + static_cast<int>(rocketBox.h/2));
 			data->getMixer()->playEffect(Effects::BANG);
 		} else {
-			entityProperties.move(data->getDeltatimeMonitor()->getDeltaTime());
 			return true;
 		}
 	}

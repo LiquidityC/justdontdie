@@ -156,8 +156,8 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 		return true;
 	}
 
-	flat2d::EntityShape soliderBox = entityProperties.getColliderShape();
-	if (soliderBox.y + soliderBox.h < o->getEntityProperties().getColliderShape().y) {
+	flat2d::EntityShape soldierBox = entityProperties.getColliderShape();
+	if (soldierBox.y + soldierBox.h < o->getEntityProperties().getColliderShape().y) {
 		grounded = true;
 		entityProperties.setYvel(0);
 		doubleJumped = false;

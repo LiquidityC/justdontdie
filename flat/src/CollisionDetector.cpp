@@ -34,7 +34,14 @@ namespace flat2d
 		EntityProperties &props = o1->getEntityProperties();
 
 		float collisionTime = sweptAABB(&props, &o2->getEntityProperties(), &normalx, &normaly);
-		if (collisionTime < 1.0f && !o1->onCollision(o2, data)) {
+		if (collisionTime < 1.0f) {
+			bool collisionHandled = o1->onCollision(o2, data);
+			o2->onCollision(o1, data);
+
+			if (collisionHandled) {
+				return;
+			}
+
 			float xvel = props.getXvel() * dtMonitor->getDeltaTime();
 			float yvel = props.getYvel() * dtMonitor->getDeltaTime();
 			props.incrementXpos(xvel * collisionTime);
