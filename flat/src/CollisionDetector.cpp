@@ -55,17 +55,10 @@ namespace flat2d
 
 	bool CollisionDetector::AABB(const EntityShape& b1, const EntityShape& b2) const
 	{
-		if (b1.x > b2.x + b2.w) {
-			return false;
-		} else if (b1.x + b1.w < b2.x) {
-			return false;
-		} else if (b1.y > b2.y + b2.h) {
-			return false;
-		} else if (b1.y + b1.h < b2.y) {
-			return false;
-		}
-
-		return true;
+		 return !(b1.x > b2.x + b2.w)
+			 && !(b1.x + b1.w < b2.x)
+			 && !(b1.y > b2.y + b2.h)
+			 && !(b1.y + b1.h < b2.y);
 	}
 
 	float CollisionDetector::sweptAABB(EntityProperties* p1, EntityProperties* p2,
