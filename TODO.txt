@@ -1,10 +1,7 @@
 flat2d:
-	-	Move collsion box to the EntityProperties for later use in the better
-		collision detection engine.
-	-	Make collision detection a separate game loop and don't check it
-		when moving the actual object. Collisions should run after preRender()
-		and before render().
-		This is the plan: http://www.gamedev.net/page/resources/_/technical/game-programming/swept-aabb-collision-detection-and-response-r3084
+	-	Revert to old horizontal-move-and-collide followed by vertical-move-and-collide in collision
+		engine. Not worth the time to debug and sort out the sweeping. I can look more at that later. I will
+		keep the implementation just not use that method for the time being.
 	-	Might need to make different collision types (materials) once collision engine works.
 		Mainly elastic, semi-elastic, inelastic (translates to bounce, stick to or slide along/off walls).
 		These are explained in link above.
