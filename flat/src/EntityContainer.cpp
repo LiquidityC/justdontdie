@@ -69,6 +69,10 @@ namespace flat2d
 
 	void EntityContainer::registerObjectToSpatialPartitions(Entity *o)
 	{
+		if (!o->getEntityProperties().isCollidable()) {
+			return;
+		}
+
 		EntityProperties& props = o->getEntityProperties();
 		EntityShape boundingBox = createBoundingBoxFor(props);
 
