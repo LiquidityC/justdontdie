@@ -51,7 +51,7 @@ namespace flat2d
 		}
 
 		if (entityProperties.isMoving()) {
-			flat2d::EntityShape vShape = entityProperties.getVelocityColiderShape(0.017);
+			flat2d::EntityShape vShape = entityProperties.getVelocityColliderShape(0.017);
 			SDL_Rect broadphaseShape = { vShape.x, vShape.y, vShape.w, vShape.h };
 			broadphaseShape.x = data->getCamera()->getScreenXposFor(broadphaseShape.x);
 			broadphaseShape.y = data->getCamera()->getScreenYposFor(broadphaseShape.y);

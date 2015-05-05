@@ -24,10 +24,10 @@ namespace flat2d
 
 			bool collidable = false;
 			bool locationChanged = false;
-
 			EntityShape colliderShape = { 0, 0, 0, 0 };
-
 			Areas currentAreas;
+
+			EntityShape getCustomVelocityColliderShape(float dx, float dy) const;
 
 		public:
 			EntityProperties(int x, int y, int dim) : Square(x, y, dim) { }
@@ -38,7 +38,9 @@ namespace flat2d
 			EntityShape getColliderShape() const;
 			void setColliderShape(EntityShape shape);
 
-			EntityShape getVelocityColiderShape(float deltatime) const;
+			EntityShape getVelocityColliderShape(float deltatime) const;
+			EntityShape getXVelocityColliderShape(float deltatime) const;
+			EntityShape getYVelocityColliderShape(float deltatime) const;
 
 			void setCollidable(bool isCollidable);
 			bool isCollidable() const;

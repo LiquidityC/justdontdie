@@ -99,11 +99,8 @@ namespace flat2d
 		};
 	}
 
-	EntityShape EntityProperties::getVelocityColiderShape(float deltatime) const
+	EntityShape EntityProperties::getCustomVelocityColliderShape(float dx, float dy) const
 	{
-		float dx = xvel * deltatime;
-		float dy = yvel * deltatime;
-
 		EntityShape eShape = getColliderShape();
 		EntityShape vShape;
 		if (dx > 0) {
@@ -121,6 +118,21 @@ namespace flat2d
 			vShape.h = eShape.h - dy;
 		}
 		return vShape;
+	}
+
+	EntityShape EntityProperties::getVelocityColliderShape(float deltatime) const
+	{
+		return getCustomVelocityColliderShape(xvel * deltatime, yvel * deltatime);
+	}
+
+	EntityShape EntityProperties::getXVelocityColliderShape(float deltatime) const
+	{
+		return getCustomVelocityColliderShape(xvel * deltatime, 0);
+	}
+
+	EntityShape EntityProperties::getYVelocityColliderShape(float deltatime) const
+	{
+		return getCustomVelocityColliderShape(0, yvel * deltatime);
 	}
 
 	void EntityProperties::setColliderShape(EntityShape shape)

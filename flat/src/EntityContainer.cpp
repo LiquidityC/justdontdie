@@ -58,7 +58,7 @@ namespace flat2d
 
 	EntityShape EntityContainer::createBoundingBoxFor(const EntityProperties& props) const
 	{
-		EntityShape vShape = props.getVelocityColiderShape(dtMonitor->getDeltaTime());
+		EntityShape vShape = props.getVelocityColliderShape(dtMonitor->getDeltaTime());
 		return {
 			vShape.x - spatialPartitionExpansion,
 			vShape.y - spatialPartitionExpansion,
@@ -80,7 +80,8 @@ namespace flat2d
 				static_cast<unsigned int>(boundingBox.h) > spatialPartitionDimension)
 		{
 			std::cout << "Warning: Spatial partitions are to small in size"
-				<< " " << boundingBox.w << "x" << boundingBox.h << ">" << spatialPartitionDimension << std::endl;
+				<< " " << boundingBox.w << "x" << boundingBox.h << ">"
+				<< spatialPartitionDimension << std::endl;
 		}
 
 		addObjectToSpatialPartitionFor(o, boundingBox.x, boundingBox.y);

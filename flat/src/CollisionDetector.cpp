@@ -16,49 +16,67 @@ namespace flat2d
 		entityContainer->iterateCollidablesFor(e,
 				[this, e, data](Entity* o)
 				{
-					EntityShape broadphaseShape = e->getEntityProperties().getVelocityColiderShape(
+					EntityShape broadphaseShape = e->getEntityProperties().getVelocityColliderShape(
 							dtMonitor->getDeltaTime());
 					if (this->AABB(broadphaseShape, o->getEntityProperties().getColliderShape())) {
 						this->handlePossibleCollision(e, o, data);
 					}
+					return false;
 				});
 	}
 
-	void CollisionDetector::handlePossibleCollision(Entity* o1, Entity* o2, const GameData *data) const
+	bool CollisionDetector::handlePossibleCollision(Entity* o1, Entity* o2, const GameData *data) const
 	{
 		if (*o1 == *o2) {
-			return;
+			return false;
 		}
 
-		float normalx, normaly;
-		EntityProperties &props = o1->getEntityProperties();
+		EntityProperties &props1 = o1->getEntityProperties();
+		EntityProperties &props2 = o2->getEntityProperties();
 
-		float collisionTime = sweptAABB(&props, &o2->getEntityProperties(), &normalx, &normaly);
-		if (collisionTime < 1.0f) {
-			bool collisionHandled = o1->onCollision(o2, data);
-			o2->onCollision(o1, data);
+		bool collided = false;
+		float deltatime = dtMonitor->getDeltaTime();
 
-			if (collisionHandled) {
-				return;
+		float xvel = props1.getXvel() * deltatime;
+		float yvel = props1.getYvel() * deltatime;
+
+		EntityShape colliderShape = props2.getColliderShape();
+		if (xvel != 0 && AABB(props1.getXVelocityColliderShape(deltatime), colliderShape)) {
+			if (!o1->onCollision(o2, data)) {
+				if (xvel > 0) {
+					props1.setXpos(colliderShape.x - props2.getWidth() - 1);
+				} else {
+					props1.setXpos(colliderShape.x + colliderShape.w + 1);
+				}
+				props1.setXvel(0);
 			}
-
-			float xvel = props.getXvel() * dtMonitor->getDeltaTime();
-			float yvel = props.getYvel() * dtMonitor->getDeltaTime();
-			props.incrementXpos(xvel * collisionTime);
-			props.incrementYpos(yvel * collisionTime);
-			float remainingTime = 1.0f - collisionTime;
-			float dotprod = (xvel * normaly + yvel * normalx) * remainingTime;
-			props.setXvel((dotprod * normaly) / dtMonitor->getDeltaTime());
-			props.setYvel((dotprod * normalx) / dtMonitor->getDeltaTime());
+			o2->onCollision(o1, data);
+			collided = true;
 		}
+
+		colliderShape = props2.getColliderShape();
+		if (yvel != 0 && AABB(props1.getYVelocityColliderShape(deltatime), colliderShape)) {
+			if (!o1->onCollision(o2, data)) {
+				if (yvel > 0) {
+					props1.setYpos(colliderShape.y - props1.getHeight() - 1);
+				} else {
+					props1.setYpos(colliderShape.y + colliderShape.h + 1);
+				}
+				props1.setYvel(0);
+			}
+			o2->onCollision(o1, data);
+			collided = true;
+		}
+
+		return collided;
 	}
 
 	bool CollisionDetector::AABB(const EntityShape& b1, const EntityShape& b2) const
 	{
-		 return !(b1.x > b2.x + b2.w)
-			 && !(b1.x + b1.w < b2.x)
-			 && !(b1.y > b2.y + b2.h)
-			 && !(b1.y + b1.h < b2.y);
+		return !(b1.x > b2.x + b2.w)
+			&& !(b1.x + b1.w < b2.x)
+			&& !(b1.y > b2.y + b2.h)
+			&& !(b1.y + b1.h < b2.y);
 	}
 
 	float CollisionDetector::sweptAABB(EntityProperties* p1, EntityProperties* p2,

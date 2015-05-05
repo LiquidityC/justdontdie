@@ -18,7 +18,7 @@ namespace flat2d
 			EntityContainer *entityContainer;
 			DeltatimeMonitor *dtMonitor;
 
-			void handlePossibleCollision(Entity*, Entity*, const GameData *data) const;
+			bool handlePossibleCollision(Entity*, Entity*, const GameData *data) const;
 
 		public:
 			CollisionDetector(EntityContainer *ec, DeltatimeMonitor *dtm) : entityContainer(ec), dtMonitor(dtm) { }
