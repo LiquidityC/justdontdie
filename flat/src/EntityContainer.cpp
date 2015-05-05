@@ -228,21 +228,36 @@ namespace flat2d
 
 		for (auto it = objects.begin(); it != objects.end(); it++) {
 			it->second->preMove(data);
+			handlePossibleObjectMovement(it->second);
+
 			EntityProperties& props = it->second->getEntityProperties();
 			if (props.isMoving()) {
 				if (props.isCollidable()) {
 					coldetector->handlePossibleCollisionsFor(it->second, data);
 				}
 				props.move(deltatime);
+				handlePossibleObjectMovement(it->second);
 			}
-			if (props.hasLocationChanged()) {
-				clearObjectFromCurrentPartitions(it->second);
-				registerObjectToSpatialPartitions(it->second);
-			}
+
 			it->second->postMove(data);
+			handlePossibleObjectMovement(it->second);
 		}
 
 		clearDeadObjects();
+	}
+
+	void EntityContainer::handlePossibleObjectMovement(Entity* entity)
+	{
+		// TODO(Linus): Maybe this should be replaced by the previous callback function that was
+		// injected into the objects entity properties???
+		// Multiple calls to this function seems wasteful although it filters nicely with the
+		// hasLocationChanged flag.
+		EntityProperties& props = entity->getEntityProperties();
+		if (props.hasLocationChanged()) {
+			clearObjectFromCurrentPartitions(entity);
+			registerObjectToSpatialPartitions(entity);
+			props.setLocationChanged(false);
+		}
 	}
 
 	size_t EntityContainer::getObjectCount()
@@ -303,8 +318,8 @@ namespace flat2d
 		float sx = colliderShape.x + (colliderShape.w / 2);
 		float sy = colliderShape.y + (colliderShape.h / 2);
 
+		// Itterate the objects and sort them according to distance
 		for (auto areaIter = currentAreas.begin(); areaIter != currentAreas.end(); areaIter++) {
-			// Might need to sort these in wome way before checking
 			for (auto objectIter = spatialPartitionMap[*areaIter].begin();
 					objectIter != spatialPartitionMap[*areaIter].end();
 					objectIter++)
@@ -343,10 +358,12 @@ namespace flat2d
 			}
 		}
 
+		// Itterate the sorted objects and call the cb function
 		for (auto objectIter = sortedMap.begin(); objectIter != sortedMap.end(); objectIter++) {
 			func(objectIter->second);
 		}
 	}
+
 	Entity* EntityContainer::checkAllObjects(EntityProcessor func) const
 	{
 		for (auto it = objects.begin(); it != objects.end(); it++) {

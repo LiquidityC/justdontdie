@@ -15,12 +15,17 @@ class Particle : public flat2d::Entity
 			Entity(x, y, w, h) {
 				entityProperties.setXvel(xv);
 				entityProperties.setYvel(yv);
+				entityProperties.setCollidable(true);
 				deathTimer.start();
 			}
 
 		virtual void preMove(const flat2d::GameData*);
 		virtual void render(const flat2d::RenderData*) const;
 		virtual void postRender(const flat2d::GameData*);
+
+		/* Overrides */
+		virtual int getType() const;
+		virtual bool onCollision(flat2d::Entity *collider, const flat2d::GameData*);
 
 	protected:
 		virtual void setRenderDrawColor(SDL_Renderer* renderer) const = 0;

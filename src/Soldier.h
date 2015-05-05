@@ -52,7 +52,7 @@ class Soldier : public flat2d::Entity
 		bool handleGeneralTileCollision(MapTileObject*, const flat2d::GameData*);
 		bool handleRocketCollision(Rocket*, const flat2d::GameData*);
 
-		void wasKilled();
+		void kill();
 		void restoreAtCheckpoint();
 
 	public:
@@ -73,7 +73,7 @@ class Soldier : public flat2d::Entity
 		}
 
 		int getType() const {
-			return EntityType::BOT;
+			return EntityType::SOLDIER;
 		}
 
 		void init(const flat2d::GameData*);

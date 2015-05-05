@@ -18,6 +18,8 @@ class BloodParticle : public Particle
 				}
 			}
 
+		bool onCollision(flat2d::Entity *collider, const flat2d::GameData*);
+
 	private:
 		void setRenderDrawColor(SDL_Renderer* renderer) const;
 };

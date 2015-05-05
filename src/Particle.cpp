@@ -72,3 +72,17 @@ void Particle::setBlendMode(SDL_BlendMode blendMode)
 {
 	this->blendMode = blendMode;
 }
+
+int Particle::getType() const
+{
+	return EntityType::PARTICLE;
+}
+
+bool Particle::onCollision(flat2d::Entity *collider, const flat2d::GameData *data)
+{
+	if (collider->getType() == EntityType::PARTICLE) {
+		return true;
+	}
+
+	return false;
+}

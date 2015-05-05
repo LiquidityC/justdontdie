@@ -40,7 +40,7 @@ namespace flat2d
 
 #ifdef DEBUG
 		if (entityProperties.isCollidable()) {
-			SDL_SetRenderDrawColor(data->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
+			SDL_SetRenderDrawColor(data->getRenderer(), 0x00, 0xFF, 0x00, 0xFF );
 			EntityShape bounds = entityProperties.getColliderShape();
 			if (data->getCamera() != nullptr) {
 				bounds.x = data->getCamera()->getScreenXposFor(bounds.x);

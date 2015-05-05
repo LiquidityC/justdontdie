@@ -58,7 +58,7 @@ Rocket::Mode Rocket::getMode() const
 
 bool Rocket::onCollision(Entity* e, const flat2d::GameData *data)
 {
-	if (e->getType() == EntityType::BOT) {
+	if (e->getType() == EntityType::SOLDIER) {
 		Soldier *soldier = static_cast<Soldier*>(e);
 		bool ghostSoldier = soldier->isGhostMode();
 		if ((ghostSoldier && mode == GHOST)

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "EntityProperties.h"
 
 
@@ -6,13 +7,17 @@ namespace flat2d
 	void EntityProperties::incrementXpos(int x)
 	{
 		this->x += x;
-		setLocationChanged(true);
+		if (x != 0) {
+			setLocationChanged(true);
+		}
 	}
 
 	void EntityProperties::setXpos(int pos)
 	{
 		x = pos;
-		setLocationChanged(true);
+		if (pos != 0) {
+			setLocationChanged(true);
+		}
 	}
 
 	int EntityProperties::getXpos() const
@@ -23,13 +28,17 @@ namespace flat2d
 	void EntityProperties::incrementYpos(int y)
 	{
 		this->y += y;
-		setLocationChanged(true);
+		if (y != 0) {
+			setLocationChanged(true);
+		}
 	}
 
 	void EntityProperties::setYpos(int pos)
 	{
 		y = pos;
-		setLocationChanged(true);
+		if (pos != 0) {
+			setLocationChanged(true);
+		}
 	}
 
 	int EntityProperties::getYpos() const
@@ -50,7 +59,9 @@ namespace flat2d
 	void EntityProperties::setXvel(float v)
 	{
 		xvel = v;
-		setLocationChanged(true);
+		if (v != 0) {
+			setLocationChanged(true);
+		}
 	}
 
 	float EntityProperties::getXvel() const
@@ -61,7 +72,9 @@ namespace flat2d
 	void EntityProperties::setYvel(float v)
 	{
 		yvel = v;
-		setLocationChanged(true);
+		if (v != 0) {
+			setLocationChanged(true);
+		}
 	}
 
 	float EntityProperties::getYvel() const
@@ -173,11 +186,7 @@ namespace flat2d
 		int dx = xvel * deltatime;
 		int dy = yvel * deltatime;
 
-		if (dy != 0 || dx != 0) {
-			setLocationChanged(true);
-		}
-
-		x += dx;
-		y += dy;
+		incrementXpos(dx);
+		incrementYpos(dy);
 	}
 } // namespace flat2d

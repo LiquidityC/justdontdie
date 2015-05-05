@@ -3,9 +3,9 @@
 
 enum EntityType {
 	TILE,
-	BOT,
 	ROCKET,
-	SOLDIER
+	SOLDIER,
+	PARTICLE
 };
 
 #endif // ENTITYTYPE_H_

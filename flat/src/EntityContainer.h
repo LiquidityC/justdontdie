@@ -53,6 +53,8 @@ namespace flat2d
 			void clearObjectFromUnattachedPartitions(Entity *entity);
 			EntityShape createBoundingBoxFor(const EntityProperties& props) const;
 
+			void handlePossibleObjectMovement(Entity* entity);
+
 		public:
 			static const int DEFAULT_LAYER = -1;
 
