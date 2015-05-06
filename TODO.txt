@@ -1,5 +1,5 @@
 flat2d:
-	-	Revert to old horizontal-move-and-collide followed by vertical-move-and-collide in collision
+	x	Revert to old horizontal-move-and-collide followed by vertical-move-and-collide in collision
 		engine. Not worth the time to debug and sort out the sweeping. I can look more at that later. I will
 		keep the implementation just not use that method for the time being.
 	-	Might need to make different collision types (materials) once collision engine works.
