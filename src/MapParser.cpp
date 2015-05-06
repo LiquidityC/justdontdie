@@ -149,8 +149,6 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 			objBox.h = static_cast<int>(atof(attr->value()));
 
 			MapTileObject* tileObj = new MapTileObject(objBox.x, objBox.y, objBox.w, objBox.h, nullptr);
-			entityContainer->registerObject(tileObj);
-
 			xml_node<> *properties = object->first_node();
 			object = object->next_sibling();
 			if (!properties) {
@@ -162,8 +160,12 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 				xml_attribute<> *nameAttr = property->first_attribute();
 				xml_attribute<> *valueAttr = nameAttr->next_attribute();
 				tileObj->setProperty(nameAttr->value(), checkAttrValue(valueAttr, "true") );
+				if (checkAttrValue(nameAttr, "collidable")) {
+					tileObj->getEntityProperties().setCollidable(checkAttrValue(valueAttr, "true"));
+				}
 				property = property->next_sibling();
 			}
+			entityContainer->registerObject(tileObj, Layers::FRONT);
 		}
 		node = node->next_sibling();
 	}

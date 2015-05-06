@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="75" tilewidth="32" tileheight="32" nextobjectid="9">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="50" height="75" tilewidth="32" tileheight="32" nextobjectid="18">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32">
   <image source="tiles/tileset.png" width="128" height="224"/>
   <tile id="1">
@@ -3932,5 +3932,29 @@
    </properties>
   </object>
   <object id="8" name="Goal" x="960" y="160" width="32" height="32"/>
+  <object id="9" name="Checkpoint" x="710" y="1194" width="23" height="49">
+   <properties>
+    <property name="checkpoint" value="true"/>
+    <property name="collidable" value="true"/>
+   </properties>
+  </object>
+  <object id="12" name="Checkpoint" x="43" y="2223" width="72" height="25">
+   <properties>
+    <property name="checkpoint" value="true"/>
+    <property name="collidable" value="true"/>
+   </properties>
+  </object>
+  <object id="16" name="Checkpoint" x="1130" y="2129" width="35" height="74">
+   <properties>
+    <property name="checkpoint" value="true"/>
+    <property name="collidable" value="true"/>
+   </properties>
+  </object>
+  <object id="17" name="Checkpoint" x="1464" y="1060" width="114" height="51">
+   <properties>
+    <property name="checkpoint" value="true"/>
+    <property name="collidable" value="true"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

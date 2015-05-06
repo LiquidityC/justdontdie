@@ -252,11 +252,10 @@ namespace flat2d
 		// injected into the objects entity properties???
 		// Multiple calls to this function seems wasteful although it filters nicely with the
 		// hasLocationChanged flag.
-		EntityProperties& props = entity->getEntityProperties();
-		if (props.hasLocationChanged()) {
+		if (entity->getEntityProperties().hasLocationChanged()) {
 			clearObjectFromCurrentPartitions(entity);
 			registerObjectToSpatialPartitions(entity);
-			props.setLocationChanged(false);
+			entity->getEntityProperties().setLocationChanged(false);
 		}
 	}
 

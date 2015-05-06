@@ -156,6 +156,12 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 		return true;
 	}
 
+	if (o->hasProperty("checkpoint")) {
+		checkPointX = o->getEntityProperties().getXpos();
+		checkPointY = o->getEntityProperties().getYpos();
+		return true;
+	}
+
 	flat2d::EntityShape soldierBox = entityProperties.getColliderShape();
 	if (soldierBox.y + soldierBox.h < o->getEntityProperties().getColliderShape().y) {
 		grounded = true;

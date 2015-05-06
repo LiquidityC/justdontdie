@@ -35,3 +35,17 @@ void MapTileObject::preMove(const flat2d::GameData *gameData)
 		gameData->getEntityContainer()->registerObject(rocket, Layers::FRONT);
 	}
 }
+
+void MapTileObject::render(const flat2d::RenderData *data) const
+{
+	Entity::render(data);
+#ifdef DEBUG
+	if (texture == nullptr && !dead) {
+		SDL_SetRenderDrawColor(data->getRenderer(), 0x00, 0x00, 0xFF, 0xFF );
+		SDL_Rect boundingBox = entityProperties.getBoundingBox();
+		boundingBox.x = data->getCamera()->getScreenXposFor(boundingBox.x);
+		boundingBox.y = data->getCamera()->getScreenYposFor(boundingBox.y);
+		SDL_RenderDrawRect( data->getRenderer(), &boundingBox);
+	}
+#endif
+}

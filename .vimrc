@@ -8,3 +8,7 @@ nnoremap <F1> :Make -j8<cr>
 nnoremap <F2> :Make -j8 checkall<cr>
 nnoremap <F3> :Start! ./deadgaem<cr>
 nnoremap <F4> :Start! ddd deadgaem<cr>
+
+nnoremap <F9> :Make clean<cr>
+nnoremap <F10> :Make cleanall<cr>
+nnoremap <F12> :Start! tiled<cr>
