@@ -44,7 +44,7 @@ namespace flat2d
 		if (xvel != 0 && AABB(props1.getXVelocityColliderShape(deltatime), colliderShape)) {
 			if (!o1->onCollision(o2, data)) {
 				if (xvel > 0) {
-					props1.setXpos(colliderShape.x - props2.getWidth() - 1);
+					props1.setXpos(colliderShape.x - props1.getWidth() - 1);
 				} else {
 					props1.setXpos(colliderShape.x + colliderShape.w + 1);
 				}
@@ -54,7 +54,6 @@ namespace flat2d
 			collided = true;
 		}
 
-		colliderShape = props2.getColliderShape();
 		if (yvel != 0 && AABB(props1.getYVelocityColliderShape(deltatime), colliderShape)) {
 			if (!o1->onCollision(o2, data)) {
 				if (yvel > 0) {
