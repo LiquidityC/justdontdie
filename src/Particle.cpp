@@ -2,6 +2,7 @@
 #include <algorithm>
 #include "Particle.h"
 #include "EntityType.h"
+#include "MapTileObject.h"
 
 void Particle::preMove(const flat2d::GameData* data)
 {
@@ -82,6 +83,14 @@ bool Particle::onCollision(flat2d::Entity *collider, const flat2d::GameData *dat
 {
 	if (collider->getType() == EntityType::PARTICLE) {
 		return true;
+	}
+
+	if (collider->getType() == EntityType::TILE) {
+		MapTileObject* tile = static_cast<MapTileObject*>(collider);
+
+		if (tile->hasProperty("checkpoint")) {
+			return true;
+		}
 	}
 
 	return false;

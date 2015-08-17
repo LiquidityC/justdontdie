@@ -148,6 +148,27 @@ namespace flat2d
 		return getCustomVelocityColliderShape(0, yvel * deltatime);
 	}
 
+	int EntityProperties::getColliderLeftOffset() const
+	{
+		return colliderShape.x;
+	}
+
+	int EntityProperties::getColliderRightOffset() const
+	{
+		return w - (colliderShape.x + colliderShape.w);
+	}
+
+	int EntityProperties::getColliderTopOffset() const
+	{
+		return colliderShape.y;
+	}
+
+	int EntityProperties::getColliderBottomOffset() const
+	{
+		return h - (colliderShape.y + colliderShape.h);
+	}
+
+
 	void EntityProperties::setColliderShape(EntityShape shape)
 	{
 		this->colliderShape = shape;

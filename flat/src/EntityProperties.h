@@ -58,6 +58,11 @@ namespace flat2d
 			void setYvel(float yvel);
 			float getYvel() const;
 
+			int getColliderLeftOffset() const;
+			int getColliderRightOffset() const;
+			int getColliderTopOffset() const;
+			int getColliderBottomOffset() const;
+
 			bool isMoving() const;
 
 			void move(float deltatime);
