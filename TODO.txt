@@ -6,7 +6,9 @@ flat2d:
 		Mainly elastic, semi-elastic, inelastic (translates to bounce, stick to or slide along/off walls).
 		These are explained in link above.
 	-	Don't return EntityProperties from Entity as a reference, make it a pointer.
-		Big re-write with alot of errors but easy fixes.
+		Big re-write with alot of errors but easy fixes. (Not sure about this one, it looks wrong but I'm not
+		sure if it's horribly wrong. You just need to remember to put & on variables that you assign the
+		return to)
 
 Game:
 	-	Make the initial level once collisions are smoother. (Collisions are smoother now)

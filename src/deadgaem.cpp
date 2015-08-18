@@ -36,7 +36,7 @@ int main( int argc, char* args[] )
 	customGameData->getLayerService()->registerLayers(entityContainer);
 
 	MapParser parser;
-	parser.createMapFrom(gameData, "resources/maps/map1/", "map1.tmx");
+	parser.createMapFrom(gameData, "resources/maps/map2/", "map2.tmx");
 
 	flat2d::Entity* soldier = new Soldier(200, 200);
 	soldier->init(gameData);
@@ -49,9 +49,13 @@ int main( int argc, char* args[] )
 
 	flat2d::Timer fpsTimer;
 	flat2d::Timer drawFpsTimer;
+
+#ifdef DEBUG
 	int countedFrames = 0;
 	int currentFps = 0;
 	float avgFps = 0;
+#endif
+
 	fpsTimer.start();
 	drawFpsTimer.start();
 
