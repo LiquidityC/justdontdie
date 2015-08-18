@@ -20,6 +20,18 @@ namespace flat2d
 
 			bool handlePossibleCollision(Entity*, Entity*, const GameData *data) const;
 
+			void handleHorizontalCollisions(EntityProperties* props1, EntityProperties* props2) const;
+			void handleVerticalCollisions(EntityProperties* props1, EntityProperties* props2) const;
+
+			void handleVerticalSolidCollision(EntityProperties* props1, EntityProperties* props2) const;
+			void handleHorizontalSolidCollision(EntityProperties* props1, EntityProperties* props2) const;
+
+			void handleVerticalBouncyCollision(EntityProperties* props1, EntityProperties* props2) const;
+			void handleHorizontalBouncyCollision(EntityProperties* props1, EntityProperties* props2) const;
+
+			void handleVerticalStickyCollision(EntityProperties* props1, EntityProperties* props2) const;
+			void handleHorizontalStickyCollision(EntityProperties* props1, EntityProperties* props2) const;
+
 		public:
 			CollisionDetector(EntityContainer *ec, DeltatimeMonitor *dtm) : entityContainer(ec), dtMonitor(dtm) { }
 

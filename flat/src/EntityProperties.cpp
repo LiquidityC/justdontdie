@@ -4,6 +4,16 @@
 
 namespace flat2d
 {
+	void EntityProperties::setCollisionProperty(CollisionProperty prop)
+	{
+		this->collisionProperty = prop;
+	}
+
+	CollisionProperty EntityProperties::getCollisionProperty() const
+	{
+		return collisionProperty;
+	}
+
 	void EntityProperties::incrementXpos(int x)
 	{
 		this->x += x;

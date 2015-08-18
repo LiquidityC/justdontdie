@@ -22,7 +22,7 @@ LINT		= cpplint
 LIBS 		= -lflat $(SDL2_LDFLAGS)
 
 OBJDIR				= obj
-DEPS				= $(wildcard src/*.h)
+DEPS				= $(wildcard src/*.h) flat/lib/libflat.a
 EXECUTABLE 			= deadgaem
 PROG_SOURCES 		= $(wildcard src/*.cpp)
 PROG_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(PROG_SOURCES:.cpp=.o)))

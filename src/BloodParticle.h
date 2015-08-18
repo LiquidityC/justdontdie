@@ -16,9 +16,8 @@ class BloodParticle : public Particle
 				if ( (rand_r(&seed) % 2) == 0 ) {
 					setBlendMode(SDL_BLENDMODE_NONE);
 				}
+				entityProperties.setCollisionProperty(flat2d::CollisionProperty::STICKY);
 			}
-
-		bool onCollision(flat2d::Entity *collider, const flat2d::GameData*);
 
 	private:
 		void setRenderDrawColor(SDL_Renderer* renderer) const;

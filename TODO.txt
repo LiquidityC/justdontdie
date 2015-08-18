@@ -2,9 +2,11 @@ flat2d:
 	x	Revert to old horizontal-move-and-collide followed by vertical-move-and-collide in collision
 		engine. Not worth the time to debug and sort out the sweeping. I can look more at that later. I will
 		keep the implementation just not use that method for the time being.
-	-	Might need to make different collision types (materials) once collision engine works.
+	x	Might need to make different collision types (materials) once collision engine works.
 		Mainly elastic, semi-elastic, inelastic (translates to bounce, stick to or slide along/off walls).
 		These are explained in link above.
+	-	Don't return EntityProperties from Entity as a reference, make it a pointer.
+		Big re-write with alot of errors but easy fixes.
 
 Game:
-	-	Make the initial level once collisions are smoother.
+	-	Make the initial level once collisions are smoother. (Collisions are smoother now)

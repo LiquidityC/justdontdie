@@ -36,32 +36,21 @@ namespace flat2d
 
 		bool collided = false;
 		float deltatime = dtMonitor->getDeltaTime();
+		EntityShape colliderShape = props2.getColliderShape();
 
 		float xvel = props1.getXvel() * deltatime;
-		float yvel = props1.getYvel() * deltatime;
-
-		EntityShape colliderShape = props2.getColliderShape();
 		if (xvel != 0 && AABB(props1.getXVelocityColliderShape(deltatime), colliderShape)) {
 			if (!o1->onCollision(o2, data)) {
-				if (xvel > 0) {
-					props1.setXpos(colliderShape.x - props1.getWidth() - 1 + props1.getColliderRightOffset());
-				} else {
-					props1.setXpos(colliderShape.x + colliderShape.w + 1 - props1.getColliderLeftOffset());
-				}
-				props1.setXvel(0);
+				handleHorizontalCollisions(&props1, &props2);
 			}
 			o2->onCollision(o1, data);
 			collided = true;
 		}
 
+		float yvel = props1.getYvel() * deltatime;
 		if (yvel != 0 && AABB(props1.getYVelocityColliderShape(deltatime), colliderShape)) {
 			if (!o1->onCollision(o2, data)) {
-				if (yvel > 0) {
-					props1.setYpos(colliderShape.y - props1.getHeight() - 1 + props1.getColliderBottomOffset());
-				} else {
-					props1.setYpos(colliderShape.y + colliderShape.h + 1 - props1.getColliderTopOffset());
-				}
-				props1.setYvel(0);
+				handleVerticalCollisions(&props1, &props2);
 			}
 			o2->onCollision(o1, data);
 			collided = true;
@@ -159,4 +148,121 @@ namespace flat2d
 		}
 		return entryTime;
 	}
+
+	void CollisionDetector::handleHorizontalCollisions(EntityProperties* props1, EntityProperties* props2) const
+	{
+		assert(props1->getXvel() != 0);
+
+		switch (props1->getCollisionProperty()) {
+			case CollisionProperty::BOUNCY:
+				handleHorizontalBouncyCollision(props1, props2);
+				break;
+			case CollisionProperty::STICKY:
+				handleHorizontalStickyCollision(props1, props2);
+				break;
+			case CollisionProperty::SOLID:
+			default:
+				handleHorizontalSolidCollision(props1, props2);
+		}
+	}
+
+	void CollisionDetector::handleVerticalCollisions(EntityProperties* props1, EntityProperties* props2) const
+	{
+		assert(props1->getYvel() != 0);
+
+		switch (props1->getCollisionProperty()) {
+			case CollisionProperty::BOUNCY:
+				handleVerticalBouncyCollision(props1, props2);
+				break;
+			case CollisionProperty::STICKY:
+				handleVerticalStickyCollision(props1, props2);
+				break;
+			case CollisionProperty::SOLID:
+			default:
+				handleVerticalSolidCollision(props1, props2);
+		}
+	}
+
+	void CollisionDetector::handleVerticalSolidCollision(EntityProperties* props1, EntityProperties* props2) const
+	{
+		EntityShape colliderShape = props2->getColliderShape();
+
+		if (props1->getYvel() > 0) {
+			props1->setYpos(colliderShape.y - props1->getHeight() - 1 + props1->getColliderBottomOffset());
+		} else {
+			props1->setYpos(colliderShape.y + colliderShape.h + 1 - props1->getColliderTopOffset());
+		}
+		props1->setYvel(0);
+	}
+
+	void CollisionDetector::handleHorizontalSolidCollision(EntityProperties* props1, EntityProperties* props2) const
+	{
+		EntityShape colliderShape = props2->getColliderShape();
+
+		if (props1->getXvel() > 0) {
+			props1->setXpos(colliderShape.x - props1->getWidth() - 1 + props1->getColliderRightOffset());
+		} else {
+			props1->setXpos(colliderShape.x + colliderShape.w + 1 - props1->getColliderLeftOffset());
+		}
+		props1->setXvel(0);
+	}
+
+
+	void CollisionDetector::handleVerticalBouncyCollision(EntityProperties* props1, EntityProperties* props2) const
+	{
+		float yvel = props1->getYvel();
+		handleVerticalSolidCollision(props1, props2);
+
+		if (yvel > 0) {
+			yvel -= 200;
+		}
+		if (std::abs(yvel) <= 100) {
+			yvel = 0;
+		}
+
+		props1->setYvel(-1 * yvel);
+	}
+
+	void CollisionDetector::handleHorizontalBouncyCollision(EntityProperties* props1, EntityProperties* props2) const
+	{
+		float xvel = props1->getXvel();
+		handleHorizontalSolidCollision(props1, props2);
+
+		if (xvel > 0) {
+			xvel -= 200;
+		}
+		if (std::abs(xvel) <= 100) {
+			xvel = 0;
+		}
+
+		props1->setYvel(-1 * xvel);
+	}
+
+
+	void CollisionDetector::handleVerticalStickyCollision(EntityProperties* props1, EntityProperties* props2) const
+	{
+		EntityShape colliderShape = props2->getColliderShape();
+
+		if (props1->getYvel() > 0) {
+			props1->setYpos(colliderShape.y);
+		} else {
+			props1->setYpos(colliderShape.y + colliderShape.h - props1->getHeight());
+		}
+		props1->setXvel(0);
+		props1->setYvel(0);
+	}
+
+	void CollisionDetector::handleHorizontalStickyCollision(EntityProperties* props1, EntityProperties* props2) const
+	{
+		EntityShape colliderShape = props2->getColliderShape();
+
+		if (props1->getXvel() > 0) {
+			props1->setXpos(colliderShape.x);
+		} else {
+			props1->setXpos(colliderShape.x + colliderShape.w - props1->getWidth());
+		}
+		props1->setXvel(0);
+		props1->setYvel(0);
+	}
+
 } // namespace flat2d

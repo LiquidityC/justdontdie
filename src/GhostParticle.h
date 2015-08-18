@@ -8,7 +8,9 @@ class GhostParticle : public Particle
 {
 	public:
 		GhostParticle(int x, int y, int w, int h, int xvel, int yvel) :
-			Particle(x, y, w, h, xvel, yvel) { }
+			Particle(x, y, w, h, xvel, yvel) {
+				entityProperties.setCollisionProperty(flat2d::CollisionProperty::BOUNCY);
+			}
 
 		void preMove(const flat2d::GameData*);
 

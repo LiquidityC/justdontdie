@@ -8,6 +8,7 @@
 #include "Square.h"
 #include "MapArea.h"
 #include "EntityShape.h"
+#include "CollisionProperty.h"
 
 namespace flat2d
 {
@@ -24,6 +25,9 @@ namespace flat2d
 
 			bool collidable = false;
 			bool locationChanged = false;
+
+			CollisionProperty collisionProperty = CollisionProperty::SOLID;
+
 			EntityShape colliderShape = { 0, 0, 0, 0 };
 			Areas currentAreas;
 
@@ -57,6 +61,9 @@ namespace flat2d
 			float getXvel() const;
 			void setYvel(float yvel);
 			float getYvel() const;
+
+			void setCollisionProperty(CollisionProperty);
+			CollisionProperty getCollisionProperty() const;
 
 			int getColliderLeftOffset() const;
 			int getColliderRightOffset() const;

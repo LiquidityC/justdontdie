@@ -62,8 +62,8 @@ namespace flat2d
 		return {
 			vShape.x - spatialPartitionExpansion,
 			vShape.y - spatialPartitionExpansion,
-			vShape.w + spatialPartitionExpansion,
-			vShape.h + spatialPartitionExpansion
+			vShape.w + (2 * spatialPartitionExpansion),
+			vShape.h + (2 * spatialPartitionExpansion)
 		};
 	}
 

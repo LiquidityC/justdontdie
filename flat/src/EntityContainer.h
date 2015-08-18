@@ -28,7 +28,7 @@ namespace flat2d
 	{
 		private:
 			// TODO(Linus): Maybe make this editable in the future?
-			const int spatialPartitionExpansion = 20;
+			const int spatialPartitionExpansion = 0;
 			unsigned int spatialPartitionDimension = 100;
 
 			DeltatimeMonitor *dtMonitor = nullptr;
