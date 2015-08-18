@@ -3,8 +3,9 @@
 /flat/obj/*.o
 /obj/*.o
 
-*.swp
+/Makefile.config
+/deadgaem
+/test
+/tags
 
-deadgaem
-test
-tags
+*.swp

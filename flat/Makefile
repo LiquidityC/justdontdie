@@ -6,7 +6,6 @@ SDL2_LDFLAGS		:= $(shell pkg-config --libs SDL2_image SDL2_mixer SDL2_ttf sdl2)
 SDL2_CFLAGS			:= $(shell pkg-config --cflags SDL2_image SDL2_mixer SDL2_ttf sdl2)
 
 CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 $(SDL2_CFLAGS)
-CXXFLAGS 			+= -DDEBUG
 
 LD					= g++
 LDFLAGS				=
@@ -37,6 +36,8 @@ LIB_INCLUDES		= $(addprefix $(LIB_INCLUDE_DIR)/,$(notdir $(LIB_INCLUDE_SOURCES))
 TEST				= test
 TEST_SOURCES 		= $(wildcard src/*.cpp) $(wildcard testsrc/*.cpp)
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
+
+-include ../Makefile.config
 
 .PHONY: lint $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR) $(LIB_UNIFIED_INCLUDE)
 

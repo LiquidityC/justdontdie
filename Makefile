@@ -9,8 +9,8 @@ CGREEN	= \033[32m
 SDL2_LDFLAGS		:= $(shell pkg-config --libs SDL2_image SDL2_mixer SDL2_ttf sdl2)
 SDL2_CFLAGS			:= $(shell pkg-config --cflags SDL2_image SDL2_mixer SDL2_ttf sdl2)
 
-CXXFLAGS		= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
-			  -I./flat/include -I./include $(SDL2_CFLAGS) -DDEBUG
+CXXFLAGS	= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
+			  -I./flat/include -I./include $(SDL2_CFLAGS)
 
 LD			= g++
 LDFLAGS 	= -L./flat/lib/ -L./lib/
@@ -32,6 +32,8 @@ TEST_SOURCES 		= $(filter-out src/deadgaem.cpp,$(wildcard src/*.cpp)) $(wildcard
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 LIBRARIES			= flat
+
+-include Makefile.config
 
 .PHONY: $(LIBRARIES) $(OBJDIR) libs default dist lint clean cleanall check checkall
 
