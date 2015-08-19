@@ -4,6 +4,7 @@
 /obj/*.o
 
 /Makefile.config
+/dist/deadgaem
 /deadgaem
 /flat/test
 /test
