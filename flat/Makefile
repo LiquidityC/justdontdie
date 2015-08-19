@@ -2,8 +2,8 @@ ifndef CXX
 CXX			= g++
 endif
 
-SDL2_LDFLAGS		:= $(shell sdl2-config --libs) -lSDL2_image -lSDL2_mixer -lSDL2_ttf
-SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
+SDL2_LDFLAGS		:= $(shell pkg-config --libs SDL2_image SDL2_mixer SDL2_ttf sdl2)
+SDL2_CFLAGS			:= $(shell pkg-config --cflags SDL2_image SDL2_mixer SDL2_ttf sdl2)
 
 CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 $(SDL2_CFLAGS)
 
