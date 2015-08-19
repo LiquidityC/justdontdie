@@ -13,13 +13,13 @@ CXXFLAGS	= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
 			  -I./flat/include -I./include $(SDL2_CFLAGS)
 
 LD			= g++
-LDFLAGS 	= -L./flat/lib/ -L./lib/ $(SDL2_LDFLAGS)
+LDFLAGS 	= -L./flat/lib/ -L./lib/
 RM			= rm
 ECHO		= echo
 CP			= cp
 MV			= mv
 LINT		= cpplint
-LIBS 		= -lflat
+LIBS 		= -lflat $(SDL2_LDFLAGS)
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h) flat/lib/libflat.a
