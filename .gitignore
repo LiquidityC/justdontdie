@@ -1,11 +1,15 @@
 /flat/include/flat/*.h
 /flat/lib/*.a
 /flat/obj/*.o
+/flat/obj/*.o32
 /obj/*.o
+/obj/*.o32
+/dist/*
 
 /Makefile.config
 /dist/deadgaem
 /deadgaem
+/deadgaem.exe
 /flat/test
 /test
 /tags

@@ -4,68 +4,58 @@ CXX = /usr/bin/x86_64-w64-mingw32-g++
 CNORMAL	= \033[0m
 CGREEN	= \033[32m
 
-SDL_ROOT_DIR	:= /usr/x86_64-w64-mingw32/bin
+MFLAGS = -f Makefile.win
 
-SDL2_LDFLAGS	:= $(shell $(SDL_ROOT_DIR)/sdl2-config --static-libs) -lSDL2_image -lSDL2_mixer -lSDL2_ttf
-SDL2_CFLAGS		:= $(shell $(SDL_ROOT_DIR)/sdl2-config --cflags)
+SDL_ROOT_DIR	= /usr/x86_64-w64-mingw32/bin
 
-CXXFLAGS	= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
-			  -I./flat/include -I./include $(SDL2_CFLAGS)
+SDL2_CFLAGS		= `$(SDL_ROOT_DIR)/sdl2-config --cflags`
+
+SDL2_LDFLAGS	= `$(SDL_ROOT_DIR)/sdl2-config --libs` \
+				  -lSDL2_image.dll -lSDL2_ttf.dll -lSDL2_mixer.dll
+
+CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
+					  -Iflat/include -Iinclude $(SDL2_CFLAGS) 
 
 LD			= /usr/bin/x86_64-w64-mingw32-g++
-LDFLAGS 	= -L./flat/lib/ -L./lib/ $(SDL2_LDFLAGS) -static-libgcc -static-libstdc++
+LDFLAGS 	= -L./flat/lib/ -lflat.dll $(SDL2_LDFLAGS)
 RM			= rm
 ECHO		= echo
 CP			= cp
 MV			= mv
-LINT		= cpplint
-LIBS 		= -lflat
 
 OBJDIR				= obj
-DEPS				= $(wildcard src/*.h) flat/lib/libflat.a
+DEPS				= $(wildcard src/*.h) flat/lib/libflat.dll.a
 EXECUTABLE 			= deadgaem.exe
 PROG_SOURCES 		= $(wildcard src/*.cpp)
 PROG_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(PROG_SOURCES:.cpp=.o32)))
 
 LIBRARIES			= flat
 
--include Makefile.config
-
 .PHONY: $(LIBRARIES) $(OBJDIR) libs default dist clean cleanall
 
 default: 
-	@$(MAKE) --no-print-directory libs
+	@$(MAKE) $(MFLAGS) --no-print-directory libs
 	@$(ECHO) -e "$(CGREEN)Building $(EXECUTABLE)...$(CNORMAL)"
-	@$(MAKE) --no-print-directory $(EXECUTABLE)
+	@$(MAKE) $(MFLAGS) --no-print-directory '$(EXECUTABLE)'
 	@$(ECHO) -e "$(CGREEN)Building $(EXECUTABLE) complete$(CNORMAL)"
 
 all: default
 
-run:
-	@$(MAKE) --no-print-directory libs
-	@$(MAKE) --no-print-directory $(EXECUTABLE)
-	@./$(EXECUTABLE)
-
 libs: $(LIBRARIES)
 
 dist: default
-	$(LD) $(LDFLAGS) -Wl,-rpath,'.:lib/.' $(PROG_OBJECTS) $(LIBS) -o dist/$(EXECUTABLE)
+	$(LD) -Wl,-rpath,'.:lib/.' $(PROG_OBJECTS) -o dist/$(EXECUTABLE) $(LDFLAGS)
 
 $(EXECUTABLE): $(PROG_OBJECTS) $(DEPS)
-	$(LD) $(LDFLAGS) $(PROG_OBJECTS) $(LIBS) -o $@
+	$(LD) $(PROG_OBJECTS) -o $@ $(LDFLAGS)
 
 $(OBJDIR)/%.o32: src/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 $(LIBRARIES):
 	@$(ECHO) -e "$(CGREEN)Building $@lib...$(CNORMAL)"
-	@$(MAKE) -f flat/Makefile.win -C $@ 
+	@$(MAKE) -C $@ $(MFLAGS)
 	@$(ECHO) -e "$(CGREEN)Building $@lib complete$(CNORMAL)"
-
-lint:
-	python2.7 lint/cpplint.py --linelength=120 --root=src --extensions=cpp,h \
-		--filter=-whitespace/tab,-whitespace/parens,-whitespace/braces,-whitespace/comments,-legal \
-		src/*
 
 clean:
 	@$(ECHO) Cleaning project
@@ -73,5 +63,5 @@ clean:
 
 cleanall:
 	@$(ECHO) Cleaning project and all libraries
-	@for d in $(LIBRARIES); do (cd $$d; $(MAKE) --no-print-directory clean ); done
+	@for d in $(LIBRARIES); do (cd $$d; $(MAKE) $(MFLAGS) --no-print-directory clean ); done
 	@$(RM) -f $(EXECUTABLE) $(PROG_OBJECTS)

@@ -1,25 +1,17 @@
-CXX = /usr/bin/x86_64-w64-mingw32-g++
+CXX					= /usr/bin/x86_64-w64-mingw32-g++
 
-SDL_ROOT_DIR	:= /usr/x86_64-w64-mingw32/bin
+SDL_ROOT_DIR		= /usr/x86_64-w64-mingw32/bin
 
-
-SDL2_LDFLAGS	:= $(shell $(SDL_ROOT_DIR)/sdl2-config --static-libs) \
-					-Llib/SDL2_mixer-2.0.0/x86_64-w64-mingw32/lib -lSDL2_image -lSDL2_mixer -lSDL2_ttf
-SDL2_CFLAGS		:= $(shell $(SDL_ROOT_DIR)/sdl2-config --cflags)
-
-CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 $(SDL2_CFLAGS) \
-					  -Ilib/SDL2_mixer-2.0.0/x86_64-w64-mingw32/include
+CXXFLAGS			= `$(SDL_ROOT_DIR)/sdl2-config --cflags` \
+					  -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11
 
 LD					= /usr/bin/x86_64-w64-mingw32-g++
-LDFLAGS				= -static-libgcc -static-libstdc++
 AR					= /usr/bin/x86_64-w64-mingw32-ar
 ARFLAGS				= rcs
 RM					= rm
 CP					= cp
 ECHO				= echo
 SHELL				= /bin/sh
-
-LIBS 				= $(SDL2_LDFLAGS) -lsqlite3
 
 DEPS				= $(wildcard src/*.h)
 OBJDIR				= obj
@@ -34,9 +26,7 @@ LIB_UNIFIED_INCLUDE	= $(LIB_INCLUDE_DIR)/flat.h
 LIB_INCLUDE_SOURCES	= $(wildcard src/*.h)
 LIB_INCLUDES		= $(addprefix $(LIB_INCLUDE_DIR)/,$(notdir $(LIB_INCLUDE_SOURCES)))
 
--include ../Makefile.config
-
-.PHONY: lint $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR) $(LIB_UNIFIED_INCLUDE)
+.PHONY: $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR) $(LIB_UNIFIED_INCLUDE)
 
 default: $(LIBRARY) $(LIB_INCLUDES) $(LIB_UNIFIED_INCLUDE)
 
@@ -59,14 +49,6 @@ $(LIBRARY): $(LIB_OBJECTS) $(DEPS)
 $(OBJDIR)/%.o32: src/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
-$(OBJDIR)/%.o32: testsrc/%.cpp
-	$(CXX) $(CXXFLAGS) $< -o $@
-
-lint:
-	python2.7 lint/cpplint.py --linelength=120 --root=flat/src --extensions=cpp,h \
-		--filter=-whitespace/tab,-whitespace/indent,-whitespace/parens,-whitespace/braces,-whitespace/comments,-runtime/indentation_namespace,-legal \
-		src/*
-
 clean:
 	@$(ECHO) Cleaning project
-	@$(RM) -f $(LIBRARY) $(LIB_OBJECTS) $(LIB_UI_OBJECTS) $(LIB_INCLUDES)
+	@$(RM) -f $(LIBRARY) $(LIB_OBJECTS) $(LIB_INCLUDES)
