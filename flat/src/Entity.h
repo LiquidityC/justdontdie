@@ -2,13 +2,11 @@
 #define ENTITY_H_
 
 #include <SDL2/SDL.h>
-#include <boost/lexical_cast.hpp>
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/uuid_io.hpp>
 #include <string>
+#include <sstream>
 
 #include "EntityProperties.h"
+#include "UID.h"
 
 namespace flat2d
 {
@@ -19,7 +17,7 @@ namespace flat2d
 	class Entity
 	{
 		private:
-			boost::uuids::uuid id;
+			size_t id;
 
 		protected:
 			EntityProperties entityProperties;
@@ -32,9 +30,7 @@ namespace flat2d
 			Entity(int x, int y, int w, int h) :
 				entityProperties(x, y, w, h),
 				dead(false) {
-					/* Not providing ran creates valgrind warnings */
-					static boost::mt19937 ran;
-					id = boost::uuids::random_generator(ran)();
+					id = UID::generate();
 
 					entityProperties.setColliderShape({ 0, 0, w, h });
 					clip = { x, y, w, h };
@@ -57,7 +53,11 @@ namespace flat2d
 			}
 
 			virtual std::string getStringId() const {
-				return boost::lexical_cast<std::string>(id);
+				std::string number;
+				std::stringstream ss;
+				ss << id;
+				ss >> number;
+				return number;
 			}
 
 			virtual int getType() const {

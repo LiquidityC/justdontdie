@@ -1,22 +1,23 @@
-ifndef CXX
-CXX			= g++
-endif
+CXX = /usr/bin/x86_64-w64-mingw32-g++
 
-SDL2_LDFLAGS		:= $(shell sdl2-config --static-libs) -lSDL2_image -lSDL2_mixer -lSDL2_ttf
-SDL2_CFLAGS			:= $(shell sdl2-config --cflags)
+SDL_ROOT_DIR	:= /usr/x86_64-w64-mingw32/bin
 
-CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 $(SDL2_CFLAGS)
 
-LD					= g++
-LDFLAGS				=
-AR					= ar
+SDL2_LDFLAGS	:= $(shell $(SDL_ROOT_DIR)/sdl2-config --static-libs) \
+					-Llib/SDL2_mixer-2.0.0/x86_64-w64-mingw32/lib -lSDL2_image -lSDL2_mixer -lSDL2_ttf
+SDL2_CFLAGS		:= $(shell $(SDL_ROOT_DIR)/sdl2-config --cflags)
+
+CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 $(SDL2_CFLAGS) \
+					  -Ilib/SDL2_mixer-2.0.0/x86_64-w64-mingw32/include
+
+LD					= /usr/bin/x86_64-w64-mingw32-g++
+LDFLAGS				= -static-libgcc -static-libstdc++
+AR					= /usr/bin/x86_64-w64-mingw32-ar
 ARFLAGS				= rcs
 RM					= rm
 CP					= cp
 ECHO				= echo
 SHELL				= /bin/sh
-LINT				= cpplint
-CTAGS				= ctags
 
 LIBS 				= $(SDL2_LDFLAGS) -lsqlite3
 
@@ -24,18 +25,14 @@ DEPS				= $(wildcard src/*.h)
 OBJDIR				= obj
 LIBDIR				= lib
 
-LIBRARY 			= $(LIBDIR)/libflat.a
+LIBRARY 			= $(LIBDIR)/libflat.dll.a
 LIB_SOURCES			= $(wildcard src/*.cpp)
-LIB_OBJECTS			= $(addprefix $(OBJDIR)/,$(notdir $(LIB_SOURCES:.cpp=.o)))
+LIB_OBJECTS			= $(addprefix $(OBJDIR)/,$(notdir $(LIB_SOURCES:.cpp=.o32)))
 
 LIB_INCLUDE_DIR		= include/flat
 LIB_UNIFIED_INCLUDE	= $(LIB_INCLUDE_DIR)/flat.h
 LIB_INCLUDE_SOURCES	= $(wildcard src/*.h)
 LIB_INCLUDES		= $(addprefix $(LIB_INCLUDE_DIR)/,$(notdir $(LIB_INCLUDE_SOURCES)))
-
-TEST				= test
-TEST_SOURCES 		= $(wildcard src/*.cpp) $(wildcard testsrc/*.cpp)
-TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 -include ../Makefile.config
 
@@ -43,10 +40,7 @@ TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 default: $(LIBRARY) $(LIB_INCLUDES) $(LIB_UNIFIED_INCLUDE)
 
-all: $(LIBRARY) $(TEST) $(LIB_UNIFIED_INCLUDE)
-
-check: $(TEST)
-	./$(TEST)
+all: $(LIBRARY) $(LIB_UNIFIED_INCLUDE)
 
 $(LIB_INCLUDE_DIR)/%.h: src/%.h
 	@$(CP) $< $@
@@ -59,16 +53,13 @@ $(LIB_UNIFIED_INCLUDE): $(LIB_INCLUDES)
 	@$(ECHO) "" >> $(LIB_INCLUDE_DIR)/flat.h
 	@$(ECHO) "#endif" >> $(LIB_INCLUDE_DIR)/flat.h
 
-$(TEST): $(LIBRARIES) $(TEST_OBJECTS) $(DEPS)
-	$(LD) $(LDFLAGS) $(TEST_OBJECTS) $(LIBS) -o $@
-
 $(LIBRARY): $(LIB_OBJECTS) $(DEPS)
 	$(AR) $(ARFLAGS) $@ $(LIB_OBJECTS)
 
-$(OBJDIR)/%.o: src/%.cpp
+$(OBJDIR)/%.o32: src/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
-$(OBJDIR)/%.o: testsrc/%.cpp
+$(OBJDIR)/%.o32: testsrc/%.cpp
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 lint:
@@ -78,4 +69,4 @@ lint:
 
 clean:
 	@$(ECHO) Cleaning project
-	@$(RM) -f $(TEST) $(LIBRARY) $(TEST_OBJECTS) $(LIB_OBJECTS) $(LIB_UI_OBJECTS) $(LIB_INCLUDES)
+	@$(RM) -f $(LIBRARY) $(LIB_OBJECTS) $(LIB_UI_OBJECTS) $(LIB_INCLUDES)

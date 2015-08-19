@@ -1,6 +1,7 @@
 #include <limits>
 #include <algorithm>
 #include <vector>
+#include <cassert>
 
 #include "Entity.h"
 #include "EntityShape.h"
