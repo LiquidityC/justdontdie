@@ -51,10 +51,11 @@ void Soldier::preMove(const flat2d::GameData *data)
 
 	// Gravity
 	float yvel = entityProperties.getYvel();
-	if (yvel < 800 && !floating) {
+	if (yvel < 800) {
 		entityProperties.setYvel(yvel + std::min(60, 800 - static_cast<int>(yvel)));
-	} else if (floating && yvel > 5) {
-		entityProperties.setYvel(5);
+		if (floating && yvel > 100) {
+			entityProperties.setYvel(100);
+		}
 	}
 
 	data->getRenderData()->getCamera()->centerOn(entityProperties.getXpos() + (entityProperties.getWidth()/2),
@@ -167,6 +168,7 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 		grounded = true;
 		doubleJumped = false;
 	}
+
 	return false;
 }
 

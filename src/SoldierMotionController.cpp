@@ -140,9 +140,7 @@ void SoldierMotionController::postHandle(const flat2d::GameData* data)
 		moveRight();
 	}
 
-	if (movementMap[FLOAT] && soldier->ghostMode && !soldier->grounded
-			&& soldier->getEntityProperties().getYvel() > 5)
-	{
+	if (movementMap[FLOAT] && soldier->ghostMode && !soldier->grounded) {
 		soldier->floating = true;
 	} else {
 		soldier->floating = false;
