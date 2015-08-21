@@ -1,3 +1,4 @@
+#include <random>
 #include "FireParticle.h"
 #include "EntityType.h"
 
@@ -15,10 +16,11 @@ void FireParticle::preMove(const flat2d::GameData *data)
 
 void FireParticle::setRenderDrawColor(SDL_Renderer *renderer) const
 {
-	static unsigned int seed = 378193;
-	static int random = rand_r(&seed) % 2;
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> dis(0, 1);
 
-	switch (random) {
+	switch (dis(gen)) {
 		case 0:
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0xa2, 0x00, 0xFF);
 			break;

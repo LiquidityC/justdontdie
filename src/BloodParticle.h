@@ -2,6 +2,7 @@
 #define BLOODPARTICLE_H_
 
 #include <flat/flat.h>
+#include <random>
 #include "Particle.h"
 
 class BloodParticle : public Particle
@@ -12,8 +13,10 @@ class BloodParticle : public Particle
 	public:
 		BloodParticle(int x, int y, int size, int xvel, int yvel)
 			: Particle(x, y, size, size, xvel, yvel) {
-				unsigned int seed = 598430;
-				if ( (rand_r(&seed) % 2) == 0 ) {
+				std::random_device rd;
+				std::mt19937 gen(rd());
+				std::uniform_int_distribution<> dis(0, 1);
+				if ( dis(gen) == 0 ) {
 					setBlendMode(SDL_BLENDMODE_NONE);
 				}
 				entityProperties.setCollisionProperty(flat2d::CollisionProperty::STICKY);
