@@ -27,6 +27,7 @@ class Soldier : public flat2d::Entity
 
 		flat2d::Timer deathTimer;
 		flat2d::Timer spawnGraceTimer;
+		flat2d::Timer fallTimer;
 
 		int checkPointX, checkPointY;
 		bool ghostMode = false;
@@ -52,7 +53,7 @@ class Soldier : public flat2d::Entity
 		bool handleGeneralTileCollision(MapTileObject*, const flat2d::GameData*);
 		bool handleRocketCollision(Rocket*, const flat2d::GameData*);
 
-		void kill();
+		void kill(const flat2d::GameData*);
 		void restoreAtCheckpoint();
 
 	public:

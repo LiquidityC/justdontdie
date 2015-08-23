@@ -4,5 +4,6 @@ match ErrorMsg '\%>110v.\+'
 "GF command sourcefiles
 let &path="src,flat/src,"
 
-nnoremap <F1> :Make -j8<cr>
-nnoremap <F2> :Make -j8 checkall<cr>
+nnoremap <F1> :Make -l<cr>
+nnoremap <F2> :Make -l check<cr>
+nnoremap <F3> :Make clean<cr>

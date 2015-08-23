@@ -49,8 +49,21 @@ void Soldier::preMove(const flat2d::GameData *data)
 		restoreAtCheckpoint();
 	}
 
-	// Gravity
 	float yvel = entityProperties.getYvel();
+
+	// Falling timer
+	if (yvel > 60 && !fallTimer.isStarted()) {
+		fallTimer.start();
+	} else if (yvel < 60 && fallTimer.isStarted()) {
+		int ticks = fallTimer.getTicks();
+		fallTimer.stop();
+		if (ticks > 750) {
+			kill(data);
+			return;
+		}
+	}
+
+	// Gravity
 	if (yvel < 800) {
 		entityProperties.setYvel(yvel + std::min(60, 800 - static_cast<int>(yvel)));
 		if (floating && yvel > 100) {
@@ -144,16 +157,7 @@ bool Soldier::handleGeneralCollision(flat2d::Entity *o, const flat2d::GameData* 
 bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameData* data)
 {
 	if (o->hasProperty("deadly")) {
-		if (ghostMode) {
-			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createGhostSprayAt(
-					entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
-					entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
-		} else {
-			static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createBloodSprayAt(
-					entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
-					entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
-		}
-		kill();
+		kill(data);
 		return true;
 	}
 
@@ -180,24 +184,32 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 
 	Rocket::Mode rocketMode = o->getMode();
 	if (ghostMode && (rocketMode == Rocket::Mode::GHOST || rocketMode == Rocket::Mode::MULTI)) {
-		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createGhostSprayAt(
-				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
-				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
-		kill();
+		kill(data);
 	} else if (!ghostMode && (rocketMode == Rocket::Mode::NORMAL || rocketMode == Rocket::Mode::MULTI)) {
-		static_cast<CustomGameData*>(data->getCustomGameData())->getParticleEngine()->createBloodSprayAt(
-				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
-				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
-		kill();
+		kill(data);
 	}
 
 	return true;
 }
 
-void Soldier::kill()
+void Soldier::kill(const flat2d::GameData *gameData)
 {
+	ParticleEngine *particleEngine = static_cast<CustomGameData*>(
+			gameData->getCustomGameData())->getParticleEngine();
+
+	if (ghostMode) {
+		particleEngine->createGhostSprayAt(
+				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
+				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
+	} else {
+		particleEngine->createBloodSprayAt(
+				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
+				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
+	}
+
 	killed = true;
 	entityProperties.setCollidable(false);
+	fallTimer.stop();
 	deathTimer.start();
 	motionController->freeze();
 
