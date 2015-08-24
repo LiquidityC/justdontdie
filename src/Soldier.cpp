@@ -34,8 +34,6 @@ void Soldier::handle(const SDL_Event& e)
 
 void Soldier::postHandle(const flat2d::GameData *gameData)
 {
-	motionController->postHandle(gameData);
-
 	if (spawnGraceTimer.isStarted() && spawnGraceTimer.getTicks() > 1000) {
 		spawnGraceTimer.stop();
 	}
@@ -48,6 +46,8 @@ void Soldier::preMove(const flat2d::GameData *data)
 	} else if (killed) {
 		restoreAtCheckpoint();
 	}
+
+	motionController->preMove(data);
 
 	float yvel = entityProperties.getYvel();
 

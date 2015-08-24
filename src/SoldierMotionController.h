@@ -38,7 +38,7 @@ class SoldierMotionController
 		explicit SoldierMotionController(Soldier* soldier);
 
 		void handle(const SDL_Event&);
-		void postHandle(const flat2d::GameData*);
+		void preMove(const flat2d::GameData*);
 		void freeze();
 };
 

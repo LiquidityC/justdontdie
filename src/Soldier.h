@@ -45,8 +45,6 @@ class Soldier : public flat2d::Entity
 			WALK_LEFT_2
 		};
 
-		SDL_Texture* soldierTexture = nullptr;
-
 		void calculateCurrentClip();
 
 		bool handleGeneralCollision(flat2d::Entity*, const flat2d::GameData*);
@@ -67,10 +65,10 @@ class Soldier : public flat2d::Entity
 
 		~Soldier() {
 			if (texture != nullptr) {
-				SDL_DestroyTexture(soldierTexture);
-				soldierTexture = nullptr;
-				delete motionController;
+				SDL_DestroyTexture(texture);
+				texture = nullptr;
 			}
+			delete motionController;
 		}
 
 		int getType() const {

@@ -4,45 +4,65 @@
 
 #include "MediaUtil.h"
 
-SDL_Texture* flat2d::MediaUtil::loadTexture(std::string path, SDL_Renderer* renderer)
+namespace flat2d
 {
-	SDL_Surface* imgSurface = IMG_Load(path.c_str());
-	if (imgSurface == nullptr) {
-		std::cerr << "Failed to load image: " << path << std::endl;
-		return nullptr;
+	SDL_Texture* MediaUtil::loadTexture(std::string path, SDL_Renderer* renderer)
+	{
+		SDL_Surface* imgSurface = IMG_Load(path.c_str());
+		if (imgSurface == nullptr) {
+			std::cerr << "Failed to load image: " << path << std::endl;
+			return nullptr;
+		}
+
+		SDL_Texture* texture = nullptr;
+		texture = SDL_CreateTextureFromSurface(renderer, imgSurface);
+		if (texture == nullptr) {
+			std::cerr << "Unable to create texture from: " << path << std::endl;
+		}
+		SDL_FreeSurface(imgSurface);
+
+		return texture;
 	}
 
-	SDL_Texture* texture = nullptr;
-	texture = SDL_CreateTextureFromSurface(renderer, imgSurface);
-	if (texture == nullptr) {
-		std::cerr << "Unable to create texture from: " << path << std::endl;
-	}
-	SDL_FreeSurface(imgSurface);
-
-	return texture;
-}
-
-SDL_Texture* flat2d::MediaUtil::loadTextTexture(std::string text, std::string ttfPath, SDL_Renderer* renderer)
-{
-	TTF_Font *font = TTF_OpenFont(ttfPath.c_str(), 12);
-	if (font == nullptr) {
-		std::cerr << "Failed to load font: " << ttfPath << " : " << TTF_GetError() << std::endl;
-		return nullptr;
+	TTF_Font* MediaUtil::loadFont(std::string ttfPath)
+	{
+		TTF_Font *font = TTF_OpenFont(ttfPath.c_str(), 12);
+		if (font == nullptr) {
+			std::cerr << "Failed to load font: " << ttfPath << " : " << TTF_GetError() << std::endl;
+			return nullptr;
+		}
+		return font;
 	}
 
-	SDL_Color color = { 255, 0, 0 };
-	SDL_Surface* imgSurface = TTF_RenderText_Solid(font, text.c_str(), color);
-	if (imgSurface == nullptr) {
-		std::cerr << "Failed to load text image: " << ttfPath << std::endl;
-		return nullptr;
+	SDL_Texture*
+		MediaUtil::createTextTexture(std::string text, TTF_Font *font, SDL_Color color, SDL_Renderer *renderer)
+	{
+		SDL_Surface* imgSurface = TTF_RenderText_Solid(font, text.c_str(), color);
+		if (imgSurface == nullptr) {
+			std::cerr << "Failed to load text image: " << TTF_GetError() << std::endl;
+			return nullptr;
+		}
+
+		SDL_Texture* texture = nullptr;
+		texture = SDL_CreateTextureFromSurface(renderer, imgSurface);
+		if (texture == nullptr) {
+			std::cerr << "Unable to create text texture: " << SDL_GetError() << std::endl;
+		}
+		std::cout << imgSurface->w << "x" << imgSurface->h << std::endl;
+		SDL_FreeSurface(imgSurface);
+
+		return texture;
 	}
 
-	SDL_Texture* texture = nullptr;
-	texture = SDL_CreateTextureFromSurface(renderer, imgSurface);
-	if (texture == nullptr) {
-		std::cerr << "Unable to create text texture for: " << ttfPath << std::endl;
-	}
-	SDL_FreeSurface(imgSurface);
+	SDL_Texture*
+		MediaUtil::loadTextTexture(std::string text, std::string ttfPath, SDL_Renderer* renderer)
+	{
+		TTF_Font *font = loadFont(ttfPath);
+		if (font == nullptr) {
+			return nullptr;
+		}
 
-	return texture;
-}
+		SDL_Color color = { 255, 0, 0 };
+		return createTextTexture(text, font, color, renderer);
+	}
+} // namespace flat2d

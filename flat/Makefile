@@ -45,7 +45,7 @@ default: $(LIBRARY) $(LIB_INCLUDES) $(LIB_UNIFIED_INCLUDE)
 
 all: $(LIBRARY) $(TEST) $(LIB_UNIFIED_INCLUDE)
 
-check: $(TEST)
+check: $(TEST) lint
 	./$(TEST)
 
 $(LIB_INCLUDE_DIR)/%.h: src/%.h

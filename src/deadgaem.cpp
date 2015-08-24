@@ -12,6 +12,7 @@
 #include "LayerService.h"
 #include "ResourceLoader.h"
 #include "CustomGameData.h"
+#include "FrameCounter.h"
 
 int main( int argc, char* args[] )
 {
@@ -43,6 +44,12 @@ int main( int argc, char* args[] )
 	ResourceLoader *rLoader = customGameData->getResourceLoader();
 	rLoader->loadMusic(gameData);
 	rLoader->loadSoundEffects(gameData);
+
+#ifdef DEBUG
+	//FrameCounter *counter = new FrameCounter();
+	//entityContainer->registerObject(counter, Layers::FRONT);
+#endif // DEBUG
+
 	// }}
 
 	flat2d::GameEngine *engine = flat->getGameEngine();

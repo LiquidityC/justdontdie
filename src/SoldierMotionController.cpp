@@ -130,7 +130,7 @@ void SoldierMotionController::controllerButtonUp(const SDL_ControllerButtonEvent
 	}
 }
 
-void SoldierMotionController::postHandle(const flat2d::GameData* data)
+void SoldierMotionController::preMove(const flat2d::GameData* data)
 {
 	stop();
 

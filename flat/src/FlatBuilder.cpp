@@ -59,12 +59,10 @@ namespace flat2d
 			return false;
 		}
 
-		/*
-		   if (TTF_Init() == -1) {
-		   std::cerr << "Unable to initiate SDL2_ttf: " << TTF_GetError() << std::endl;
-		   return false;
-		   }
-		   */
+		if (TTF_Init() == -1) {
+			std::cerr << "Unable to initiate SDL2_ttf: " << TTF_GetError() << std::endl;
+			return false;
+		}
 
 		if (Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0) {
 			std::cerr << "Could not initialize SDL_Mixer: " << Mix_GetError() << std::endl;
