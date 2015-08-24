@@ -14,6 +14,7 @@ namespace flat2d
 	class Mixer;
 	class DeltatimeMonitor;
 	class GameControllerContainer;
+	class GameEngine;
 
 	class FlatBuilder
 	{
@@ -27,6 +28,7 @@ namespace flat2d
 			Mixer *mixer = nullptr;
 			DeltatimeMonitor *deltatimeMonitor = nullptr;
 			GameControllerContainer *controllerContainer = nullptr;
+			GameEngine *gameEngine = nullptr;
 
 		public:
 			~FlatBuilder();
@@ -35,6 +37,7 @@ namespace flat2d
 			bool initContainers();
 
 			GameData* getGameData() const;
+			GameEngine* getGameEngine() const;
 	};
 } // namespace flat2d
 

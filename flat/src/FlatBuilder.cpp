@@ -13,12 +13,14 @@
 #include "Mixer.h"
 #include "DeltatimeMonitor.h"
 #include "GameControllerContainer.h"
+#include "GameEngine.h"
 
 
 namespace flat2d
 {
 	FlatBuilder::~FlatBuilder()
 	{
+		delete gameEngine;
 		delete renderData;
 		delete gameData;
 		delete collisionDetector;
@@ -82,6 +84,7 @@ namespace flat2d
 		mixer = new Mixer();
 		controllerContainer = new GameControllerContainer();
 		gameData = new GameData(entityContainer, collisionDetector, mixer, renderData, deltatimeMonitor);
+		gameEngine = new GameEngine(gameData);
 
 		return true;
 	}
@@ -89,5 +92,10 @@ namespace flat2d
 	GameData* FlatBuilder::getGameData() const
 	{
 		return gameData;
+	}
+
+	GameEngine* FlatBuilder::getGameEngine() const
+	{
+		return gameEngine;
 	}
 } // namespace flat2d

@@ -579,9 +579,9 @@
    <tile gid="8"/>
    <tile gid="8"/>
    <tile gid="8"/>
-   <tile gid="61"/>
-   <tile gid="62"/>
-   <tile gid="63"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
    <tile gid="8"/>
    <tile gid="8"/>
    <tile gid="8"/>
@@ -679,9 +679,9 @@
    <tile gid="8"/>
    <tile gid="8"/>
    <tile gid="8"/>
-   <tile gid="82"/>
-   <tile gid="102"/>
-   <tile gid="83"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
+   <tile gid="1"/>
    <tile gid="8"/>
    <tile gid="8"/>
    <tile gid="8"/>
@@ -779,9 +779,9 @@
    <tile gid="8"/>
    <tile gid="8"/>
    <tile gid="8"/>
-   <tile gid="82"/>
-   <tile gid="102"/>
-   <tile gid="83"/>
+   <tile gid="61"/>
+   <tile gid="62"/>
+   <tile gid="63"/>
    <tile gid="8"/>
    <tile gid="8"/>
    <tile gid="8"/>
@@ -1779,9 +1779,9 @@
    <tile gid="8"/>
    <tile gid="8"/>
    <tile gid="8"/>
-   <tile gid="61"/>
-   <tile gid="62"/>
-   <tile gid="63"/>
+   <tile gid="49"/>
+   <tile gid="49"/>
+   <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
    <tile gid="49"/>
@@ -1878,10 +1878,10 @@
    <tile gid="8"/>
    <tile gid="8"/>
    <tile gid="8"/>
-   <tile gid="8"/>
-   <tile gid="82"/>
-   <tile gid="102"/>
-   <tile gid="83"/>
+   <tile gid="21"/>
+   <tile gid="22"/>
+   <tile gid="22"/>
+   <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
    <tile gid="22"/>
@@ -5152,13 +5152,13 @@
     <property name="collidable" value="true"/>
    </properties>
   </object>
-  <object id="4" name="Checkpoint 4" x="1536" y="448" width="96" height="64">
+  <object id="4" name="Checkpoint 4" x="1536" y="448" width="96" height="96">
    <properties>
     <property name="checkpoint" value="true"/>
     <property name="collidable" value="true"/>
    </properties>
   </object>
-  <object id="5" name="Checkpoint 5" x="1536" y="64" width="96" height="64">
+  <object id="5" name="Checkpoint 5" x="1536" y="64" width="96" height="128">
    <properties>
     <property name="checkpoint" value="true"/>
     <property name="collidable" value="true"/>
