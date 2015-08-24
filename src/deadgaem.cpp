@@ -46,8 +46,8 @@ int main( int argc, char* args[] )
 	rLoader->loadSoundEffects(gameData);
 
 #ifdef DEBUG
-	//FrameCounter *counter = new FrameCounter();
-	//entityContainer->registerObject(counter, Layers::FRONT);
+	FrameCounter *counter = new FrameCounter(10, 10);
+	entityContainer->registerObject(counter, Layers::OVERLAY);
 #endif // DEBUG
 
 	// }}

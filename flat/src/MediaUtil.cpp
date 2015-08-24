@@ -24,9 +24,9 @@ namespace flat2d
 		return texture;
 	}
 
-	TTF_Font* MediaUtil::loadFont(std::string ttfPath)
+	TTF_Font* MediaUtil::loadFont(std::string ttfPath, size_t size)
 	{
-		TTF_Font *font = TTF_OpenFont(ttfPath.c_str(), 12);
+		TTF_Font *font = TTF_OpenFont(ttfPath.c_str(), size);
 		if (font == nullptr) {
 			std::cerr << "Failed to load font: " << ttfPath << " : " << TTF_GetError() << std::endl;
 			return nullptr;
@@ -48,7 +48,7 @@ namespace flat2d
 		if (texture == nullptr) {
 			std::cerr << "Unable to create text texture: " << SDL_GetError() << std::endl;
 		}
-		std::cout << imgSurface->w << "x" << imgSurface->h << std::endl;
+		std::cout << "Font surface size: " << imgSurface->w << "x" << imgSurface->h << std::endl;
 		SDL_FreeSurface(imgSurface);
 
 		return texture;

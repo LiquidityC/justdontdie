@@ -33,7 +33,7 @@ namespace flat2d
 					id = UID::generate();
 
 					entityProperties.setColliderShape({ 0, 0, w, h });
-					clip = { x, y, w, h };
+					clip = { 0, 0, w, h };
 				}
 
 			virtual ~Entity() { }

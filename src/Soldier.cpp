@@ -39,6 +39,36 @@ void Soldier::postHandle(const flat2d::GameData *gameData)
 	}
 }
 
+bool Soldier::isFalling() const
+{
+	return entityProperties.getYvel() > 60;
+}
+
+bool Soldier::killedFromFalling(const flat2d::GameData *data)
+{
+	bool falling = isFalling();
+
+	// Turn the timer off if we are floating
+	if (floating && fallTimer.isStarted()) {
+		fallTimer.stop();
+		return false;
+	}
+
+	// Falling timer
+	if (falling && !fallTimer.isStarted() && !floating) {
+		fallTimer.start();
+	} else if (!falling && fallTimer.isStarted()) {
+		int ticks = fallTimer.getTicks();
+		fallTimer.stop();
+		if (ticks > 750) {
+			kill(data);
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void Soldier::preMove(const flat2d::GameData *data)
 {
 	if (killed && deathTimer.getTicks() < 3000) {
@@ -49,26 +79,20 @@ void Soldier::preMove(const flat2d::GameData *data)
 
 	motionController->preMove(data);
 
-	float yvel = entityProperties.getYvel();
-
-	// Falling timer
-	if (yvel > 60 && !fallTimer.isStarted()) {
-		fallTimer.start();
-	} else if (yvel < 60 && fallTimer.isStarted()) {
-		int ticks = fallTimer.getTicks();
-		fallTimer.stop();
-		if (ticks > 750) {
-			kill(data);
-			return;
-		}
+	if (grounded) {
+		grounded = !isFalling();
+	}
+	if (killedFromFalling(data)) {
+		return;
 	}
 
 	// Gravity
+	float yvel = entityProperties.getYvel();
 	if (yvel < 800) {
 		entityProperties.setYvel(yvel + std::min(60, 800 - static_cast<int>(yvel)));
-		if (floating && yvel > 100) {
-			entityProperties.setYvel(100);
-		}
+	}
+	if (floating && yvel > 100) {
+		entityProperties.setYvel(100);
 	}
 
 	data->getRenderData()->getCamera()->centerOn(entityProperties.getXpos() + (entityProperties.getWidth()/2),

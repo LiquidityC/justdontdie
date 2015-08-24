@@ -45,6 +45,9 @@ class Soldier : public flat2d::Entity
 			WALK_LEFT_2
 		};
 
+		bool isFalling() const;
+		bool killedFromFalling(const flat2d::GameData*);
+
 		void calculateCurrentClip();
 
 		bool handleGeneralCollision(flat2d::Entity*, const flat2d::GameData*);

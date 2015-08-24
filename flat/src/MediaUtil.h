@@ -13,7 +13,7 @@ namespace flat2d
 		public:
 			static SDL_Texture* loadTexture(std::string, SDL_Renderer*);
 
-			static TTF_Font* loadFont(std::string);
+			static TTF_Font* loadFont(std::string, size_t size = 12);
 			static SDL_Texture* createTextTexture(std::string, TTF_Font*, SDL_Color, SDL_Renderer*);
 			static SDL_Texture* loadTextTexture(std::string, std::string, SDL_Renderer*);
 	};

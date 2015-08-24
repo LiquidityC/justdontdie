@@ -140,7 +140,7 @@ void SoldierMotionController::preMove(const flat2d::GameData* data)
 		moveRight();
 	}
 
-	if (movementMap[FLOAT] && soldier->ghostMode && !soldier->grounded) {
+	if (movementMap[FLOAT] && soldier->ghostMode) {
 		soldier->floating = true;
 	} else {
 		soldier->floating = false;

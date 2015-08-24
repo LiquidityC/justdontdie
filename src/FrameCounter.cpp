@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iomanip>
 #include "FrameCounter.h"
 
 void FrameCounter::preRender(const flat2d::GameData *gameData)
@@ -14,7 +15,7 @@ void FrameCounter::preRender(const flat2d::GameData *gameData)
 		avgFps = 0;
 	}
 
-	if (static_cast<int>((updateTimer.getTicks() / 1000.f)) > 1) {
+	if (static_cast<int>((updateTimer.getTicks() / 1000.f)) > 1 || avgFps == 0) {
 		if (texture != nullptr) {
 			SDL_DestroyTexture(texture);
 			texture = nullptr;

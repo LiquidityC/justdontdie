@@ -36,7 +36,7 @@ namespace flat2d
 			box.y = camera->getScreenYposFor(box.y);
 		}
 
-		SDL_RenderCopy(data->getRenderer(), texture, &clip, static_cast<SDL_Rect*>(&box));
+		SDL_RenderCopy(data->getRenderer(), texture, &clip, &box);
 
 #ifdef DEBUG
 		if (entityProperties.isCollidable()) {

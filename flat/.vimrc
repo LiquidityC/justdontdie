@@ -5,5 +5,5 @@ match ErrorMsg '\%>110v.\+'
 let &path="src,flat/src,"
 
 nnoremap <F1> :Make -l<cr>
-nnoremap <F2> :Make -l check<cr>
+nnoremap <F2> :Make -l check lint<cr>
 nnoremap <F3> :Make clean<cr>
