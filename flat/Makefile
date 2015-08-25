@@ -37,7 +37,7 @@ TEST				= test
 TEST_SOURCES 		= $(wildcard src/*.cpp) $(wildcard testsrc/*.cpp)
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
--include ../Makefile.config
+-include Makefile.config
 
 .PHONY: lint $(OBJDIR) $(LIBDIR) $(LIB_INCLUDE_DIR) $(LIB_UNIFIED_INCLUDE)
 

@@ -48,7 +48,6 @@ namespace flat2d
 		if (texture == nullptr) {
 			std::cerr << "Unable to create text texture: " << SDL_GetError() << std::endl;
 		}
-		std::cout << "Font surface size: " << imgSurface->w << "x" << imgSurface->h << std::endl;
 		SDL_FreeSurface(imgSurface);
 
 		return texture;

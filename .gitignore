@@ -7,6 +7,7 @@
 /dist/*
 
 /Makefile.config
+/flat/Makefile.config
 /dist/deadgaem
 /deadgaem
 /deadgaem.exe

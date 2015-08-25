@@ -47,6 +47,7 @@ int main( int argc, char* args[] )
 
 #ifdef DEBUG
 	FrameCounter *counter = new FrameCounter(10, 10);
+	counter->init(gameData);
 	entityContainer->registerObject(counter, Layers::OVERLAY);
 #endif // DEBUG
 

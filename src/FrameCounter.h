@@ -2,33 +2,55 @@
 #define FRAMECOUNTER_H_
 
 #include <flat/flat.h>
+#include <string>
 
 class FrameCounter : public flat2d::Entity
 {
 	private:
 		flat2d::Timer fpsTimer;
 		flat2d::Timer updateTimer;
-		TTF_Font *font = nullptr;
 		SDL_Color color = { 0, 0, 0 };
+
+		flat2d::Texture *avgFpsText = nullptr;
+		flat2d::Texture *avgFpsCount = nullptr;
+
+		flat2d::Texture *fpsText = nullptr;
+		flat2d::Texture *fpsCount = nullptr;
+
+		flat2d::Texture *dtText = nullptr;
+		flat2d::Texture *dtCount = nullptr;
 
 		int countedFrames = 0;
 		int currentFps = 0;
 
-	public:
-		FrameCounter(int x, int y) : Entity( x, y, 300, 11 ) {
-			setFixedPosition(true);
+		flat2d::Texture* createTexture(int x, int y, std::string text, SDL_Renderer*);
 
-			font = flat2d::MediaUtil::loadFont("resources/font/font.ttf", 11);
+	public:
+		FrameCounter(int x, int y) : Entity( x, y, 300, 300 ) {
+			setFixedPosition(true);
+			entityProperties.setCollidable(false);
 		}
+
+
 
 		~FrameCounter() {
-			if (texture != nullptr) {
-				SDL_DestroyTexture(texture);
-				texture = nullptr;
-			}
+			if (fpsText)
+				delete fpsText;
+			if (fpsCount)
+				delete fpsCount;
+			if (avgFpsText)
+				delete avgFpsText;
+			if (avgFpsCount)
+				delete avgFpsCount;
+			if (dtText)
+				delete dtText;
+			if (dtCount)
+				delete dtCount;
 		}
 
+		void init(const flat2d::GameData*);
 		void preRender(const flat2d::GameData*);
+		void render(const flat2d::RenderData*) const;
 };
 
 #endif // FRAMECOUNTER_H_
