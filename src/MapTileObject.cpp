@@ -2,6 +2,7 @@
 
 #include "MapTileObject.h"
 #include "Rocket.h"
+#include "CustomGameData.h"
 #include "LayerService.h"
 
 void MapTileObject::setProperty(std::string prop, bool value)
@@ -30,9 +31,11 @@ void MapTileObject::preMove(const flat2d::GameData *gameData)
 			mode = Rocket::Mode::MULTI;
 		}
 
+		LayerService *layerService = static_cast<CustomGameData*>(gameData->getCustomGameData())->getLayerService();
+
 		Rocket *rocket = new Rocket(entityProperties.getXpos(), entityProperties.getYpos(), mode, !hasProperty("shootRight"));
 		rocket->init(gameData);
-		gameData->getEntityContainer()->registerObject(rocket, Layers::FRONT);
+		gameData->getEntityContainer()->registerObject(rocket, layerService->getLayerIndex(FRONT_LAYER));
 	}
 }
 

@@ -32,14 +32,21 @@ int main( int argc, char* args[] )
 	CustomGameData *customGameData = CustomGameData::create(gameData);
 	gameData->setCustomGameData(customGameData);
 
-	customGameData->getLayerService()->registerLayers(entityContainer);
 
 	MapParser parser;
 	parser.createMapFrom(gameData, "resources/maps/map2/", "map2.tmx");
 
+	// TODO(Linus): Will this layer system work? (esp the hardcoded layers)
+	LayerService *layerService = customGameData->getLayerService();
+	layerService->registerLayer(FRONT_LAYER);
+	layerService->registerLayer(OVERLAY_LAYER);
+	layerService->registerLayers(entityContainer);
+
 	flat2d::Entity* soldier = new Soldier(200, 200);
 	soldier->init(gameData);
-	entityContainer->registerObject(soldier, Layers::MID);
+
+	// TODO(Linus): Maybe have something better for the layer?
+	entityContainer->registerObject(soldier, 1);
 
 	ResourceLoader *rLoader = customGameData->getResourceLoader();
 	rLoader->loadMusic(gameData);
@@ -48,7 +55,7 @@ int main( int argc, char* args[] )
 #ifdef DEBUG
 	FrameCounter *counter = new FrameCounter(10, 10);
 	counter->init(gameData);
-	entityContainer->registerObject(counter, Layers::OVERLAY);
+	entityContainer->registerObject(counter, layerService->getLayerIndex(OVERLAY_LAYER));
 #endif // DEBUG
 
 	// }}

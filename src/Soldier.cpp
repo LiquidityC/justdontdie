@@ -18,8 +18,10 @@ void Soldier::init(const flat2d::GameData *gameData)
 	setClip(clip);
 	mixer = gameData->getMixer();
 
+	LayerService *layerService = static_cast<CustomGameData*>(gameData->getCustomGameData())->getLayerService();
+
 	ghostOverlay = new GhostOverlay();
-	gameData->getEntityContainer()->registerObject(ghostOverlay, Layers::OVERLAY);
+	gameData->getEntityContainer()->registerObject(ghostOverlay, layerService->getLayerIndex(OVERLAY_LAYER));
 	entityProperties.setCollidable(true);
 }
 

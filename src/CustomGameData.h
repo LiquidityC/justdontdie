@@ -27,11 +27,12 @@ class CustomGameData
 		}
 
 		static CustomGameData* create(flat2d::GameData *gd) {
+			LayerService *layerService = new LayerService();
 			return new CustomGameData(
 					new ResourceLoader(),
 					new ResourceContainer(),
-					new ParticleEngine(gd->getEntityContainer()),
-					new LayerService()
+					new ParticleEngine(gd->getEntityContainer(), layerService),
+					layerService
 					);
 		}
 

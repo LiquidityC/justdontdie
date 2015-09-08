@@ -1,20 +1,26 @@
 #ifndef LAYERSERVICE_H_
 #define LAYERSERVICE_H_
 
-#include <flat/flat.h>
+#define FRONT_LAYER "frontLayer"
+#define OVERLAY_LAYER "overlayLayer"
 
-enum Layers {
-	BACK,
-	MID,
-	FRONT,
-	OVERLAY,
-	LAST /* Not for use, just looping */
-};
+#include <flat/flat.h>
+#include <map>
+#include <string>
+
+typedef std::map<std::string, unsigned int> LayerMap;
 
 class LayerService
 {
+	private:
+		LayerMap layerMap;
+
 	public:
 		void registerLayers(flat2d::EntityContainer *entityContainer);
+
+		void registerLayer(std::string name);
+
+		int getLayerIndex(std::string name);
 };
 
 #endif // LAYERSERVICE_H_

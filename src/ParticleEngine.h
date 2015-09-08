@@ -4,12 +4,15 @@
 #include <SDL2/SDL.h>
 #include <flat/flat.h>
 
+class LayerService;
+
 class ParticleEngine
 {
 	flat2d::EntityContainer *entityContainer;
+	LayerService *layerService;
 
 	public:
-		explicit ParticleEngine(flat2d::EntityContainer *obc) : entityContainer(obc) { }
+		explicit ParticleEngine(flat2d::EntityContainer *obc, LayerService *ls) : entityContainer(obc), layerService(ls) { }
 
 		void createBloodSprayAt(int, int);
 
