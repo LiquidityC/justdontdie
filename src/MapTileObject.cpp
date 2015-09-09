@@ -16,7 +16,7 @@ bool MapTileObject::hasProperty(std::string prop) const
 	if (pair == properties.end()) {
 		return false;
 	}
-	return pair->second;
+	return true;
 }
 
 void MapTileObject::preMove(const flat2d::GameData *gameData)
@@ -37,10 +37,29 @@ void MapTileObject::preMove(const flat2d::GameData *gameData)
 		rocket->init(gameData);
 		gameData->getEntityContainer()->registerObject(rocket, layerService->getLayerIndex(FRONT_LAYER));
 	}
+
+	if (hidden && hiddenTimer.isStarted() && hiddenTimer.getTicks() > 5000) {
+		hiddenTimer.stop();
+		hidden = false;
+	}
+}
+
+bool MapTileObject::isHidden() const
+{
+	return hidden;
+}
+
+void MapTileObject::hide()
+{
+	hidden = true;
+	hiddenTimer.start();
 }
 
 void MapTileObject::render(const flat2d::RenderData *data) const
 {
+	if (hidden) {
+		return;
+	}
 	Entity::render(data);
 #ifdef DEBUG
 	if (texture == nullptr && !dead) {

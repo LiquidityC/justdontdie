@@ -182,6 +182,10 @@ bool Soldier::handleGeneralCollision(flat2d::Entity *o, const flat2d::GameData* 
 
 bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameData* data)
 {
+	if (o->isHidden()) {
+		return true;
+	}
+
 	if (o->hasProperty("deadly")) {
 		kill(data);
 		return true;
@@ -190,6 +194,12 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 	if (o->hasProperty("checkpoint")) {
 		checkPointX = o->getEntityProperties().getXpos();
 		checkPointY = o->getEntityProperties().getYpos();
+		return true;
+	}
+
+	if (o->hasProperty("ghostPowerup")) {
+		o->hide();
+		setGhostMode(true);
 		return true;
 	}
 
@@ -260,6 +270,7 @@ void Soldier::restoreAtCheckpoint()
 void Soldier::setGhostMode(bool ghostMode)
 {
 	this->ghostMode = ghostMode;
+	ghostOverlay->setVisible(ghostMode);
 }
 
 bool Soldier::isGhostMode() const

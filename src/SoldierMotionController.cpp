@@ -44,7 +44,6 @@ void SoldierMotionController::keyDown(const SDL_KeyboardEvent& e)
 			movementMap[FLOAT] = true;
 			break;
 		case SDLK_j:
-			ghostMode();
 			break;
 		case SDLK_a:
 		case SDLK_LEFT:
@@ -100,7 +99,6 @@ void SoldierMotionController::controllerButtonDown(const SDL_ControllerButtonEve
 			movementMap[FLOAT] = true;
 			break;
 		case SDL_CONTROLLER_BUTTON_B:
-			ghostMode();
 			break;
 		case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
 			movementMap[MOVE_RIGHT] = true;
@@ -172,12 +170,6 @@ void SoldierMotionController::jump()
 		soldier->grounded = false;
 		soldier->mixer->playEffect(Effects::JUMP);
 	}
-}
-
-void SoldierMotionController::ghostMode()
-{
-	soldier->ghostMode = !soldier->ghostMode;
-	soldier->ghostOverlay->setVisible(soldier->ghostMode);
 }
 
 void SoldierMotionController::freeze()

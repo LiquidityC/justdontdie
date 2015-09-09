@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="32" tileheight="32" nextobjectid="7">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="50" tilewidth="32" tileheight="32" nextobjectid="15">
  <tileset firstgid="1" name="tileset" tilewidth="32" tileheight="32" tilecount="240">
   <image source="tiles/tileset.png" width="640" height="400"/>
+  <terraintypes>
+   <terrain name="Ground" tile="-1"/>
+  </terraintypes>
+  <tile id="9">
+   <objectgroup draworder="index">
+    <object id="0" x="0.181818" y="-0.181818" width="31.8182" height="32.1818"/>
+   </objectgroup>
+  </tile>
   <tile id="20">
    <objectgroup draworder="index">
     <object id="0" x="0" y="0" width="32" height="32"/>
@@ -60,17 +68,17 @@
     <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
-  <tile id="60">
+  <tile id="60" terrain=",,,0">
    <objectgroup draworder="index">
     <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
-  <tile id="61">
+  <tile id="61" terrain=",,0,0">
    <objectgroup draworder="index">
     <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
-  <tile id="62">
+  <tile id="62" terrain=",,0,">
    <objectgroup draworder="index">
     <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
@@ -113,17 +121,18 @@
     <object id="0" x="0" y="18.0909" width="32" height="13.9091"/>
    </objectgroup>
   </tile>
-  <tile id="120">
+  <tile id="101" terrain="0,0,0,0"/>
+  <tile id="120" terrain=",0,,">
    <objectgroup draworder="index">
     <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
-  <tile id="121">
+  <tile id="121" terrain="0,0,,">
    <objectgroup draworder="index">
     <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
   </tile>
-  <tile id="122">
+  <tile id="122" terrain="0,,,">
    <objectgroup draworder="index">
     <object id="0" x="0" y="0" width="32" height="32"/>
    </objectgroup>
@@ -5551,8 +5560,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="82"/>
-   <tile gid="83"/>
+   <tile gid="121"/>
+   <tile gid="123"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -5651,8 +5660,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="82"/>
-   <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -5751,8 +5760,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="82"/>
-   <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -5851,8 +5860,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="82"/>
-   <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -5951,8 +5960,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="82"/>
-   <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -6051,8 +6060,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="82"/>
-   <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -6151,8 +6160,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="82"/>
-   <tile gid="83"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -6250,10 +6259,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="82"/>
-   <tile gid="83"/>
-   <tile gid="0"/>
+   <tile gid="21"/>
+   <tile gid="22"/>
+   <tile gid="22"/>
+   <tile gid="23"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -10954,10 +10963,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="141"/>
+   <tile gid="142"/>
+   <tile gid="143"/>
+   <tile gid="144"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -11054,10 +11063,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="161"/>
+   <tile gid="162"/>
+   <tile gid="163"/>
+   <tile gid="164"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -11154,10 +11163,10 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="181"/>
+   <tile gid="182"/>
+   <tile gid="183"/>
+   <tile gid="184"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -15141,6 +15150,20 @@
    <tile gid="0"/>
   </data>
  </layer>
+ <objectgroup name="Powerups">
+  <object id="13" name="pGhost" gid="10" x="1168" y="1150" width="32" height="32">
+   <properties>
+    <property name="collidable" value="true"/>
+    <property name="ghostPowerup" value="true"/>
+   </properties>
+  </object>
+  <object id="14" name="pGhost" gid="10" x="527" y="224.333" width="32" height="32">
+   <properties>
+    <property name="collidable" value="true"/>
+    <property name="ghostPowerup" value="true"/>
+   </properties>
+  </object>
+ </objectgroup>
  <objectgroup color="#ffffff" name="checkpoints">
   <object id="1" name="Checkpoint 1" x="704" y="1184" width="128" height="96">
    <properties>
