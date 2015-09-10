@@ -161,6 +161,8 @@ namespace flat2d
 			case CollisionProperty::STICKY:
 				handleHorizontalStickyCollision(props1, props2);
 				break;
+			case CollisionProperty::ETHERAL:
+				break;
 			case CollisionProperty::SOLID:
 			default:
 				handleHorizontalSolidCollision(props1, props2);
@@ -177,6 +179,8 @@ namespace flat2d
 				break;
 			case CollisionProperty::STICKY:
 				handleVerticalStickyCollision(props1, props2);
+				break;
+			case CollisionProperty::ETHERAL:
 				break;
 			case CollisionProperty::SOLID:
 			default:

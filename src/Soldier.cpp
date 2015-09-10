@@ -69,6 +69,19 @@ bool Soldier::killedFromFalling(const flat2d::GameData *data)
 
 void Soldier::preMove(const flat2d::GameData *data)
 {
+	// Check if we are outside screen, below, left of, right of
+	if (!killed) {
+		flat2d::Camera *camera = data->getRenderData()->getCamera();
+		SDL_Rect box = entityProperties.getBoundingBox();
+		int screenXpos = camera->getScreenXposFor(box.x);
+		int screenYpos = camera->getScreenYposFor(box.y);
+		if (screenXpos + box.w < 0 || screenXpos > GameSettings::SCREEN_WIDTH) {
+			kill(data);
+		} else if (screenYpos > GameSettings::SCREEN_HEIGHT) {
+			kill(data);
+		}
+	}
+
 	if (killed && deathTimer.getTicks() < 3000) {
 		return;
 	} else if (killed) {
@@ -160,10 +173,10 @@ bool Soldier::handleGeneralCollision(flat2d::Entity *o, const flat2d::GameData* 
 	switch (o->getType()) {
 		case EntityType::TILE:
 			return handleGeneralTileCollision(static_cast<MapTileObject*>(o), data);
-			break;
 		case EntityType::ROCKET:
 			return handleRocketCollision(static_cast<Rocket*>(o), data);
-			break;
+		case EntityType::PARTICLE:
+			return true;
 		default:
 			break;
 	}
@@ -195,6 +208,13 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 		o->hide();
 		powerupContainer.setMode(Powerup::GHOST);
 		return true;
+	}
+
+	if (o->hasProperty("destructible")) {
+		if (entityProperties.getXvel() > 1500 || entityProperties.getXvel() < -1500) {
+			o->destroy(data);
+			return true;
+		}
 	}
 
 	flat2d::EntityShape soldierBox = entityProperties.getColliderShape();

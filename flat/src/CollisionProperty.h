@@ -6,7 +6,8 @@ namespace flat2d
 	enum CollisionProperty {
 		SOLID,
 		BOUNCY,
-		STICKY
+		STICKY,
+		ETHERAL
 	};
 }
 

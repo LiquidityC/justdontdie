@@ -34,6 +34,8 @@ class MapTileObject : public flat2d::Entity
 
 		bool isHidden() const;
 		void hide();
+
+		void destroy(const flat2d::GameData*);
 };
 
 #endif // MAPTILEOBJECT_H_

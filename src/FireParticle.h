@@ -8,7 +8,9 @@ class FireParticle : public Particle
 {
 	public:
 		FireParticle(int x, int y, int xv, int yv) :
-			Particle(x, y, 2, 2, xv, yv) { }
+			Particle(x, y, 2, 2, xv, yv) {
+				entityProperties.setCollisionProperty(flat2d::CollisionProperty::ETHERAL);
+			}
 
 		void preMove(const flat2d::GameData*);
 		void postRender(const flat2d::GameData*);

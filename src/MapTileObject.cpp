@@ -55,11 +55,23 @@ void MapTileObject::hide()
 	hiddenTimer.start();
 }
 
+void MapTileObject::destroy(const flat2d::GameData *data)
+{
+	setDead(true);
+
+	ParticleEngine *particleEngine = static_cast<CustomGameData*>(
+			data->getCustomGameData())->getParticleEngine();
+	particleEngine->createExplosionAt(
+				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
+				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
+}
+
 void MapTileObject::render(const flat2d::RenderData *data) const
 {
 	if (hidden) {
 		return;
 	}
+
 	Entity::render(data);
 #ifdef DEBUG
 	if (texture == nullptr && !dead) {
