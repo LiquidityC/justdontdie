@@ -22,6 +22,10 @@ class SoldierMotionController
 		Soldier *soldier = nullptr;
 		MovementMap movementMap;
 
+		flat2d::Timer boostTimer;
+		bool boosting = false;
+		bool boostEnabled = true;
+
 		void keyDown(const SDL_KeyboardEvent&);
 		void keyUp(const SDL_KeyboardEvent&);
 		void controllerAxisMotion(const SDL_ControllerAxisEvent&);
@@ -40,6 +44,7 @@ class SoldierMotionController
 		void handle(const SDL_Event&);
 		void preMove(const flat2d::GameData*);
 		void freeze();
+		void applyGravity();
 };
 
 #endif // SOLDIERMOTIONCONTROLLER_H_

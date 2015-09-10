@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include "SoldierMotionController.h"
 #include "Soldier.h"
 #include "SoundMappings.h"
@@ -53,6 +54,20 @@ void SoldierMotionController::keyDown(const SDL_KeyboardEvent& e)
 		case SDLK_RIGHT:
 			movementMap[MOVE_RIGHT] = true;
 			break;
+#ifdef DEBUG
+		case SDLK_1: // Normal mode
+			std::cout << "NORMAL MODE" << std::endl;
+			soldier->getPowerupContainer()->setMode(Powerup::NORMAL);
+			break;
+		case SDLK_2: // Ghost mode
+			std::cout << "GHOST MODE" << std::endl;
+			soldier->getPowerupContainer()->setMode(Powerup::GHOST);
+			break;
+		case SDLK_3: // Bullet mode
+			std::cout << "BULLET MODE" << std::endl;
+			soldier->getPowerupContainer()->setMode(Powerup::BULLET);
+			break;
+#endif //DEBUG
 		default:
 			break;
 	}
@@ -130,6 +145,13 @@ void SoldierMotionController::controllerButtonUp(const SDL_ControllerButtonEvent
 
 void SoldierMotionController::preMove(const flat2d::GameData* data)
 {
+	if (boostTimer.isStarted() && boostTimer.getTicks() > 200) {
+		boosting = false;
+	}
+	if (soldier->grounded) {
+		boostEnabled = true;
+	}
+
 	stop();
 
 	if (movementMap[MOVE_LEFT]) {
@@ -138,33 +160,79 @@ void SoldierMotionController::preMove(const flat2d::GameData* data)
 		moveRight();
 	}
 
-	if (movementMap[FLOAT] && soldier->ghostMode) {
+	if (movementMap[FLOAT] && soldier->getPowerupContainer()->isGhostMode()) {
 		soldier->floating = true;
 	} else {
 		soldier->floating = false;
+	}
+
+	applyGravity();
+}
+
+void SoldierMotionController::applyGravity()
+{
+	if (boosting) {
+		return;
+	}
+
+	flat2d::EntityProperties &entityProperties = soldier->getEntityProperties();
+	float yvel = entityProperties.getYvel();
+	if (yvel < 800) {
+		entityProperties.setYvel(yvel + std::min(60, 800 - static_cast<int>(yvel)));
+	}
+	if (soldier->floating && yvel > 100) {
+		entityProperties.setYvel(100);
 	}
 }
 
 void SoldierMotionController::stop()
 {
+	if (boosting) {
+		return;
+	}
 	soldier->getEntityProperties().setXvel(0);
 }
 
 void SoldierMotionController::moveLeft()
 {
+	if (boosting) {
+		return;
+	}
+
 	soldier->getEntityProperties().setXvel(-300);
 	soldier->facingLeft = true;
 }
 
 void SoldierMotionController::moveRight()
 {
-	soldier->entityProperties.setXvel(300);
+	if (boosting) {
+		return;
+	}
+
+	soldier->getEntityProperties().setXvel(300);
 	soldier->facingLeft = false;
 }
 
 void SoldierMotionController::jump()
 {
-	if( soldier->grounded || (!soldier->ghostMode && !soldier->doubleJumped) ) {
+	SoldierPowerupContainer *powerupContainer = soldier->getPowerupContainer();
+	flat2d::EntityProperties &props = soldier->getEntityProperties();
+
+	bool doubleJumpAvailable = !powerupContainer->isGhostMode() && !soldier->doubleJumped
+		&& !powerupContainer->isBulletMode();
+	bool boostAvailable = powerupContainer->isBulletMode() && !soldier->grounded;
+
+	if (!boosting && boostEnabled && boostAvailable) {
+		if (soldier->facingLeft) {
+			props.setXvel(-2000);
+		} else {
+			props.setXvel(2000);
+		}
+		props.setYvel(0);
+		boostTimer.start();
+		boosting = true;
+		boostEnabled = false;
+	} else if( soldier->grounded || doubleJumpAvailable ) {
 		soldier->getEntityProperties().setYvel(-1050);
 		soldier->doubleJumped = soldier->grounded ? false : true;
 		soldier->grounded = false;

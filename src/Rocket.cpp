@@ -60,7 +60,7 @@ bool Rocket::onCollision(Entity* e, const flat2d::GameData *data)
 {
 	if (e->getType() == EntityType::SOLDIER) {
 		Soldier *soldier = static_cast<Soldier*>(e);
-		bool ghostSoldier = soldier->isGhostMode();
+		bool ghostSoldier = soldier->getPowerupContainer()->isGhostMode();
 		if ((ghostSoldier && mode == GHOST)
 				|| (!ghostSoldier && mode == NORMAL)
 				|| mode == MULTI)

@@ -5,6 +5,7 @@
 #include "EntityType.h"
 #include "GhostOverlay.h"
 #include "SoldierMotionController.h"
+#include "SoldierPowerupContainer.h"
 
 class MapTileObject;
 class Rocket;
@@ -12,12 +13,15 @@ class Rocket;
 class Soldier : public flat2d::Entity
 {
 	friend class SoldierMotionController;
+
 	typedef struct {
 		int x, y;
 	} Clip;
 
 	private:
 		SoldierMotionController *motionController = nullptr;
+		SoldierPowerupContainer powerupContainer;
+
 		bool grounded = true;
 		flat2d::Mixer *mixer = nullptr;
 
@@ -30,10 +34,7 @@ class Soldier : public flat2d::Entity
 		flat2d::Timer fallTimer;
 
 		int checkPointX, checkPointY;
-		bool ghostMode = false;
 		bool facingLeft = false;
-
-		GhostOverlay *ghostOverlay;
 
 		enum ClipIndex { RIGHT,
 			LEFT,
@@ -86,8 +87,7 @@ class Soldier : public flat2d::Entity
 		void preMove(const flat2d::GameData*);
 		void render(const flat2d::RenderData*) const;
 
-		void setGhostMode(bool ghostMode);
-		bool isGhostMode() const;
+		SoldierPowerupContainer* getPowerupContainer();
 
 		bool onCollision(Entity *collider, const flat2d::GameData*);
 };
