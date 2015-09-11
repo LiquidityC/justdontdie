@@ -64,7 +64,7 @@ class Soldier : public flat2d::Entity
 			checkPointX(x),
 			checkPointY(y) {
 				motionController = new SoldierMotionController(this);
-				entityProperties.setColliderShape({ 5, 5, 18, 18 });
+				entityProperties.setColliderShape({ 5, 1, 18, 22 });
 			}
 
 		~Soldier() {
