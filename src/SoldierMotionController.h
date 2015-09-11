@@ -9,6 +9,8 @@ class Soldier;
 
 class SoldierMotionController
 {
+	friend class Soldier;
+
 	private:
 		enum MovementMapping {
 			MOVE_LEFT,
@@ -25,6 +27,7 @@ class SoldierMotionController
 		flat2d::Timer boostTimer;
 		bool boosting = false;
 		bool boostEnabled = true;
+		bool reverseGravity = false;
 
 		void keyDown(const SDL_KeyboardEvent&);
 		void keyUp(const SDL_KeyboardEvent&);
@@ -35,6 +38,7 @@ class SoldierMotionController
 		void stop();
 		void moveLeft();
 		void moveRight();
+		void use();
 		void jump();
 		void ghostMode();
 

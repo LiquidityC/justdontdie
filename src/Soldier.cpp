@@ -39,7 +39,11 @@ void Soldier::postHandle(const flat2d::GameData *gameData)
 
 bool Soldier::isFalling() const
 {
-	return entityProperties.getYvel() > 60;
+	if (!motionController->reverseGravity) {
+		return entityProperties.getYvel() > 60;
+	} else {
+		return entityProperties.getYvel() < -60;
+	}
 }
 
 bool Soldier::killedFromFalling(const flat2d::GameData *data)
@@ -130,12 +134,16 @@ void Soldier::calculateCurrentClip()
 	int x = 0;
 	int y = 0;
 
+	if (motionController->reverseGravity) {
+		y = entityProperties.getHeight() * 3;
+	}
+
 	if (powerupContainer.isGhostMode()) {
-		y = entityProperties.getHeight();
+		y += entityProperties.getHeight();
+	} else if (powerupContainer.isBulletMode()) {
+		y += entityProperties.getHeight() * 2;
 	}
-	if (powerupContainer.isBulletMode()) {
-		y = entityProperties.getHeight() * 2;
-	}
+
 	if (facingLeft) {
 		x = 2 * entityProperties.getWidth();
 	}
@@ -206,7 +214,15 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 		return true;
 	} else if (o->hasProperty("bulletPowerup")) {
 		o->hide();
-		powerupContainer.setMode(Powerup::GHOST);
+		powerupContainer.setMode(Powerup::BULLET);
+		return true;
+	} else if (o->hasProperty("gravityUp")) {
+		o->hide();
+		motionController->reverseGravity = true;
+		return true;
+	} else if (o->hasProperty("gravityDown")) {
+		o->hide();
+		motionController->reverseGravity = false;
 		return true;
 	}
 
@@ -218,7 +234,11 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 	}
 
 	flat2d::EntityShape soldierBox = entityProperties.getColliderShape();
-	if (soldierBox.y + soldierBox.h < o->getEntityProperties().getColliderShape().y) {
+	flat2d::EntityShape objectCollider = o->getEntityProperties().getColliderShape();
+	if (!motionController->reverseGravity && soldierBox.y + soldierBox.h < objectCollider.y) {
+		grounded = true;
+		doubleJumped = false;
+	} else if (motionController->reverseGravity && soldierBox.y > objectCollider.y + objectCollider.h) {
 		grounded = true;
 		doubleJumped = false;
 	}

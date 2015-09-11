@@ -45,6 +45,7 @@ void SoldierMotionController::keyDown(const SDL_KeyboardEvent& e)
 			movementMap[FLOAT] = true;
 			break;
 		case SDLK_j:
+			use();
 			break;
 		case SDLK_a:
 		case SDLK_LEFT:
@@ -66,6 +67,10 @@ void SoldierMotionController::keyDown(const SDL_KeyboardEvent& e)
 		case SDLK_3: // Bullet mode
 			std::cout << "BULLET MODE" << std::endl;
 			soldier->getPowerupContainer()->setMode(Powerup::BULLET);
+			break;
+		case SDLK_4: // Bullet mode
+			std::cout << "REVERSE GRAVITY" << std::endl;
+			reverseGravity = !reverseGravity;
 			break;
 #endif //DEBUG
 		default:
@@ -114,6 +119,7 @@ void SoldierMotionController::controllerButtonDown(const SDL_ControllerButtonEve
 			movementMap[FLOAT] = true;
 			break;
 		case SDL_CONTROLLER_BUTTON_B:
+			use();
 			break;
 		case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:
 			movementMap[MOVE_RIGHT] = true;
@@ -175,13 +181,24 @@ void SoldierMotionController::applyGravity()
 		return;
 	}
 
-	flat2d::EntityProperties &entityProperties = soldier->getEntityProperties();
-	float yvel = entityProperties.getYvel();
-	if (yvel < 800) {
-		entityProperties.setYvel(yvel + std::min(60, 800 - static_cast<int>(yvel)));
-	}
-	if (soldier->floating && yvel > 100) {
-		entityProperties.setYvel(100);
+	if (!reverseGravity) {
+		flat2d::EntityProperties &entityProperties = soldier->getEntityProperties();
+		float yvel = entityProperties.getYvel();
+		if (yvel < 800) {
+			entityProperties.setYvel(yvel + std::min(60, 800 - static_cast<int>(yvel)));
+		}
+		if (soldier->floating && yvel > 100) {
+			entityProperties.setYvel(100);
+		}
+	} else {
+		flat2d::EntityProperties &entityProperties = soldier->getEntityProperties();
+		float yvel = entityProperties.getYvel();
+		if (yvel > -800) {
+			entityProperties.setYvel(yvel - std::min(60, 800 + static_cast<int>(yvel)));
+		}
+		if (soldier->floating && yvel < -100) {
+			entityProperties.setYvel(-100);
+		}
 	}
 }
 
@@ -213,14 +230,11 @@ void SoldierMotionController::moveRight()
 	soldier->facingLeft = false;
 }
 
-void SoldierMotionController::jump()
+void SoldierMotionController::use()
 {
-	SoldierPowerupContainer *powerupContainer = soldier->getPowerupContainer();
 	flat2d::EntityProperties &props = soldier->getEntityProperties();
-
-	bool doubleJumpAvailable = !powerupContainer->isGhostMode() && !soldier->doubleJumped
-		&& !powerupContainer->isBulletMode();
-	bool boostAvailable = powerupContainer->isBulletMode() && !soldier->grounded;
+	SoldierPowerupContainer *powerupContainer = soldier->getPowerupContainer();
+	bool boostAvailable = powerupContainer->isBulletMode();
 
 	if (!boosting && boostEnabled && boostAvailable) {
 		if (soldier->facingLeft) {
@@ -232,8 +246,16 @@ void SoldierMotionController::jump()
 		boostTimer.start();
 		boosting = true;
 		boostEnabled = false;
-	} else if( soldier->grounded || doubleJumpAvailable ) {
-		soldier->getEntityProperties().setYvel(-1050);
+	}
+}
+void SoldierMotionController::jump()
+{
+	SoldierPowerupContainer *powerupContainer = soldier->getPowerupContainer();
+
+	bool doubleJumpAvailable = !powerupContainer->isGhostMode() && !soldier->doubleJumped;
+
+	if ( soldier->grounded || doubleJumpAvailable ) {
+		soldier->getEntityProperties().setYvel(reverseGravity ? 1050 : -1050);
 		soldier->doubleJumped = soldier->grounded ? false : true;
 		soldier->grounded = false;
 		soldier->mixer->playEffect(Effects::JUMP);
