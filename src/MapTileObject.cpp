@@ -4,6 +4,7 @@
 #include "Rocket.h"
 #include "CustomGameData.h"
 #include "LayerService.h"
+#include "Random.h"
 
 void MapTileObject::setProperty(std::string prop, bool value)
 {
@@ -42,6 +43,8 @@ void MapTileObject::preMove(const flat2d::GameData *gameData)
 		hiddenTimer.stop();
 		hidden = false;
 	}
+
+	tileBreakEmitter->emit(gameData, entityProperties.getBoundingBox());
 }
 
 bool MapTileObject::isHidden() const
@@ -58,12 +61,7 @@ void MapTileObject::hide()
 void MapTileObject::destroy(const flat2d::GameData *data)
 {
 	setDead(true);
-
-	ParticleEngine *particleEngine = static_cast<CustomGameData*>(
-			data->getCustomGameData())->getParticleEngine();
-	particleEngine->createExplosionAt(
-				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
-				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
+	tileBreakEmitter->setEmissionCount(200);
 }
 
 void MapTileObject::render(const flat2d::RenderData *data) const

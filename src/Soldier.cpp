@@ -74,9 +74,9 @@ bool Soldier::killedFromFalling(const flat2d::GameData *data)
 void Soldier::preMove(const flat2d::GameData *data)
 {
 	// Check if we are outside screen, below, left of, right of
+	SDL_Rect box = entityProperties.getBoundingBox();
 	if (!killed) {
 		flat2d::Camera *camera = data->getRenderData()->getCamera();
-		SDL_Rect box = entityProperties.getBoundingBox();
 		int screenXpos = camera->getScreenXposFor(box.x);
 		int screenYpos = camera->getScreenYposFor(box.y);
 		if (screenXpos + box.w < 0 || screenXpos > GameSettings::SCREEN_WIDTH) {
@@ -93,6 +93,8 @@ void Soldier::preMove(const flat2d::GameData *data)
 	}
 
 	motionController->preMove(data);
+	boostEmitter->emit(data, box);
+	formChangeEmitter->emit(data, box);
 
 	if (grounded) {
 		grounded = !isFalling();
@@ -138,9 +140,9 @@ void Soldier::calculateCurrentClip()
 		y = entityProperties.getHeight() * 3;
 	}
 
-	if (powerupContainer.isGhostMode()) {
+	if (powerupContainer->isGhostMode()) {
 		y += entityProperties.getHeight();
-	} else if (powerupContainer.isBulletMode()) {
+	} else if (powerupContainer->isBulletMode()) {
 		y += entityProperties.getHeight() * 2;
 	}
 
@@ -210,11 +212,11 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 
 	if (o->hasProperty("ghostPowerup")) {
 		o->hide();
-		powerupContainer.setMode(Powerup::GHOST);
+		powerupContainer->setMode(Powerup::GHOST);
 		return true;
 	} else if (o->hasProperty("bulletPowerup")) {
 		o->hide();
-		powerupContainer.setMode(Powerup::BULLET);
+		powerupContainer->setMode(Powerup::BULLET);
 		return true;
 	} else if (o->hasProperty("gravityUp")) {
 		o->hide();
@@ -252,7 +254,7 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 		return true;
 	}
 
-	bool ghostMode = powerupContainer.isGhostMode();
+	bool ghostMode = powerupContainer->isGhostMode();
 	Rocket::Mode rocketMode = o->getMode();
 	bool rocketGhostKiller = rocketMode == Rocket::Mode::GHOST || rocketMode == Rocket::Mode::MULTI;
 	bool rocketNormalKiller = rocketMode == Rocket::Mode::NORMAL || rocketMode == Rocket::Mode::MULTI;
@@ -271,7 +273,7 @@ void Soldier::kill(const flat2d::GameData *gameData)
 	ParticleEngine *particleEngine = static_cast<CustomGameData*>(
 			gameData->getCustomGameData())->getParticleEngine();
 
-	if (powerupContainer.isGhostMode()) {
+	if (powerupContainer->isGhostMode()) {
 		particleEngine->createGhostSprayAt(
 				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
 				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
@@ -287,7 +289,7 @@ void Soldier::kill(const flat2d::GameData *gameData)
 	deathTimer.start();
 	motionController->freeze();
 
-	if (powerupContainer.isGhostMode()) {
+	if (powerupContainer->isGhostMode()) {
 		mixer->playEffect(Effects::SHATTER);
 	} else {
 		mixer->playEffect(Effects::SPLAT);
@@ -307,5 +309,5 @@ void Soldier::restoreAtCheckpoint()
 
 SoldierPowerupContainer* Soldier::getPowerupContainer()
 {
-	return &powerupContainer;
+	return powerupContainer;
 }

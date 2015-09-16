@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include "EntityType.h"
+#include "ParticleEmitter.h"
 
 class MapTileObject : public flat2d::Entity
 {
@@ -16,11 +17,18 @@ class MapTileObject : public flat2d::Entity
 		flat2d::Timer hiddenTimer;
 		bool hidden = false;
 
+		ParticleEmitter *tileBreakEmitter;
+
 	public:
 		MapTileObject(int x, int y, int w, int h, SDL_Texture* t)
 			: Entity(x, y, w, h), launchTimer() {
 				setTexture(t);
+				tileBreakEmitter = new ParticleEmitter(ParticleType::FIRE_PARTICLE);
 			}
+
+		~MapTileObject() {
+			delete tileBreakEmitter;
+		}
 
 		int getType() const {
 			return EntityType::TILE;

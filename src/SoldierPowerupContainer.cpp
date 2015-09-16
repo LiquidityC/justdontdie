@@ -1,7 +1,9 @@
 #include "SoldierPowerupContainer.h"
+#include "Soldier.h"
 
 void SoldierPowerupContainer::setMode(Powerup powerup)
 {
+	soldier->formChangeEmitter->setEmissionCount(100);
 	ghostMode = false;
 	bulletMode = false;
 

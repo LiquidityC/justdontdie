@@ -6,6 +6,7 @@
 #include "GhostOverlay.h"
 #include "SoldierMotionController.h"
 #include "SoldierPowerupContainer.h"
+#include "ParticleEmitter.h"
 
 class MapTileObject;
 class Rocket;
@@ -13,6 +14,7 @@ class Rocket;
 class Soldier : public flat2d::Entity
 {
 	friend class SoldierMotionController;
+	friend class SoldierPowerupContainer;
 
 	typedef struct {
 		int x, y;
@@ -20,7 +22,7 @@ class Soldier : public flat2d::Entity
 
 	private:
 		SoldierMotionController *motionController = nullptr;
-		SoldierPowerupContainer powerupContainer;
+		SoldierPowerupContainer *powerupContainer = nullptr;
 
 		bool grounded = true;
 		flat2d::Mixer *mixer = nullptr;
@@ -28,6 +30,9 @@ class Soldier : public flat2d::Entity
 		bool killed = false;
 		bool doubleJumped = true;
 		bool floating = false;
+
+		ParticleEmitter *boostEmitter;
+		ParticleEmitter *formChangeEmitter;
 
 		flat2d::Timer deathTimer;
 		flat2d::Timer spawnGraceTimer;
@@ -64,7 +69,10 @@ class Soldier : public flat2d::Entity
 			checkPointX(x),
 			checkPointY(y) {
 				motionController = new SoldierMotionController(this);
+				powerupContainer = new SoldierPowerupContainer(this);
 				entityProperties.setColliderShape({ 5, 1, 18, 22 });
+				boostEmitter = new ParticleEmitter(ParticleType::BOOST_PARTICLE);
+				formChangeEmitter = new ParticleEmitter(ParticleType::FIRE_PARTICLE);
 			}
 
 		~Soldier() {
@@ -73,6 +81,9 @@ class Soldier : public flat2d::Entity
 				texture = nullptr;
 			}
 			delete motionController;
+			delete powerupContainer;
+			delete boostEmitter;
+			delete formChangeEmitter;
 		}
 
 		int getType() const {

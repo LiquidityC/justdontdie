@@ -13,10 +13,12 @@ enum Powerup
 class SoldierPowerupContainer
 {
 	private:
+		Soldier *soldier = nullptr;
 		bool ghostMode = false;
 		bool bulletMode = false;
 
 	public:
+		explicit SoldierPowerupContainer(Soldier *s) : soldier(s) { }
 		bool isGhostMode() const;
 		bool isBulletMode() const;
 

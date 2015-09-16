@@ -37,6 +37,6 @@ void FireParticle::postRender(const flat2d::GameData *data)
 		deathTimer.start();
 	}
 	if (!isDead()) {
-		setDead(deathTimer.getTicks() > 500);
+		setDead(deathTimer.getTicks() > 1000);
 	}
 }
