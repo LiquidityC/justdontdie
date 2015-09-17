@@ -308,7 +308,6 @@ bool MapParser::parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData *g
 
 		MapTileObject* tileObj;
 		if (tileset != nullptr) {
-			std::cout << "Adding image object" << std::endl;
 			tileObj = new MapTileObject(objBox.x, objBox.y, objBox.w, objBox.h, tileset->texture);
 
 			int xoffset = (gid-1) * tileset->tileWidth;

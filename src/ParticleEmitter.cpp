@@ -15,15 +15,12 @@ void ParticleEmitter::emit(const flat2d::GameData *gameData, SDL_Rect area)
 		return;
 	}
 
-	size_t count;
-	if (emitCount > 10) {
-		count = 10;
-		emitCount -= 10;
+	size_t count =  20;
+	if (emitCount > count) {
+		emitCount -= count;
 	} else if (emitCount > 0) {
 		count = emitCount;
 		emitCount = 0;
-	} else {
-		count = 10;
 	}
 
 	flat2d::EntityContainer *entityContainer = gameData->getEntityContainer();
@@ -53,7 +50,7 @@ Particle* ParticleEmitter::createParticleAt(int x, int y)
 			particle = new FireParticle(x, y, getRandomBetween(-300, 300), getRandomBetween(-300, 300));
 			break;
 		case BOOST_PARTICLE:
-			particle = new BoostParticle(x, y);
+			particle = new BoostParticle(x, y, getRandomBetween(-300, 300), getRandomBetween(-300, 300));
 			break;
 		default:
 			break;

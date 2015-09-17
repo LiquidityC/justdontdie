@@ -1,13 +1,9 @@
-#include <random>
+#include "Random.h"
 #include "BoostParticle.h"
 
 void BoostParticle::setRenderDrawColor(SDL_Renderer *renderer) const
 {
-	std::random_device rd;
-	std::default_random_engine gen(rd());
-	std::uniform_int_distribution<> dis(0, 1);
-
-	switch (dis(gen)) {
+	switch (getRandomBetween(0, 1)) {
 		case 0:
 			SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
 			break;

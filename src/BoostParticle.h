@@ -6,7 +6,7 @@
 class BoostParticle : public Particle
 {
 	public:
-		BoostParticle(int x, int y) : Particle(x, y, 2, 2, 0, 0) {
+		BoostParticle(int x, int y, int xvel, int yvel) : Particle(x, y, 2, 2, xvel, yvel) {
 			entityProperties.setCollisionProperty(flat2d::CollisionProperty::ETHERAL);
 		}
 
