@@ -23,12 +23,12 @@ LIBS 		= -lflat $(SDL2_LDFLAGS)
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h) flat/lib/libflat.a
-EXECUTABLE 			= deadgaem
+EXECUTABLE 			= justdontdie
 PROG_SOURCES 		= $(wildcard src/*.cpp)
 PROG_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(PROG_SOURCES:.cpp=.o)))
 
 TEST				= test
-TEST_SOURCES 		= $(filter-out src/deadgaem.cpp,$(wildcard src/*.cpp)) $(wildcard testsrc/*.cpp)
+TEST_SOURCES 		= $(filter-out src/game.cpp,$(wildcard src/*.cpp)) $(wildcard testsrc/*.cpp)
 TEST_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(TEST_SOURCES:.cpp=.o)))
 
 LIBRARIES			= flat
