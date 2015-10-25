@@ -21,8 +21,7 @@ cd flat && cp Makefile.config.template Makefile.config && cd ..
 {% endhighlight %}
 
 ### Libraries
-- [boost](http://www.boost.org/)
-- [Catch](https://github.com/philsquared/Catch)
+- [Catch](https://github.com/philsquared/Catch) (no install, it's included in code)
 - [SDL2](https://www.libsdl.org/index.php)
 - [SDL2-image](http://www.libsdl.org/projects/SDL_image/)
 - [SDL2-mixer](https://www.libsdl.org/projects/SDL_mixer/)
