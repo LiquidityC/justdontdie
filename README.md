@@ -12,4 +12,4 @@ The soldier has a ghost mode that enables him to avoid some types of rockets but
 - [SDL2](https://www.libsdl.org/index.php)
 - [SDL2-image](http://www.libsdl.org/projects/SDL_image/)
 - [SDL2-mixer](https://www.libsdl.org/projects/SDL_mixer/)
-- [SDL2-ttf](http://www.libsdl.org/projects/SDL_ttf/) (added but not used)
+- [SDL2-ttf](http://www.libsdl.org/projects/SDL_ttf/)
