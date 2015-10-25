@@ -4,11 +4,14 @@ layout: post
 date:   2015-10-26 00:15
 categories: travisci code testing
 ---
-So, travisci's new update for building just uined my night. Code is fine, Travis just doesn't know it yet.
+So, travisci's new update for building just ruined my night. Code is fine,
+Travis just doesn't know it yet.
 
-I'm tired and going to bed. Travis is great but it's hell getting it configured. Especiall since the ppa's for
-SDL2 aren't whitelisted and neither is the libsdl2-mixer-dev package.
-The ppa was already issued so I added my '+1' of power among the comments. The package I created an issue for.
-Until both of these get through I guess my inbox will be spammed by travis stuff.
+I'm tired and going to bed. Travis is great but it's hell getting it
+configured. Especially since the PPA's for SDL2 aren't whitelisted and
+neither is the libsdl2-mixer-dev package.  The ppa was already issued
+so I added my '+1' of power among the comments. The package I created
+an issue for.  Until both of these get through I guess my inbox will be
+spammed by travis stuff.
 
 Goodnight...
