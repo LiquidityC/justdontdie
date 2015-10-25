@@ -6,6 +6,7 @@ namespace flat2d
 	class GameData;
 	class RenderData;
 	class EntityContainer;
+	class VirtualGameStateController;
 
 	class GameEngine
 	{
@@ -26,7 +27,7 @@ namespace flat2d
 
 			void init(int screenWidth, int screenHeight, int fps);
 
-			void run() const;
+			void run(VirtualGameStateController *gameStateController) const;
 	};
 } // namespace flat2d
 

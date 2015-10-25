@@ -55,12 +55,13 @@ namespace flat2d
 
 			void handlePossibleObjectMovement(Entity* entity);
 
+			void reinitLayerMap();
+
 		public:
 			static const int DEFAULT_LAYER = -1;
 
 			explicit EntityContainer(DeltatimeMonitor* dtm) : dtMonitor(dtm) {
-				ObjectList list;
-				layeredObjects[-1] = list;
+				reinitLayerMap();
 			}
 
 			~EntityContainer();

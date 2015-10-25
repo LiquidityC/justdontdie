@@ -6,12 +6,14 @@
 #include "ResourceContainer.h"
 #include "ParticleEngine.h"
 #include "LayerService.h"
+#include "GameStateController.h"
 
 class CustomGameData
 {
 	private:
 		ResourceLoader *resourceLoader = nullptr;
 		ResourceContainer *resourceContainer = nullptr;
+		GameStateController *gameStateController = nullptr;
 		ParticleEngine *particleEngine = nullptr;
 		LayerService *layerService = nullptr;
 
@@ -24,6 +26,9 @@ class CustomGameData
 			delete resourceContainer;
 			delete particleEngine;
 			delete layerService;
+			if (gameStateController) {
+				delete gameStateController;
+			}
 		}
 
 		static CustomGameData* create(flat2d::GameData *gd) {
@@ -36,10 +41,13 @@ class CustomGameData
 					);
 		}
 
+		void setGameStateController(GameStateController *gsc) { this->gameStateController = gsc; }
+
 		ResourceContainer* getResourceContainer() { return resourceContainer; }
 		ResourceLoader* getResourceLoader() { return resourceLoader; }
 		ParticleEngine* getParticleEngine() { return particleEngine; }
 		LayerService* getLayerService() { return layerService; }
+		GameStateController* getGameStateController() { return gameStateController; }
 };
 
 #endif // CUSTOMGAMEDATA_H_

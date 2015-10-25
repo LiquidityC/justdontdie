@@ -9,8 +9,12 @@ flat2d:
 		Big re-write with alot of errors but easy fixes. (Not sure about this one, it looks wrong but I'm not
 		sure if it's horribly wrong. You just need to remember to put & on variables that you assign the
 		return to)
-	-	Create a font texture object that holds the dimensions of the texture for easier rendering.
+	x	Create a font texture object that holds the dimensions of the texture for easier rendering.
 	-	Once better fonts are made the FrameCounter can be used to render more data. Perhaps even rename it.
 
 Game:
 	-	Make the initial level once collisions are smoother. (Collisions are smoother now)
+
+Additional thoughts:
+	-	Some more powerups perhaps? Are we happy with what we have? All suggestions are good suggestions
+	-	Think I need to play some more games to get better ideas for my game

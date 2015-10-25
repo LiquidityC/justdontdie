@@ -202,6 +202,8 @@ TEST_CASE( "Object container tests", "[objectcontainer]" )
 		o2props.setXvel(-50);
 		o2props.setYvel(-50);
 
+		REQUIRE ( 1.0 == dtm->getDeltaTime() );
+
 		REQUIRE ( 0 == container.getSpatialPartitionCount() );
 
 		container.registerObject(o1);

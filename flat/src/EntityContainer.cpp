@@ -170,6 +170,13 @@ namespace flat2d
 		}
 	}
 
+	void EntityContainer::reinitLayerMap()
+	{
+		layeredObjects.clear();
+		ObjectList list;
+		layeredObjects[-1] = list;
+	}
+
 	void EntityContainer::unregisterAllObjects()
 	{
 		for(auto it = objects.begin(); it != objects.end(); it++) {
@@ -181,6 +188,7 @@ namespace flat2d
 		for (auto it = layeredObjects.begin(); it != layeredObjects.end(); it++) {
 			it->second.clear();
 		}
+		reinitLayerMap();
 	}
 
 	void EntityContainer::unregisterAllObjectsFor(Layer layer)

@@ -4,6 +4,23 @@
 
 namespace flat2d
 {
+	Mixer::~Mixer()
+	{
+		clearAllSound();
+	}
+
+	void Mixer::clearAllSound()
+	{
+		for (auto it = effects.begin(); it != effects.end(); it++) {
+			Mix_FreeChunk(it->second);
+		}
+		effects.clear();
+		for (auto it = music.begin(); it != music.end(); it++) {
+			Mix_FreeMusic(it->second);
+		}
+		music.clear();
+	}
+
 	bool Mixer::loadEffect(int id, std::string path)
 	{
 		if (effects.find(id) != effects.end()) {

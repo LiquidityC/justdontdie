@@ -22,3 +22,8 @@ int LayerService::getLayerIndex(std::string name)
 	}
 	return layerMap[name];
 }
+
+void LayerService::clearAllLayers()
+{
+	layerMap.clear();
+}

@@ -14,14 +14,9 @@ namespace flat2d
 			std::map<int, Mix_Music*> music;
 
 		public:
-			~Mixer() {
-				for (auto it = effects.begin(); it != effects.end(); it++) {
-					Mix_FreeChunk(it->second);
-				}
-				for (auto it = music.begin(); it != music.end(); it++) {
-					Mix_FreeMusic(it->second);
-				}
-			}
+			~Mixer();
+
+			void clearAllSound();
 
 			bool loadEffect(int, std::string);
 

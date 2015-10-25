@@ -21,6 +21,8 @@ class LayerService
 		void registerLayer(std::string name);
 
 		int getLayerIndex(std::string name);
+
+		void clearAllLayers();
 };
 
 #endif // LAYERSERVICE_H_
