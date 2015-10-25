@@ -1,23 +1,24 @@
+sudo: false
 language: cpp
 compiler:
     - gcc
     - clang
 
+addons:
+    apt_packages:
+            - libsqlite3-dev
+            - libsdl2-dev
+            - libsdl2-image-dev
+            - libsdl2-mixer-dev
+            - libsdl2-ttf-dev
+            - python2.7
+            - clang-3.7
+            - gcc-4.9
+
 script: make && make checkall
 
-install:
-    addons:
-        apt:
-            packages:
-                - libsqlite3-dev
-                - libsdl2-dev
-                - libsdl2-image-dev
-                - libsdl2-mixer-dev
-                - libsdl2-ttf-dev
-                - python2.7
-                - clang-3.7
-                - gcc-4.9
 
+before_script:
       # Compiler
     - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
     - if [ "$CXX" == "clang++" ]; then export CXX="clang++-3.7"; fi
