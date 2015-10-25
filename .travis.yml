@@ -5,15 +5,19 @@ compiler:
     - clang
 
 addons:
+    apt_sources:
+        - ubuntu-toolchain-r-test
+        - llvm-toolchain-precise-3.7
+        - sdl2-snapshots
     apt_packages:
-            - libsqlite3-dev
-            - libsdl2-dev
-            - libsdl2-image-dev
-            - libsdl2-mixer-dev
-            - libsdl2-ttf-dev
-            - python2.7
-            - clang-3.7
-            - gcc-4.9
+        - libsqlite3-dev
+        - libsdl2-dev
+        - libsdl2-image-dev
+        - libsdl2-mixer-dev
+        - libsdl2-ttf-dev
+        - python2.7
+        - clang-3.7
+        - g++-4.9
 
 script: make && make checkall
 
