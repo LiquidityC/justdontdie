@@ -1,0 +1,13 @@
+# Site settings
+title: Just Don't Die
+email: linus.probert@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+    Just don't die is my first serious platformer game. I have some grand plans of getting it released through
+    steam greenlight once I'm happy with it.
+baseurl: "/justdontdie/" # the subpath of your site, e.g. /blog/
+url: "http://liquidityc.github.io" # the base hostname & protocol for your site
+twitter_username: LiquidityC
+github_username:  LiquidityC
+
+# Build settings
+markdown: kramdown

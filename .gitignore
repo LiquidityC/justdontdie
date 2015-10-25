@@ -16,3 +16,6 @@
 /tags
 
 *.swp
+
+_site
+.sass-cache
