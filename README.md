@@ -2,9 +2,7 @@
 
 It's going to be a platform game. Just haven't gotten there quite yet.
 
-Currently the game consists of controlling your little soldier through one map
-avoiding the rockets and the spikes.
-The soldier has a ghost mode that enables him to avoid some types of rockets but not others.
+Checkout the [blog](https://liquidityc.github.io/justdontdie) for more info and compilation instructions
 
 ### Used libraries:
 - [boost](http://www.boost.org/)

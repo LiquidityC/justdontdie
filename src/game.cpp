@@ -17,7 +17,7 @@
 int main( int argc, char* args[] )
 {
 	flat2d::FlatBuilder *flat = new flat2d::FlatBuilder;
-	if (!flat->initSDL("DeadGaem", GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT)) {
+	if (!flat->initSDL("Just Don't Die", GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT)) {
 		return -1;
 	}
 	if (!flat->initContainers()) {
