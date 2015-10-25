@@ -5,6 +5,11 @@
 #include "Soldier.h"
 #include "FrameCounter.h"
 
+GameStateController::GameStateController()
+{
+	initMaps();
+}
+
 void GameStateController::handle(const SDL_Event& event)
 {
 	if (event.type == SDL_KEYDOWN) {
@@ -20,6 +25,13 @@ void GameStateController::gameStateCheck(flat2d::GameData *gameData)
 		resetGame(gameData);
 		reset = false;
 	}
+}
+
+void GameStateController::initMaps()
+{
+	maps.clear();
+	maps.push_back({ "resources/maps/map1/", "map1.tmx" });
+	maps.push_back({ "resources/maps/map2/", "map2.tmx" });
 }
 
 void GameStateController::resetGame(flat2d::GameData *gameData)
@@ -45,7 +57,8 @@ void GameStateController::resetGame(flat2d::GameData *gameData)
 	layerService->clearAllLayers();
 
 	MapParser parser;
-	parser.createMapFrom(gameData, "resources/maps/map2/", "map2.tmx");
+	MapData map = maps[currentMapIndex];
+	parser.createMapFrom(gameData, map.path, map.file);
 
 	// TODO(Linus): Will this layer system work? (esp the hardcoded layers)
 	layerService->registerLayer(FRONT_LAYER);
@@ -55,8 +68,6 @@ void GameStateController::resetGame(flat2d::GameData *gameData)
 	flat2d::Entity* soldier = new Soldier(200, 200);
 	soldier->init(gameData);
 
-	// TODO(Linus): Maybe have something better for the layer?
-	std::cout << "SOLDIER LAYER INDEX: " << layerService->getLayerIndex(FRONT_LAYER) << std::endl;
 	entityContainer->registerObject(soldier, layerService->getLayerIndex(FRONT_LAYER));
 
 	ResourceLoader *rLoader = customGameData->getResourceLoader();
@@ -68,4 +79,14 @@ void GameStateController::resetGame(flat2d::GameData *gameData)
 	counter->init(gameData);
 	entityContainer->registerObject(counter, layerService->getLayerIndex(OVERLAY_LAYER));
 #endif // DEBUG
+}
+
+void GameStateController::loadNextMap()
+{
+	if (currentMapIndex + 1 == maps.size()) {
+		return;
+	}
+
+	currentMapIndex++;
+	reset = true;
 }

@@ -18,13 +18,14 @@ namespace flat2d
 	{
 		private:
 			size_t id;
+			bool fixedPosition = false;
+			bool inputHandler = false;
 
 		protected:
 			EntityProperties entityProperties;
 			bool dead = false;
 			SDL_Texture *texture = nullptr;
 			SDL_Rect clip;
-			bool fixedPosition = false;
 
 		public:
 			Entity(int x, int y, int w, int h) :
@@ -69,6 +70,8 @@ namespace flat2d
 			void setDead(bool isDead);
 			bool isFixedPosition();
 			void setFixedPosition(bool isFixed);
+			bool isInputHandler();
+			void setInputHandler(bool inputHandler);
 
 			/* Implemented override methods */
 			virtual bool isDead() const;

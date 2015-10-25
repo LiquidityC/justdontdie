@@ -81,6 +81,16 @@ namespace flat2d
 		this->fixedPosition = fixedPosition;
 	}
 
+	bool Entity::isInputHandler()
+	{
+		return inputHandler;
+	}
+
+	void Entity::setInputHandler(bool inputHandler)
+	{
+		this->inputHandler = inputHandler;
+	}
+
 	EntityProperties& Entity::getEntityProperties()
 	{
 		return entityProperties;

@@ -73,6 +73,11 @@ bool Rocket::onCollision(Entity* e, const flat2d::GameData *data)
 		} else {
 			return true;
 		}
+	} else if (e->getType() == EntityType::TILE) {
+		MapTileObject *tile = static_cast<MapTileObject*>(e);
+		if (tile->hasProperty("checkpoint") || tile->hasProperty("goal")) {
+			return true;
+		}
 	}
 
 	setDead(true);

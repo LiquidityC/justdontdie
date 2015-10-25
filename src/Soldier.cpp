@@ -226,6 +226,8 @@ bool Soldier::handleGeneralTileCollision(MapTileObject *o, const flat2d::GameDat
 		o->hide();
 		motionController->reverseGravity = false;
 		return true;
+	} else if (o->hasProperty("goal")) {
+		static_cast<CustomGameData*>(data->getCustomGameData())->getGameStateController()->loadNextMap();
 	}
 
 	if (o->hasProperty("destructible")) {

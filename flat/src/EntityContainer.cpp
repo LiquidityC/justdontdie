@@ -46,14 +46,12 @@ namespace flat2d
 		objects[objId] = object;
 		layeredObjects[layer][objId] = object;
 		registerObjectToSpatialPartitions(object);
-		if (object->getEntityProperties().isCollidable()) {
-			registerCollidableObject(object);
+		if (object->isInputHandler()) {
+			inputHandlers[objId] = object;
 		}
-	}
-
-	void EntityContainer::registerCollidableObject(Entity* o)
-	{
-		collidableObjects[o->getStringId()] = o;
+		if (object->getEntityProperties().isCollidable()) {
+			collidableObjects[objId] = object;
+		}
 	}
 
 	EntityShape EntityContainer::createBoundingBoxFor(const EntityProperties& props) const
@@ -159,6 +157,7 @@ namespace flat2d
 	{
 		std::string objId = object->getStringId();
 		objects.erase(objId);
+		inputHandlers.erase(objId);
 		if (object->getEntityProperties().isCollidable()) {
 			collidableObjects.erase(objId);
 		}
@@ -185,9 +184,7 @@ namespace flat2d
 		objects.clear();
 		collidableObjects.clear();
 		spatialPartitionMap.clear();
-		for (auto it = layeredObjects.begin(); it != layeredObjects.end(); it++) {
-			it->second.clear();
-		}
+		inputHandlers.clear();
 		reinitLayerMap();
 	}
 
@@ -200,6 +197,7 @@ namespace flat2d
 		for (auto it = layeredObjects[layer].begin(); it != layeredObjects[layer].end(); it++) {
 			std::string objId = it->second->getStringId();
 			objects.erase(objId);
+			inputHandlers.erase(objId);
 			if (it->second->getEntityProperties().isCollidable()) {
 				collidableObjects.erase(objId);
 			}
@@ -211,7 +209,7 @@ namespace flat2d
 
 	void EntityContainer::handleObjects(const SDL_Event& event, const GameData* gameData)
 	{
-		for (auto it = objects.begin(); it != objects.end(); it++) {
+		for (auto it = inputHandlers.begin(); it != inputHandlers.end(); it++) {
 			it->second->preHandle(gameData);
 			it->second->handle(event);
 			it->second->postHandle(gameData);

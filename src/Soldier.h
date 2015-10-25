@@ -73,6 +73,7 @@ class Soldier : public flat2d::Entity
 				entityProperties.setColliderShape({ 5, 1, 18, 22 });
 				boostEmitter = new ParticleEmitter(ParticleType::BOOST_PARTICLE);
 				formChangeEmitter = new ParticleEmitter(ParticleType::FIRE_PARTICLE);
+				setInputHandler(true);
 			}
 
 		~Soldier() {

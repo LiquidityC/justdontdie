@@ -35,6 +35,7 @@ namespace flat2d
 
 			ObjectList objects;
 			ObjectList collidableObjects;
+			ObjectList inputHandlers;
 			LayerMap layeredObjects;
 			SpatialPartitionMap spatialPartitionMap;
 
@@ -46,7 +47,6 @@ namespace flat2d
 			void operator=(const EntityContainer&); // Don't implement
 
 			void clearDeadObjects();
-			void registerCollidableObject(Entity *entity);
 			void registerObjectToSpatialPartitions(Entity *entity);
 			void addObjectToSpatialPartitionFor(Entity *entity, int x, int y);
 			void clearObjectFromCurrentPartitions(Entity *entity);
