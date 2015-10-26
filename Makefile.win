@@ -26,7 +26,7 @@ MV			= mv
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h) flat/lib/libflat.dll.a
-EXECUTABLE 			= deadgaem.exe
+EXECUTABLE 			= dist/justdontdie.exe
 PROG_SOURCES 		= $(wildcard src/*.cpp)
 PROG_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(PROG_SOURCES:.cpp=.o32)))
 

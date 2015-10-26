@@ -26,7 +26,7 @@ class GameStateController : public flat2d::VirtualGameStateController
 
 		// Overrides
 		void handle(const SDL_Event& event);
-		void gameStateCheck(flat2d::GameData *gameData);
+		bool gameStateCheck(flat2d::GameData *gameData);
 
 		void resetGame(flat2d::GameData *gameData);
 

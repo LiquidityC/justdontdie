@@ -10,7 +10,7 @@ namespace flat2d
 		public:
 			virtual ~VirtualGameStateController() { }
 			virtual void handle(const SDL_Event& event) = 0;
-			virtual void gameStateCheck(GameData *gameData) = 0;
+			virtual bool gameStateCheck(GameData *gameData) = 0;
 	};
 } // namespace flat2d
 
