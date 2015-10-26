@@ -6,8 +6,8 @@ let &path="src,flat/src,"
 
 nnoremap <F1> :Make -l<cr>
 nnoremap <F2> :Make -l checkall<cr>
-nnoremap <F3> :!./deadgaem<cr>
-nnoremap <F4> :Start! ddd deadgaem<cr>
+nnoremap <F3> :!./justdontdie<cr>
+nnoremap <F4> :Start! ddd justdontdie<cr>
 
 nnoremap <F9> :Make clean<cr>
 nnoremap <F10> :Make cleanall<cr>

@@ -3931,7 +3931,7 @@
     <property name="rocketLauncher" value="true"/>
    </properties>
   </object>
-  <object id="8" name="Goal" x="1024" y="160" width="32" height="32">
+  <object id="8" name="Goal" x="480" y="320" width="32" height="32">
    <properties>
     <property name="collidable" value="true"/>
     <property name="goal" value="true"/>

@@ -19,12 +19,14 @@ void GameStateController::handle(const SDL_Event& event)
 	}
 }
 
-void GameStateController::gameStateCheck(flat2d::GameData *gameData)
+bool GameStateController::gameStateCheck(flat2d::GameData *gameData)
 {
 	if (reset) {
 		resetGame(gameData);
 		reset = false;
+		return true;
 	}
+	return false;
 }
 
 void GameStateController::initMaps()
@@ -51,6 +53,7 @@ void GameStateController::resetGame(flat2d::GameData *gameData)
 		customGameData->setGameStateController(this);
 		gameData->setCustomGameData(customGameData);
 	}
+	customGameData->getResourceContainer()->clearTextures();
 
 	// Make sure layers are cleared before parsing the map
 	LayerService *layerService = customGameData->getLayerService();
