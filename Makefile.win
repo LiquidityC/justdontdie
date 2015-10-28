@@ -17,6 +17,11 @@ SDL2_LDFLAGS	= `$(SDL_ROOT_DIR)/sdl2-config --libs` \
 CXXFLAGS			= -c -g -pedantic -Wall -Wpointer-arith -Wcast-qual -std=c++11 \
 					  -Iflat/include -Iinclude $(SDL2_CFLAGS) 
 
+DISTDIR		= dist/win
+DLLSRCDIR	= /usr/x86_64-w64-mingw32/bin
+DLLS		= SDL2.dll SDL2_image.dll SDL2_mixer.dll SDL2_ttf.dll libbz2-1.dll libfreetype-6.dll libpng16-16.dll \
+			  libwinpthread-1.dll zlib1.dll libvorbisfile-3.dll libvorbis-0.dll libogg-0.dll
+
 LD			= /usr/bin/x86_64-w64-mingw32-g++
 LDFLAGS 	= -L./flat/lib/ -lflat.dll $(SDL2_LDFLAGS)
 RM			= rm
@@ -26,19 +31,28 @@ MV			= mv
 
 OBJDIR				= obj
 DEPS				= $(wildcard src/*.h) flat/lib/libflat.dll.a
-EXECUTABLE 			= dist/justdontdie.exe
+EXECUTABLE 			= $(DISTDIR)/justdontdie.exe
 PROG_SOURCES 		= $(wildcard src/*.cpp)
 PROG_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(PROG_SOURCES:.cpp=.o32)))
 
 LIBRARIES			= flat
 
-.PHONY: $(LIBRARIES) $(OBJDIR) libs default dist clean cleanall
+.PHONY: $(LIBRARIES) $(OBJDIR) libs default dist clean cleanall copydlls copyresources buildzip
 
 default: 
+	@$(ECHO) -e "$(CGREEN)Creating distribution directory $(DISTDIR)$(CNORMAL)"
+	@mkdir -p $(DISTDIR)
 	@$(MAKE) $(MFLAGS) --no-print-directory libs
 	@$(ECHO) -e "$(CGREEN)Building $(EXECUTABLE)...$(CNORMAL)"
 	@$(MAKE) $(MFLAGS) --no-print-directory '$(EXECUTABLE)'
 	@$(ECHO) -e "$(CGREEN)Building $(EXECUTABLE) complete$(CNORMAL)"
+	@$(ECHO) -e "$(CGREEN)Copying dlls$(CNORMAL)"
+	@$(MAKE) $(MFLAGS) --no-print-directory copydlls
+	@$(ECHO) -e "$(CGREEN)Copying resources$(CNORMAL)"
+	@$(MAKE) $(MFLAGS) --no-print-directory copyresources
+	@$(ECHO) -e "$(CGREEN)Creating zip file$(CNORMAL)"
+	@$(MAKE) $(MFLAGS) --no-print-directory buildzip
+	@$(ECHO) -e "$(CGREEN)Done$(CNORMAL)"
 
 all: default
 
@@ -57,6 +71,15 @@ $(LIBRARIES):
 	@$(ECHO) -e "$(CGREEN)Building $@lib...$(CNORMAL)"
 	@$(MAKE) -C $@ $(MFLAGS)
 	@$(ECHO) -e "$(CGREEN)Building $@lib complete$(CNORMAL)"
+
+copydlls:
+	@for f in $(DLLS); do ($(CP) $(DLLSRCDIR)/$$f $(DISTDIR)); done
+
+copyresources:
+	@$(CP) -r resources $(DISTDIR)/.
+
+buildzip:
+	zip -r justdontdie.zip $(DISTDIR)
 
 clean:
 	@$(ECHO) Cleaning project
