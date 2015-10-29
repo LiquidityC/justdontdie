@@ -37,7 +37,7 @@ PROG_OBJECTS 		= $(addprefix $(OBJDIR)/,$(notdir $(PROG_SOURCES:.cpp=.o32)))
 
 LIBRARIES			= flat
 
-.PHONY: $(LIBRARIES) $(OBJDIR) libs default dist clean cleanall copydlls copyresources buildzip
+.PHONY: $(LIBRARIES) $(OBJDIR) libs default clean cleanall copydlls copyresources buildzip
 
 default: 
 	@$(ECHO) -e "$(CGREEN)Creating distribution directory $(DISTDIR)$(CNORMAL)"
@@ -57,9 +57,6 @@ default:
 all: default
 
 libs: $(LIBRARIES)
-
-dist: default
-	$(LD) -Wl,-rpath,'.:lib/.' $(PROG_OBJECTS) -o dist/$(EXECUTABLE) $(LDFLAGS)
 
 $(EXECUTABLE): $(PROG_OBJECTS) $(DEPS)
 	$(LD) $(PROG_OBJECTS) -o $@ $(LDFLAGS)
