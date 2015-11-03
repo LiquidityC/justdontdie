@@ -32,8 +32,8 @@ bool GameStateController::gameStateCheck(flat2d::GameData *gameData)
 void GameStateController::initMaps()
 {
 	maps.clear();
-	maps.push_back({ "resources/maps/map1/", "map1.tmx" });
 	maps.push_back({ "resources/maps/map2/", "map2.tmx" });
+	//maps.push_back({ "resources/maps/map2/", "map2.tmx" });
 }
 
 void GameStateController::resetGame(flat2d::GameData *gameData)
@@ -86,7 +86,7 @@ void GameStateController::resetGame(flat2d::GameData *gameData)
 
 void GameStateController::loadNextMap()
 {
-	if (currentMapIndex + 1 == maps.size()) {
+	if (currentMapIndex + 1 >= maps.size()) {
 		return;
 	}
 
