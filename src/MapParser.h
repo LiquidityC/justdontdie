@@ -23,6 +23,7 @@ class MapParser
 		int firstgid;
 		int tileWidth;
 		int tileHeight;
+		int tileCount;
 		std::string sourcePath;
 		int width;
 		int height;
@@ -43,6 +44,8 @@ class MapParser
 
 	private:
 		Map map;
+		std::string dir;
+		std::string filename;
 
 	public:
 		bool createMapFrom(flat2d::GameData*, std::string, std::string);
@@ -54,7 +57,7 @@ class MapParser
 		bool parseTileset(rapidxml::xml_node<> *node);
 
 		std::string getNameAttrValue(rapidxml::xml_node<> *node);
-		bool parseLayer(rapidxml::xml_node<> *node, flat2d::GameData*, std::string dir);
+		bool parseLayer(rapidxml::xml_node<> *node, flat2d::GameData*);
 		bool parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData*);
 
 		void parseTileProperties(Tile&, rapidxml::xml_node<>*);
