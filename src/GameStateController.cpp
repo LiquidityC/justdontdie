@@ -32,7 +32,7 @@ bool GameStateController::gameStateCheck(flat2d::GameData *gameData)
 void GameStateController::initMaps()
 {
 	maps.clear();
-	//maps.push_back({ "resources/maps/world1/", "map1.tmx" });
+	maps.push_back({ "resources/maps/world1/", "map1.tmx" });
 	maps.push_back({ "resources/maps/world1/", "map2.tmx" });
 }
 
