@@ -10,10 +10,10 @@ flat2d:
 		sure if it's horribly wrong. You just need to remember to put & on variables that you assign the
 		return to)
 	x	Create a font texture object that holds the dimensions of the texture for easier rendering.
-	-	Once better fonts are made the FrameCounter can be used to render more data. Perhaps even rename it.
+	x	Once better fonts are made the FrameCounter can be used to render more data. Perhaps even rename it.
 
 Game:
-	-	Make the initial level once collisions are smoother. (Collisions are smoother now)
+	-	Make the initial level(s) once collisions are smoother. (Collisions are smoother now)
 
 Additional thoughts:
 	-	Some more powerups perhaps? Are we happy with what we have? All suggestions are good suggestions

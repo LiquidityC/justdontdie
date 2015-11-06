@@ -1,4 +1,4 @@
-# Just DON'T die [![Build Status](https://travis-ci.org/LiquidityC/deadgaem.svg?branch=master)](https://travis-ci.org/LiquidityC/deadgaem)
+# Just DON'T die [![Build Status](https://travis-ci.org/LiquidityC/justdontdie.svg?branch=master)](https://travis-ci.org/LiquidityC/deadgaem)
 
 It's going to be a platform game. Just haven't gotten there quite yet.
 

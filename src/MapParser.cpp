@@ -15,6 +15,8 @@ using rapidxml::xml_attribute;
 
 bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::string filename)
 {
+	this->dir = dir;
+	this->filename = filename;
 	flat2d::RenderData *renderData = gameData->getRenderData();
 
 	file<> xmlFile((dir + filename).c_str());
@@ -23,7 +25,7 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 
 	xml_node<> *node = doc.first_node();
 	if ( !checkNodeName(node, "map") ) {
-		std::cout << "Root node not named 'map' parse failed: '" << node->name() << "'" << std::endl;
+		std::cerr << "Root node not named 'map' parse failed: '" << node->name() << "'" << std::endl;
 		return false;
 	}
 
@@ -35,33 +37,23 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 	// Get tileset data
 	parseTilesets(node);
 
-	// Find the Layer node and parse layers
-	node = node->first_node();
-	while ( node && !checkNodeName(node, "layer") ) {
-		node = node->next_sibling();
-	}
-	if ( !node ) {
-		std::cerr << "Failed to load layers" << std::endl;
-		return false;
-	}
-
 	renderData->getCamera()->setMapDimensions(map.width * map.tileWidth, map.height * map.tileHeight);
 
-	// Parse all the layers (might need to add layers in EntityContainer)
-	while ( node && (checkNodeName(node, "layer") || checkNodeName(node, "objectgroup")) ) {
-		bool success = false;
-		if (checkNodeName(node, "layer")) {
-			success = parseLayer(node, gameData, dir);
-		} else if (checkNodeName(node, "objectgroup")) {
-			success = parseObjectLayer(node, gameData);
-		}
-
-		if (!success) {
+	// Parse all the layers and objectgroups
+	for (xml_node<> *layer = node->first_node("layer"); layer; layer = layer->next_sibling("layer")) {
+		if (!parseLayer(layer, gameData)) {
 			std::cerr << "Failed to parse layers" << std::endl;
 			return false;
 		}
-
-		node = node->next_sibling();
+	}
+	for (xml_node<> *objectgroup = node->first_node("objectgroup");
+			objectgroup;
+			objectgroup = objectgroup->next_sibling("objectgroup"))
+	{
+		if (!parseObjectLayer(objectgroup, gameData)) {
+			std::cerr << "Failed to parse objectgroup" << std::endl;
+			return false;
+		}
 	}
 
 	return true;
@@ -71,11 +63,8 @@ bool MapParser::parseTilesets(xml_node<> *node)
 {
 	for (xml_node<> *tilesetNode = node->first_node();
 			tilesetNode;
-			tilesetNode = tilesetNode->next_sibling())
+			tilesetNode = tilesetNode->next_sibling("tileset"))
 	{
-		if ( !checkNodeName(tilesetNode, "tileset") ) {
-			break;
-		}
 		if (!parseTileset(tilesetNode)) {
 			return false;
 		}
@@ -86,60 +75,45 @@ bool MapParser::parseTilesets(xml_node<> *node)
 
 bool MapParser::parseTileset(xml_node<> *node)
 {
-	if ( !checkNodeName(node, "tileset") ) {
-		std::cerr << "Node not named 'tileset' parse failed: '" << node->name() << "'" << std::endl;
-		return false;
-	}
-
 	Tileset tileset;
 	tileset.texture = nullptr;
-	for(xml_attribute<> *attr = node->first_attribute(); attr; attr = attr->next_attribute()) {
-		if ( checkAttrName(attr, "firstgid") ) {
-			tileset.firstgid = atoi(attr->value());
-		} else if ( checkAttrName(attr, "name") ) {
-			tileset.name = attr->value();
-		} else if ( checkAttrName(attr, "tilewidth") ) {
-			tileset.tileWidth = atoi(attr->value());
-		} else if ( checkAttrName(attr, "tileheight") ) {
-			tileset.tileHeight = atoi(attr->value());
-		}
+	xml_node<> *tilesetNode = node;
+
+	// Get first gid
+	tileset.firstgid = atoi(tilesetNode->first_attribute("firstgid")->value());
+
+	// Check if it's an external source
+	xml_document<> doc;
+	file<> *xmlFile = nullptr;
+	if ( tilesetNode->first_attribute("source")) {
+		xml_attribute<> *source = tilesetNode->first_attribute("source");
+		std::string completePath = dir + source->value();
+		xmlFile = new file<>(completePath.c_str());
+		doc.parse<0>(xmlFile->data());
+		tilesetNode = doc.first_node();
 	}
 
-	xml_node<> *imageNode = node->first_node();
-	if ( !checkNodeName(imageNode, "image") ) {
-		std::cerr << "Node not named 'image' parse failed: '" << node->name() << "'" << std::endl;
+	tileset.name = tilesetNode->first_attribute("name")->value();
+	tileset.tileWidth = atoi(tilesetNode->first_attribute("tilewidth")->value());
+	tileset.tileHeight = atoi(tilesetNode->first_attribute("tileheight")->value());
+	tileset.tileCount = atoi(tilesetNode->first_attribute("tilecount")->value());
+
+	xml_node<> *imageNode = tilesetNode->first_node("image");
+	if (!imageNode) {
+		std::cerr << "Node not named 'image' parse failed: '" << imageNode->name() << "'" << std::endl;
 		return false;
 	}
 
-	for(xml_attribute<> *attr = imageNode->first_attribute(); attr; attr = attr->next_attribute()) {
-		if ( checkAttrName(attr, "source") ) {
-			tileset.sourcePath = attr->value();
-		} else if ( checkAttrName(attr, "width") ) {
-			tileset.width = atoi(attr->value());
-		} else if ( checkAttrName(attr, "height") ) {
-			tileset.height = atoi(attr->value());
-		}
-	}
+	tileset.sourcePath = dir + imageNode->first_attribute("source")->value();
+	tileset.width = atoi(imageNode->first_attribute("width")->value());
+	tileset.height = atoi(imageNode->first_attribute("height")->value());
 
-	// Skip terrain tags
-	xml_node<> *firstTileNode = imageNode->next_sibling();
-	while ( firstTileNode && !checkNodeName(firstTileNode, "tile") ) {
-		firstTileNode = firstTileNode->next_sibling();
-	}
-
-	if (!firstTileNode) {
-		std::cerr << "Error, couldn't find tile node in tileset" << std::endl;
-		return false;
-	}
-
+	// Parse tiles if exists
 	int gid = tileset.firstgid;
-	for (xml_node<> *tileNode = firstTileNode; tileNode; tileNode = tileNode->next_sibling()) {
-		if ( !checkNodeName(tileNode, "tile") ) {
-			std::cerr << "Node not named 'tile' parse failed: '" << node->name() << "'" << std::endl;
-			return false;
-		}
+	for (xml_node<> *tileNode = tilesetNode->first_node("tile"); tileNode; tileNode = tileNode->next_sibling("tile")) {
+		int tileId = atoi(tileNode->first_attribute("id")->value());
 
-		int tileId = atoi(tileNode->first_attribute()->value());
+		// Add leading empty tiles
 		while (gid <= tileId) {
 			Tile emptyTile;
 			emptyTile.id = gid - 1;
@@ -149,15 +123,8 @@ bool MapParser::parseTileset(xml_node<> *node)
 
 		Tile tile;
 		tile.id = tileId;
-		xml_node<> *firstNode = tileNode->first_node();
-		if (firstNode) {
-			if ( checkNodeName(firstNode, "properties") ) {
-				parseTileProperties(tile, firstNode);
-				parseTileObjects(tile, firstNode->next_sibling());
-			} else {
-				parseTileObjects(tile, firstNode);
-			}
-		}
+		parseTileProperties(tile, tileNode->first_node("properties"));
+		parseTileObjects(tile, tileNode->first_node("objectgroup"));
 
 		tileset.tiles[gid] = tile;
 		gid++;
@@ -165,10 +132,14 @@ bool MapParser::parseTileset(xml_node<> *node)
 
 	map.tilesets[tileset.firstgid] = tileset;
 
+	if (xmlFile) {
+		delete xmlFile;
+	}
+
 	return true;
 }
 
-bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData, std::string dir)
+bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData)
 {
 	xml_node<> *data = node->first_node();
 
@@ -214,7 +185,7 @@ bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData, std::st
 
 		if (tileset->texture == nullptr) {
 			SDL_Texture* texture = flat2d::MediaUtil::loadTexture(
-					dir + tileset->sourcePath, renderData->getRenderer());
+					tileset->sourcePath, renderData->getRenderer());
 			tileset->texture = texture;
 			resourceContainer->addTexture(texture);
 		}
@@ -264,6 +235,7 @@ bool MapParser::parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData *g
 
 	CustomGameData *customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
 	LayerService *layerService = customGameData->getLayerService();
+	ResourceContainer *resourceContainer = customGameData->getResourceContainer();
 
 	// Get the layer name
 	std::string layerName = getNameAttrValue(object);
@@ -278,25 +250,14 @@ bool MapParser::parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData *g
 		int gid = -1;
 
 		SDL_Rect objBox;
-		xml_attribute<> *attr = object->first_attribute();
-		if ( checkAttrName(attr, "id") ) {
-			attr = attr->next_attribute();
-		}
-		if ( checkAttrName(attr, "name") ) {
-			attr = attr->next_attribute();
-		}
-		if ( checkAttrName(attr, "gid") ) {
-			gid = atoi(attr->value());
-			attr = attr->next_attribute();
+		if ( object->first_attribute("gid") ) {
+			gid = atoi(object->first_attribute("gid")->value());
 		}
 
-		objBox.x = static_cast<int>(atof(attr->value()));
-		attr = attr->next_attribute();
-		objBox.y = static_cast<int>(atof(attr->value()));
-		attr = attr->next_attribute();
-		objBox.w = static_cast<int>(atof(attr->value()));
-		attr = attr->next_attribute();
-		objBox.h = static_cast<int>(atof(attr->value()));
+		objBox.x = static_cast<int>(atof(object->first_attribute("x")->value()));
+		objBox.y = static_cast<int>(atof(object->first_attribute("y")->value()));
+		objBox.w = static_cast<int>(atof(object->first_attribute("width")->value()));
+		objBox.h = static_cast<int>(atof(object->first_attribute("height")->value()));
 
 		Tileset *tileset = nullptr;
 		for (auto it = map.tilesets.begin(); gid >= 0 && it != map.tilesets.end(); ++it) {
@@ -308,9 +269,16 @@ bool MapParser::parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData *g
 
 		MapTileObject* tileObj;
 		if (tileset != nullptr) {
+			if (tileset->texture == nullptr) {
+				SDL_Texture* texture = flat2d::MediaUtil::loadTexture(
+						tileset->sourcePath, gameData->getRenderData()->getRenderer());
+				tileset->texture = texture;
+				resourceContainer->addTexture(texture);
+			}
+
 			tileObj = new MapTileObject(objBox.x, objBox.y, objBox.w, objBox.h, tileset->texture);
 
-			int xoffset = (gid-1) * tileset->tileWidth;
+			int xoffset = (tileset->firstgid - gid) * tileset->tileWidth;
 			int xclip = xoffset % tileset->width;
 			int yclip = tileset->tileHeight * ((xoffset - xclip) / tileset->width);
 
