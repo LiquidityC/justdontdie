@@ -1,10 +1,5 @@
-/flat/include/flat/*.h
-/flat/lib/*.a
-/flat/obj/*.o
-/flat/obj/*.o32
-/obj/*.o
-/obj/*.o32
-/dist/*
+/build/
+/flat/
 
 /Makefile.config
 /flat/Makefile.config

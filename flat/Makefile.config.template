@@ -1,5 +1,0 @@
-# Copy this template to 'Makefile.config' in order to setup 
-# local developer specific compiler flags when working.
-# 'Makefile.config' will be ignored by git
-
-CXXFLAGS += -DDEBUG
