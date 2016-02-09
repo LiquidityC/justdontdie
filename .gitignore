@@ -1,14 +1,4 @@
 /build/
-/flat/
-
-/Makefile.config
-/flat/Makefile.config
-/dist/justdontdie
-/justdontdie
-/justdontdie.exe
-/justdontdie.zip
-/flat/test
-/test
 /tags
 
 *.swp
