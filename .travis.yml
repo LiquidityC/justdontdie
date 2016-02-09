@@ -3,28 +3,42 @@ compiler:
     - gcc
     - clang
 
-sudo: false
+script:
+    - mkdir build
+    - cd build
+    - cmake ..
+    - make
+    - ctest -V
+    - make lint
 
-addons:
-    apt:
-        sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.7
-            - sdl2-snapshots
-        packages:
-            - libsqlite3-dev
-            - libsdl2-dev
-            - libsdl2-image-dev
-            - libsdl2-mixer-dev
-            - libsdl2-ttf-dev
-            - python2.7
-            - clang-3.7
-            - g++-4.9
+before_install:
+    - sudo add-apt-repository -y ppa:zoogie/sdl2-snapshots
+    - sudo add-apt-repository -y ppa:travis-ci/sqlite3
 
-script: make && make checkall
+      #g++4.9
+    - if [ "$CXX" = "g++" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
 
+      #clang 3.6
+    - if [ "$CXX" == "clang++" ]; then sudo add-apt-repository -y ppa:h-rayflood/llvm; fi
+
+    - sudo apt-get update -qq
+
+install:
+    - sudo apt-get install -y libsqlite3-dev
+    - sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
+    - sudo apt-get install -y python2.7
+    - sudo apt-get install -y cmake
+
+      #g++4.9
+    - if [ "$CXX" = "g++" ]; then sudo apt-get install g++-4.9; fi
+    - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
+
+      #clang 3.6
+    - if [ "$CXX" == "clang++" ]; then sudo apt-get install --allow-unauthenticated clang-3.6; fi
+    - if [ "$CXX" == "clang++" ]; then export CXX="clang++-3.6"; fi
 
 before_script:
-    # Compiler
-    - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
-    - if [ "$CXX" == "clang++" ]; then export CXX="clang++-3.7"; fi
+    - sudo dpkg -L libsdl2-dev
+    - sudo dpkg -L libsdl2-image-dev
+    - sudo dpkg -L libsdl2-ttf-dev
+    - sudo dpkg -L libsdl2-mixer-dev

@@ -81,11 +81,8 @@ add_custom_target(lint
 	COMMAND python2.7 lint/cpplint.py --linelength=120 --root=src --extensions=cpp,h --filter=-whitespace/tab,-whitespace/parens,-whitespace/braces,-whitespace/comments,-legal src/*
 	)
 
-add_custom_target(check
-	COMMENT "Running tests"
-	DEPENDS test_justdontdie
-	COMMAND ./test_justdontdie
-	)
+enable_testing()
+add_test(NAME catch COMMAND test_justdontdie)
 
 install(TARGETS justdontdie
 	RUNTIME DESTINATION bin
