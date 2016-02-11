@@ -7,6 +7,7 @@
 #include "CustomGameData.h"
 #include "ResourceContainer.h"
 #include "LayerService.h"
+#include "ParallaxBackground.h"
 
 using rapidxml::file;
 using rapidxml::xml_document;
@@ -39,6 +40,12 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 
 	renderData->getCamera()->setMapDimensions(map.width * map.tileWidth, map.height * map.tileHeight);
 
+	// Parse image layers
+	if (!parseImageLayers(node, gameData)) {
+		std::cerr << "Failed to parse image layers" << std::endl;
+		return false;
+	}
+
 	// Parse all the layers and objectgroups
 	for (xml_node<> *layer = node->first_node("layer"); layer; layer = layer->next_sibling("layer")) {
 		if (!parseLayer(layer, gameData)) {
@@ -55,6 +62,40 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 			return false;
 		}
 	}
+
+	return true;
+}
+
+bool MapParser::parseImageLayers(xml_node<> *node, flat2d::GameData *gameData)
+{
+	xml_node<> *imageLayer = node->first_node("imagelayer");
+	if (!imageLayer) {
+		return true;
+	}
+
+	CustomGameData *customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
+	LayerService *layerService = customGameData->getLayerService();
+
+	std::string layerName = getNameAttrValue(imageLayer);
+	layerService->registerLayer(layerName);
+	layerService->registerLayers(gameData->getEntityContainer());
+
+	ParallaxBackground *background = new ParallaxBackground();
+
+	do {
+		xml_node<> *image = imageLayer->first_node("image");
+		xml_attribute<> *source = image->first_attribute("source");
+		xml_attribute<> *offsetx = imageLayer->first_attribute("offsetx");
+		xml_attribute<> *offsety = imageLayer->first_attribute("offsety");
+
+		int x = atoi(offsetx->value());
+		int y = atoi(offsety->value());
+
+		background->addTexture(x, y, dir + "/" + source->value(), gameData->getRenderData());
+	} while ((imageLayer = imageLayer->next_sibling("imagelayer")) != nullptr);
+
+	int layerIndex = layerService->getLayerIndex(layerName);
+	gameData->getEntityContainer()->registerObject(background, layerIndex);
 
 	return true;
 }

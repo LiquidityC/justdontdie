@@ -34,7 +34,7 @@ add_executable(justdontdie src/BloodParticle.cpp src/BoostParticle.cpp src/FireP
 	src/LayerService.cpp src/MapParser.cpp src/MapTileObject.cpp src/Particle.cpp
 	src/ParticleEmitter.cpp src/ParticleEngine.cpp src/Random.cpp src/ResourceContainer.cpp
 	src/ResourceLoader.cpp src/Rocket.cpp src/Soldier.cpp src/SoldierMotionController.cpp
-	src/SoldierPowerupContainer.cpp src/game.cpp)
+	src/SoldierPowerupContainer.cpp src/game.cpp src/ParallaxBackground.cpp)
 
 if(MINGW)
 	target_link_libraries(justdontdie -lflat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
@@ -49,7 +49,8 @@ add_executable(test_justdontdie  src/BloodParticle.cpp src/BoostParticle.cpp src
 	src/LayerService.cpp src/MapParser.cpp src/MapTileObject.cpp src/Particle.cpp
 	src/ParticleEmitter.cpp src/ParticleEngine.cpp src/Random.cpp src/ResourceContainer.cpp
 	src/ResourceLoader.cpp src/Rocket.cpp src/Soldier.cpp src/SoldierMotionController.cpp
-	src/SoldierPowerupContainer.cpp testsrc/DeadGaemTest.cpp testsrc/LayerServiceTest.cpp
+	src/SoldierPowerupContainer.cpp src/ParallaxBackground.cpp
+	testsrc/DeadGaemTest.cpp testsrc/LayerServiceTest.cpp
 	testsrc/TestSoldier.cpp)
 
 if(MINGW)
@@ -74,6 +75,11 @@ if(MINGW)
 		COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/flat/bin/libflat.dll ${PROJECT_BINARY_DIR}
 		)
 endif(MINGW)
+
+add_custom_target(run
+	COMMENT "Executing program"
+	COMMAND justdontdie
+	)
 
 add_custom_target(lint
 	COMMENT "Running cpp-lint"

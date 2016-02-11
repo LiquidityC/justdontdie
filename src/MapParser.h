@@ -57,6 +57,7 @@ class MapParser
 		bool parseTileset(rapidxml::xml_node<> *node);
 
 		std::string getNameAttrValue(rapidxml::xml_node<> *node);
+		bool parseImageLayers(rapidxml::xml_node<> *node, flat2d::GameData*);
 		bool parseLayer(rapidxml::xml_node<> *node, flat2d::GameData*);
 		bool parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData*);
 
