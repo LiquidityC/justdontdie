@@ -1,13 +1,13 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
+#include <map>
 
 #include "MapParser.h"
 #include "MapTileObject.h"
 #include "CustomGameData.h"
 #include "ResourceContainer.h"
 #include "LayerService.h"
-#include "ParallaxBackground.h"
 
 using rapidxml::file;
 using rapidxml::xml_document;
@@ -80,22 +80,17 @@ bool MapParser::parseImageLayers(xml_node<> *node, flat2d::GameData *gameData)
 	layerService->registerLayer(layerName);
 	layerService->registerLayers(gameData->getEntityContainer());
 
-	ParallaxBackground *background = new ParallaxBackground();
-
 	do {
-		xml_node<> *image = imageLayer->first_node("image");
-		xml_attribute<> *source = image->first_attribute("source");
-		xml_attribute<> *offsetx = imageLayer->first_attribute("offsetx");
-		xml_attribute<> *offsety = imageLayer->first_attribute("offsety");
+		//xml_node<> *image = imageLayer->first_node("image");
+		//xml_attribute<> *source = image->first_attribute("source");
+		//xml_attribute<> *offsetx = imageLayer->first_attribute("offsetx");
+		//xml_attribute<> *offsety = imageLayer->first_attribute("offsety");
 
-		int x = atoi(offsetx->value());
-		int y = atoi(offsety->value());
-
-		background->addTexture(x, y, dir + "/" + source->value(), gameData->getRenderData());
+		//int x = atoi(offsetx->value());
+		//int y = atoi(offsety->value());
 	} while ((imageLayer = imageLayer->next_sibling("imagelayer")) != nullptr);
 
-	int layerIndex = layerService->getLayerIndex(layerName);
-	gameData->getEntityContainer()->registerObject(background, layerIndex);
+	//int layerIndex = layerService->getLayerIndex(layerName);
 
 	return true;
 }
@@ -182,20 +177,26 @@ bool MapParser::parseTileset(xml_node<> *node)
 
 bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData)
 {
-	xml_node<> *data = node->first_node();
-
 	CustomGameData *customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
 	LayerService *layerService = customGameData->getLayerService();
 	ResourceContainer *resourceContainer = customGameData->getResourceContainer();
 	flat2d::RenderData *renderData = gameData->getRenderData();
 
 	// Extract layer name
-	std::string layerName = getNameAttrValue(data);
+	std::string layerName = getNameAttrValue(node);
 	layerService->registerLayer(layerName);
 	layerService->registerLayers(gameData->getEntityContainer());
 
+
+	std::map<std::string, std::string> layerProps = getLayerProperties(node);
+	int depth = 0;
+	if (layerProps.find("depth") != layerProps.end()) {
+		depth = atoi(layerProps["depth"].c_str());
+	}
+
 	int row = 0;
 	int col = 0;
+	xml_node<> *data = node->first_node("data");
 	for (xml_node<> *tileNode = data->first_node(); tileNode; tileNode = tileNode->next_sibling()) {
 		xml_attribute<> *gidAttr = tileNode->first_attribute();
 		int gid = atoi(gidAttr->value());
@@ -243,6 +244,8 @@ bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData)
 		MapTileObject* tileObj = new MapTileObject(col * map.tileWidth, row * map.tileHeight,
 				tileset->tileWidth, tileset->tileHeight, tileset->texture);
 
+		tileObj->getEntityProperties().setDepth(depth);
+
 		// Set properties
 		for (auto it = tile->properties.begin(); it != tile->properties.end(); it++) {
 			tileObj->setProperty(it->first, it->second);
@@ -272,17 +275,16 @@ bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData)
 
 bool MapParser::parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData *gameData)
 {
-	xml_node<> *object = node->first_node();
-
 	CustomGameData *customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
 	LayerService *layerService = customGameData->getLayerService();
 	ResourceContainer *resourceContainer = customGameData->getResourceContainer();
 
 	// Get the layer name
-	std::string layerName = getNameAttrValue(object);
+	std::string layerName = getNameAttrValue(node);
 	layerService->registerLayer(layerName);
 	layerService->registerLayers(gameData->getEntityContainer());
 
+	xml_node<> *object = node->first_node("object");
 	while (object) {
 		if ( !checkNodeName(object, "object") ) {
 			continue;
@@ -351,6 +353,23 @@ bool MapParser::parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData *g
 	node = node->next_sibling();
 
 	return true;
+}
+
+std::map<std::string, std::string> MapParser::getLayerProperties(xml_node<> *layer)
+{
+	std::map<std::string, std::string> props;
+	xml_node<> *properties = layer->first_node("properties");
+	if (!properties) {
+		return props;
+	}
+
+	for (xml_node<> *prop = properties->first_node(); prop; prop = prop->next_sibling()) {
+		xml_attribute<> *name = prop->first_attribute("name");
+		xml_attribute<> *value = prop->first_attribute("value");
+		props[name->value()] = value->value();
+	}
+
+	return props;
 }
 
 std::string MapParser::getNameAttrValue(xml_node<> *node)

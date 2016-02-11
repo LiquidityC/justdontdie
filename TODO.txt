@@ -14,6 +14,7 @@ flat2d:
 
 Game:
 	-	Make the initial level(s) once collisions are smoother. (Collisions are smoother now)
+	-	Fix paralax scrolling by adding a z parameter to entity
 
 Additional thoughts:
 	-	Some more powerups perhaps? Are we happy with what we have? All suggestions are good suggestions

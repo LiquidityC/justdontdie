@@ -64,6 +64,8 @@ class MapParser
 		void parseTileProperties(Tile&, rapidxml::xml_node<>*);
 		void parseTileObjects(Tile&, rapidxml::xml_node<>*);
 
+		std::map<std::string, std::string> getLayerProperties(rapidxml::xml_node<>*);
+
 		bool checkNodeName( rapidxml::xml_node<>*, std::string) const;
 		bool checkAttrName( rapidxml::xml_attribute<>*, std::string) const;
 		bool checkAttrValue( rapidxml::xml_attribute<>*, std::string) const;

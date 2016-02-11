@@ -34,7 +34,7 @@ add_executable(justdontdie src/BloodParticle.cpp src/BoostParticle.cpp src/FireP
 	src/LayerService.cpp src/MapParser.cpp src/MapTileObject.cpp src/Particle.cpp
 	src/ParticleEmitter.cpp src/ParticleEngine.cpp src/Random.cpp src/ResourceContainer.cpp
 	src/ResourceLoader.cpp src/Rocket.cpp src/Soldier.cpp src/SoldierMotionController.cpp
-	src/SoldierPowerupContainer.cpp src/game.cpp src/ParallaxBackground.cpp)
+	src/SoldierPowerupContainer.cpp src/game.cpp)
 
 if(MINGW)
 	target_link_libraries(justdontdie -lflat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
@@ -49,7 +49,7 @@ add_executable(test_justdontdie  src/BloodParticle.cpp src/BoostParticle.cpp src
 	src/LayerService.cpp src/MapParser.cpp src/MapTileObject.cpp src/Particle.cpp
 	src/ParticleEmitter.cpp src/ParticleEngine.cpp src/Random.cpp src/ResourceContainer.cpp
 	src/ResourceLoader.cpp src/Rocket.cpp src/Soldier.cpp src/SoldierMotionController.cpp
-	src/SoldierPowerupContainer.cpp src/ParallaxBackground.cpp
+	src/SoldierPowerupContainer.cpp
 	testsrc/DeadGaemTest.cpp testsrc/LayerServiceTest.cpp
 	testsrc/TestSoldier.cpp)
 

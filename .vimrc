@@ -13,4 +13,4 @@ nnoremap <F9> :Make clean<cr>
 nnoremap <F10> :Make cleanall<cr>
 nnoremap <F12> :Start! tiled<cr>
 
-au FileType cpp,h setl makeprg=make\ -l\ -C\ build
+au FileType cpp,h setl makeprg=make\ -l\ --no-print-directory\ -C\ build
