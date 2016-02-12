@@ -3,6 +3,8 @@
 #include <SDL2/SDL_ttf.h>
 #include <flat/flat.h>
 #include <iostream>
+#include <string>
+#include <sstream>
 
 #include "Soldier.h"
 #include "ParticleEngine.h"
@@ -18,7 +20,14 @@
 int main( int argc, char* args[] )
 {
 	flat2d::FlatBuilder *flat = new flat2d::FlatBuilder;
-	if (!flat->initSDL("Just Don't Die", GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT)) {
+
+	std::stringstream ss;
+	ss << "Just Don't Die " << VERSION_MAJOR << "." << VERSION_MINOR;
+#ifdef DEBUG
+	ss << " [DEBUG]";
+#endif // DEBUG
+
+	if (!flat->initSDL(ss.str(), GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT)) {
 		return -1;
 	}
 	if (!flat->initContainers()) {
