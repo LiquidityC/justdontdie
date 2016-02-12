@@ -59,9 +59,7 @@ else(MINGW)
 	target_compile_options(test_justdontdie PRIVATE -std=c++11 -Wall)
 endif(MINGW)
 
-add_custom_command(TARGET justdontdie
-	POST_BUILD
-	COMMENT "Copying resources"
+add_custom_target(copy-resources ALL
 	COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources ${PROJECT_BINARY_DIR}/resources
 	)
 
@@ -76,6 +74,7 @@ endif(MINGW)
 
 add_custom_target(run
 	COMMENT "Executing program"
+	DEPENDS copy-resources
 	COMMAND justdontdie
 	)
 
