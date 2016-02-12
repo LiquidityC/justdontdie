@@ -4,13 +4,13 @@ match ErrorMsg '\%>110v.\+'
 "GF command sourcefiles
 let &path="src,"
 
-nnoremap <F1> :Make -l<cr>
-nnoremap <F2> :Make -l checkall<cr>
-nnoremap <F3> :!./justdontdie<cr>
-nnoremap <F4> :Start gdb justdontdie<cr>
+nnoremap <F1> :Make -C build --no-print-directory -l<cr>
+nnoremap <F2> :Make -C build --no-print-directory -l check<cr>:Make -C build --no-print-directory -l lint<cr>
+nnoremap <F3> :!./build/justdontdie<cr>
+nnoremap <F4> :Start gdb build/justdontdie<cr>
 
-nnoremap <F9> :Make clean<cr>
-nnoremap <F10> :Make cleanall<cr>
+nnoremap <F9> :Make -C build --no-print-directory clean<cr>
+nnoremap <F10> :Make -C build --no-print-directory clean<cr>
 nnoremap <F12> :Start! tiled<cr>
 
-au FileType cpp,h setl makeprg=make\ -l\ --no-print-directory\ -C\ build
+set makeprg=make\ -l\ --no-print-directory\ -C\ build

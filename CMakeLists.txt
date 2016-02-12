@@ -6,11 +6,14 @@ project (JustDontDie CXX)
 set (JustDontDie_MAJOR_VERSION 1)
 set (JustDontDie_MINOR_VERSION 0)
 
-if(CMAKE_TOOLCHAIN_FILE)
-	set(EXTERNAL_TOOLCHAIN "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}")
-else(CMAKE_TOOLCHAIN_FILE)
-	set(EXTERNAL_TOOLCHAIN "")
-endif(CMAKE_TOOLCHAIN_FILE)
+configure_file (
+  "${PROJECT_SOURCE_DIR}/src/Config.h.in"
+  "${PROJECT_BINARY_DIR}/Config.h"
+  )
+add_definitions("-Wall")
+if(DEBUG)
+	add_definitions("-DDEBUG=1")
+endif(DEBUG)
 
 if(MINGW)
 	set(DLLS bin/win/SDL2.dll bin/win/SDL2_image.dll bin/win/SDL2_mixer.dll bin/win/SDL2_ttf.dll
@@ -21,7 +24,7 @@ endif(MINGW)
 
 add_subdirectory(flat)
 
-include_directories(${PROJECT_BINARY_DIR}/flat/include include)
+include_directories(${PROJECT_BINARY_DIR} ${PROJECT_BINARY_DIR}/flat/include include)
 link_directories(${PROJECT_BINARY_DIR}/flat/lib)
 
 add_executable(justdontdie src/BloodParticle.cpp src/BoostParticle.cpp src/FireParticle.cpp

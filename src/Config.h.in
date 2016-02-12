@@ -1,0 +1,8 @@
+#ifndef CONFIG_H_
+#define	CONFIG_H_
+
+#define DEBUG ${DEBUG}
+#define VERSION_MAJOR ${JustDontDie_MAJOR_VERSION}
+#define VERSION_MINOR ${JustDontDie_MINOR_VERSION}
+
+#endif // CONFIG_H_

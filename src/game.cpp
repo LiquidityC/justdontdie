@@ -13,6 +13,7 @@
 #include "ResourceLoader.h"
 #include "CustomGameData.h"
 #include "FrameCounter.h"
+#include "Config.h"
 
 int main( int argc, char* args[] )
 {
