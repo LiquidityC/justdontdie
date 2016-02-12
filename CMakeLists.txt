@@ -1,5 +1,4 @@
 cmake_minimum_required (VERSION 3.2.0)
-include(ExternalProject)
 
 SET(CMAKE_COLOR_MAKEFILE ON)
 
@@ -20,11 +19,7 @@ if(MINGW)
 		bin/win/zlib1.dll)
 endif(MINGW)
 
-ExternalProject_Add(flat
-	PREFIX flat
-	GIT_REPOSITORY https://github.com/LiquidityC/flat
-	CMAKE_ARGS ${EXTERNAL_TOOLCHAIN} -DCMAKE_INSTALL_PREFIX:PATH=${PROJECT_BINARY_DIR}/flat
-	)
+add_subdirectory(flat)
 
 include_directories(${PROJECT_BINARY_DIR}/flat/include include)
 link_directories(${PROJECT_BINARY_DIR}/flat/lib)
@@ -37,14 +32,14 @@ add_executable(justdontdie src/BloodParticle.cpp src/BoostParticle.cpp src/FireP
 	src/SoldierPowerupContainer.cpp src/game.cpp)
 
 if(MINGW)
-	target_link_libraries(justdontdie -lflat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(justdontdie PRIVATE -std=c++11 -g -Wall)
+	target_link_libraries(justdontdie flat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
+	target_compile_options(justdontdie PRIVATE -std=c++11 -Wall)
 else(MINGW)
-	target_compile_options(justdontdie PRIVATE -std=c++11 -g -Wall)
-	target_link_libraries(justdontdie -lflat -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
+	target_link_libraries(justdontdie flat -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
+	target_compile_options(justdontdie PRIVATE -std=c++11 -Wall)
 endif(MINGW)
 
-add_executable(test_justdontdie  src/BloodParticle.cpp src/BoostParticle.cpp src/FireParticle.cpp
+add_executable(test_justdontdie EXCLUDE_FROM_ALL src/BloodParticle.cpp src/BoostParticle.cpp src/FireParticle.cpp
 	src/FrameCounter.cpp src/GameStateController.cpp src/GhostOverlay.cpp src/GhostParticle.cpp
 	src/LayerService.cpp src/MapParser.cpp src/MapTileObject.cpp src/Particle.cpp
 	src/ParticleEmitter.cpp src/ParticleEngine.cpp src/Random.cpp src/ResourceContainer.cpp
@@ -54,11 +49,11 @@ add_executable(test_justdontdie  src/BloodParticle.cpp src/BoostParticle.cpp src
 	testsrc/TestSoldier.cpp)
 
 if(MINGW)
-	target_link_libraries(test_justdontdie -lflat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(test_justdontdie PRIVATE -std=c++11 -g -Wall)
+	target_link_libraries(test_justdontdie flat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
+	target_compile_options(test_justdontdie PRIVATE -std=c++11 -Wall)
 else(MINGW)
-	target_link_libraries(test_justdontdie -lflat -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(test_justdontdie PRIVATE -std=c++11 -g -Wall)
+	target_link_libraries(test_justdontdie flat -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
+	target_compile_options(test_justdontdie PRIVATE -std=c++11 -Wall)
 endif(MINGW)
 
 add_custom_command(TARGET justdontdie
@@ -85,6 +80,12 @@ add_custom_target(lint
 	COMMENT "Running cpp-lint"
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	COMMAND python2.7 lint/cpplint.py --linelength=120 --root=src --extensions=cpp,h --filter=-whitespace/tab,-whitespace/parens,-whitespace/braces,-whitespace/comments,-legal src/*
+	)
+
+add_custom_target(check
+	COMMENT "Running catch tests"
+	DEPENDS test_justdontdie
+	COMMAND test_justdontdie
 	)
 
 enable_testing()

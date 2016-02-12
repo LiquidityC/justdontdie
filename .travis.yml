@@ -10,7 +10,7 @@ script:
     - cd build
     - cmake ..
     - make
-    - ctest -V
+    - make check
     - make lint
 
 before_install:
