@@ -26387,7 +26387,7 @@
    <tile gid="0"/>
   </data>
  </layer>
- <objectgroup name="checkpoints" visible="0">
+ <objectgroup name="checkpoints">
   <object id="1" name="Checkpoint 3" x="1953" y="611" width="61" height="93">
    <properties>
     <property name="checkpoint" value="true"/>
