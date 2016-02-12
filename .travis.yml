@@ -17,10 +17,6 @@ script:
     - make lint
 
 before_install:
-      # Fix git submodule
-    - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-    - git submodule update --init --recursive
-
     - sudo add-apt-repository -y ppa:zoogie/sdl2-snapshots
     - sudo add-apt-repository -y ppa:george-edison55/cmake-3.x
     - sudo add-apt-repository -y ppa:h-rayflood/llvm
