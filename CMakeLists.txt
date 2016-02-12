@@ -68,7 +68,6 @@ if(MINGW)
 		POST_BUILD
 		COMMENT "Copying .dll files"
 		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/bin/win ${PROJECT_BINARY_DIR}
-		COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/flat/bin/libflat.dll ${PROJECT_BINARY_DIR}
 		)
 endif(MINGW)
 
@@ -98,7 +97,7 @@ install(TARGETS justdontdie
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib)
 install(DIRECTORY resources
-	DESTINATION bin/resources)
+	DESTINATION bin)
 if(MINGW)
 	install(FILES ${DLLS} DESTINATION bin)
 endif(MINGW)
