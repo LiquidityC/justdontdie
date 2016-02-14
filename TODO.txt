@@ -1,20 +1,14 @@
 flat2d:
-	x	Revert to old horizontal-move-and-collide followed by vertical-move-and-collide in collision
-		engine. Not worth the time to debug and sort out the sweeping. I can look more at that later. I will
-		keep the implementation just not use that method for the time being.
-	x	Might need to make different collision types (materials) once collision engine works.
-		Mainly elastic, semi-elastic, inelastic (translates to bounce, stick to or slide along/off walls).
-		These are explained in link above.
 	-	Don't return EntityProperties from Entity as a reference, make it a pointer.
 		Big re-write with alot of errors but easy fixes. (Not sure about this one, it looks wrong but I'm not
 		sure if it's horribly wrong. You just need to remember to put & on variables that you assign the
 		return to)
-	x	Create a font texture object that holds the dimensions of the texture for easier rendering.
-	x	Once better fonts are made the FrameCounter can be used to render more data. Perhaps even rename it.
+	-	Add ovveridable methods onVerticalCollision and onHorizontalCollision so that we can add entities that
+		use them.
 
 Game:
-	-	Make the initial level(s) once collisions are smoother. (Collisions are smoother now)
-	-	Fix paralax scrolling by adding a z parameter to entity
+	x	Make the initial level(s) once collisions are smoother. (Collisions are smoother now)
+	x	Fix paralax scrolling by adding a z parameter to entity
 
 Additional thoughts:
 	-	Some more powerups perhaps? Are we happy with what we have? All suggestions are good suggestions

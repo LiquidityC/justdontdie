@@ -3,6 +3,8 @@
 #include "MapParser.h"
 #include "CustomGameData.h"
 #include "Soldier.h"
+#include "npcs/Enemy.h"
+#include "npcs/ai/WalkingAgent.h"
 #include "FrameCounter.h"
 
 GameStateController::GameStateController()
@@ -72,6 +74,10 @@ void GameStateController::resetGame(flat2d::GameData *gameData)
 
 	flat2d::Entity* soldier = new Soldier(200, 200);
 	soldier->init(gameData);
+
+	Agent *agent = new WalkingAgent(-200);
+	flat2d::Entity *enemy = new Enemy(agent, 300, 200, 15, 15);
+	entityContainer->registerObject(enemy, layerService->getLayerIndex(FRONT_LAYER));
 
 	entityContainer->registerObject(soldier, layerService->getLayerIndex(FRONT_LAYER));
 

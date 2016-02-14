@@ -27,12 +27,16 @@ add_subdirectory(flat)
 include_directories(${PROJECT_BINARY_DIR} ${PROJECT_BINARY_DIR}/flat/include include)
 link_directories(${PROJECT_BINARY_DIR}/flat/lib)
 
-add_executable(justdontdie src/BloodParticle.cpp src/BoostParticle.cpp src/FireParticle.cpp
+set(NPC_SOURCES src/npcs/Enemy.cpp)
+set(AI_SOURCES src/npcs/ai/WalkingAgent.cpp)
+set(COMMON_SOURCES ${NPC_SOURCES} ${AI_SOURCES} src/BloodParticle.cpp src/BoostParticle.cpp src/FireParticle.cpp
 	src/FrameCounter.cpp src/GameStateController.cpp src/GhostOverlay.cpp src/GhostParticle.cpp
 	src/LayerService.cpp src/MapParser.cpp src/MapTileObject.cpp src/Particle.cpp
 	src/ParticleEmitter.cpp src/ParticleEngine.cpp src/Random.cpp src/ResourceContainer.cpp
 	src/ResourceLoader.cpp src/Rocket.cpp src/Soldier.cpp src/SoldierMotionController.cpp
-	src/SoldierPowerupContainer.cpp src/game.cpp)
+	src/SoldierPowerupContainer.cpp src/MoveUtil.cpp)
+
+add_executable(justdontdie src/game.cpp ${COMMON_SOURCES})
 
 if(MINGW)
 	target_link_libraries(justdontdie flat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
@@ -42,14 +46,8 @@ else(MINGW)
 	target_compile_options(justdontdie PRIVATE -std=c++11 -Wall)
 endif(MINGW)
 
-add_executable(test_justdontdie EXCLUDE_FROM_ALL src/BloodParticle.cpp src/BoostParticle.cpp src/FireParticle.cpp
-	src/FrameCounter.cpp src/GameStateController.cpp src/GhostOverlay.cpp src/GhostParticle.cpp
-	src/LayerService.cpp src/MapParser.cpp src/MapTileObject.cpp src/Particle.cpp
-	src/ParticleEmitter.cpp src/ParticleEngine.cpp src/Random.cpp src/ResourceContainer.cpp
-	src/ResourceLoader.cpp src/Rocket.cpp src/Soldier.cpp src/SoldierMotionController.cpp
-	src/SoldierPowerupContainer.cpp
-	testsrc/DeadGaemTest.cpp testsrc/LayerServiceTest.cpp
-	testsrc/TestSoldier.cpp)
+add_executable(test_justdontdie EXCLUDE_FROM_ALL testsrc/DeadGaemTest.cpp testsrc/LayerServiceTest.cpp
+	testsrc/TestSoldier.cpp ${COMMON_SOURCES})
 
 if(MINGW)
 	target_link_libraries(test_justdontdie flat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
@@ -80,7 +78,7 @@ add_custom_target(run
 add_custom_target(lint
 	COMMENT "Running cpp-lint"
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	COMMAND python2.7 lint/cpplint.py --linelength=120 --root=src --extensions=cpp,h --filter=-whitespace/tab,-whitespace/parens,-whitespace/braces,-whitespace/comments,-legal src/*
+	COMMAND python2.7 lint/cpplint.py --linelength=120 --root=src --extensions=cpp,h --filter=-whitespace/tab,-whitespace/parens,-whitespace/braces,-whitespace/comments,-legal src/* src/npcs/* src/npcs/ai/*
 	)
 
 add_custom_target(check

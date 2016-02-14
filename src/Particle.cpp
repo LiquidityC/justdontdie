@@ -81,13 +81,8 @@ int Particle::getType() const
 
 bool Particle::onCollision(flat2d::Entity *collider, const flat2d::GameData *data)
 {
-	switch (collider->getType()) {
-		case EntityType::PARTICLE:
-		case EntityType::SOLDIER:
-		case EntityType::ROCKET:
-			return true;
-		default:
-			break;
+	if (collider->getType() != EntityType::TILE) {
+		return true;
 	}
 
 	if (collider->getType() == EntityType::TILE) {

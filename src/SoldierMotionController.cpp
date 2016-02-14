@@ -3,6 +3,7 @@
 #include "SoldierMotionController.h"
 #include "Soldier.h"
 #include "SoundMappings.h"
+#include "MoveUtil.h"
 
 SoldierMotionController::SoldierMotionController(Soldier *soldier)
 {
@@ -184,12 +185,9 @@ void SoldierMotionController::applyGravity()
 
 	if (!reverseGravity) {
 		flat2d::EntityProperties &entityProperties = soldier->getEntityProperties();
-		float yvel = entityProperties.getYvel();
-		if (yvel < 800) {
-			entityProperties.setYvel(yvel + std::min(60, 800 - static_cast<int>(yvel)));
-		}
-		if (soldier->floating && yvel > 100) {
-			entityProperties.setYvel(100);
+		MoveUtil::applyGravity(&entityProperties);
+		if (soldier->floating) {
+			MoveUtil::applyFloat(&entityProperties);
 		}
 	} else {
 		flat2d::EntityProperties &entityProperties = soldier->getEntityProperties();

@@ -187,6 +187,9 @@ bool Soldier::handleGeneralCollision(flat2d::Entity *o, const flat2d::GameData* 
 			return handleRocketCollision(static_cast<Rocket*>(o), data);
 		case EntityType::PARTICLE:
 			return true;
+		case EntityType::ENEMY:
+			kill(data);
+			return true;
 		default:
 			break;
 	}
