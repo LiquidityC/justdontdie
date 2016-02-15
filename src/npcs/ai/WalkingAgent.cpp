@@ -3,9 +3,6 @@
 
 void WalkingAgent::handleEntity(flat2d::Entity *entity)
 {
-	// TODO(Linus): How do we know if we collided and stuff here?
-	// Do stuff with the agent
-
 	flat2d::EntityProperties& props = entity->getEntityProperties();
 	if (xvel != props.getXvel()) {
 		props.setXvel(xvel);

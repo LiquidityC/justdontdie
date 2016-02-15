@@ -13,7 +13,7 @@ void Enemy::init(const flat2d::GameData *gameData)
 
 bool Enemy::onCollision(flat2d::Entity *collider, const flat2d::GameData *data)
 {
-	if (collider->getType() != EntityType::TILE) {
+	if (collider->getType() != EntityType::TILE && collider->getType() != EntityType::ENEMY) {
 		return true;
 	}
 	return aiAgent->onCollision(collider, this, data);
