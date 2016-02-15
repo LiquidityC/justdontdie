@@ -1,14 +1,20 @@
 #include <string>
 
 #include "MapTileObject.h"
-#include "../npcs/Rocket.h"
+#include "RocketGenerator.h"
+#include "EnemyGenerator.h"
 #include "../CustomGameData.h"
 #include "../LayerService.h"
 #include "../Random.h"
 
-void MapTileObject::setProperty(std::string prop, bool value)
+void MapTileObject::setProperty(std::string prop, std::string value)
 {
 	properties[prop] = value;
+}
+
+std::string MapTileObject::getProperty(std::string prop)
+{
+	return properties[prop];
 }
 
 bool MapTileObject::hasProperty(std::string prop) const
@@ -23,7 +29,10 @@ bool MapTileObject::hasProperty(std::string prop) const
 void MapTileObject::init()
 {
 	if (hasProperty("rocketLauncher")) {
-		rocketGenerator = new RocketGenerator();
+		generators.push_back(new RocketGenerator());
+	}
+	if (hasProperty("enemyGenerator")) {
+		generators.push_back(new EnemyGenerator());
 	}
 	if (hasProperty("destructible")) {
 		tileBreakEmitter = new ParticleEmitter(ParticleType::FIRE_PARTICLE);
@@ -32,10 +41,9 @@ void MapTileObject::init()
 
 void MapTileObject::preMove(const flat2d::GameData *gameData)
 {
-	if (rocketGenerator) {
-		rocketGenerator->preMove(gameData, this);
+	for (auto generator : generators) {
+		generator->preMove(gameData, this);
 	}
-
 	if (hidden && hiddenTimer.isStarted() && hiddenTimer.getTicks() > 5000) {
 		hiddenTimer.stop();
 		hidden = false;

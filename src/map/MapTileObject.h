@@ -3,22 +3,24 @@
 
 #include <flat/flat.h>
 #include <iostream>
+#include <vector>
 #include <map>
 #include <string>
+#include "EntityGenerator.h"
 #include "../EntityType.h"
 #include "../ParticleEmitter.h"
-#include "../map/RocketGenerator.h"
+
 
 class MapTileObject : public flat2d::Entity
 {
 	private:
-		std::map<std::string, bool> properties;
+		std::map<std::string, std::string> properties;
 
 		flat2d::Timer hiddenTimer;
 		bool hidden = false;
 
 		ParticleEmitter *tileBreakEmitter = nullptr;
-		RocketGenerator *rocketGenerator = nullptr;
+		std::vector<EntityGenerator*> generators;
 
 		void init();
 
@@ -31,7 +33,9 @@ class MapTileObject : public flat2d::Entity
 
 		~MapTileObject() {
 			if (tileBreakEmitter) { delete tileBreakEmitter; }
-			if (rocketGenerator) { delete rocketGenerator; }
+			for (auto generator : generators) {
+				delete generator;
+			}
 		}
 
 		int getType() const {
@@ -41,7 +45,8 @@ class MapTileObject : public flat2d::Entity
 		void preMove(const flat2d::GameData*);
 		void render(const flat2d::RenderData*) const;
 
-		void setProperty(std::string, bool);
+		void setProperty(std::string, std::string);
+		std::string getProperty(std::string);
 		bool hasProperty(std::string) const;
 
 		bool isHidden() const;

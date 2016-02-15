@@ -29,7 +29,7 @@ link_directories(${PROJECT_BINARY_DIR}/flat/lib)
 
 set(NPC_SOURCES src/npcs/Enemy.cpp src/npcs/Rocket.cpp)
 set(AI_SOURCES src/npcs/ai/WalkingAgent.cpp)
-set(MAP_SOURCES src/map/MapParser.cpp src/map/MapTileObject.cpp src/map/RocketGenerator.cpp)
+set(MAP_SOURCES src/map/MapParser.cpp src/map/MapTileObject.cpp src/map/RocketGenerator.cpp src/map/EnemyGenerator.cpp)
 set(COMMON_SOURCES ${NPC_SOURCES} ${AI_SOURCES} ${MAP_SOURCES} src/BloodParticle.cpp src/BoostParticle.cpp src/FireParticle.cpp
 	src/FrameCounter.cpp src/GameStateController.cpp src/GhostOverlay.cpp src/GhostParticle.cpp
 	src/LayerService.cpp src/Particle.cpp

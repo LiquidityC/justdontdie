@@ -74,12 +74,20 @@ void GameStateController::resetGame(flat2d::GameData *gameData)
 
 	flat2d::Entity* soldier = new Soldier(200, 200);
 	soldier->init(gameData);
-
-	Agent *agent = new WalkingAgent(-200);
-	flat2d::Entity *enemy = new Enemy(agent, 300, 200, 15, 15);
-	entityContainer->registerObject(enemy, layerService->getLayerIndex(FRONT_LAYER));
-
 	entityContainer->registerObject(soldier, layerService->getLayerIndex(FRONT_LAYER));
+
+	/**
+	 * This is testcode for enemies
+	 */
+	Agent *agent1 = new WalkingAgent(-200);
+	Agent *agent2 = new WalkingAgent(-200);
+	flat2d::Entity *enemy1 = new Enemy(agent1, 300, 200, 15, 15);
+	flat2d::Entity *enemy2 = new Enemy(agent2, 400, 200, 15, 15);
+	entityContainer->registerObject(enemy1, layerService->getLayerIndex(FRONT_LAYER));
+	entityContainer->registerObject(enemy2, layerService->getLayerIndex(FRONT_LAYER));
+	/**
+	 * End testcode
+	 */
 
 	ResourceLoader *rLoader = customGameData->getResourceLoader();
 	rLoader->loadMusic(gameData);

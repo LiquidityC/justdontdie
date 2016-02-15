@@ -14,7 +14,7 @@ class MapParser
 {
 	typedef struct {
 		int id;
-		std::map<std::string, bool> properties;
+		std::map<std::string, std::string> properties;
 		flat2d::EntityShape collider = { 0, 0, 0, 0 };
 	} Tile;
 

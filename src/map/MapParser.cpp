@@ -347,7 +347,7 @@ bool MapParser::parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData *g
 		while (property) {
 			xml_attribute<> *nameAttr = property->first_attribute();
 			xml_attribute<> *valueAttr = nameAttr->next_attribute();
-			tileObj->setProperty(nameAttr->value(), checkAttrValue(valueAttr, "true") );
+			tileObj->setProperty(nameAttr->value(), valueAttr->value());
 			if (checkAttrValue(nameAttr, "collidable")) {
 				tileObj->getEntityProperties().setCollidable(checkAttrValue(valueAttr, "true"));
 			}
