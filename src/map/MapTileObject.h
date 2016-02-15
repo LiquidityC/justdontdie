@@ -7,27 +7,31 @@
 #include <string>
 #include "../EntityType.h"
 #include "../ParticleEmitter.h"
+#include "../map/RocketGenerator.h"
 
 class MapTileObject : public flat2d::Entity
 {
 	private:
-		flat2d::Timer launchTimer;
 		std::map<std::string, bool> properties;
 
 		flat2d::Timer hiddenTimer;
 		bool hidden = false;
 
-		ParticleEmitter *tileBreakEmitter;
+		ParticleEmitter *tileBreakEmitter = nullptr;
+		RocketGenerator *rocketGenerator = nullptr;
+
+		void init();
 
 	public:
 		MapTileObject(int x, int y, int w, int h, SDL_Texture* t)
-			: Entity(x, y, w, h), launchTimer() {
+			: Entity(x, y, w, h) {
 				setTexture(t);
-				tileBreakEmitter = new ParticleEmitter(ParticleType::FIRE_PARTICLE);
+				init();
 			}
 
 		~MapTileObject() {
-			delete tileBreakEmitter;
+			if (tileBreakEmitter) { delete tileBreakEmitter; }
+			if (rocketGenerator) { delete rocketGenerator; }
 		}
 
 		int getType() const {

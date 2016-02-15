@@ -20,23 +20,20 @@ bool MapTileObject::hasProperty(std::string prop) const
 	return true;
 }
 
+void MapTileObject::init()
+{
+	if (hasProperty("rocketLauncher")) {
+		rocketGenerator = new RocketGenerator();
+	}
+	if (hasProperty("destructible")) {
+		tileBreakEmitter = new ParticleEmitter(ParticleType::FIRE_PARTICLE);
+	}
+}
+
 void MapTileObject::preMove(const flat2d::GameData *gameData)
 {
-	if (hasProperty("rocketLauncher") && (!launchTimer.isStarted() || launchTimer.getTicks() > 2000)) {
-		launchTimer.start();
-
-		Rocket::Mode mode = Rocket::Mode::NORMAL;
-		if (hasProperty("ghost")) {
-			mode = Rocket::Mode::GHOST;
-		} else if (hasProperty("multi")) {
-			mode = Rocket::Mode::MULTI;
-		}
-
-		LayerService *layerService = static_cast<CustomGameData*>(gameData->getCustomGameData())->getLayerService();
-
-		Rocket *rocket = new Rocket(entityProperties.getXpos(), entityProperties.getYpos(), mode, !hasProperty("shootRight"));
-		rocket->init(gameData);
-		gameData->getEntityContainer()->registerObject(rocket, layerService->getLayerIndex(FRONT_LAYER));
+	if (rocketGenerator) {
+		rocketGenerator->preMove(gameData, this);
 	}
 
 	if (hidden && hiddenTimer.isStarted() && hiddenTimer.getTicks() > 5000) {
@@ -44,7 +41,9 @@ void MapTileObject::preMove(const flat2d::GameData *gameData)
 		hidden = false;
 	}
 
-	tileBreakEmitter->emit(gameData, entityProperties.getBoundingBox());
+	if (tileBreakEmitter) {
+		tileBreakEmitter->emit(gameData, entityProperties.getBoundingBox());
+	}
 }
 
 bool MapTileObject::isHidden() const
