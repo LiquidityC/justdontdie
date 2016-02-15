@@ -81,8 +81,10 @@ void GameStateController::resetGame(flat2d::GameData *gameData)
 	 */
 	Agent *agent1 = new WalkingAgent(-200);
 	Agent *agent2 = new WalkingAgent(-200);
-	flat2d::Entity *enemy1 = new Enemy(agent1, 300, 200, 15, 15);
-	flat2d::Entity *enemy2 = new Enemy(agent2, 400, 200, 15, 15);
+	flat2d::Entity *enemy1 = new Enemy(agent1, 300, 200, 32, 32);
+	flat2d::Entity *enemy2 = new Enemy(agent2, 400, 200, 32, 32);
+	enemy1->init(gameData);
+	enemy2->init(gameData);
 	entityContainer->registerObject(enemy1, layerService->getLayerIndex(FRONT_LAYER));
 	entityContainer->registerObject(enemy2, layerService->getLayerIndex(FRONT_LAYER));
 	/**

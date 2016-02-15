@@ -17,7 +17,6 @@ void Soldier::init(const flat2d::GameData *gameData)
 	SDL_Rect clip = { 0, 0, entityProperties.getWidth(), entityProperties.getHeight() };
 	setClip(clip);
 	mixer = gameData->getMixer();
-
 	entityProperties.setCollidable(true);
 }
 

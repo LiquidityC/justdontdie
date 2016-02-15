@@ -1,21 +1,14 @@
 #include "Enemy.h"
 #include "../MoveUtil.h"
 
-void Enemy::render(const flat2d::RenderData *data) const
+void Enemy::init(const flat2d::GameData *gameData)
 {
-	flat2d::Camera *camera = data->getCamera();
-	SDL_SetRenderDrawColor(data->getRenderer(), 255, 0, 0, 255);
+	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/angry_bot.png",
+				gameData->getRenderData()->getRenderer()));
+	SDL_Rect clip = { 0, 0, 32, 32 };
+	setClip(clip);
 
-	SDL_Rect box = entityProperties.getBoundingBox();
-	box.x = camera->getScreenXposFor(box.x);
-	box.y = camera->getScreenYposFor(box.y);
-
-	SDL_RenderFillRect(data->getRenderer(), &box);
-}
-
-void Enemy::init(const flat2d::GameData *data)
-{
-	// TODO(Linus): Mayb we don't need this?
+	entityProperties.setCollidable(true);
 }
 
 bool Enemy::onCollision(flat2d::Entity *collider, const flat2d::GameData *data)
@@ -36,7 +29,7 @@ bool Enemy::onVerticalCollision(flat2d::Entity *collider, const flat2d::GameData
 
 bool Enemy::onHorizontalCollision(flat2d::Entity *collider, const flat2d::GameData *data)
 {
-	if (collider->getType() != EntityType::TILE) {
+	if (collider->getType() != EntityType::TILE && collider->getType() != EntityType::ENEMY) {
 		return true;
 	}
 	return aiAgent->onHorizontalCollision(collider, this, data);

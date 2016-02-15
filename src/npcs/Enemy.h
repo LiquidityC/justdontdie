@@ -12,9 +12,7 @@ class Enemy : public flat2d::Entity
 
 	public:
 		Enemy(Agent *agent, int x, int y, int w, int h) :
-			flat2d::Entity(x, y, w, h), aiAgent(agent) {
-				entityProperties.setCollidable(true);
-			}
+			flat2d::Entity(x, y, w, h), aiAgent(agent) { }
 
 		~Enemy() {
 			if (aiAgent != nullptr) {
@@ -22,11 +20,7 @@ class Enemy : public flat2d::Entity
 			}
 		}
 
-		// TODO(Linus): This is a temp override, should probably be dropped
-		// when we have an actual texture
-		void render(const flat2d::RenderData*) const;
-
-		void init(const flat2d::GameData *data);
+		void init(const flat2d::GameData*);
 		bool onCollision(flat2d::Entity *collider, const flat2d::GameData *data);
 		bool onVerticalCollision(flat2d::Entity *collider, const flat2d::GameData *data);
 		bool onHorizontalCollision(flat2d::Entity *collider, const flat2d::GameData *data);
