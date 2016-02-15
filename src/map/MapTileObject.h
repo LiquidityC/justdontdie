@@ -1,12 +1,12 @@
-#ifndef MAPTILEOBJECT_H_
-#define MAPTILEOBJECT_H_
+#ifndef MAP_MAPTILEOBJECT_H_
+#define MAP_MAPTILEOBJECT_H_
 
 #include <flat/flat.h>
 #include <iostream>
 #include <map>
 #include <string>
-#include "EntityType.h"
-#include "ParticleEmitter.h"
+#include "../EntityType.h"
+#include "../ParticleEmitter.h"
 
 class MapTileObject : public flat2d::Entity
 {
@@ -46,4 +46,4 @@ class MapTileObject : public flat2d::Entity
 		void destroy(const flat2d::GameData*);
 };
 
-#endif // MAPTILEOBJECT_H_
+#endif // MAP_MAPTILEOBJECT_H_

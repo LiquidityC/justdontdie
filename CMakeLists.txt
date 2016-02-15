@@ -27,13 +27,14 @@ add_subdirectory(flat)
 include_directories(${PROJECT_BINARY_DIR} ${PROJECT_BINARY_DIR}/flat/include include)
 link_directories(${PROJECT_BINARY_DIR}/flat/lib)
 
-set(NPC_SOURCES src/npcs/Enemy.cpp)
+set(NPC_SOURCES src/npcs/Enemy.cpp src/npcs/Rocket.cpp)
 set(AI_SOURCES src/npcs/ai/WalkingAgent.cpp)
-set(COMMON_SOURCES ${NPC_SOURCES} ${AI_SOURCES} src/BloodParticle.cpp src/BoostParticle.cpp src/FireParticle.cpp
+set(MAP_SOURCES src/map/MapParser.cpp src/map/MapTileObject.cpp)
+set(COMMON_SOURCES ${NPC_SOURCES} ${AI_SOURCES} ${MAP_SOURCES} src/BloodParticle.cpp src/BoostParticle.cpp src/FireParticle.cpp
 	src/FrameCounter.cpp src/GameStateController.cpp src/GhostOverlay.cpp src/GhostParticle.cpp
-	src/LayerService.cpp src/MapParser.cpp src/MapTileObject.cpp src/Particle.cpp
+	src/LayerService.cpp src/Particle.cpp
 	src/ParticleEmitter.cpp src/ParticleEngine.cpp src/Random.cpp src/ResourceContainer.cpp
-	src/ResourceLoader.cpp src/Rocket.cpp src/Soldier.cpp src/SoldierMotionController.cpp
+	src/ResourceLoader.cpp src/Soldier.cpp src/SoldierMotionController.cpp
 	src/SoldierPowerupContainer.cpp src/MoveUtil.cpp)
 
 add_executable(justdontdie src/game.cpp ${COMMON_SOURCES})
@@ -78,7 +79,7 @@ add_custom_target(run
 add_custom_target(lint
 	COMMENT "Running cpp-lint"
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-	COMMAND python2.7 lint/cpplint.py --linelength=120 --root=src --extensions=cpp,h --filter=-whitespace/tab,-whitespace/parens,-whitespace/braces,-whitespace/comments,-legal src/* src/npcs/* src/npcs/ai/*
+	COMMAND python2.7 lint/cpplint.py --linelength=120 --root=src --extensions=cpp,h --filter=-whitespace/tab,-whitespace/parens,-whitespace/braces,-whitespace/comments,-legal src/* src/npcs/* src/npcs/ai/* src/map/*
 	)
 
 add_custom_target(check

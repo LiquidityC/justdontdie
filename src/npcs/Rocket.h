@@ -1,8 +1,8 @@
-#ifndef ROCKET_H_
-#define ROCKET_H_
+#ifndef NPCS_ROCKET_H_
+#define NPCS_ROCKET_H_
 
 #include <flat/flat.h>
-#include "EntityType.h"
+#include "../EntityType.h"
 
 class Rocket : public flat2d::Entity
 {
@@ -54,4 +54,4 @@ class Rocket : public flat2d::Entity
 		Mode getMode() const;
 };
 
-#endif // ROCKET_H_
+#endif // NPCS_ROCKET_H_

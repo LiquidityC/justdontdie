@@ -1,5 +1,5 @@
-#ifndef MAPPARSER_H_
-#define MAPPARSER_H_
+#ifndef MAP_MAPPARSER_H_
+#define MAP_MAPPARSER_H_
 
 #include <flat/flat.h>
 #include <string>
@@ -71,4 +71,4 @@ class MapParser
 		bool checkAttrValue( rapidxml::xml_attribute<>*, std::string) const;
 };
 
-#endif // MAPPARSER_H_
+#endif // MAP_MAPPARSER_H_

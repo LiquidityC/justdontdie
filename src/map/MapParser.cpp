@@ -5,9 +5,9 @@
 
 #include "MapParser.h"
 #include "MapTileObject.h"
-#include "CustomGameData.h"
-#include "ResourceContainer.h"
-#include "LayerService.h"
+#include "../CustomGameData.h"
+#include "../ResourceContainer.h"
+#include "../LayerService.h"
 
 using rapidxml::file;
 using rapidxml::xml_document;
@@ -66,12 +66,17 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 	return true;
 }
 
+/*
+ * TODO(Linus): Implement this if it needs to be used.
+ */
 bool MapParser::parseImageLayers(xml_node<> *node, flat2d::GameData *gameData)
 {
 	xml_node<> *imageLayer = node->first_node("imagelayer");
 	if (!imageLayer) {
 		return true;
 	}
+
+	std::cerr << __FILE__ << "::parseImageLayers() not properly implemented" << std::endl;
 
 	CustomGameData *customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
 	LayerService *layerService = customGameData->getLayerService();

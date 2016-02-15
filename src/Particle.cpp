@@ -2,7 +2,7 @@
 #include <algorithm>
 #include "Particle.h"
 #include "EntityType.h"
-#include "MapTileObject.h"
+#include "map/MapTileObject.h"
 
 void Particle::preMove(const flat2d::GameData* data)
 {

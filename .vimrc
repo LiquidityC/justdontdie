@@ -13,4 +13,6 @@ nnoremap <F9> :Make -C build --no-print-directory clean<cr>
 nnoremap <F10> :Make -C build --no-print-directory clean<cr>
 nnoremap <F12> :Start! tiled<cr>
 
+noremap <C-p>:CtrlP .<CR>
+
 set makeprg=make\ -l\ --no-print-directory\ -C\ build

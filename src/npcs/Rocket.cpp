@@ -1,9 +1,9 @@
 #include "Rocket.h"
-#include "EntityType.h"
-#include "MapTileObject.h"
-#include "Soldier.h"
-#include "CustomGameData.h"
-#include "SoundMappings.h"
+#include "../EntityType.h"
+#include "../map/MapTileObject.h"
+#include "../Soldier.h"
+#include "../CustomGameData.h"
+#include "../SoundMappings.h"
 
 void Rocket::init(const flat2d::GameData *data)
 {

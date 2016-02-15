@@ -1,10 +1,10 @@
 #include <string>
 
 #include "MapTileObject.h"
-#include "Rocket.h"
-#include "CustomGameData.h"
-#include "LayerService.h"
-#include "Random.h"
+#include "../npcs/Rocket.h"
+#include "../CustomGameData.h"
+#include "../LayerService.h"
+#include "../Random.h"
 
 void MapTileObject::setProperty(std::string prop, bool value)
 {

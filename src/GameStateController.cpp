@@ -1,6 +1,6 @@
 #include <iostream>
 #include "GameStateController.h"
-#include "MapParser.h"
+#include "map/MapParser.h"
 #include "CustomGameData.h"
 #include "Soldier.h"
 #include "npcs/Enemy.h"

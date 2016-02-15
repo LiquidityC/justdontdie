@@ -10,7 +10,7 @@
 #include "ParticleEngine.h"
 #include "ResourceContainer.h"
 #include "GameSettings.h"
-#include "MapParser.h"
+#include "map/MapParser.h"
 #include "LayerService.h"
 #include "ResourceLoader.h"
 #include "CustomGameData.h"

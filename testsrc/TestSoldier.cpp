@@ -1,7 +1,7 @@
 #include <flat/flat.h>
 #include "catch.hpp"
 #include "../src/Soldier.h"
-#include "../src/Rocket.h"
+#include "../src/npcs/Rocket.h"
 
 TEST_CASE ( "Test the soldier", "[soldier]" )
 {
