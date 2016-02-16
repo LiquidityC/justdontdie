@@ -87,6 +87,7 @@ void Soldier::preMove(const flat2d::GameData *data)
 		}
 	}
 
+	bloodEmitter->emit(data, box);
 	if (killed && deathTimer.getTicks() < 3000) {
 		return;
 	} else if (killed) {
@@ -282,9 +283,7 @@ void Soldier::kill(const flat2d::GameData *gameData)
 				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
 				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
 	} else {
-		particleEngine->createBloodSprayAt(
-				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
-				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
+		bloodEmitter->setEmissionCount(200);
 	}
 
 	killed = true;

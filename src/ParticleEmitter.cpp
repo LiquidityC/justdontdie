@@ -42,9 +42,10 @@ Particle* ParticleEmitter::createParticleAt(int x, int y)
 	Particle *particle = nullptr;
 	switch (type) {
 		case BLOOD_PARTICLE:
-			particle = new BloodParticle(x, y, 2, 0, 0);
+			particle = new BloodParticle(x, y, 3, getRandomBetween(-500, 500), getRandomBetween(-500, 500));
+			break;
 		case GHOST_PARTICLE:
-			particle = new GhostParticle(x, y, 2, 2, 0, 0);
+			particle = new GhostParticle(x, y, 2, 2, getRandomBetween(-500, 500), getRandomBetween(-500, 500));
 			break;
 		case FIRE_PARTICLE:
 			particle = new FireParticle(x, y, getRandomBetween(-300, 300), getRandomBetween(-300, 300));
