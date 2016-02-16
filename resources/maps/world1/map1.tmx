@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="25" tilewidth="32" tileheight="32" nextobjectid="11">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="150" height="25" tilewidth="32" tileheight="32" nextobjectid="14">
  <tileset firstgid="1" name="world1" tilewidth="32" tileheight="32" tilecount="260" columns="13">
   <image source="world1.png" width="416" height="640"/>
   <tile id="13">
@@ -21001,8 +21001,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="17"/>
-   <tile gid="18"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -21151,8 +21151,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="30"/>
-   <tile gid="31"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -21301,8 +21301,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="43"/>
-   <tile gid="44"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -21451,8 +21451,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="56"/>
-   <tile gid="57"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -21593,17 +21593,17 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="15"/>
    <tile gid="15"/>
    <tile gid="15"/>
    <tile gid="15"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -21743,13 +21743,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="15"/>
    <tile gid="15"/>
    <tile gid="15"/>
@@ -21760,6 +21753,13 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="15"/>
+   <tile gid="15"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -21893,13 +21893,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="15"/>
    <tile gid="15"/>
    <tile gid="15"/>
@@ -21910,6 +21903,13 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="15"/>
+   <tile gid="15"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22043,23 +22043,23 @@
    <tile gid="16"/>
    <tile gid="16"/>
    <tile gid="16"/>
-   <tile gid="16"/>
-   <tile gid="16"/>
-   <tile gid="16"/>
-   <tile gid="16"/>
-   <tile gid="16"/>
-   <tile gid="16"/>
-   <tile gid="16"/>
    <tile gid="15"/>
    <tile gid="15"/>
    <tile gid="15"/>
    <tile gid="15"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
+   <tile gid="16"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="15"/>
+   <tile gid="15"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22098,6 +22098,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="29"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22106,8 +22107,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="27"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -22248,7 +22248,7 @@
    <tile gid="66"/>
    <tile gid="66"/>
    <tile gid="66"/>
-   <tile gid="27"/>
+   <tile gid="40"/>
    <tile gid="28"/>
    <tile gid="28"/>
    <tile gid="28"/>
@@ -22257,7 +22257,7 @@
    <tile gid="28"/>
    <tile gid="28"/>
    <tile gid="28"/>
-   <tile gid="29"/>
+   <tile gid="42"/>
    <tile gid="66"/>
    <tile gid="66"/>
    <tile gid="66"/>
@@ -25702,6 +25702,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="14"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25710,8 +25711,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="14"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -25861,7 +25861,7 @@
    <tile gid="14"/>
    <tile gid="16"/>
    <tile gid="16"/>
-   <tile gid="16"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -26400,12 +26400,6 @@
     <property name="collidable" value="true"/>
    </properties>
   </object>
-  <object id="4" name="Checkpoint 1" x="640.5" y="482.5" width="61" height="93">
-   <properties>
-    <property name="checkpoint" value="true"/>
-    <property name="collidable" value="true"/>
-   </properties>
-  </object>
   <object id="6" name="Checkpoint 4" x="3204.5" y="319.5" width="61" height="93">
    <properties>
     <property name="checkpoint" value="true"/>
@@ -26419,5 +26413,18 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup name="Enemies"/>
+ <objectgroup name="Enemies">
+  <object id="11" name="One angry bot" x="822.667" y="658.667" width="36" height="42.6667">
+   <properties>
+    <property name="enemyGenerator" value="oneShot"/>
+    <property name="spawn" value="angryBot"/>
+   </properties>
+  </object>
+  <object id="13" name="One angry bot" x="2398" y="665.333" width="36" height="42.6667">
+   <properties>
+    <property name="enemyGenerator" value="oneShot"/>
+    <property name="spawn" value="angryBot"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

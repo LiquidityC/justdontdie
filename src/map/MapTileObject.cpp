@@ -2,7 +2,7 @@
 
 #include "MapTileObject.h"
 #include "RocketGenerator.h"
-#include "EnemyGenerator.h"
+#include "OneShotEnemyGenerator.h"
 #include "../CustomGameData.h"
 #include "../LayerService.h"
 #include "../Random.h"
@@ -12,15 +12,14 @@ void MapTileObject::setProperty(std::string prop, std::string value)
 	properties[prop] = value;
 }
 
-std::string MapTileObject::getProperty(std::string prop)
+std::string MapTileObject::getProperty(std::string prop) const
 {
-	return properties[prop];
+	return properties.find(prop)->second;
 }
 
 bool MapTileObject::hasProperty(std::string prop) const
 {
-	auto pair = properties.find(prop);
-	if (pair == properties.end()) {
+	if (properties.find(prop) == properties.end()) {
 		return false;
 	}
 	return true;
@@ -32,7 +31,10 @@ void MapTileObject::initTile()
 		generators.push_back(new RocketGenerator());
 	}
 	if (hasProperty("enemyGenerator")) {
-		generators.push_back(new EnemyGenerator());
+		std::string type = getProperty("enemyGenerator");
+		if (type == "oneShot") {
+			generators.push_back(new OneShotEnemyGenerator());
+		}
 	}
 	if (hasProperty("destructible")) {
 		tileBreakEmitter = new ParticleEmitter(ParticleType::FIRE_PARTICLE);

@@ -8,13 +8,11 @@ class MapTileObject;
 
 class EnemyGenerator : public EntityGenerator
 {
-	private:
-		const int defaultSpawnTime = 5;
-
-		flat2d::Timer spawnTimer;
+	protected:
+		virtual bool timeToSpawn() = 0;
 
 	public:
-		void preMove(const flat2d::GameData *gameData, const MapTileObject *tile);
+		virtual void preMove(const flat2d::GameData *gameData, const MapTileObject *tile);
 };
 
 #endif // MAP_ENEMYGENERATOR_H_

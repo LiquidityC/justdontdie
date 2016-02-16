@@ -22,13 +22,10 @@ class MapTileObject : public flat2d::Entity
 		ParticleEmitter *tileBreakEmitter = nullptr;
 		std::vector<EntityGenerator*> generators;
 
-		void initTile();
-
 	public:
 		MapTileObject(int x, int y, int w, int h, SDL_Texture* t)
 			: Entity(x, y, w, h) {
 				setTexture(t);
-				initTile();
 			}
 
 		~MapTileObject() {
@@ -38,6 +35,8 @@ class MapTileObject : public flat2d::Entity
 			}
 		}
 
+		void initTile();
+
 		int getType() const {
 			return EntityType::TILE;
 		}
@@ -46,7 +45,7 @@ class MapTileObject : public flat2d::Entity
 		void render(const flat2d::RenderData*) const;
 
 		void setProperty(std::string, std::string);
-		std::string getProperty(std::string);
+		std::string getProperty(std::string) const;
 		bool hasProperty(std::string) const;
 
 		bool isHidden() const;

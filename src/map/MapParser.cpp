@@ -252,8 +252,8 @@ bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData)
 		tileObj->getEntityProperties().setDepth(depth);
 
 		// Set properties
-		for (auto it = tile->properties.begin(); it != tile->properties.end(); it++) {
-			tileObj->setProperty(it->first, it->second);
+		for (auto property : tile->properties) {
+			tileObj->setProperty(property.first, property.second);
 		}
 		tileObj->getEntityProperties().setColliderShape(tile->collider);
 		if (tile->collider.w != 0 && tile->collider.h != 0) {
@@ -266,6 +266,7 @@ bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData)
 
 		SDL_Rect clip = { xclip, yclip, tileset->tileWidth, tileset->tileHeight };
 		tileObj->setClip(clip);
+		tileObj->initTile();
 		gameData->getEntityContainer()->registerObject(tileObj, layerService->getLayerIndex(layerName));
 
 		col++;
@@ -353,6 +354,7 @@ bool MapParser::parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData *g
 			}
 			property = property->next_sibling();
 		}
+		tileObj->initTile();
 		gameData->getEntityContainer()->registerObject(tileObj, layerService->getLayerIndex(layerName));
 	}
 	node = node->next_sibling();
