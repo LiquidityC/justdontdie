@@ -26,7 +26,7 @@ bool MapTileObject::hasProperty(std::string prop) const
 	return true;
 }
 
-void MapTileObject::init()
+void MapTileObject::initTile()
 {
 	if (hasProperty("rocketLauncher")) {
 		generators.push_back(new RocketGenerator());

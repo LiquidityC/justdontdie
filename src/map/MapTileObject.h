@@ -22,13 +22,13 @@ class MapTileObject : public flat2d::Entity
 		ParticleEmitter *tileBreakEmitter = nullptr;
 		std::vector<EntityGenerator*> generators;
 
-		void init();
+		void initTile();
 
 	public:
 		MapTileObject(int x, int y, int w, int h, SDL_Texture* t)
 			: Entity(x, y, w, h) {
 				setTexture(t);
-				init();
+				initTile();
 			}
 
 		~MapTileObject() {
