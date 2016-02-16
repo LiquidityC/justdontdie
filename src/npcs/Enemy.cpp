@@ -1,13 +1,10 @@
+#include <SDL2/SDL.h>
+#include <flat/flat.h>
 #include "Enemy.h"
 #include "../MoveUtil.h"
 
 void Enemy::init(const flat2d::GameData *gameData)
 {
-	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/angry_bot.png",
-				gameData->getRenderData()->getRenderer()));
-	SDL_Rect clip = { 0, 0, 32, 32 };
-	setClip(clip);
-
 	entityProperties.setCollidable(true);
 }
 
