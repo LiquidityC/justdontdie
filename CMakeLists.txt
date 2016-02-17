@@ -14,6 +14,12 @@ add_definitions("-Wall")
 if(DEBUG)
 	add_definitions("-DDEBUG=1")
 endif(DEBUG)
+if (FPS_DBG)
+	add_definitions("-DFPS_DBG=1")
+endif(FPS_DBG)
+if (COLLISION_DBG)
+	add_definitions("-DCOLLISION_DBG=1")
+endif(COLLISION_DBG)
 
 if(MINGW)
 	set(DLLS bin/win/SDL2.dll bin/win/SDL2_image.dll bin/win/SDL2_mixer.dll bin/win/SDL2_ttf.dll

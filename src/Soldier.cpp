@@ -88,6 +88,7 @@ void Soldier::preMove(const flat2d::GameData *data)
 	}
 
 	bloodEmitter->emit(data, box);
+	ghostEmitter->emit(data, box);
 	if (killed && deathTimer.getTicks() < 3000) {
 		return;
 	} else if (killed) {
@@ -114,7 +115,7 @@ void Soldier::render(const flat2d::RenderData* data) const
 		return;
 	}
 
-#ifdef DEBUG
+#ifdef COLLISION_DBG
 	SDL_SetRenderDrawColor(data->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
 	const flat2d::EntityProperties::Areas currentAreas = entityProperties.getCurrentAreas();
 	for(auto it = currentAreas.begin(); it != currentAreas.end(); it++) {
@@ -275,19 +276,16 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 
 void Soldier::kill(const flat2d::GameData *gameData)
 {
-	ParticleEngine *particleEngine = static_cast<CustomGameData*>(
-			gameData->getCustomGameData())->getParticleEngine();
-
 	if (powerupContainer->isGhostMode()) {
-		particleEngine->createGhostSprayAt(
-				entityProperties.getXpos() + static_cast<int>(entityProperties.getWidth()/2),
-				entityProperties.getYpos() + static_cast<int>(entityProperties.getHeight()/2));
+		ghostEmitter->setEmissionCount(50);
 	} else {
 		bloodEmitter->setEmissionCount(200);
 	}
 
 	killed = true;
 	entityProperties.setCollidable(false);
+	entityProperties.setXvel(0);
+	entityProperties.setYvel(0);
 	fallTimer.stop();
 	deathTimer.start();
 	motionController->freeze();

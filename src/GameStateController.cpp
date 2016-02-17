@@ -80,7 +80,7 @@ void GameStateController::resetGame(flat2d::GameData *gameData)
 	rLoader->loadMusic(gameData);
 	rLoader->loadSoundEffects(gameData);
 
-#ifdef DEBUG
+#ifdef FPS_DBG
 	FrameCounter *counter = new FrameCounter(10, 10);
 	counter->init(gameData);
 	entityContainer->registerObject(counter, layerService->getLayerIndex(OVERLAY_LAYER));

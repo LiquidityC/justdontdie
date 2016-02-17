@@ -34,6 +34,7 @@ class Soldier : public flat2d::Entity
 		ParticleEmitter *boostEmitter;
 		ParticleEmitter *formChangeEmitter;
 		ParticleEmitter *bloodEmitter;
+		ParticleEmitter *ghostEmitter;
 
 		flat2d::Timer deathTimer;
 		flat2d::Timer spawnGraceTimer;
@@ -75,6 +76,7 @@ class Soldier : public flat2d::Entity
 				boostEmitter = new ParticleEmitter(ParticleType::BOOST_PARTICLE);
 				formChangeEmitter = new ParticleEmitter(ParticleType::FIRE_PARTICLE);
 				bloodEmitter = new ParticleEmitter(ParticleType::BLOOD_PARTICLE);
+				ghostEmitter = new ParticleEmitter(ParticleType::GHOST_PARTICLE);
 				setInputHandler(true);
 			}
 
@@ -88,6 +90,7 @@ class Soldier : public flat2d::Entity
 			delete boostEmitter;
 			delete formChangeEmitter;
 			delete bloodEmitter;
+			delete ghostEmitter;
 		}
 
 		int getType() const {
