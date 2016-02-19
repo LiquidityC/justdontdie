@@ -1,3 +1,4 @@
+#include <flat/flat.h>
 #include <sstream>
 #include <iomanip>
 #include <string>
@@ -32,6 +33,8 @@ void FrameCounter::preRender(const flat2d::GameData *gameData)
 		ss.str("");
 		ss.flush();
 
+		checkDynamicExecutionTimes(gameData);
+
 		currentFps = 0;
 		updateTimer.stop();
 		updateTimer.start();
@@ -42,18 +45,45 @@ void FrameCounter::preRender(const flat2d::GameData *gameData)
 	currentFps++;
 }
 
+void FrameCounter::checkDynamicExecutionTimes(const flat2d::GameData* gameData)
+{
+	SDL_Renderer *renderer = gameData->getRenderData()->getRenderer();
+	const flat2d::RuntimeAnalyzer::FloatMap* data = flat2d::RuntimeAnalyzer::getAvgTimes();
+	if (data->size() > addedTextures) {
+		std::stringstream ss;
+		for (auto &functionTime : *data) {
+			ss << functionTime.first << ": " << functionTime.second;
+			flat2d::Texture *texture = createTexture(xpos, ypos += 15, ss.str(), renderer);
+			textures.push_back(texture);
+			addedTextures++;
+			ss.str("");
+		}
+		ss.flush();
+	}
+
+	int counter = 0;
+	std::stringstream ss;
+	for (auto &functionTime : *data) {
+		ss << functionTime.first << ": " << std::fixed << std::setprecision(5) <<  functionTime.second;
+		textures[counter]->loadFromRenderedText(ss.str(), color, renderer);
+		ss.str("");
+		counter++;
+	}
+	ss.flush();
+}
+
 void FrameCounter::init(const flat2d::GameData *gameData)
 {
 	SDL_Renderer *renderer = gameData->getRenderData()->getRenderer();
 
-	avgFpsText = createTexture(10, 10, "AVG FPS:", renderer);
-	avgFpsCount = createTexture(100, 10, "0", renderer);
+	avgFpsText = createTexture(xpos, ypos, "AVG FPS:", renderer);
+	avgFpsCount = createTexture(xpos + 90, ypos, "0", renderer);
 
-	fpsText = createTexture(10, 25, "FPS:", renderer);
-	fpsCount = createTexture(100, 25, "0", renderer);
+	fpsText = createTexture(xpos, ypos += 15, "FPS:", renderer);
+	fpsCount = createTexture(xpos + 90, ypos, "0", renderer);
 
-	dtText = createTexture(10, 40, "DELTATIME:", renderer);
-	dtCount = createTexture(100, 40, "0", renderer);
+	dtText = createTexture(xpos, ypos += 15, "DELTATIME:", renderer);
+	dtCount = createTexture(xpos + 90, ypos, "0", renderer);
 }
 
 flat2d::Texture* FrameCounter::createTexture(int xpos, int ypos, std::string text, SDL_Renderer *renderer)
@@ -72,4 +102,8 @@ void FrameCounter::render(const flat2d::RenderData *renderData) const
 	fpsCount->render(renderData->getRenderer());
 	dtText->render(renderData->getRenderer());
 	dtCount->render(renderData->getRenderer());
+
+	for (auto texture : textures) {
+		texture->render(renderData->getRenderer());
+	}
 }

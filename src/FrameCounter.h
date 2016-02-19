@@ -3,10 +3,18 @@
 
 #include <flat/flat.h>
 #include <string>
+#include <vector>
 
 class FrameCounter : public flat2d::Entity
 {
+	using Textures = std::vector<flat2d::Texture*>;
+
 	private:
+		int xpos = 10,
+			ypos = 10;
+
+		uint addedTextures = 0;
+
 		flat2d::Timer fpsTimer;
 		flat2d::Timer updateTimer;
 		SDL_Color color = { 0, 0, 0 };
@@ -20,6 +28,8 @@ class FrameCounter : public flat2d::Entity
 		flat2d::Texture *dtText = nullptr;
 		flat2d::Texture *dtCount = nullptr;
 
+		Textures textures;
+
 		int countedFrames = 0;
 		int currentFps = 0;
 
@@ -30,8 +40,6 @@ class FrameCounter : public flat2d::Entity
 			setFixedPosition(true);
 			entityProperties.setCollidable(false);
 		}
-
-
 
 		~FrameCounter() {
 			if (fpsText)
@@ -46,10 +54,14 @@ class FrameCounter : public flat2d::Entity
 				delete dtText;
 			if (dtCount)
 				delete dtCount;
+			for (auto it : textures) {
+				delete it;
+			}
 		}
 
 		void init(const flat2d::GameData*);
 		void preRender(const flat2d::GameData*);
+		void checkDynamicExecutionTimes(const flat2d::GameData*);
 		void render(const flat2d::RenderData*) const;
 };
 
