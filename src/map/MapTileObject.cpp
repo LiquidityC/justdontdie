@@ -3,6 +3,7 @@
 #include "MapTileObject.h"
 #include "RocketGenerator.h"
 #include "OneShotEnemyGenerator.h"
+#include "ProximityEnemyGenerator.h"
 #include "../CustomGameData.h"
 #include "../LayerService.h"
 #include "../Random.h"
@@ -34,6 +35,8 @@ void MapTileObject::initTile()
 		std::string type = getProperty("enemyGenerator");
 		if (type == "oneShot") {
 			generators.push_back(new OneShotEnemyGenerator());
+		} else if (type == "proximity") {
+			generators.push_back(new ProximityEnemyGenerator());
 		}
 	}
 	if (hasProperty("destructible")) {

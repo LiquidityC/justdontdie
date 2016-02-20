@@ -31,6 +31,11 @@ void FrameCounter::preRender(const flat2d::GameData *gameData)
 		ss << gameData->getDeltatimeMonitor()->getDeltaTime();
 		dtCount->loadFromRenderedText(ss.str(), color, renderer);
 		ss.str("");
+
+		ss << gameData->getEntityContainer()->getObjectCount();
+		objCount->loadFromRenderedText(ss.str(), color, renderer);
+		ss.str("");
+
 		ss.flush();
 
 		checkDynamicExecutionTimes(gameData);
@@ -84,6 +89,9 @@ void FrameCounter::init(const flat2d::GameData *gameData)
 
 	dtText = createTexture(xpos, ypos += 15, "DELTATIME:", renderer);
 	dtCount = createTexture(xpos + 90, ypos, "0", renderer);
+
+	objText = createTexture(xpos, ypos += 15, "OBJECTS:", renderer);
+	objCount = createTexture(xpos + 90, ypos, "0", renderer);
 }
 
 flat2d::Texture* FrameCounter::createTexture(int xpos, int ypos, std::string text, SDL_Renderer *renderer)
@@ -102,6 +110,8 @@ void FrameCounter::render(const flat2d::RenderData *renderData) const
 	fpsCount->render(renderData->getRenderer());
 	dtText->render(renderData->getRenderer());
 	dtCount->render(renderData->getRenderer());
+	objText->render(renderData->getRenderer());
+	objCount->render(renderData->getRenderer());
 
 	for (auto texture : textures) {
 		texture->render(renderData->getRenderer());

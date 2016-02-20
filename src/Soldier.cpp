@@ -77,14 +77,10 @@ void Soldier::preMove(const flat2d::GameData *data)
 	// Center camera and check if we are outside screen, below, left of, right of
 	if (!killed) {
 		flat2d::Camera *camera = data->getRenderData()->getCamera();
-		camera->centerOn(box.x + (box.w/2), box.y + (box.h/2));
-		int screenXpos = camera->getScreenXposFor(box.x);
-		int screenYpos = camera->getScreenYposFor(box.y);
-		if (screenXpos + box.w < 0 || screenXpos > GameSettings::SCREEN_WIDTH) {
-			kill(data);
-		} else if (screenYpos > GameSettings::SCREEN_HEIGHT) {
+		if (camera->isOutOfMapBounds(box)) {
 			kill(data);
 		}
+		camera->centerOn(box.x + (box.w/2), box.y + (box.h/2));
 	}
 
 	bloodEmitter->emit(data, box);

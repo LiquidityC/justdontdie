@@ -28,6 +28,9 @@ class FrameCounter : public flat2d::Entity
 		flat2d::Texture *dtText = nullptr;
 		flat2d::Texture *dtCount = nullptr;
 
+		flat2d::Texture *objText = nullptr;
+		flat2d::Texture *objCount = nullptr;
+
 		Textures textures;
 
 		int countedFrames = 0;
@@ -54,6 +57,10 @@ class FrameCounter : public flat2d::Entity
 				delete dtText;
 			if (dtCount)
 				delete dtCount;
+			if (objText)
+				delete objText;
+			if (objCount)
+				delete objCount;
 			for (auto it : textures) {
 				delete it;
 			}
