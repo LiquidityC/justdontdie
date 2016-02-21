@@ -154,7 +154,7 @@ void SoldierMotionController::preMove(const flat2d::GameData* data)
 {
 	if (boostTimer.isStarted() && boostTimer.getTicks() > 200) {
 		boosting = false;
-		soldier->boostEmitter->setRunning(false);
+		soldier->particleEmitters[soldier->BOOST_EMITTER]->setRunning(false);
 	}
 	if (soldier->grounded) {
 		boostEnabled = true;
@@ -245,7 +245,7 @@ void SoldierMotionController::use()
 		boostTimer.start();
 		boosting = true;
 		boostEnabled = false;
-		soldier->boostEmitter->setRunning(true);
+		soldier->particleEmitters[soldier->BOOST_EMITTER]->setRunning(true);
 	}
 }
 void SoldierMotionController::jump()

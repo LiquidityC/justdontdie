@@ -3,7 +3,7 @@
 
 void SoldierPowerupContainer::setMode(Powerup powerup)
 {
-	soldier->formChangeEmitter->setEmissionCount(100);
+	soldier->particleEmitters[soldier->CHANGE_EMITTER]->setEmissionCount(100);
 	ghostMode = false;
 	bulletMode = false;
 

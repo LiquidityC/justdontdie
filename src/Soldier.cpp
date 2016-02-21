@@ -83,8 +83,9 @@ void Soldier::preMove(const flat2d::GameData *data)
 		camera->centerOn(box.x + (box.w/2), box.y + (box.h/2));
 	}
 
-	bloodEmitter->emit(data, box);
-	ghostEmitter->emit(data, box);
+	for (auto &emitter : particleEmitters) {
+		emitter.second->emit(data, box);
+	}
 	if (killed && deathTimer.getTicks() < 3000) {
 		return;
 	} else if (killed) {
@@ -92,8 +93,6 @@ void Soldier::preMove(const flat2d::GameData *data)
 	}
 
 	motionController->preMove(data);
-	boostEmitter->emit(data, box);
-	formChangeEmitter->emit(data, box);
 
 	if (grounded) {
 		grounded = !isFalling();
@@ -273,9 +272,9 @@ bool Soldier::handleRocketCollision(Rocket* o, const flat2d::GameData* data)
 void Soldier::kill(const flat2d::GameData *gameData)
 {
 	if (powerupContainer->isGhostMode()) {
-		ghostEmitter->setEmissionCount(50);
+		particleEmitters[GHOST_EMITTER]->setEmissionCount(50);
 	} else {
-		bloodEmitter->setEmissionCount(200);
+		particleEmitters[BLOOD_EMITTER]->setEmissionCount(200);
 	}
 
 	killed = true;

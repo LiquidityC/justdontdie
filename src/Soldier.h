@@ -2,6 +2,8 @@
 #define SOLDIER_H_
 
 #include <flat/flat.h>
+#include <map>
+#include <string>
 #include "EntityType.h"
 #include "GhostOverlay.h"
 #include "SoldierMotionController.h"
@@ -16,11 +18,18 @@ class Soldier : public flat2d::Entity
 	friend class SoldierMotionController;
 	friend class SoldierPowerupContainer;
 
+	using ParticleEmitterList = std::map<std::string, ParticleEmitter*>;
+
 	typedef struct {
 		int x, y;
 	} Clip;
 
 	private:
+		const std::string BLOOD_EMITTER		= "bloodEmitter";
+		const std::string GHOST_EMITTER		= "ghostEmitter";
+		const std::string CHANGE_EMITTER	= "changeEmitter";
+		const std::string BOOST_EMITTER		= "boostEmitter";
+
 		SoldierMotionController *motionController = nullptr;
 		SoldierPowerupContainer *powerupContainer = nullptr;
 
@@ -31,10 +40,7 @@ class Soldier : public flat2d::Entity
 		bool doubleJumped = true;
 		bool floating = false;
 
-		ParticleEmitter *boostEmitter;
-		ParticleEmitter *formChangeEmitter;
-		ParticleEmitter *bloodEmitter;
-		ParticleEmitter *ghostEmitter;
+		ParticleEmitterList particleEmitters;
 
 		flat2d::Timer deathTimer;
 		flat2d::Timer spawnGraceTimer;
@@ -73,10 +79,10 @@ class Soldier : public flat2d::Entity
 				motionController = new SoldierMotionController(this);
 				powerupContainer = new SoldierPowerupContainer(this);
 				entityProperties.setColliderShape({ 5, 1, 18, 22 });
-				boostEmitter = new ParticleEmitter(ParticleType::BOOST_PARTICLE);
-				formChangeEmitter = new ParticleEmitter(ParticleType::FIRE_PARTICLE);
-				bloodEmitter = new ParticleEmitter(ParticleType::BLOOD_PARTICLE);
-				ghostEmitter = new ParticleEmitter(ParticleType::GHOST_PARTICLE);
+				particleEmitters[BOOST_EMITTER] = new ParticleEmitter(ParticleType::BOOST_PARTICLE);
+				particleEmitters[CHANGE_EMITTER] = new ParticleEmitter(ParticleType::FIRE_PARTICLE);
+				particleEmitters[BLOOD_EMITTER] = new ParticleEmitter(ParticleType::BLOOD_PARTICLE);
+				particleEmitters[GHOST_EMITTER] = new ParticleEmitter(ParticleType::GHOST_PARTICLE);
 				setInputHandler(true);
 			}
 
@@ -85,12 +91,11 @@ class Soldier : public flat2d::Entity
 				SDL_DestroyTexture(texture);
 				texture = nullptr;
 			}
+			for (auto &emitter : particleEmitters) {
+				delete emitter.second;
+			}
 			delete motionController;
 			delete powerupContainer;
-			delete boostEmitter;
-			delete formChangeEmitter;
-			delete bloodEmitter;
-			delete ghostEmitter;
 		}
 
 		int getType() const {
