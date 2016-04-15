@@ -96,3 +96,8 @@ void GameStateController::loadNextMap()
 	currentMapIndex++;
 	reset = true;
 }
+
+bool GameStateController::quit()
+{
+	return false;
+}
