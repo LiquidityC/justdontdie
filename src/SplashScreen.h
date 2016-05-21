@@ -2,15 +2,25 @@
 #define	SPLASHSCREEN_H_
 
 #include <flat/flat.h>
-
-/**
- * NOTE(Linus): This isn't used yet. But I don't want to srop it because it definitely will be used.
- */
+#include <string>
 
 class SplashScreen : public flat2d::Entity
 {
 	private:
 		flat2d::Timer showTimer;
+		std::string filename;
+
+	public:
+		explicit SplashScreen(std::string fname) : Entity(204, 136, 592, 528), filename(fname) {
+			entityProperties.setCollidable(false);
+		}
+
+		~SplashScreen() {
+			if (texture != nullptr)
+				SDL_DestroyTexture(texture);
+		}
+
+		void init(const flat2d::GameData *gameData);
 };
 
 #endif // SPLASHSCREEN_H_

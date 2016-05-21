@@ -6,20 +6,25 @@ project (JustDontDie CXX)
 set (JustDontDie_MAJOR_VERSION 1)
 set (JustDontDie_MINOR_VERSION 0)
 
+# COMPILE FLAGS
+set(DEBUG 0 CACHE BOOLEAN "Debug build")
+set(DEBUG_FPS 0 CACHE BOOLEAN "FPS performance debugging info")
+set(DEBUG_COLLISION 0 CACHE BOOLEAN "Collision debugging info")
+
 configure_file (
   "${PROJECT_SOURCE_DIR}/src/Config.h.in"
   "${PROJECT_BINARY_DIR}/Config.h"
   )
-add_definitions("-Wall")
-if(DEBUG)
+
+if (DEBUG)
 	add_definitions("-DDEBUG=1")
 endif(DEBUG)
-if (FPS_DBG)
+if (DEBUG_FPS)
 	add_definitions("-DFPS_DBG=1")
-endif(FPS_DBG)
-if (COLLISION_DBG)
+endif(DEBUG_FPS)
+if (DEBUG_COLLISION)
 	add_definitions("-DCOLLISION_DBG=1")
-endif(COLLISION_DBG)
+endif(DEBUG_COLLISION)
 
 if(MINGW)
 	set(DLLS bin/win/SDL2.dll bin/win/SDL2_image.dll bin/win/SDL2_mixer.dll bin/win/SDL2_ttf.dll
@@ -42,7 +47,7 @@ set(COMMON_SOURCES ${NPC_SOURCES} ${AI_SOURCES} ${MAP_SOURCES} src/BloodParticle
 	src/LayerService.cpp src/Particle.cpp
 	src/ParticleEmitter.cpp src/ParticleEngine.cpp src/Random.cpp src/ResourceContainer.cpp
 	src/ResourceLoader.cpp src/Soldier.cpp src/SoldierMotionController.cpp
-	src/SoldierPowerupContainer.cpp src/MoveUtil.cpp)
+	src/SoldierPowerupContainer.cpp src/MoveUtil.cpp src/SplashScreen.cpp)
 
 add_executable(justdontdie src/game.cpp ${COMMON_SOURCES})
 

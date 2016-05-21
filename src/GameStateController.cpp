@@ -6,6 +6,7 @@
 #include "npcs/AngryBot.h"
 #include "npcs/ai/WalkingAgent.h"
 #include "FrameCounter.h"
+#include "SplashScreen.h"
 
 GameStateController::GameStateController()
 {
@@ -19,12 +20,23 @@ void GameStateController::handle(const SDL_Event& event)
 		if (event.key.keysym.sym == SDLK_5) {
 			reset = true;
 		}
+		if (currentState == SPLASH && splashTimer.isStarted()) {
+			splashTimer.stop();
+			currentState = GAME;
+			reset = true;
+		}
 	}
 #endif
 }
 
 bool GameStateController::gameStateCheck(flat2d::GameData *gameData)
 {
+	if (splashTimer.isStarted() && splashTimer.getTicks() > 5000) {
+		splashTimer.stop();
+		currentState = GAME;
+		reset = true;
+	}
+
 	if (reset) {
 		resetGame(gameData);
 		reset = false;
@@ -41,6 +53,19 @@ void GameStateController::initMaps()
 }
 
 void GameStateController::resetGame(flat2d::GameData *gameData)
+{
+	switch (currentState) {
+		case SPLASH:
+			loadSplash(gameData);
+			break;
+		case GAME:
+		default:
+			loadGame(gameData);
+			break;
+	}
+}
+
+void GameStateController::clearAllAssets(flat2d::GameData *gameData)
 {
 	flat2d::EntityContainer* entityContainer = gameData->getEntityContainer();
 
@@ -62,6 +87,31 @@ void GameStateController::resetGame(flat2d::GameData *gameData)
 	// Make sure layers are cleared before parsing the map
 	LayerService *layerService = customGameData->getLayerService();
 	layerService->clearAllLayers();
+}
+
+void GameStateController::loadSplash(flat2d::GameData *gameData)
+{
+	// Clean up first
+	clearAllAssets(gameData);
+
+	flat2d::Texture *texture = new flat2d::Texture(0, 0);
+	texture->loadFromFile("resources/images/oliveshark_logo.png", gameData->getRenderData()->getRenderer());
+
+	SplashScreen *splash = new SplashScreen("resources/images/oliveshark_logo.png");
+	splash->init(gameData);
+	gameData->getEntityContainer()->registerObject(splash);
+
+	splashTimer.start();
+}
+
+void GameStateController::loadGame(flat2d::GameData *gameData)
+{
+	// Clean up first
+	clearAllAssets(gameData);
+
+	flat2d::EntityContainer *entityContainer = gameData->getEntityContainer();
+	CustomGameData *customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
+	LayerService *layerService = customGameData->getLayerService();
 
 	MapParser parser;
 	MapData map = maps[currentMapIndex];
