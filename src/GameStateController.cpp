@@ -15,18 +15,18 @@ GameStateController::GameStateController()
 
 void GameStateController::handle(const SDL_Event& event)
 {
-#ifndef DEBUG
 	if (event.type == SDL_KEYDOWN) {
+#ifndef DEBUG
 		if (event.key.keysym.sym == SDLK_5) {
 			reset = true;
 		}
+#endif
 		if (currentState == SPLASH && splashTimer.isStarted()) {
 			splashTimer.stop();
 			currentState = GAME;
 			reset = true;
 		}
 	}
-#endif
 }
 
 bool GameStateController::gameStateCheck(flat2d::GameData *gameData)

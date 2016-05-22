@@ -30,7 +30,12 @@ int main( int argc, char* args[] )
 	if (!flat->initSDL(ss.str(), GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT)) {
 		return -1;
 	}
+	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 	if (!flat->initContainers()) {
+		return -1;
+	}
+	if (SDL_RenderSetLogicalSize(flat->getGameData()->getRenderData()->getRenderer(),
+			GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT)) {
 		return -1;
 	}
 
@@ -38,7 +43,7 @@ int main( int argc, char* args[] )
 	gameStateController->resetGame(flat->getGameData());
 
 	flat2d::GameEngine *engine = flat->getGameEngine();
-	engine->init(GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT, GameSettings::SCREEN_FPS);
+	engine->init(GameSettings::SCREEN_FPS);
 
 	// Start the game loop
 	engine->run(gameStateController);
