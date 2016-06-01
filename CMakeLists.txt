@@ -27,10 +27,20 @@ if (DEBUG_COLLISION)
 endif(DEBUG_COLLISION)
 
 if(MINGW)
-	set(DLLS bin/win/SDL2.dll bin/win/SDL2_image.dll bin/win/SDL2_mixer.dll bin/win/SDL2_ttf.dll
-		bin/win/libbz2-1.dll bin/win/libfreetype-6.dll bin/win/libgcc_s_seh-1.dll
-		bin/win/libpng16-16.dll bin/win/libsqlite3-0.dll bin/win/libstdc++-6.dll bin/win/libwinpthread-1.dll
-		bin/win/zlib1.dll)
+	set(DLLS
+		bin/win/SDL2.dll
+		bin/win/SDL2_image.dll
+		bin/win/SDL2_mixer.dll
+		bin/win/SDL2_ttf.dll
+		bin/win/libbz2-1.dll
+		bin/win/libfreetype-6.dll
+		bin/win/libgcc_s_seh-1.dll
+		bin/win/libpng16-16.dll
+		bin/win/libsqlite3-0.dll
+		bin/win/libstdc++-6.dll
+		bin/win/libwinpthread-1.dll
+		bin/win/zlib1.dll
+		)
 endif(MINGW)
 
 add_subdirectory(flat)
@@ -38,18 +48,54 @@ add_subdirectory(flat)
 include_directories(${PROJECT_BINARY_DIR} ${PROJECT_BINARY_DIR}/flat/include include)
 link_directories(${PROJECT_BINARY_DIR}/flat/lib)
 
-set(NPC_SOURCES src/npcs/Enemy.cpp src/npcs/Rocket.cpp src/npcs/AngryBot.cpp)
-set(AI_SOURCES src/npcs/ai/WalkingAgent.cpp src/npcs/ai/NonFallingWalkingAgent.cpp)
-set(MAP_SOURCES src/map/MapParser.cpp src/map/MapTileObject.cpp src/map/RocketGenerator.cpp src/map/EnemyGenerator.cpp
-	src/map/ProximityEnemyGenerator.cpp)
-set(COMMON_SOURCES ${NPC_SOURCES} ${AI_SOURCES} ${MAP_SOURCES} src/BloodParticle.cpp src/BoostParticle.cpp src/FireParticle.cpp
-	src/FrameCounter.cpp src/GameStateController.cpp src/GhostOverlay.cpp src/GhostParticle.cpp
-	src/LayerService.cpp src/Particle.cpp
-	src/ParticleEmitter.cpp src/ParticleEngine.cpp src/Random.cpp src/ResourceContainer.cpp
-	src/ResourceLoader.cpp src/Soldier.cpp src/SoldierMotionController.cpp
-	src/SoldierPowerupContainer.cpp src/MoveUtil.cpp src/SplashScreen.cpp)
+set(NPC_SOURCES
+	src/npcs/Enemy.cpp
+	src/npcs/Rocket.cpp
+	src/npcs/AngryBot.cpp
+	)
 
-add_executable(justdontdie src/game.cpp ${COMMON_SOURCES})
+set(AI_SOURCES
+	src/npcs/ai/WalkingAgent.cpp
+	src/npcs/ai/NonFallingWalkingAgent.cpp
+	)
+
+set(MAP_SOURCES
+	src/map/MapParser.cpp
+	src/map/MapTileObject.cpp
+	src/map/RocketGenerator.cpp
+	src/map/EnemyGenerator.cpp
+	src/map/ProximityEnemyGenerator.cpp
+	)
+
+set(COMMON_SOURCES
+	${NPC_SOURCES}
+	${AI_SOURCES}
+	${MAP_SOURCES}
+	src/BloodParticle.cpp
+	src/BoostParticle.cpp
+	src/FireParticle.cpp
+	src/FrameCounter.cpp
+	src/GameStateController.cpp
+	src/GhostOverlay.cpp
+	src/GhostParticle.cpp
+	src/LayerService.cpp
+	src/Particle.cpp
+	src/ParticleEmitter.cpp
+	src/ParticleEngine.cpp
+	src/Random.cpp
+	src/ResourceContainer.cpp
+	src/ResourceLoader.cpp
+	src/Soldier.cpp
+	src/SoldierMotionController.cpp
+	src/SoldierPowerupContainer.cpp
+	src/MoveUtil.cpp
+	src/SplashScreen.cpp
+	)
+
+add_executable(justdontdie
+	src/game.cpp
+	${COMMON_SOURCES}
+	)
 
 if(MINGW)
 	target_link_libraries(justdontdie flat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
