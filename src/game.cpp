@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <cstring>
 
 #include "Soldier.h"
 #include "ParticleEngine.h"
@@ -20,6 +21,9 @@
 int main( int argc, char* args[] )
 {
 	flat2d::FlatBuilder *flat = new flat2d::FlatBuilder;
+	if (argc > 1 && !strcmp(args[1], "--hi-dpi")) {
+		flat->setHiDPI(true);
+	}
 
 	std::stringstream ss;
 	ss << "Just Don't Die " << VERSION_MAJOR << "." << VERSION_MINOR;
@@ -30,12 +34,9 @@ int main( int argc, char* args[] )
 	if (!flat->initSDL(ss.str(), GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT)) {
 		return -1;
 	}
+
 	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
 	if (!flat->initContainers()) {
-		return -1;
-	}
-	if (SDL_RenderSetLogicalSize(flat->getGameData()->getRenderData()->getRenderer(),
-			GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT)) {
 		return -1;
 	}
 

@@ -31,6 +31,9 @@ class FrameCounter : public flat2d::Entity
 		flat2d::Texture *objText = nullptr;
 		flat2d::Texture *objCount = nullptr;
 
+		flat2d::Texture *colText = nullptr;
+		flat2d::Texture *colCount = nullptr;
+
 		Textures textures;
 
 		int countedFrames = 0;

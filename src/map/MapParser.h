@@ -4,11 +4,13 @@
 #include <flat/flat.h>
 #include <string>
 #include <map>
+#include <vector>
 
 #include "rapidxml-1.13/rapidxml.hpp"
 #include "rapidxml-1.13/rapidxml_utils.hpp"
 
 class ResourceContainer;
+class MapTileObject;
 
 class MapParser
 {
@@ -42,6 +44,8 @@ class MapParser
 		std::map<int, Tileset> tilesets;
 	} Map;
 
+	typedef std::vector< std::vector<MapTileObject*> > Matrix;
+
 	private:
 		Map map;
 		std::string dir;
@@ -69,6 +73,9 @@ class MapParser
 		bool checkNodeName( rapidxml::xml_node<>*, std::string) const;
 		bool checkAttrName( rapidxml::xml_attribute<>*, std::string) const;
 		bool checkAttrValue( rapidxml::xml_attribute<>*, std::string) const;
+
+		Matrix populateCollidableMatrix(const flat2d::GameData*, int layer);
+		void mergeHorizontalColliders(const flat2d::GameData*);
 };
 
 #endif // MAP_MAPPARSER_H_

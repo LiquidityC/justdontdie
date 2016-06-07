@@ -2,7 +2,9 @@
 #include <cstdlib>
 #include <string>
 #include <map>
+#include <vector>
 
+#include "../Macros.h"
 #include "MapParser.h"
 #include "MapTileObject.h"
 #include "../CustomGameData.h"
@@ -46,13 +48,15 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 		return false;
 	}
 
-	// Parse all the layers and objectgroups
+	// Parse all the layers
 	for (xml_node<> *layer = node->first_node("layer"); layer; layer = layer->next_sibling("layer")) {
 		if (!parseLayer(layer, gameData)) {
 			std::cerr << "Failed to parse layers" << std::endl;
 			return false;
 		}
 	}
+
+	// Parse all object groups
 	for (xml_node<> *objectgroup = node->first_node("objectgroup");
 			objectgroup;
 			objectgroup = objectgroup->next_sibling("objectgroup"))
@@ -63,7 +67,80 @@ bool MapParser::createMapFrom(flat2d::GameData *gameData, std::string dir, std::
 		}
 	}
 
+	mergeHorizontalColliders(gameData);
+
 	return true;
+}
+
+MapParser::Matrix MapParser::populateCollidableMatrix(const flat2d::GameData *gameData, int layer)
+{
+		Matrix matrix;
+		for (int i = 0; i < map.width; i++) {
+			std::vector<MapTileObject*> column(map.height, nullptr);
+			matrix.push_back(column);
+		}
+
+		gameData->getEntityContainer()->iterateCollidablesIn(layer,
+				[&matrix, this](flat2d::Entity *entity) {
+					if (entity->getType() != EntityType::TILE) {
+						return;
+					}
+
+					flat2d::EntityProperties& props = entity->getEntityProperties();
+					flat2d::EntityShape colShape = props.getColliderShape();
+					if (colShape.w != map.tileWidth || colShape.h != map.tileHeight) {
+						return;
+					}
+
+					int x = props.getXpos();
+					int y = props.getYpos();
+					if (x % map.tileWidth != 0 || y % map.tileHeight != 0) {
+						return;
+					}
+					x = x / map.tileWidth;
+					y = y / map.tileHeight;
+
+					matrix[x][y] = static_cast<MapTileObject*>(entity);
+				});
+
+		return matrix;
+}
+
+void MapParser::mergeHorizontalColliders(const flat2d::GameData *gameData)
+{
+	flat2d::EntityContainer *container = gameData->getEntityContainer();
+
+	for (auto& layer : container->getLayerKeys()) {
+		Matrix matrix = populateCollidableMatrix(gameData, layer);
+
+		for (int j = 0; j < map.height; j++) {
+			int first = -1;
+			for (size_t i = 0; i < matrix.size(); i++) {
+				if (first < 0 && matrix[i][j] != nullptr) {
+					first = i;
+					continue;
+				}
+				if ((first >= 0 && matrix[i][j] == nullptr)
+						|| (first >= 0 && static_cast<unsigned int>(j) == matrix[i].size() - 1))
+				{
+					for (unsigned int k = static_cast<unsigned int>(first); k < i; k++) {
+						matrix[k][j]->getEntityProperties().setCollidable(false);
+					}
+
+					int width = map.tileWidth * (i - first);
+					MapTileObject *collider = new MapTileObject(first * map.tileWidth, j * map.tileHeight,
+							width, map.tileHeight, nullptr);
+					flat2d::EntityShape colliderShape = { 0, 0, width, map.tileHeight };
+					collider->getEntityProperties().setColliderShape(colliderShape);
+					collider->getEntityProperties().setCollidable(true);
+					container->registerObject(collider, layer);
+
+					first = -1;
+				}
+			}
+		}
+	}
+	container->repopulateCollidables();
 }
 
 /*
@@ -102,7 +179,7 @@ bool MapParser::parseImageLayers(xml_node<> *node, flat2d::GameData *gameData)
 
 bool MapParser::parseTilesets(xml_node<> *node)
 {
-	for (xml_node<> *tilesetNode = node->first_node();
+	for (xml_node<> *tilesetNode = node->first_node("tileset");
 			tilesetNode;
 			tilesetNode = tilesetNode->next_sibling("tileset"))
 	{
