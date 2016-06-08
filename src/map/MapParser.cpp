@@ -279,9 +279,35 @@ bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData)
 	int row = 0;
 	int col = 0;
 	xml_node<> *data = node->first_node("data");
-	for (xml_node<> *tileNode = data->first_node(); tileNode; tileNode = tileNode->next_sibling()) {
-		xml_attribute<> *gidAttr = tileNode->first_attribute();
-		int gid = atoi(gidAttr->value());
+	std::string tiledata = data->value();
+
+	if (checkAttrValue(data->first_attribute("compression"), "gzip")) {
+		std::cerr << "gzip compression not supported for map files" << std::endl;
+		return false;
+	} else if (checkAttrValue(data->first_attribute("compression"), "zlib")) {
+		std::cerr << "zlib compression not supported for map files" << std::endl;
+		return false;
+	}
+
+	if (checkAttrValue(data->first_attribute("encoding"), "base64")) {
+		std::cerr << "base64 encoding not supported for map files" << std::endl;
+		return false;
+	}
+
+	while (tiledata.length()) {
+		std::string delim = ",";
+		size_t pos = tiledata.find(delim);
+
+		std::string token;
+		if (pos == std::string::npos) {
+			token = tiledata;
+			tiledata = "";
+		} else {
+			token = tiledata.substr(0, pos);
+			tiledata.erase(0, pos + delim.length());
+		}
+
+		int gid = atoi(token.c_str());
 		if (gid == 0) {
 			col++;
 			if (col >= map.width) {
@@ -534,15 +560,24 @@ bool MapParser::parseMapAttributes(xml_node<> *node)
 
 bool MapParser::checkNodeName(xml_node<> *node, std::string name) const
 {
+	if (node == nullptr) {
+		return false;
+	}
 	return strcmp(node->name(), name.c_str()) == 0;
 }
 
 bool MapParser::checkAttrName(xml_attribute<> *attr, std::string name) const
 {
+	if (attr == nullptr) {
+		return false;
+	}
 	return strcmp(attr->name(), name.c_str()) == 0;
 }
 
 bool MapParser::checkAttrValue(xml_attribute<> *attr, std::string name) const
 {
+	if (attr == nullptr) {
+		return false;
+	}
 	return strcmp(attr->value(), name.c_str()) == 0;
 }
