@@ -16,7 +16,7 @@ GameStateController::GameStateController()
 void GameStateController::handle(const SDL_Event& event)
 {
 	if (event.type == SDL_KEYDOWN) {
-#ifndef DEBUG
+#ifdef DEBUG
 		if (event.key.keysym.sym == SDLK_5) {
 			reset = true;
 		}

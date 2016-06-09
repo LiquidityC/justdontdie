@@ -46,8 +46,24 @@ int main( int argc, char* args[] )
 	flat2d::GameEngine *engine = flat->getGameEngine();
 	engine->init(GameSettings::SCREEN_FPS);
 
+	// Define our callbacks
+	auto stateCheck = [gameStateController](flat2d::GameData *gameData) -> flat2d::GameStateAction
+	{
+		if (gameStateController->quit()) {
+			return flat2d::GameStateAction::QUIT;
+		} else if (gameStateController->gameStateCheck(gameData)) {
+			return flat2d::GameStateAction::RESET;
+		}
+		return flat2d::GameStateAction::NOOP;
+	};
+
+	auto handleCallback = [gameStateController](const SDL_Event& event)
+	{
+		gameStateController->handle(event);
+	};
+
 	// Start the game loop
-	engine->run(gameStateController);
+	engine->run(stateCheck, handleCallback);
 
 	delete static_cast<CustomGameData*>(flat->getGameData()->getCustomGameData());
 	delete flat;

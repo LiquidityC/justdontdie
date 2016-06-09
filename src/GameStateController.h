@@ -7,7 +7,7 @@
 
 #include "GameStates.h"
 
-class GameStateController : public flat2d::VirtualGameStateController
+class GameStateController
 {
 	typedef struct {
 		std::string path;
