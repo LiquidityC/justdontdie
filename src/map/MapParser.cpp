@@ -121,8 +121,13 @@ void MapParser::mergeHorizontalColliders(const flat2d::GameData *gameData)
 					continue;
 				}
 				if ((first >= 0 && matrix[i][j] == nullptr)
-						|| (first >= 0 && static_cast<unsigned int>(j) == matrix[i].size() - 1))
+						|| (first >= 0 && static_cast<unsigned int>(i) == matrix.size() - 1))
 				{
+					if (first == static_cast<int>(i-1)) {
+						first = -1;
+						continue;
+					}
+
 					for (unsigned int k = static_cast<unsigned int>(first); k < i; k++) {
 						matrix[k][j]->getEntityProperties().setCollidable(false);
 					}

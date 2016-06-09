@@ -101,7 +101,7 @@ if(MINGW)
 	target_link_libraries(justdontdie flat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
 	target_compile_options(justdontdie PRIVATE -std=c++11 -Wall)
 else(MINGW)
-	target_link_libraries(justdontdie flat -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf -lboost_iostreams)
+	target_link_libraries(justdontdie flat -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
 	target_compile_options(justdontdie PRIVATE -std=c++11 -Wall)
 endif(MINGW)
 
