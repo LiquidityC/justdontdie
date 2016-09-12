@@ -20,7 +20,8 @@ void MapGenerator::generateMap(const flat2d::GameData* gameData, std::string til
 	gameData->getRenderData()->getCamera()->setMapDimensions(32*100, 32*30);
 
 	SDL_Renderer *renderer = gameData->getRenderData()->getRenderer();
-	ResourceContainer *resourceContainer = ((CustomGameData*) gameData->getCustomGameData())->getResourceContainer();
+	ResourceContainer *resourceContainer =
+		reinterpret_cast<CustomGameData*>(gameData->getCustomGameData())->getResourceContainer();
 	flat2d::EntityContainer *entityContainer = gameData->getEntityContainer();
 
 	SDL_Rect r = { 0, 0, 32, 32 };
@@ -35,7 +36,7 @@ void MapGenerator::generateMap(const flat2d::GameData* gameData, std::string til
 	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0x00);
 	SDL_RenderDrawRect(renderer, &r);
-	resourceContainer->addTexture(fgTexture);	
+	resourceContainer->addTexture(fgTexture);
 
 	SDL_Texture *bgTexture = SDL_CreateTexture(renderer,
 			SDL_PIXELFORMAT_RGBA8888,
@@ -45,7 +46,7 @@ void MapGenerator::generateMap(const flat2d::GameData* gameData, std::string til
 	SDL_SetRenderTarget(renderer, bgTexture);
 	SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 	SDL_RenderClear(renderer);
-	resourceContainer->addTexture(bgTexture);	
+	resourceContainer->addTexture(bgTexture);
 
 	SDL_SetRenderTarget(renderer, nullptr);
 
