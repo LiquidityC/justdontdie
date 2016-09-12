@@ -1,0 +1,1 @@
+/usr/bin/c++      CMakeFiles/maptodat.dir/src/maptodat.cpp.o  -o maptodat -rdynamic 

@@ -1,6 +1,6 @@
 #include <iostream>
 #include "GameStateController.h"
-#include "map/MapParser.h"
+#include "map/MapGenerator.h"
 #include "CustomGameData.h"
 #include "Soldier.h"
 #include "npcs/AngryBot.h"
@@ -95,9 +95,11 @@ void GameStateController::loadSplash(flat2d::GameData *gameData)
 	clearAllAssets(gameData);
 
 	flat2d::Texture *texture = new flat2d::Texture(0, 0);
-	texture->loadFromFile("resources/images/oliveshark_logo.png", gameData->getRenderData()->getRenderer());
+	texture->loadFromFile("resources/images/oliveshark_logo.png",
+			gameData->getRenderData()->getRenderer());
 
-	SplashScreen *splash = new SplashScreen("resources/images/oliveshark_logo.png");
+	SplashScreen* splash;
+	splash = new SplashScreen("resources/images/oliveshark_logo.png");
 	splash->init(gameData);
 	gameData->getEntityContainer()->registerObject(splash);
 
@@ -110,12 +112,13 @@ void GameStateController::loadGame(flat2d::GameData *gameData)
 	clearAllAssets(gameData);
 
 	flat2d::EntityContainer *entityContainer = gameData->getEntityContainer();
-	CustomGameData *customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
+	CustomGameData* customGameData;
+	customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
 	LayerService *layerService = customGameData->getLayerService();
 
-	MapParser parser;
-	MapData map = maps[currentMapIndex];
-	parser.createMapFrom(gameData, map.path, map.file);
+	MapGenerator generator;
+	generator.loadMapData();
+	generator.generateMap(gameData, "");
 
 	// TODO(Linus): Will this layer system work? (esp the hardcoded layers)
 	layerService->registerLayer(FRONT_LAYER);

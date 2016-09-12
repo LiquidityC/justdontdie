@@ -44,6 +44,7 @@ if(MINGW)
 endif(MINGW)
 
 add_subdirectory(flat)
+add_subdirectory(tools/maptodat)
 
 include_directories(${PROJECT_BINARY_DIR} ${PROJECT_BINARY_DIR}/flat/include include)
 link_directories(${PROJECT_BINARY_DIR}/flat/lib)
@@ -64,6 +65,7 @@ set(MAP_SOURCES
 	src/map/MapTileObject.cpp
 	src/map/RocketGenerator.cpp
 	src/map/EnemyGenerator.cpp
+	src/map/MapGenerator.cpp
 	src/map/ProximityEnemyGenerator.cpp
 	)
 
@@ -118,6 +120,12 @@ endif(MINGW)
 
 add_custom_target(copy-resources ALL
 	COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources ${PROJECT_BINARY_DIR}/resources
+	)
+
+add_custom_target(pre-process-map-files ALL
+	COMMENT "Pre-processing map room files"
+	DEPENDS tools/maptodat copy-resources
+	COMMAND ${PROJECT_BINARY_DIR}/tools/maptodat/maptodat ${PROJECT_BINARY_DIR}/resources/maps/rooms/standard.txt ${PROJECT_BINARY_DIR}/resources/maps/rooms/standard.dat
 	)
 
 if(MINGW)

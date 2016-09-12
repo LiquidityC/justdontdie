@@ -11,7 +11,6 @@
 #include "ParticleEngine.h"
 #include "ResourceContainer.h"
 #include "GameSettings.h"
-#include "map/MapParser.h"
 #include "LayerService.h"
 #include "ResourceLoader.h"
 #include "CustomGameData.h"
@@ -57,7 +56,7 @@ int main( int argc, char* args[] )
 		return flat2d::GameStateAction::NOOP;
 	};
 
-	auto handleCallback = [gameStateController](const SDL_Event& event)
+	auto handleCallback = [gameStateController](const SDL_Event& event) -> void
 	{
 		gameStateController->handle(event);
 	};

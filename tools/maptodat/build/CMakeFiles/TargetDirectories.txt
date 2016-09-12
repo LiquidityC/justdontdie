@@ -1,0 +1,3 @@
+/home/linus/ws/justdontdie/tools/maptodat/build/CMakeFiles/edit_cache.dir
+/home/linus/ws/justdontdie/tools/maptodat/build/CMakeFiles/rebuild_cache.dir
+/home/linus/ws/justdontdie/tools/maptodat/build/CMakeFiles/maptodat.dir
