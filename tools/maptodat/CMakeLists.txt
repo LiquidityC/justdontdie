@@ -6,3 +6,5 @@ project (maptodat CXX)
 add_executable(maptodat
 	src/maptodat.cpp
 	)
+
+target_compile_options(maptodat PRIVATE -std=c++11 -Wall)
