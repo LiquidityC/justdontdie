@@ -1,4 +1,5 @@
 /build/
+tools/maptodat/build/
 /tags
 
 *.swp

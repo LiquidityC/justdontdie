@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 	if (argc < 2) {
 		std::cerr << "You need to supply two filenames" << std::endl;
 		print_usage(command);
-		exit(1);
+		return 1;
 	}
 
 	std::string infile(argv[1]);
