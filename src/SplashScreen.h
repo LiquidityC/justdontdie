@@ -15,11 +15,6 @@ class SplashScreen : public flat2d::Entity
 			entityProperties.setCollidable(false);
 		}
 
-		~SplashScreen() {
-			if (texture != nullptr)
-				SDL_DestroyTexture(texture);
-		}
-
 		void init(const flat2d::GameData *gameData);
 };
 

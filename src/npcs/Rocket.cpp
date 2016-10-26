@@ -7,8 +7,9 @@
 
 void Rocket::init(const flat2d::GameData *data)
 {
-	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/rocket.png",
-				data->getRenderData()->getRenderer()));
+	flat2d::Texture *texture = new flat2d::Texture();
+	texture->loadFromFile("resources/textures/rocket.png", data->getRenderData()->getRenderer());
+	setTexture(texture);
 	deathTimer.start();
 }
 
@@ -23,7 +24,6 @@ void Rocket::preMove(const flat2d::GameData *data)
 			switchTimer.stop();
 			switchTimer.start();
 			clip.y = clip.y == 0 ? 15 : 0;
-			setClip(clip);
 		}
 	}
 }

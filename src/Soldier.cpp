@@ -12,10 +12,9 @@
 
 void Soldier::init(const flat2d::GameData *gameData)
 {
-	setTexture(flat2d::MediaUtil::loadTexture("resources/textures/soldier.png",
-				gameData->getRenderData()->getRenderer()));
-	SDL_Rect clip = { 0, 0, entityProperties.getWidth(), entityProperties.getHeight() };
-	setClip(clip);
+	flat2d::Texture *texture = new flat2d::Texture();
+	texture->loadFromFile("resources/textures/soldier.png", gameData->getRenderData()->getRenderer());
+	setTexture(texture);
 	mixer = gameData->getMixer();
 	entityProperties.setCollidable(true);
 }

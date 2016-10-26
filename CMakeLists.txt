@@ -101,10 +101,10 @@ add_executable(justdontdie
 
 if(MINGW)
 	target_link_libraries(justdontdie flat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(justdontdie PRIVATE -std=c++11 -Wall)
+	target_compile_options(justdontdie PRIVATE -std=c++14 -Wall)
 else(MINGW)
 	target_link_libraries(justdontdie flat -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(justdontdie PRIVATE -std=c++11 -Wall)
+	target_compile_options(justdontdie PRIVATE -std=c++14 -Wall)
 endif(MINGW)
 
 add_executable(test_justdontdie EXCLUDE_FROM_ALL testsrc/DeadGaemTest.cpp testsrc/LayerServiceTest.cpp
@@ -112,10 +112,10 @@ add_executable(test_justdontdie EXCLUDE_FROM_ALL testsrc/DeadGaemTest.cpp testsr
 
 if(MINGW)
 	target_link_libraries(test_justdontdie flat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(test_justdontdie PRIVATE -std=c++11 -Wall)
+	target_compile_options(test_justdontdie PRIVATE -std=c++14 -Wall)
 else(MINGW)
 	target_link_libraries(test_justdontdie flat -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(test_justdontdie PRIVATE -std=c++11 -Wall)
+	target_compile_options(test_justdontdie PRIVATE -std=c++14 -Wall)
 endif(MINGW)
 
 add_custom_target(copy-resources ALL

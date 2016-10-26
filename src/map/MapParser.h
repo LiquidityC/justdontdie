@@ -5,6 +5,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <memory>
 
 #include "rapidxml-1.13/rapidxml.hpp"
 #include "rapidxml-1.13/rapidxml_utils.hpp"
@@ -30,7 +31,7 @@ class MapParser
 		int width;
 		int height;
 		std::map<int, Tile> tiles;
-		SDL_Texture* texture;
+		std::shared_ptr<flat2d::Texture> texture;
 	} Tileset;
 
 	typedef struct {
