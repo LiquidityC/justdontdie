@@ -87,10 +87,6 @@ class Soldier : public flat2d::Entity
 			}
 
 		~Soldier() {
-			if (texture != nullptr) {
-				SDL_DestroyTexture(texture);
-				texture = nullptr;
-			}
 			for (auto &emitter : particleEmitters) {
 				delete emitter.second;
 			}

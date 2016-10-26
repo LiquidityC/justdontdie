@@ -30,14 +30,9 @@ class Rocket : public flat2d::Entity
 				int yclip = mode == Mode::GHOST ? 15 : 0;
 
 				clip = { xclip, yclip, 24, 15 };
-				setClip(clip);
 			}
 
-		~Rocket() {
-			if (texture != nullptr) {
-				SDL_DestroyTexture(texture);
-			}
-		}
+		~Rocket() { }
 
 		int getType() const {
 			return EntityType::ROCKET;

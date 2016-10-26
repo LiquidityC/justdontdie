@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 #include <vector>
+#include <memory>
 
 /**
  * Class that holds resources and properly disposes of them at exit.

@@ -23,9 +23,9 @@ class MapTileObject : public flat2d::Entity
 		std::vector<EntityGenerator*> generators;
 
 	public:
-		MapTileObject(int x, int y, int w, int h, SDL_Texture* t)
+		MapTileObject(int x, int y, int w, int h, std::shared_ptr<flat2d::Texture> t)
 			: Entity(x, y, w, h) {
-				setTexture(t);
+				setSharedTexture(t);
 			}
 
 		~MapTileObject() {

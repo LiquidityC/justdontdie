@@ -266,7 +266,6 @@ bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData)
 {
 	CustomGameData *customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
 	LayerService *layerService = customGameData->getLayerService();
-	ResourceContainer *resourceContainer = customGameData->getResourceContainer();
 	flat2d::RenderData *renderData = gameData->getRenderData();
 
 	// Extract layer name
@@ -339,10 +338,9 @@ bool MapParser::parseLayer(xml_node<> *node, flat2d::GameData *gameData)
 		}
 
 		if (tileset->texture == nullptr) {
-			SDL_Texture* texture = flat2d::MediaUtil::loadTexture(
-					tileset->sourcePath, renderData->getRenderer());
-			tileset->texture = texture;
-			resourceContainer->addTexture(texture);
+			flat2d::Texture *texture = new flat2d::Texture();
+			texture->loadFromFile(tileset->sourcePath, renderData->getRenderer());
+			tileset->texture = std::shared_ptr<flat2d::Texture>(texture);
 		}
 
 		if (tileset->tiles.find(gid) == tileset->tiles.end()) {
@@ -391,7 +389,6 @@ bool MapParser::parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData *g
 {
 	CustomGameData *customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
 	LayerService *layerService = customGameData->getLayerService();
-	ResourceContainer *resourceContainer = customGameData->getResourceContainer();
 
 	// Get the layer name
 	std::string layerName = getNameAttrValue(node);
@@ -427,10 +424,10 @@ bool MapParser::parseObjectLayer(rapidxml::xml_node<> *node, flat2d::GameData *g
 		MapTileObject* tileObj;
 		if (tileset != nullptr) {
 			if (tileset->texture == nullptr) {
-				SDL_Texture* texture = flat2d::MediaUtil::loadTexture(
-						tileset->sourcePath, gameData->getRenderData()->getRenderer());
-				tileset->texture = texture;
-				resourceContainer->addTexture(texture);
+				flat2d::Texture *texture = new flat2d::Texture();
+				texture->loadFromFile(tileset->sourcePath,
+						gameData->getRenderData()->getRenderer());
+				tileset->texture = std::shared_ptr<flat2d::Texture>(texture);
 			}
 
 			tileObj = new MapTileObject(objBox.x, objBox.y, objBox.w, objBox.h, tileset->texture);
