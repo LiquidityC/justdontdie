@@ -31,20 +31,18 @@ int main( int argc, char* args[] )
 	ss << " [DEBUG]";
 #endif // DEBUG
 
-	if (!flat->initSDL(ss.str(), GameSettings::SCREEN_WIDTH, GameSettings::SCREEN_HEIGHT)) {
-		return -1;
-	}
+	int error = flat->loadSDL(ss.str(),
+			GameSettings::SCREEN_FPS,
+			GameSettings::SCREEN_WIDTH,
+			GameSettings::SCREEN_HEIGHT);
 
-	SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
-	if (!flat->initContainers()) {
+	if (error) {
+		std::cerr << "Failed to load SDL, exiting" << std::endl;
 		return -1;
 	}
 
 	GameStateController *gameStateController = new GameStateController();
 	gameStateController->resetGame(flat->getGameData());
-
-	flat2d::GameEngine *engine = flat->getGameEngine();
-	engine->init(GameSettings::SCREEN_FPS);
 
 	// Define our callbacks
 	auto stateCheck = [gameStateController](flat2d::GameData *gameData) -> flat2d::GameStateAction
@@ -63,7 +61,7 @@ int main( int argc, char* args[] )
 	};
 
 	// Start the game loop
-	engine->run(stateCheck, handleCallback);
+	flat->getGameEngine()->run(stateCheck, handleCallback);
 
 	delete static_cast<CustomGameData*>(flat->getGameData()->getCustomGameData());
 	delete flat;
