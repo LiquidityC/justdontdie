@@ -16,7 +16,6 @@ void EnemyGenerator::preMove(const flat2d::GameData *gameData, const MapTileObje
 	Enemy *enemy = nullptr;
 	if (spawn == "angryBot") {
 		enemy = new AngryBot(props.getXpos(), props.getYpos());
-		enemy->init(gameData);
 	}
 
 	if (enemy) {

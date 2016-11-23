@@ -134,13 +134,13 @@ add_custom_target(run
 	COMMAND justdontdie
 	)
 
-add_custom_target(lint
+add_custom_target(cpplint
 	COMMENT "Running cpp-lint"
 	WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 	COMMAND python2.7 lint/cpplint.py --linelength=120 --root=src --extensions=cpp,h --filter=-whitespace/tab,-whitespace/parens,-whitespace/braces,-whitespace/comments,-legal src/* src/npcs/* src/npcs/ai/* src/map/*
 	)
 
-add_custom_target(check
+add_custom_target(tests
 	COMMENT "Running catch tests"
 	DEPENDS test_justdontdie
 	COMMAND test_justdontdie

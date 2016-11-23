@@ -339,7 +339,7 @@
   </object>
  </objectgroup>
  <objectgroup name="Enemies">
-  <object id="11" name="One angry bot" x="1721.33" y="668" width="34.667" height="33.3337">
+  <object id="11" name="One angry bot" x="1697.33" y="665.333" width="34.667" height="33.3337">
    <properties>
     <property name="enemyGenerator" value="oneShot"/>
     <property name="spawn" value="angryBot"/>

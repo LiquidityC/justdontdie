@@ -98,7 +98,6 @@ void GameStateController::loadSplash(flat2d::GameData *gameData)
 	texture->loadFromFile("resources/images/oliveshark_logo.png", gameData->getRenderData()->getRenderer());
 
 	SplashScreen *splash = new SplashScreen("resources/images/oliveshark_logo.png");
-	splash->init(gameData);
 	gameData->getEntityContainer()->registerObject(splash);
 
 	splashTimer.start();
@@ -123,7 +122,6 @@ void GameStateController::loadGame(flat2d::GameData *gameData)
 	layerService->registerLayers(entityContainer);
 
 	flat2d::Entity* soldier = new Soldier(200, 200);
-	soldier->init(gameData);
 	entityContainer->registerObject(soldier, layerService->getLayerIndex(FRONT_LAYER));
 
 	ResourceLoader *rLoader = customGameData->getResourceLoader();
@@ -132,7 +130,6 @@ void GameStateController::loadGame(flat2d::GameData *gameData)
 
 #ifdef FPS_DBG
 	FrameCounter *counter = new FrameCounter(10, 10);
-	counter->init(gameData);
 	entityContainer->registerObject(counter, layerService->getLayerIndex(OVERLAY_LAYER));
 #endif // DEBUG
 }
