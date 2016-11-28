@@ -84,7 +84,7 @@ void MapTileObject::render(const flat2d::RenderData *data) const
 
 	Entity::render(data);
 #ifdef COLLISION_DBG
-	if (texture == nullptr && !dead) {
+	if (getTexture().expired() && !dead) {
 		SDL_SetRenderDrawColor(data->getRenderer(), 0x00, 0x00, 0xFF, 0xFF );
 		SDL_Rect boundingBox = entityProperties.getBoundingBox();
 		boundingBox.x = data->getCamera()->getScreenXposFor(boundingBox.x);
