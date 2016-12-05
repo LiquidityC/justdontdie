@@ -13,7 +13,7 @@ class FrameCounter : public flat2d::Entity
 		int xpos = 10,
 			ypos = 10;
 
-		uint addedTextures = 0;
+		unsigned int addedTextures = 0;
 
 		flat2d::Timer fpsTimer;
 		flat2d::Timer updateTimer;
