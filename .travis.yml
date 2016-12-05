@@ -3,12 +3,13 @@ dist: trusty
 language: cpp
 compiler:
     - gcc
+    - mingw
    #- clang
 
 script:
     - mkdir build
     - cd build
-    - cmake ..
+    - if [ "$CXX" == "x86_64-mingw-w64-g++-5" ]; then cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/toolchain-ubuntu-trusty-x86_64-mingw32.cmake ..; else cmake ..; fi
     - make
     - make check
     - make lint
@@ -24,10 +25,12 @@ before_install:
       #clang 3.6
     - if [ "$CXX" == "clang++" ]; then sudo add-apt-repository -y ppa:h-rayflood/llvm; fi
 
+      #mingw
+    - if [ "$CXX" == "mingw" ]; then sudo add-apt-repository -y ppa:adrozdoff/mingw; fi
+
     - sudo apt-get update -qq
 
 install:
-    - sudo apt-get install -y libsqlite3-dev
     - sudo apt-get install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
     - sudo apt-get install -y python2.7
     - sudo apt-get install -y cmake cmake-data
@@ -39,6 +42,10 @@ install:
       #clang 3.6
     - if [ "$CXX" == "clang++" ]; then sudo apt-get install -y --allow-unauthenticated clang-3.6; fi
     - if [ "$CXX" == "clang++" ]; then export CXX="clang++-3.6"; fi
+
+      #mingw
+    - if [ "$CXX" == "mingw" ]; then sudo apt-get install -y --allow-unauthenticated mingw-w64 gcc-5-mingw-w64; fi
+    - if [ "$CXX" == "mingw" ]; then export CXX="x86_64-mingw-w64-g++-5"; fi
 
 before_script:
     - sudo dpkg -L libsdl2-dev
