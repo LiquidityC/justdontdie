@@ -73,8 +73,6 @@ void GameStateController::clearAllAssets(flat2d::GameData *gameData)
 	entityContainer->unregisterAllObjects();
 	gameData->getMixer()->clearAllSound();
 
-	entityContainer->setSpatialPartitionDimension(100);
-
 	// Create custom game data if it doesn't exist
 	CustomGameData *customGameData = static_cast<CustomGameData*>(gameData->getCustomGameData());
 	if (!customGameData) {

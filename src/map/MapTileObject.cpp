@@ -83,23 +83,4 @@ void MapTileObject::render(const flat2d::RenderData *data) const
 	}
 
 	Entity::render(data);
-#ifdef COLLISION_DBG
-	if (getTexture().expired() && !dead) {
-		SDL_SetRenderDrawColor(data->getRenderer(), 0x00, 0x00, 0xFF, 0xFF );
-		SDL_Rect boundingBox = entityProperties.getBoundingBox();
-		boundingBox.x = data->getCamera()->getScreenXposFor(boundingBox.x);
-		boundingBox.y = data->getCamera()->getScreenYposFor(boundingBox.y);
-		SDL_RenderDrawRect( data->getRenderer(), &boundingBox);
-
-		// Draw spatial partitions
-		SDL_SetRenderDrawColor(data->getRenderer(), 0xFF, 0x00, 0x00, 0xFF );
-		const flat2d::EntityProperties::Areas currentAreas = entityProperties.getCurrentAreas();
-		for(auto it = currentAreas.begin(); it != currentAreas.end(); it++) {
-			SDL_Rect bounds = (*it).asSDLRect();
-			bounds.x = data->getCamera()->getScreenXposFor(bounds.x);
-			bounds.y = data->getCamera()->getScreenYposFor(bounds.y);
-			SDL_RenderDrawRect( data->getRenderer(), &bounds );
-		}
-	}
-#endif
 }
