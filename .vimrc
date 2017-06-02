@@ -16,3 +16,6 @@ nnoremap <F12> :Start! tiled<cr>
 noremap <C-p>:CtrlP .<CR>
 
 set makeprg=make\ -l\ --no-print-directory\ -C\ build
+
+"Make linter stop warning about flat/flat.h include
+let g:syntastic_cpp_include_dirs = ['build/flat/include']
