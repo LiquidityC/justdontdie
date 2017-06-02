@@ -12,7 +12,9 @@ class Enemy : public flat2d::Entity
 
 	public:
 		Enemy(Agent *agent, int x, int y, int w, int h) :
-			flat2d::Entity(x, y, w, h), aiAgent(agent) { }
+			 flat2d::Entity(x, y, w, h), aiAgent(agent) {
+				 entityProperties.setCollidable(true);
+			 }
 
 		virtual ~Enemy() {
 			if (aiAgent != nullptr) {

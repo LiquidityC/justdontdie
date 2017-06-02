@@ -6,7 +6,6 @@
 
 void Enemy::init(const flat2d::GameData *gameData)
 {
-	entityProperties.setCollidable(true);
 }
 
 bool Enemy::onCollision(flat2d::Entity *collider, const flat2d::GameData *data)
