@@ -1,7 +1,7 @@
 #ifndef SOLDIERMOTIONCONTROLLER_H_
 #define SOLDIERMOTIONCONTROLLER_H_
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <flat/flat.h>
 #include <map>
 

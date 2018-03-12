@@ -1,4 +1,4 @@
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "GhostOverlay.h"
 
 void GhostOverlay::render(const flat2d::RenderData *renderData) const

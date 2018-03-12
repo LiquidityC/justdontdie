@@ -1,7 +1,7 @@
 #ifndef PARTICLEENGINE_H_
 #define PARTICLEENGINE_H_
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <flat/flat.h>
 
 class LayerService;

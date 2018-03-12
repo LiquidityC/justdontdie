@@ -1,7 +1,7 @@
 #ifndef RESOURCECONTAINER_H_
 #define RESOURCECONTAINER_H_
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <vector>
 #include <memory>
 

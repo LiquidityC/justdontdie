@@ -2,7 +2,7 @@
 #define PARTICLEEMITTER_H_
 
 #include <flat/flat.h>
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 class Particle;
 
