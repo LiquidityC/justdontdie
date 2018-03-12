@@ -11,6 +11,12 @@ set(DEBUG 0 CACHE BOOLEAN "Debug build")
 set(DEBUG_FPS 0 CACHE BOOLEAN "FPS performance debugging info")
 set(DEBUG_COLLISION 0 CACHE BOOLEAN "Collision debugging info")
 
+include(cmake/FindSDL2.cmake)
+include(cmake/FindSDL2_image.cmake)
+include(cmake/FindSDL2_ttf.cmake)
+include(cmake/FindSDL2_mixer.cmake)
+include(cmake/FindCCache.cmake)
+
 configure_file (
   "${PROJECT_SOURCE_DIR}/src/Config.h.in"
   "${PROJECT_BINARY_DIR}/Config.h"
@@ -45,8 +51,31 @@ endif(MINGW)
 
 add_subdirectory(flat)
 
-include_directories(${PROJECT_BINARY_DIR} ${PROJECT_BINARY_DIR}/flat/include include)
-link_directories(${PROJECT_BINARY_DIR}/flat/lib)
+include_directories(${PROJECT_BINARY_DIR}
+	${PROJECT_BINARY_DIR}/flat/include
+	${SDL2_INCLUDE_DIR}
+	${SDL2_IMAGE_INCLUDE_DIR}
+	${SDL2_TTF_INCLUDE_DIR}
+	${SDL2_MIXER_INCLUDE_DIR}
+	include
+	)
+
+link_directories(
+	${SDL2_LIBRARY}
+	${SDL2MAIN_LIBRARY}
+	${SDL2_IMAGE_LIBRARY}
+	${SDL2_TTF_LIBRARY}
+	${SDL2_MIXER_LIBRARY}
+	${PROJECT_BINARY_DIR}/flat/lib
+	)
+
+link_libraries(
+	${SDL2_LIBRARY}
+	${SDL2MAIN_LIBRARY}
+	${SDL2_IMAGE_LIBRARY}
+	${SDL2_TTF_LIBRARY}
+	${SDL2_MIXER_LIBRARY}
+	)
 
 set(NPC_SOURCES
 	src/npcs/Enemy.cpp
