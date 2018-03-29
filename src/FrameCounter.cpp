@@ -62,7 +62,7 @@ void FrameCounter::checkDynamicExecutionTimes(const flat2d::GameData* gameData)
 		std::stringstream ss;
 		for (auto &functionTime : *data) {
 			ss << functionTime.first << ": " << functionTime.second;
-			flat2d::Texture *texture = createTexture(xpos, ypos += 15, ss.str(), renderer);
+			flat2d::Texture *texture = createTexture(ss.str(), renderer);
 			textures.push_back(texture);
 			addedTextures++;
 			ss.str("");
@@ -85,44 +85,64 @@ void FrameCounter::init(const flat2d::GameData *gameData)
 {
 	SDL_Renderer *renderer = gameData->getRenderData()->getRenderer();
 
-	avgFpsText = createTexture(xpos, ypos, "AVG FPS:", renderer);
-	avgFpsCount = createTexture(xpos + 90, ypos, "0", renderer);
+	avgFpsText = createTexture("AVG FPS:", renderer);
+	avgFpsCount = createTexture("0", renderer);
 
-	fpsText = createTexture(xpos, ypos += 15, "FPS:", renderer);
-	fpsCount = createTexture(xpos + 90, ypos, "0", renderer);
+	fpsText = createTexture("FPS:", renderer);
+	fpsCount = createTexture("0", renderer);
 
-	dtText = createTexture(xpos, ypos += 15, "DELTATIME:", renderer);
-	dtCount = createTexture(xpos + 90, ypos, "0", renderer);
+	dtText = createTexture("DELTATIME:", renderer);
+	dtCount = createTexture("0", renderer);
 
-	objText = createTexture(xpos, ypos += 15, "OBJECTS:", renderer);
-	objCount = createTexture(xpos + 90, ypos, "0", renderer);
+	objText = createTexture("OBJECTS:", renderer);
+	objCount = createTexture("0", renderer);
 
-	colText = createTexture(xpos, ypos += 15, "COLLIDABLES:", renderer);
-	colCount = createTexture(xpos + 90, ypos, "0", renderer);
+	colText = createTexture("COLLIDABLES:", renderer);
+	colCount = createTexture("0", renderer);
 }
 
-flat2d::Texture* FrameCounter::createTexture(int xpos, int ypos, std::string text, SDL_Renderer *renderer)
+flat2d::Texture* FrameCounter::createTexture(std::string text, SDL_Renderer *renderer)
 {
-	flat2d::Texture *texture = new flat2d::Texture(xpos, ypos);
+	flat2d::Texture *texture = new flat2d::Texture();
 	texture->loadFont("resources/font/font.ttf", 12);
 	texture->loadFromRenderedText(text, color, renderer);
 	return texture;
 }
 
+void FrameCounter::renderTexture(const flat2d::Texture *t,
+								 int x,
+								 int y,
+								 const flat2d::RenderData *data
+								 ) const
+{
+	int w = t->getWidth();
+	int h = t->getHeight();
+	SDL_Rect box = { x, y, w, h };
+
+	t->render(data->getRenderer(), nullptr, &box);
+}
+
 void FrameCounter::render(const flat2d::RenderData *renderData) const
 {
-	avgFpsText->render(renderData->getRenderer());
-	avgFpsCount->render(renderData->getRenderer());
-	fpsText->render(renderData->getRenderer());
-	fpsCount->render(renderData->getRenderer());
-	dtText->render(renderData->getRenderer());
-	dtCount->render(renderData->getRenderer());
-	objText->render(renderData->getRenderer());
-	objCount->render(renderData->getRenderer());
-	colText->render(renderData->getRenderer());
-	colCount->render(renderData->getRenderer());
+	int x = xpos, y = ypos;
+
+	renderTexture(avgFpsText, x, y, renderData);
+	renderTexture(avgFpsCount, x + 90, y, renderData);
+
+	renderTexture(fpsText, x, y += 15, renderData);
+	renderTexture(fpsCount, x + 90, y, renderData);
+
+	renderTexture(dtText, x, y += 15, renderData);
+	renderTexture(dtCount, x + 90, y, renderData);
+
+	renderTexture(objText, x, y += 15, renderData);
+	renderTexture(objCount, x + 90, y, renderData);
+
+	renderTexture(colText, x, y += 15, renderData);
+	renderTexture(colCount, x + 90, y, renderData);
 
 	for (auto texture : textures) {
-		texture->render(renderData->getRenderer());
+		y += 15;
+		renderTexture(texture, x, y, renderData);
 	}
 }

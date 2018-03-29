@@ -39,7 +39,9 @@ class FrameCounter : public flat2d::Entity
 		int countedFrames = 0;
 		int currentFps = 0;
 
-		flat2d::Texture* createTexture(int x, int y, std::string text, SDL_Renderer*);
+		flat2d::Texture* createTexture(std::string text, SDL_Renderer*);
+
+		void renderTexture(const flat2d::Texture *, int x, int y, const flat2d::RenderData*) const;
 
 	public:
 		FrameCounter(int x, int y) : Entity( x, y, 300, 300 ) {

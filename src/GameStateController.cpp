@@ -94,9 +94,6 @@ void GameStateController::loadSplash(flat2d::GameData *gameData)
 	// Clean up first
 	clearAllAssets(gameData);
 
-	flat2d::Texture *texture = new flat2d::Texture(0, 0);
-	texture->loadFromFile("resources/images/oliveshark_logo.png", gameData->getRenderData()->getRenderer());
-
 	SplashScreen *splash = new SplashScreen("resources/images/oliveshark_logo.png");
 	gameData->getEntityContainer()->registerObject(splash);
 

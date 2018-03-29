@@ -6,6 +6,13 @@ project (JustDontDie CXX)
 set (JustDontDie_MAJOR_VERSION 1)
 set (JustDontDie_MINOR_VERSION 0)
 
+include(cmake/FindSDL2.cmake)
+include(cmake/FindSDL2_image.cmake)
+include(cmake/FindSDL2_ttf.cmake)
+include(cmake/FindSDL2_mixer.cmake)
+include(cmake/FindCCache.cmake)
+include(cmake/Findcppcheck.cmake)
+
 # COMPILE FLAGS
 set(DEBUG 0 CACHE BOOLEAN "Debug build")
 set(DEBUG_FPS 0 CACHE BOOLEAN "FPS performance debugging info")
@@ -51,30 +58,14 @@ endif(MINGW)
 
 add_subdirectory(flat)
 
-include_directories(${PROJECT_BINARY_DIR}
+include_directories(
+	${PROJECT_BINARY_DIR}
 	${PROJECT_BINARY_DIR}/flat/include
+	include
 	${SDL2_INCLUDE_DIR}
 	${SDL2_IMAGE_INCLUDE_DIR}
 	${SDL2_TTF_INCLUDE_DIR}
 	${SDL2_MIXER_INCLUDE_DIR}
-	include
-	)
-
-link_directories(
-	${SDL2_LIBRARY}
-	${SDL2MAIN_LIBRARY}
-	${SDL2_IMAGE_LIBRARY}
-	${SDL2_TTF_LIBRARY}
-	${SDL2_MIXER_LIBRARY}
-	${PROJECT_BINARY_DIR}/flat/lib
-	)
-
-link_libraries(
-	${SDL2_LIBRARY}
-	${SDL2MAIN_LIBRARY}
-	${SDL2_IMAGE_LIBRARY}
-	${SDL2_TTF_LIBRARY}
-	${SDL2_MIXER_LIBRARY}
 	)
 
 set(NPC_SOURCES
@@ -125,25 +116,27 @@ add_executable(justdontdie
 	src/game.cpp
 	${COMMON_SOURCES}
 	)
-
-if(MINGW)
-	target_link_libraries(justdontdie flat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(justdontdie PRIVATE -std=c++14 -Wall)
-else(MINGW)
-	target_link_libraries(justdontdie flat -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(justdontdie PRIVATE -std=c++14 -Wall)
-endif(MINGW)
+target_compile_options(justdontdie PRIVATE -std=c++14 -Wall)
+target_link_libraries(justdontdie
+	flat
+	${SDL2_LIBRARY}
+	${SDL2MAIN_LIBRARY}
+	${SDL2_IMAGE_LIBRARY}
+	${SDL2_TTF_LIBRARY}
+	${SDL2_MIXER_LIBRARY}
+	)
 
 add_executable(test_justdontdie EXCLUDE_FROM_ALL testsrc/DeadGaemTest.cpp testsrc/LayerServiceTest.cpp
 	testsrc/TestSoldier.cpp ${COMMON_SOURCES})
-
-if(MINGW)
-	target_link_libraries(test_justdontdie flat -lmingw32 -lSDL2main -lSDL2 -mwindows -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(test_justdontdie PRIVATE -std=c++14 -Wall)
-else(MINGW)
-	target_link_libraries(test_justdontdie flat -lSDL2 -lSDL2_image -lSDL2_mixer -lSDL2_ttf)
-	target_compile_options(test_justdontdie PRIVATE -std=c++14 -Wall)
-endif(MINGW)
+target_compile_options(test_justdontdie PRIVATE -std=c++14 -Wall)
+target_link_libraries(test_justdontdie
+	flat
+	${SDL2_LIBRARY}
+	${SDL2MAIN_LIBRARY}
+	${SDL2_IMAGE_LIBRARY}
+	${SDL2_TTF_LIBRARY}
+	${SDL2_MIXER_LIBRARY}
+	)
 
 add_custom_target(copy-resources ALL
 	COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/resources ${PROJECT_BINARY_DIR}/resources
